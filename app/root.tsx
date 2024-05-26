@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react'
+import { ThemeProvider } from './components/theme-provider'
 import globalStyles from './styles/globals.css?url'
 
 export const links: LinksFunction = () => [
@@ -31,5 +32,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />
+  return (
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <Outlet />
+    </ThemeProvider>
+  )
 }

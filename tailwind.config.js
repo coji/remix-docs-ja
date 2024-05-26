@@ -2,18 +2,16 @@
 export default {
   darkMode: ['class'],
   content: ['./app/**/*.{ts,tsx}'],
+  prefix: '',
   theme: {
     container: {
       center: true,
-      padding: '1rem',
+      padding: '2rem',
       screens: {
         '2xl': '1400px',
       },
     },
     extend: {
-      height: { screen: ['100vh', '100dvh'] },
-      minHeight: { screen: ['100vh', '100dvh'] },
-      maxHeight: { screen: ['100vh', '100dvh'] },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -48,7 +46,6 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        github: '#24292e',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -57,12 +54,12 @@ export default {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: 0 },
+          from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' },
         },
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: 0 },
+          to: { height: '0' },
         },
       },
       animation: {
