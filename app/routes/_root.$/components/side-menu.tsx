@@ -38,8 +38,8 @@ export const SideMenu = ({ menu, currentMenuItem }: SideMenuProps) => {
   )
 }
 export const SideMenuCategory = twc.div`group`
-export const SideMenuCategoryTitle = twc.div`my-1 px-2 py-1`
-export const SideMenuItem = twc.div`ml-4 leading-6`
+export const SideMenuCategoryTitle = twc.div`py-1 px-2 py-1`
+export const SideMenuItem = twc.div`pl-4 leading-6`
 export const SideMenuNavLink = twc(NavLink).attrs({
   prefetch: 'intent',
 })`hover:underline aria-[current='page']:font-bold aria-[current='page']:text-foreground`
