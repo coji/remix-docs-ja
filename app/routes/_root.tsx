@@ -45,6 +45,7 @@ export default function Layout() {
             href="https://github.com/coji/remix-docs-ja"
             target="_blank"
             rel="noreferrer"
+            className="underline"
           >
             View on GitHub
           </a>
