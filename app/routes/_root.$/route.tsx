@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { NavLink, useLoaderData, type MetaFunction } from '@remix-run/react'
 import { buildPageMeta } from '~/libs/seo'
-import { buildMenu } from './functions/build-menu'
+import { buildMenu, getCurrentMenuItem } from './functions/build-menu'
 import { getDoc } from './functions/get-doc'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -15,13 +15,18 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   )
 }
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+export const loader = async ({ params, response }: LoaderFunctionArgs) => {
   const filename = params['*'] ?? 'index'
   const doc = await getDoc(filename)
   const menu = await buildMenu()
-  const currentMenuItem = menu
-    .flatMap((category) => category.children)
-    .find((menuItem) => menuItem.slug === filename)
+  const currentMenuItem = getCurrentMenuItem(menu, filename)
+
+  if (response) {
+    response.headers.set(
+      'Cache-Control',
+      's-maxage=600, stale-while-revalidate=120',
+    )
+  }
   return { menu, currentMenuItem, doc }
 }
 

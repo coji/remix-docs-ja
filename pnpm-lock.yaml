@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@epic-web/remember':
+        specifier: ^1.0.2
+        version: 1.0.2
       '@mdx-js/react':
         specifier: ^3.0.1
         version: 3.0.1(@types/react@18.3.3)(react@18.3.1)
@@ -384,6 +387,9 @@ packages:
 
   '@emotion/hash@0.9.1':
     resolution: {integrity: sha512-gJB6HLm5rYwSLI6PQa+X1t5CFGrv1J1TWG+sOyMCeKz2ojaj6Fnl/rZEspogG+cvqbt4AE/2eIyD2QfLKTBNlQ==}
+
+  '@epic-web/remember@1.0.2':
+    resolution: {integrity: sha512-K7DcGoRPqVkjVhPEMQzqw7W/c3hq/3LuiI74he6SkXwR6A49aUmXpxmdb6o+NldY4FFtG42U7nL8PrqNGRxXuQ==}
 
   '@esbuild/aix-ppc64@0.20.2':
     resolution: {integrity: sha512-D+EBOJHXdNZcLJRBkhENNG8Wji2kgc9AZ9KiPr1JuZjsNtyHzrsfLRrY0tk2H2aoFu6RANO1y1iPPUCDYWkb5g==}
@@ -4040,6 +4046,8 @@ snapshots:
     optional: true
 
   '@emotion/hash@0.9.1': {}
+
+  '@epic-web/remember@1.0.2': {}
 
   '@esbuild/aix-ppc64@0.20.2':
     optional: true
