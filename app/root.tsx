@@ -1,4 +1,4 @@
-import type { LinksFunction } from '@remix-run/node'
+import type { LinksFunction, MetaFunction } from '@remix-run/node'
 import {
   Links,
   Meta,
@@ -9,6 +9,13 @@ import {
 import { ThemeProvider } from './components/theme-provider'
 import globalStyles from './styles/globals.css?url'
 
+export const meta: MetaFunction = () => {
+  return [
+    {
+      title: 'Remix ドキュメント日本語版',
+    },
+  ]
+}
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: globalStyles },
 ]

@@ -27,6 +27,7 @@ export default function Docs() {
                   <div className="ml-4 leading-6" key={menuItem.slug}>
                     <NavLink
                       to={`/${menuItem.slug}`}
+                      prefetch="intent"
                       className="text-sm text-muted-foreground hover:underline aria-[current='page']:font-bold aria-[current='page']:text-foreground"
                     >
                       {menuItem.attrs.title}

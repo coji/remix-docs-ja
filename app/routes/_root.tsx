@@ -24,7 +24,7 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <footer className="mx-4 my-2 text-center">
+      <footer className="mx-4 my-2 text-center text-muted-foreground">
         Docs and examples{' '}
         <a
           href="https://github.com/coji/remix-docs-ja/blob/main/LICENSE"
