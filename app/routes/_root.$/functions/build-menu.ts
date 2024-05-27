@@ -3,22 +3,7 @@ import fg from 'fast-glob'
 import parseYamlHeader from 'gray-matter'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-
-interface MenuDocAttributes {
-  title: string
-  order?: number
-  new?: boolean
-  [key: string]: unknown
-}
-
-export interface MenuDoc {
-  attrs: MenuDocAttributes
-  parentSlug?: string
-  children: MenuDoc[]
-  filename: string
-  hasContent: boolean
-  slug: string
-}
+import type { MenuDoc } from '../types'
 
 const makeSlug = (filepath: string) => {
   return filepath

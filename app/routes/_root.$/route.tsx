@@ -1,6 +1,13 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
-import { NavLink, useLoaderData, type MetaFunction } from '@remix-run/react'
+import { useLoaderData, type MetaFunction } from '@remix-run/react'
 import { buildPageMeta } from '~/libs/seo'
+import {
+  SideMenu,
+  SideMenuCategory,
+  SideMenuCategoryTitle,
+  SideMenuItem,
+  SideMenuNavLink,
+} from './components'
 import { buildMenu, getCurrentMenuItem } from './functions/build-menu'
 import { getDoc } from './functions/get-doc'
 
@@ -33,32 +40,28 @@ export const loader = async ({ params, response }: LoaderFunctionArgs) => {
 export default function Docs() {
   const { menu, doc } = useLoaderData<typeof loader>()
   return (
-    <div className="grid grid-cols-[16rem_1fr] gap-4">
-      <div className="mx-4 flex flex-col gap-4 text-sm ">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-[16rem_1fr]">
+      <SideMenu className="hidden whitespace-normal md:flex">
         {menu.map((category) => {
           return (
-            <div key={category.slug} className="group">
-              <div className="my-2 text-muted-foreground">
+            <SideMenuCategory key={category.slug}>
+              <SideMenuCategoryTitle>
                 {category.attrs.title}
-              </div>
+              </SideMenuCategoryTitle>
 
               {category.children.map((menuItem) => {
                 return (
-                  <div className="ml-4 leading-6" key={menuItem.slug}>
-                    <NavLink
-                      to={`/${menuItem.slug}`}
-                      prefetch="intent"
-                      className="text-muted-foreground hover:underline aria-[current='page']:font-bold aria-[current='page']:text-foreground"
-                    >
+                  <SideMenuItem key={menuItem.slug}>
+                    <SideMenuNavLink to={`/${menuItem.slug}`}>
                       {menuItem.attrs.title}
-                    </NavLink>
-                  </div>
+                    </SideMenuNavLink>
+                  </SideMenuItem>
                 )
               })}
-            </div>
+            </SideMenuCategory>
           )
         })}
-      </div>
+      </SideMenu>
 
       <div
         className="prose mx-4 my-2 dark:prose-invert"
