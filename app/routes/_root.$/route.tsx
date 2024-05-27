@@ -34,11 +34,11 @@ export default function Docs() {
   const { menu, doc } = useLoaderData<typeof loader>()
   return (
     <div className="grid grid-cols-[16rem_1fr] gap-4">
-      <div className="mx-4 flex flex-col gap-4">
+      <div className="mx-4 flex flex-col gap-4 text-sm ">
         {menu.map((category) => {
           return (
             <div key={category.slug} className="group">
-              <div className="text-muted-foreground">
+              <div className="my-2 text-muted-foreground">
                 {category.attrs.title}
               </div>
 
@@ -48,7 +48,7 @@ export default function Docs() {
                     <NavLink
                       to={`/${menuItem.slug}`}
                       prefetch="intent"
-                      className="text-sm text-muted-foreground hover:underline aria-[current='page']:font-bold aria-[current='page']:text-foreground"
+                      className="text-muted-foreground hover:underline aria-[current='page']:font-bold aria-[current='page']:text-foreground"
                     >
                       {menuItem.attrs.title}
                     </NavLink>
