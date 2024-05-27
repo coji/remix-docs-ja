@@ -29,15 +29,26 @@ export default function Layout() {
       </main>
 
       <footer className="mx-4 my-2 text-center text-muted-foreground">
-        Docs and examples{' '}
-        <a
-          href="https://github.com/coji/remix-docs-ja/blob/main/LICENSE"
-          target="_blank"
-          rel="noreferrer"
-          className="underline"
-        >
-          licensed under MIT.
-        </a>
+        <div>
+          Docs and examples{' '}
+          <a
+            href="https://github.com/coji/remix-docs-ja/blob/main/LICENSE"
+            target="_blank"
+            rel="noreferrer"
+            className="underline"
+          >
+            licensed under MIT.
+          </a>
+        </div>
+        <div>
+          <a
+            href="https://github.com/coji/remix-docs-ja"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View on GitHub
+          </a>
+        </div>
       </footer>
     </div>
   )
