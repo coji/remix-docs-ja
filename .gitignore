@@ -4,3 +4,4 @@ node_modules
 /build
 .env
 .DS_Store
+vite.config.ts.timestamp*
