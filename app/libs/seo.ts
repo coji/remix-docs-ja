@@ -1,7 +1,9 @@
 export const buildPageMeta = (title?: string, slug?: string) => {
   return [
     {
-      title: `${title} - Remix ドキュメント日本語版`,
+      title: title
+        ? `${title} - Remix ドキュメント日本語版`
+        : 'Remix ドキュメント日本語版',
     },
     {
       property: 'og:url',

@@ -7,14 +7,11 @@ import {
   ScrollRestoration,
 } from '@remix-run/react'
 import { ThemeProvider } from './components/theme-provider'
+import { buildPageMeta } from './libs/seo'
 import globalStyles from './styles/globals.css?url'
 
 export const meta: MetaFunction = () => {
-  return [
-    {
-      title: 'Remix ドキュメント日本語版',
-    },
-  ]
+  return buildPageMeta()
 }
 
 export const links: LinksFunction = () => [
