@@ -12,6 +12,7 @@ interface MenuDocAttributes {
 
 export interface MenuDoc {
   attrs: MenuDocAttributes
+  parentSlug?: string
   children: MenuDoc[]
   filename: string
   hasContent: boolean
@@ -81,6 +82,7 @@ export const buildMenu = async () => {
     if (parentSlug) {
       const parent = map.get(parentSlug)
       if (parent) {
+        doc.parentSlug = parent.slug
         parent.children.push(doc)
       }
     } else {

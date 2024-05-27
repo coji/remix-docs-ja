@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from '@remix-run/react'
+import { Link, Outlet, useLocation } from '@remix-run/react'
 import { ModeToggle } from '~/components/dark-mode-toggle'
 
 export default function Layout() {
@@ -8,7 +8,11 @@ export default function Layout() {
     <div className="grid grid-rows-[auto_1fr_auto]">
       <header className="flex items-center px-4 py-2">
         <div className="flex items-center gap-2">
-          <h1 className="text-xl font-bold">Remix ドキュメント日本語版</h1>
+          <h1 className="text-xl font-bold">
+            <Link to="/" prefetch="intent">
+              Remix ドキュメント日本語版
+            </Link>
+          </h1>
           <ModeToggle />
         </div>
         <div className="flex-1" />

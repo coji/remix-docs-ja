@@ -16,6 +16,7 @@ export const meta: MetaFunction = () => {
     },
   ]
 }
+
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: globalStyles },
 ]

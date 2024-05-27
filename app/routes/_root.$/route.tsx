@@ -1,13 +1,28 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
-import { NavLink, useLoaderData } from '@remix-run/react'
+import { NavLink, useLoaderData, type MetaFunction } from '@remix-run/react'
+import { buildPageMeta } from '~/libs/seo'
 import { buildMenu } from './functions/build-menu'
 import { getDoc } from './functions/get-doc'
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  if (!data?.currentMenuItem) {
+    return [{ title: 'Remix ドキュメント日本語版' }]
+  }
+
+  return buildPageMeta(
+    data.currentMenuItem.attrs.title,
+    data.currentMenuItem.slug,
+  )
+}
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const filename = params['*'] ?? 'index'
   const doc = await getDoc(filename)
   const menu = await buildMenu()
-  return { menu, doc }
+  const currentMenuItem = menu
+    .flatMap((category) => category.children)
+    .find((menuItem) => menuItem.slug === filename)
+  return { menu, currentMenuItem, doc }
 }
 
 export default function Docs() {

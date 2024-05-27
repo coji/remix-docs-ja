@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.3",
+    "@flydotio/dockerfile": "^0.5.7",
     "@mdx-js/rollup": "^3.0.1",
     "@remix-run/dev": "^2.9.2",
     "@tailwindcss/typography": "^0.5.13",
