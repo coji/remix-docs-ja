@@ -16,16 +16,16 @@ interface MobileMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
-  const [mobileMenuValue, setMobileMenuValue] = React.useState<string[]>(
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [currentCategory, setCurrentCategory] = React.useState<string[]>(
     currentMenuItem?.parentSlug ? [currentMenuItem.parentSlug] : [],
   )
 
   useEffect(() => {
     if (currentMenuItem?.parentSlug) {
-      setMobileMenuValue([currentMenuItem.parentSlug])
+      setCurrentCategory([currentMenuItem.parentSlug])
     }
-    setMobileMenuOpen(false)
+    setIsOpen(false)
   }, [currentMenuItem])
 
   return (
@@ -33,19 +33,19 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
       <Button
         type="button"
         variant="ghost"
-        className="flex justify-between whitespace-normal px-4 py-1 text-sm text-muted-foreground transition-all hover:bg-muted [&[data-state=open]>svg]:rotate-180"
-        data-state={mobileMenuOpen ? 'open' : 'closed'}
-        onClick={() => setMobileMenuOpen((prev) => !prev)}
+        className="flex justify-between whitespace-normal px-4 py-1 text-base text-muted-foreground transition-all hover:bg-muted [&[data-state=open]>svg]:rotate-180"
+        data-state={isOpen ? 'open' : 'closed'}
+        onClick={() => setIsOpen((prev) => !prev)}
       >
         {currentMenuItem?.attrs.title}
         <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
       </Button>
 
-      {mobileMenuOpen && (
+      {isOpen && (
         <Accordion
           type="multiple"
-          value={mobileMenuValue}
-          onValueChange={setMobileMenuValue}
+          value={currentCategory}
+          onValueChange={setCurrentCategory}
         >
           {menu.map((category) => {
             return (
@@ -56,7 +56,7 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
               >
                 <AccordionTrigger
                   className={cn(
-                    'px-4 py-1 text-sm text-muted-foreground  hover:bg-muted',
+                    'px-4 py-1 text-base text-muted-foreground',
                     category.slug === currentMenuItem?.parentSlug &&
                       'bg-muted font-bold',
                   )}
@@ -69,13 +69,13 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
                       <SideMenuItem
                         key={menuItem.slug}
                         className={cn(
-                          'text-muted-foreground hover:bg-muted',
+                          'text-muted-foreground',
                           menuItem.slug === currentMenuItem?.slug &&
                             'font-bold',
                         )}
                       >
                         <SideMenuNavLink
-                          className="block pl-4"
+                          className="block pl-4 text-base"
                           to={`/${menuItem.slug}`}
                         >
                           {menuItem.attrs.title}
