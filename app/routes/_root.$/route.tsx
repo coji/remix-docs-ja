@@ -41,7 +41,7 @@ export default function Docs() {
 
   return (
     <div
-      className="prose mx-4 my-2 dark:prose-invert"
+      className="prose mx-4 my-8 dark:prose-invert md:my-2"
       // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
       dangerouslySetInnerHTML={{
         __html: doc.html,
