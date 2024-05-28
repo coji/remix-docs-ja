@@ -43,9 +43,7 @@ export default function Docs() {
     <div
       className="prose px-4 py-8 dark:prose-invert md:py-2"
       // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-      dangerouslySetInnerHTML={{
-        __html: doc.html,
-      }}
+      dangerouslySetInnerHTML={{ __html: doc.html }}
     />
   )
 }
