@@ -4,11 +4,19 @@ import { ModeToggle } from '~/components/dark-mode-toggle'
 import { MobileMenu, SideMenu } from './components'
 import { buildMenu, getCurrentMenuItem } from './functions/build-menu'
 
+export const shouldRevalidate = () => true
+
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url)
   const filename = `docs${url.pathname === '/' ? '/index.md' : url.pathname}.md`
   const menu = await buildMenu()
-  const currentMenuItem = getCurrentMenuItem(menu, filename)
+  const currentMenuItem = getCurrentMenuItem(menu, filename) ?? {
+    attrs: { title: 'Remix ドキュメント' },
+    slug: '',
+    children: [],
+    hasContent: false,
+    filename: 'docs/index.md',
+  }
   return { menu, currentMenuItem }
 }
 

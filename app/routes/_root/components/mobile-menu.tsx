@@ -1,5 +1,5 @@
 import { ChevronDown } from 'lucide-react'
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
   Accordion,
   AccordionContent,
@@ -18,19 +18,9 @@ interface MobileMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = React.useState(false)
-  const [currentCategory, setCurrentCategory] = React.useState<string[]>(
-    currentMenuItem?.parentSlug ? [currentMenuItem.parentSlug] : [],
-  )
-
-  useEffect(() => {
-    if (currentMenuItem?.parentSlug) {
-      setCurrentCategory([currentMenuItem.parentSlug])
-    }
-    setIsOpen(false)
-  }, [currentMenuItem])
 
   return (
-    <div className="flex flex-col border-y md:hidden">
+    <div className="flex max-h-screen flex-col overflow-auto border-y md:hidden">
       <Button
         type="button"
         variant="ghost"
@@ -45,8 +35,9 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
       {isOpen && (
         <Accordion
           type="multiple"
-          value={currentCategory}
-          onValueChange={setCurrentCategory}
+          defaultValue={
+            currentMenuItem?.parentSlug ? [currentMenuItem.parentSlug] : []
+          }
         >
           {menu.map((category) => {
             return (
@@ -78,6 +69,7 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
                         <SideMenuNavLink
                           className="block pl-4 text-base"
                           to={`/${menuItem.slug}`}
+                          onClick={() => setIsOpen(false)}
                         >
                           {menuItem.attrs.title}
                         </SideMenuNavLink>
