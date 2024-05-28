@@ -62,7 +62,7 @@ export default function Layout() {
             <Outlet />
           </main>
 
-          <footer className="flex border-t px-4 py-2 text-muted-foreground">
+          <footer className="flex border-t px-4 py-1 text-sm text-muted-foreground">
             <div className="flex-1">
               Docs and examples{' '}
               <a
@@ -76,12 +76,12 @@ export default function Layout() {
             </div>
             <div>
               <a
-                href="https://github.com/coji/remix-docs-ja"
+                href={`https://github.com/coji/remix-docs-ja/edit/main/docs${pathname}.md`}
                 target="_blank"
                 rel="noreferrer"
                 className="underline"
               >
-                View on GitHub
+                Edit
               </a>
             </div>
           </footer>
