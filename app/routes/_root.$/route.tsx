@@ -37,7 +37,7 @@ export const loader = async ({ params, response }: LoaderFunctionArgs) => {
 }
 
 export default function Docs() {
-  const { menu, currentMenuItem, doc } = useLoaderData<typeof loader>()
+  const { doc } = useLoaderData<typeof loader>()
 
   return (
     <div
