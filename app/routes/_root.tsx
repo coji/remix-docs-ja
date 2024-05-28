@@ -6,7 +6,7 @@ export default function Layout() {
 
   return (
     <div className="grid grid-rows-[auto_1fr_auto]">
-      <header className="flex items-center px-4 py-2">
+      <header className="sticky top-0 z-10 flex items-center bg-background px-4 py-2">
         <div className="flex items-center gap-2">
           <h1 className="text-xl font-bold">
             <Link to="/" prefetch="intent">

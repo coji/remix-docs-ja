@@ -8,10 +8,10 @@ interface SideMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 export const SideMenu = ({ menu, currentMenuItem }: SideMenuProps) => {
   return (
-    <div className="mx-2 hidden flex-col gap-4 whitespace-normal break-words text-sm text-muted-foreground md:flex">
+    <div className="relative mx-2 hidden flex-col gap-4 whitespace-normal break-words bg-background text-sm text-muted-foreground md:flex">
       {menu.map((category) => {
         return (
-          <SideMenuCategory key={category.slug}>
+          <SideMenuCategory className="sticky" key={category.slug}>
             <SideMenuCategoryTitle
               className={cn(
                 'rounded-md',
