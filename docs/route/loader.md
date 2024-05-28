@@ -1,5 +1,5 @@
 ---
-title: ローダー
+title: loader
 ---
 
 # `loader`

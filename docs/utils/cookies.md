@@ -1,5 +1,5 @@
 ---
-title: クッキー
+title: Cookies
 ---
 
 # クッキー

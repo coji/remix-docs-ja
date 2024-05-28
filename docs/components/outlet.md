@@ -1,5 +1,5 @@
 ---
-title: アウトレット
+title: Outlet
 ---
 
 # `<Outlet>`

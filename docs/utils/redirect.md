@@ -1,5 +1,5 @@
 ---
-title: リダイレクト
+title: redirect
 toc: false
 ---
 

@@ -1,8 +1,8 @@
 ---
-title: バニラエキス
+title: Vanilla Extract
 ---
 
-# バニラエキス
+# Vanilla Extract
 
 <docs-warning>このドキュメントは、[クラシックRemixコンパイラ][classic-remix-compiler]を使用する場合にのみ関連します。[Remix Vite][remix-vite]を使用している場合は、[Vanilla Extract Viteプラグイン][vanilla-extract-vite]を使用してVanilla Extractを統合できます。</docs-warning>
 

@@ -1,5 +1,5 @@
 ---
-title: スクリプト
+title: Scripts
 toc: false
 ---
 

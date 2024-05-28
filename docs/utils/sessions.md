@@ -1,5 +1,5 @@
 ---
-title: セッション
+title: Sessions
 ---
 
 # セッション

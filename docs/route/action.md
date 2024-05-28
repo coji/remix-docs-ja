@@ -1,5 +1,5 @@
 ---
-title: アクション
+title: action
 ---
 
 # `action`
