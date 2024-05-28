@@ -1,5 +1,6 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { Link, Outlet, useLoaderData, useLocation } from '@remix-run/react'
+import { useEffect, useRef } from 'react'
 import { ModeToggle } from '~/components/dark-mode-toggle'
 import { MobileMenu, SideMenu } from './components'
 import { buildMenu, getCurrentMenuItem } from './functions/build-menu'
@@ -22,11 +23,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Layout() {
   const { menu, currentMenuItem } = useLoaderData<typeof loader>()
-  const pathname = useLocation().pathname
+  const { pathname } = useLocation()
+  const mainRef = useRef<HTMLDivElement>(null)
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    mainRef.current?.scrollIntoView({ block: 'start' })
+  }, [pathname])
 
   return (
-    <div className="relative grid min-h-screen grid-rows-[auto_1fr_auto]">
-      <header className="sticky top-0 z-10 bg-background ">
+    <div className="grid h-screen grid-rows-[auto_1fr]">
+      <header className="w-full bg-background text-foreground">
         <div className="flex items-center px-4 py-2">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold">
@@ -44,38 +51,42 @@ export default function Layout() {
             English
           </a>
         </div>
-
         <MobileMenu menu={menu} currentMenuItem={currentMenuItem} />
       </header>
 
-      <main className="grid grid-cols-1 gap-4 md:grid-cols-[16rem_1fr]">
+      <div className="grid grid-cols-[16rem_1fr] overflow-hidden">
         <SideMenu menu={menu} currentMenuItem={currentMenuItem} />
-        <Outlet />
-      </main>
 
-      <footer className="mx-4 my-2 text-center text-muted-foreground">
-        <div>
-          Docs and examples{' '}
-          <a
-            href="https://github.com/coji/remix-docs-ja/blob/main/LICENSE"
-            target="_blank"
-            rel="noreferrer"
-            className="underline"
-          >
-            licensed under MIT.
-          </a>
+        <div className="overflow-auto">
+          <main ref={mainRef}>
+            <Outlet />
+          </main>
+
+          <footer className="flex border-t px-4 py-2 text-muted-foreground">
+            <div className="flex-1">
+              Docs and examples{' '}
+              <a
+                href="https://github.com/coji/remix-docs-ja/blob/main/LICENSE"
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                licensed under MIT.
+              </a>
+            </div>
+            <div>
+              <a
+                href="https://github.com/coji/remix-docs-ja"
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                View on GitHub
+              </a>
+            </div>
+          </footer>
         </div>
-        <div>
-          <a
-            href="https://github.com/coji/remix-docs-ja"
-            target="_blank"
-            rel="noreferrer"
-            className="underline"
-          >
-            View on GitHub
-          </a>
-        </div>
-      </footer>
+      </div>
     </div>
   )
 }
