@@ -54,7 +54,7 @@ export default function Layout() {
         <MobileMenu menu={menu} currentMenuItem={currentMenuItem} />
       </header>
 
-      <div className="grid grid-cols-[16rem_1fr] overflow-hidden">
+      <div className="grid grid-cols-1 overflow-hidden md:grid-cols-[16rem_1fr]">
         <SideMenu menu={menu} currentMenuItem={currentMenuItem} />
 
         <div className="overflow-auto">
