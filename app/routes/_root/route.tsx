@@ -28,7 +28,9 @@ export default function Layout() {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    mainRef.current?.scrollIntoView({ block: 'start' })
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+    mainRef.current?.scrollIntoView({ block: 'nearest' })
   }, [pathname])
 
   return (
