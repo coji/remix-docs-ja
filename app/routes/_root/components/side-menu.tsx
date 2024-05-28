@@ -2,16 +2,17 @@ import { NavLink } from '@remix-run/react'
 import { twc } from 'react-twc'
 import { cn } from '~/libs/utils'
 import type { MenuDoc } from '../types'
+
 interface SideMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   menu: MenuDoc[]
   currentMenuItem?: MenuDoc
 }
 export const SideMenu = ({ menu, currentMenuItem }: SideMenuProps) => {
   return (
-    <div className="relative mx-2 hidden flex-col gap-4 whitespace-normal break-words bg-background text-sm text-muted-foreground md:flex">
+    <div className="mx-2 hidden flex-col gap-4 whitespace-normal break-words bg-background text-sm text-muted-foreground md:flex">
       {menu.map((category) => {
         return (
-          <SideMenuCategory className="sticky" key={category.slug}>
+          <SideMenuCategory key={category.slug}>
             <SideMenuCategoryTitle
               className={cn(
                 'rounded-md',

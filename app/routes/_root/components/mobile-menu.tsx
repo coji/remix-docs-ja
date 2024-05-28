@@ -9,6 +9,7 @@ import {
 import { Button } from '~/components/ui/button'
 import { cn } from '~/libs/utils'
 import type { MenuDoc } from '../types'
+
 import { SideMenuItem, SideMenuNavLink } from './side-menu'
 interface MobileMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   menu: MenuDoc[]

@@ -93,5 +93,5 @@ export const buildMenu = async () => {
 export const getCurrentMenuItem = (menu: MenuDoc[], filename: string) => {
   return menu
     .flatMap((category) => category.children)
-    .find((menuItem) => menuItem.slug === filename)
+    .find((menuItem) => menuItem.filename === filename)
 }
