@@ -62,9 +62,7 @@ export async function getProcessor(options?: ProcessorOptions) {
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings)
     .use(rehypeRaw)
-    .use(rehypeShiki, {
-      theme: 'github-dark',
-    })
+    .use(rehypeShiki, { theme: 'github-dark' })
 }
 
 type InternalPlugin<
