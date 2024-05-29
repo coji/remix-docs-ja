@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@epic-web/remember": "^1.0.2",
-    "@mdx-js/react": "^3.0.1",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
@@ -21,6 +20,7 @@
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
+    "@shikijs/rehype": "^1.6.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "escape-goat": "^4.0.0",

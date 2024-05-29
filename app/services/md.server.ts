@@ -36,6 +36,7 @@ export async function getProcessor(options?: ProcessorOptions) {
     { default: rehypeStringify },
     { default: rehypeAutolinkHeadings },
     { default: rehypeRaw },
+    { default: rehypeShiki },
     plugins,
   ] = await Promise.all([
     import('unified'),
@@ -46,6 +47,7 @@ export async function getProcessor(options?: ProcessorOptions) {
     import('rehype-stringify'),
     import('rehype-autolink-headings'),
     import('rehype-raw'),
+    import('@shikijs/rehype'),
     loadPlugins(),
   ])
 
@@ -59,6 +61,10 @@ export async function getProcessor(options?: ProcessorOptions) {
     .use(rehypeStringify, { allowDangerousHtml: true })
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings)
+    .use(rehypeRaw)
+    .use(rehypeShiki, {
+      theme: 'github-dark',
+    })
 }
 
 type InternalPlugin<
