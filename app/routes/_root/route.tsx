@@ -3,8 +3,8 @@ import { Link, Outlet, useLoaderData, useLocation } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { ModeToggle } from '~/components/dark-mode-toggle'
 import { buildPageMeta } from '~/libs/seo'
+import { buildMenu, getCurrentMenuItem } from '~/services/menu.server'
 import { MobileMenu, SideMenu } from './components'
-import { buildMenu, getCurrentMenuItem } from './functions/build-menu'
 
 export const shouldRevalidate = () => true
 

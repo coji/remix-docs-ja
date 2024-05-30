@@ -3,7 +3,7 @@ import fg from 'fast-glob'
 import parseYamlHeader from 'gray-matter'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import type { MenuDoc } from '../types'
+import type { MenuDoc } from '../routes/_root/types'
 
 const makeSlug = (filepath: string) => {
   return filepath

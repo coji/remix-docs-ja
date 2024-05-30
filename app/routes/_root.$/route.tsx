@@ -1,7 +1,7 @@
 import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { getDoc } from '~/services/document.server'
 import markdownStyles from '~/styles/md.css?url'
-import { getDoc } from './functions/get-doc'
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: markdownStyles },

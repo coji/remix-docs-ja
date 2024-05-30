@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://remix-docs-ja.techtalk.jp
+
+# Sitemaps
+Sitemap: https://remix-docs-ja.techtalk.jp/sitemap.xml
