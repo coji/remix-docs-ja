@@ -1,8 +1,13 @@
-import type { LoaderFunctionArgs } from '@remix-run/node'
+import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData, type MetaFunction } from '@remix-run/react'
 import { buildPageMeta } from '~/libs/seo'
+import markdownStyles from '~/styles/md.css?url'
 import { buildMenu, getCurrentMenuItem } from '../_root/functions/build-menu'
 import { getDoc } from './functions/get-doc'
+
+export const links: LinksFunction = () => [
+  { rel: 'stylesheet', href: markdownStyles },
+]
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data?.currentMenuItem) {
@@ -41,7 +46,7 @@ export default function Docs() {
 
   return (
     <div
-      className="prose px-4 py-8 dark:prose-invert md:py-2"
+      className="md-prose prose px-4 py-8 dark:prose-invert md:py-2"
       // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
       dangerouslySetInnerHTML={{ __html: doc.html }}
     />
