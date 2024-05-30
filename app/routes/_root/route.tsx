@@ -28,7 +28,7 @@ export default function Layout() {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    mainRef.current?.scrollIntoView({ block: 'start' })
+    if (!location.hash) mainRef.current?.scrollIntoView({ block: 'start' })
   }, [pathname])
 
   return (
