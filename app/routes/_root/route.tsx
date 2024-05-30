@@ -1,12 +1,23 @@
-import type { LoaderFunctionArgs } from '@remix-run/node'
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
 import { Link, Outlet, useLoaderData, useLocation } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { ModeToggle } from '~/components/dark-mode-toggle'
+import { buildPageMeta } from '~/libs/seo'
 import { MobileMenu, SideMenu } from './components'
 import { buildMenu, getCurrentMenuItem } from './functions/build-menu'
 
 export const shouldRevalidate = () => true
 
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  if (!data?.currentMenuItem) {
+    return [{ title: 'Remix ドキュメント日本語版' }]
+  }
+
+  return buildPageMeta(
+    data.currentMenuItem.attrs.title,
+    data.currentMenuItem.slug,
+  )
+}
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url)
   const filename = `docs${url.pathname === '/' ? '/index.md' : url.pathname}.md`
