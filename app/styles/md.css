@@ -2,7 +2,7 @@
   & table {
     text-indent: 0;
     border-spacing: 0;
-    @apply my-10 w-full max-w-full border-collapse overflow-auto border-[color:inherit] text-left;
+    @apply my-10 block w-full max-w-full table-fixed border-collapse overflow-auto border-[color:inherit] text-left;
   }
 
   & table th {
