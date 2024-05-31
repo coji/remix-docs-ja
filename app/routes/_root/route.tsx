@@ -68,7 +68,7 @@ export default function Layout() {
       <div className="grid grid-cols-1 overflow-hidden md:grid-cols-[16rem_1fr]">
         <SideMenu menu={menu} currentMenuItem={currentMenuItem} />
 
-        <div className="overflow-auto">
+        <div className="grid grid-rows-[1fr_auto] overflow-auto">
           <main ref={mainRef}>
             <Outlet />
           </main>
