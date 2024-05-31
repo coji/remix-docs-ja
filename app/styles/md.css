@@ -111,15 +111,12 @@
   }
 
   & docs-cards {
-    @apply flex grid-cols-2 flex-col gap-6 bg-red-500 md:grid;
+    @apply flex grid-cols-2 flex-col gap-6 md:grid;
 
     & > a {
       @apply relative block dark:text-inherit;
       color: unset;
-    }
-
-    & > a:hover {
-      text-decoration: unset;
+      text-decoration: none;
     }
   }
 
