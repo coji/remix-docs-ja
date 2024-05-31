@@ -56,12 +56,11 @@ export async function getProcessor(options?: ProcessorOptions) {
     .use(plugins.stripLinkExtPlugin, options)
     .use(remarkGfm)
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeRaw)
-    .use(plugins.addBaseUrl)
     .use(rehypeStringify, { allowDangerousHtml: true })
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings)
     .use(rehypeRaw)
+    .use(plugins.addBaseUrl)
     .use(rehypeShiki, { theme: 'github-dark' })
 }
 
@@ -108,12 +107,11 @@ export async function loadPlugins() {
   const addBaseUrl: InternalPlugin<UnistNode.Root, UnistNode.Root> = () => {
     return (tree: UnistNode.Root) => {
       visit(tree, 'element', (node) => {
+        console.log(node)
         const element = node as unknown as ImgNode
         if (
-          element.tagName === 'img' ||
-          (element.tagName === 'iframe' &&
-            element.properties &&
-            element.properties.src)
+          (element.tagName === 'img' && !!element.properties?.src) ||
+          (element.tagName === 'iframe' && !!element.properties?.src)
         ) {
           const src = element.properties.src
           if (!src.startsWith('http://') && !src.startsWith('https://')) {

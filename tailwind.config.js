@@ -73,5 +73,6 @@ export default {
       },
     },
   },
+  safelist: ['aspect-[1/1]'],
   plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 }

@@ -1,4 +1,7 @@
 .md-prose {
+  /*****************************************************************************/
+  /* tables */
+
   & table {
     text-indent: 0;
     border-spacing: 0;
@@ -41,6 +44,94 @@
     & a .icon-link:hover::before,
     &:hover a .icon-link::before {
       @apply visible opacity-100;
+    }
+  }
+
+  /*****************************************************************************/
+  /* blocks */
+
+  & docs-info,
+  & docs-success,
+  & docs-warning,
+  & docs-error {
+    @apply relative mb-3 mt-0 block rounded-lg border-l-2 border-r-2 border-current px-4 py-2;
+  }
+
+  & docs-info::before,
+  & docs-success::before,
+  & docs-warning::before,
+  & docs-error::before {
+    @apply pointer-events-none absolute inset-0 opacity-10 content-[""];
+  }
+
+  & docs-info > :last-child,
+  & docs-success > :last-child,
+  & docs-warning > :last-child,
+  & docs-error > :last-child {
+    @apply mb-0;
+  }
+
+  & docs-warning {
+    @apply text-yellow-800 dark:text-yellow-100;
+  }
+
+  & docs-warning::before {
+    @apply bg-yellow-400 opacity-[0.15];
+  }
+
+  & docs-info {
+    @apply text-blue-600 dark:text-blue-300;
+  }
+
+  & docs-info::before {
+    @apply bg-blue-600;
+  }
+
+  & docs-error {
+    @apply text-red-700 dark:text-red-300;
+  }
+
+  & docs-error::before {
+    @apply bg-red-700 dark:bg-red-300;
+  }
+
+  & docs-success {
+    @apply text-green-600 dark:text-green-300;
+  }
+
+  & docs-success::before {
+    @apply bg-green-600;
+  }
+
+  & docs-info a,
+  & docs-success a,
+  & docs-warning a,
+  & docs-error a {
+    text-decoration: underline;
+  }
+
+  & docs-cards {
+    @apply flex grid-cols-2 flex-col gap-6 bg-red-500 md:grid;
+
+    & > a {
+      @apply relative block dark:text-inherit;
+      color: unset;
+    }
+
+    & > a:hover {
+      text-decoration: unset;
+    }
+  }
+
+  & docs-card {
+    @apply block h-full w-full rounded-lg border-[3px] border-gray-50 p-4 hover:border-gray-100 dark:border-gray-700 hover:dark:border-gray-600 sm:p-6;
+
+    & > :first-child {
+      @apply mt-0;
+    }
+
+    & > :last-child {
+      @apply mb-0;
     }
   }
 }
