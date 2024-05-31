@@ -107,7 +107,6 @@ export async function loadPlugins() {
   const addBaseUrl: InternalPlugin<UnistNode.Root, UnistNode.Root> = () => {
     return (tree: UnistNode.Root) => {
       visit(tree, 'element', (node) => {
-        console.log(node)
         const element = node as unknown as ImgNode
         if (
           (element.tagName === 'img' && !!element.properties?.src) ||
