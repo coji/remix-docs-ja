@@ -1,5 +1,5 @@
 import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { useLoaderData, useRouteError } from '@remix-run/react'
 import { getDoc } from '~/services/document.server'
 import markdownStyles from '~/styles/md.css?url'
 
@@ -29,5 +29,27 @@ export default function Docs() {
       // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
       dangerouslySetInnerHTML={{ __html: doc.html }}
     />
+  )
+}
+
+export const ErrorBoundary = () => {
+  const error = useRouteError()
+
+  if (error instanceof Error) {
+    return (
+      <div>
+        <h1 className="font-bold text-destructive">Oops! An error occurred.</h1>
+        <p>{error.name}</p>
+        <p>{error.message}</p>
+        <p>{error.stack}</p>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <h1>Oops! An error occurred.</h1>
+      <pre>{String(error)}</pre>
+    </div>
   )
 }
