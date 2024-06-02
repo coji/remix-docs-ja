@@ -32,20 +32,22 @@ export default function Docs() {
         dangerouslySetInnerHTML={{ __html: doc.html }}
       />
       <div>
-        <ul className="sticky top-20 hidden flex-col gap-2 px-8 text-sm lg:flex">
-          <div>目次</div>
-          {doc.headings.map((heading) => (
-            <li
-              key={heading.slug}
-              className={cn(
-                'text-muted-foreground',
-                heading.headingLevel === 'h3' && 'ml-4',
-              )}
-            >
-              <a href={`#${heading.slug}`}>{heading.html}</a>
-            </li>
-          ))}
-        </ul>
+        {doc.headings.length > 0 && (
+          <ul className="sticky top-20 hidden flex-col gap-2 px-8 text-sm leading-4 text-muted-foreground lg:flex">
+            <div>目次</div>
+            {doc.headings.map((heading) => (
+              <li
+                key={heading.slug}
+                className={cn(
+                  'hover:underline',
+                  heading.headingLevel === 'h3' && 'ml-4',
+                )}
+              >
+                <a href={`#${heading.slug}`}>{heading.html}</a>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   )
