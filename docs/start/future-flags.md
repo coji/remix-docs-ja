@@ -3,85 +3,129 @@ title: Future Flags
 order: 5
 ---
 
-# Future Flagsを使用した段階的な機能導入
+# Future Flags
 
-Remixの開発では、主要なリリースに対して以下の目標を達成することを目指しています。
+以下の future flags は安定版であり、導入できます。future flags の詳細については、[開発戦略][development-strategy] を参照してください。
 
-1. **段階的な機能導入:** 開発者は、現在のメジャーバージョンで利用可能になった新しい機能や変更を、個別に選択して統合できます。これは、すべての変更を1つの新しいメジャーリリースにまとめる従来の方法とは異なります。
-2. **シームレスなバージョンアップグレード:** 開発者は、新しい機能を事前に選択的に組み込むことで、既存のアプリケーションコードを変更することなく、新しいメジャーバージョンにスムーズに移行できます。
+## 最新の v2.x への更新
 
-## 不安定なAPIとFuture Flags
+まず、最新の future flags を持つ、v2.x の最新マイナーバージョンに更新します。
 
-新しい機能を現在のリリースに導入する際に、`unstable_someFeature`のようなFuture Flagsを使用します。これらのフラグは、[`vite.config.ts`][vite-config-future]ファイルのRemix Vite Plugin `future`オプションで指定できます。
+👉 **最新の v2 に更新**
 
-```ts filename=vite.config.ts lines=[7-9]
-import { vitePlugin as remix } from "@remix-run/dev";
-import { defineConfig } from "vite";
+```shellscript nonumber
+npm install @remix-run/{dev,react,node,etc.}@2
+```
 
-export default defineConfig({
-  plugins: [
-    remix({
-      future: {
-        unstable_someFeature: true,
-      },
-    }),
-  ],
+## v3_fetcherPersist
+
+**背景**
+
+fetcher ライフサイクルは、所有者のコンポーネントがアンマウントするのではなく、アイドル状態に戻ったときに基づくようになりました。詳細については、[RFC を参照してください][fetcherpersist-rfc]。
+
+👉 **フラグを有効にする**
+
+```ts
+remix({
+  future: {
+    v3_fetcherPersist: true,
+  },
 });
 ```
 
-<docs-info>Viteをまだ使用していない場合は、[`remix.config.js` `future`][remix-config-future]オプションを使用してFuture Flagsを指定できます。</docs-info>
+**コードを更新する**
 
-- 不安定な機能が安定状態に達したら、特別なプレフィックスを削除し、次のマイナーリリースに機能を含めます。この時点で、APIの構造は、その後のマイナーリリース全体で一貫性を保ちます。
+これは、アプリケーションに影響を与える可能性は低いです。`useFetchers` の使用状況を確認する必要があるかもしれません。以前よりも長く保持される可能性があります。何をしているかによって、以前よりも長くレンダリングされる可能性があります。
 
-- このアプローチにより、アーリーアダプターと協力してAPIを洗練し、不安定な段階での必要な変更をすべてのユーザーに影響を与えることなく組み込むことができます。安定したリリースは、中断することなくこれらの改善の恩恵を受けます。
+## v3_relativeSplatPath
 
-- `unstable_*`フラグでラベル付けされた機能を使用している場合は、各マイナーリリースのリリースノートを確認することが重要です。これは、これらの機能の動作または構造が進化する可能性があるためです。この段階でのあなたのフィードバックは、最終リリース前の機能を強化するために非常に重要です。
+**背景**
 
-## Future Flagsを使用した破壊的変更の管理
+`dashboard/*` (単なる `*` ではなく) などの複数セグメントの splat パスに対する相対パスの一致とリンクを変更します。詳細については、[CHANGELOG を参照してください][relativesplatpath-changelog]。
 
-破壊的変更を導入する場合、現在のメジャーバージョン内で実行し、Future Flagsの背後に隠します。たとえば、`v2`にいる場合、破壊的変更は`v3_somethingDifferent`というFuture Flagsの下に配置される場合があります。
+👉 **フラグを有効にする**
 
-```ts filename=vite.config.ts lines=[7-9]
-import { vitePlugin as remix } from "@remix-run/dev";
-import { defineConfig } from "vite";
-
-export default defineConfig({
-  plugins: [
-    remix({
-      future: {
-        v3_someFeature: true,
-      },
-    }),
-  ],
+```ts
+remix({
+  future: {
+    v3_relativeSplatPath: true,
+  },
 });
 ```
 
-- 既存の`v2`の動作と新しい`v3_somethingDifferent`の動作は、同時に共存します。
-- アプリケーションは、次のメジャーリリースですべての変更を一括して調整するのではなく、段階的に1ステップずつ変更を導入できます。
-- すべての`v3_*` Future Flagsが有効になっている場合、`v3`への移行は、理想的にはコードベースに変更を加える必要がないはずです。
-- 破壊的変更をもたらす一部のFuture Flagsは、最初は`unstable_*`フラグとして開始されます。これらは、マイナーリリース中に変更される場合があります。`v3_*` Future Flagsになると、対応するAPIは設定され、さらに変更されません。
+**コードを更新する**
 
-## 現在のFuture Flags
+`dashboard.$.tsx` や `route("dashboard/*")` のようなパスと splat を組み合わせたルートが、その下に `\<Link to="relative">` や `\<Link to="../relative">` などの相対リンクを持つ場合、コードを更新する必要があります。
 
-現在、Remix v2に存在する次のFuture Flagsは、Remix v3のデフォルトの動作になります。
+👉 **ルートを 2 つに分割**
 
-- **`v3_fetcherPersist`**: 2つの方法でフェッチャーの永続性/クリーンアップの動作を変更します([RFC][fetcherpersist-rfc]):
-  - フェッチャーは、アンマウント時に削除されなくなり、`idle`状態に戻るまで[`useFetchers`][use-fetchers]を通じて公開され続けます。
-  - マウントされたまま完了したフェッチャーは、[`useFetchers`][use-fetchers]に永続的に保存されなくなりました。これは、[`useFetcher`][use-fetcher]を介してこれらのフェッチャーにアクセスできるためです。
-- **`v3_relativeSplatPath`**: スプラットルートでのバグのある相対パス解決を修正します。詳細については、[React Routerのドキュメント][relativesplatpath]を参照してください。
-- **`v3_throwAbortReason`**: サーバー側のリクエストが中止されると、Remixは`new Error("query() call aborted...")`などのエラーではなく、`request.signal.reason`をスローします。
-- **`unstable_singleFetch`**: [Single Fetch][single-fetch]の動作をオプトインします。
+splat ルートがある場合は、レイアウトルートと splat を持つ子ルートに分割します。
 
-## まとめ
+```diff
 
-私たちの開発戦略は、主要なリリースの段階的な機能導入とシームレスなバージョンアップグレードに焦点を当てています。これにより、開発者は新しい機能を選択的に統合し、バージョン移行中に大規模なコード調整を行う必要がなくなります。`unstable_*`フラグを通じて機能を導入することで、アーリーアダプターと協力してAPIを洗練し、安定したリリースが強化された機能の恩恵を受けるようにします。`v3_*`フラグを使用した破壊的変更の慎重な管理を通じて、段階的に変更を採用し、メジャーバージョン間の移行をよりスムーズにする柔軟性を提供しています。これにより、Remixフレームワークの開発は複雑になりますが、この開発者中心のアプローチにより、Remixを使用したアプリケーション開発が大幅に簡素化され、最終的にはソフトウェア品質の向上と（願わくは！）開発者の満足度に繋がります。
+└── routes
+    ├── _index.tsx
++   ├── dashboard.tsx
+    └── dashboard.$.tsx
 
-[vite-config-future]: ../file-conventions/vite-config#future
-[remix-config-future]: ../file-conventions/remix-config#future
+// または
+routes(defineRoutes) {
+  return defineRoutes((route) => {
+    route("/", "home/route.tsx", { index: true });
+-    route("dashboard/*", "dashboard/route.tsx")
++    route("dashboard", "dashboard/layout.tsx", () => {
++      route("*", "dashboard/route.tsx");
+    });
+  });
+},
+```
+
+👉 **相対リンクを更新する**
+
+そのルートツリー内の相対リンクを持つ `\<Link>` 要素を更新して、追加の `..` 相対セグメントを含めて、同じ場所にリンクし続けます。
+
+```diff
+// dashboard.$.tsx または dashboard/route.tsx
+function Dashboard() {
+  return (
+    <div>
+      <h2>Dashboard</h2>
+      <nav>
+-        <Link to="">Dashboard Home</Link>
+-        <Link to="team">Team</Link>
+-        <Link to="projects">Projects</Link>
++        <Link to="../">Dashboard Home</Link>
++        <Link to="../team">Team</Link>
++        <Link to="../projects">Projects</Link>
+      </nav>
+    </div>
+  );
+}
+```
+
+## v3_throwAbortReason
+
+**背景**
+
+ローダーが完了する前にユーザーがページから移動するなど、サーバー側の要求が中止された場合、Remix は `new Error("query() call aborted...")` などのエラーではなく、`request.signal.reason` をスローします。
+
+👉 **フラグを有効にする**
+
+```ts
+remix({
+  future: {
+    v3_throwAbortReason: true,
+  },
+});
+```
+
+**コードを更新する**
+
+`handleError` 内に、以前のエラーメッセージを一致させて他のエラーと区別するカスタムロジックがなければ、コードを調整する必要はありません。
+
+[development-strategy]: ../guides/api-development-strategy
 [fetcherpersist-rfc]: https://github.com/remix-run/remix/discussions/7698
 [use-fetchers]: ../hooks/use-fetchers
 [use-fetcher]: ../hooks/use-fetcher
-[relativesplatpath]: https://reactrouter.com/en/main/hooks/use-resolved-path#splat-paths
+[relativesplatpath-changelog]: https://github.com/remix-run/remix/blob/main/CHANGELOG.md#futurev3_relativesplatpath
 [single-fetch]: ../guides/single-fetch
-
-
