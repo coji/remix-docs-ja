@@ -25,7 +25,7 @@ export default function Docs() {
   const { doc } = useLoaderData<typeof loader>()
 
   return (
-    <div className="relative grid grid-cols-1 lg:grid-cols-[1fr_20rem]">
+    <div className="relative grid grid-cols-1 lg:grid-cols-[auto_1fr]">
       <div
         className="md-prose prose overflow-x-hidden px-4 py-8 dark:prose-invert md:py-2"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
@@ -33,13 +33,13 @@ export default function Docs() {
       />
       <div>
         {doc.headings.length > 0 && (
-          <ul className="sticky top-20 hidden flex-col gap-2 px-8 text-sm leading-4 text-muted-foreground lg:flex">
+          <ul className="sticky top-20 hidden gap-2 px-8 text-sm leading-4 lg:flex lg:flex-col">
             <div>目次</div>
             {doc.headings.map((heading) => (
               <li
                 key={heading.slug}
                 className={cn(
-                  'hover:underline',
+                  'text-muted-foreground hover:underline',
                   heading.headingLevel === 'h3' && 'ml-4',
                 )}
               >
