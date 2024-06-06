@@ -44,13 +44,12 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
               <AccordionItem
                 key={category.slug}
                 value={category.slug}
-                className="border-none"
+                className="group border-none"
               >
                 <AccordionTrigger
                   className={cn(
                     'px-4 py-1 text-base text-muted-foreground',
-                    category.slug === currentMenuItem?.parentSlug &&
-                      'bg-muted font-bold',
+                    'group-has-[.active]:bg-muted group-has-[.active]:font-bold',
                   )}
                 >
                   {category.attrs.title}
@@ -61,9 +60,7 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
                       <SideMenuItem
                         key={menuItem.slug}
                         className={cn(
-                          'text-muted-foreground',
-                          menuItem.slug === currentMenuItem?.slug &&
-                            'font-bold',
+                          'text-muted-foreground aria-[current]:font-bold',
                         )}
                       >
                         <SideMenuNavLink

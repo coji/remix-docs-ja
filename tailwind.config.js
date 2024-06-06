@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ['class'],
-  content: ['./app/**/*.{ts,tsx}'],
+  content: ['./app/**/*.{ts,tsx}', './docs/**/*.md'],
   prefix: '',
   theme: {
     container: {
@@ -73,6 +73,5 @@ export default {
       },
     },
   },
-  safelist: ['aspect-[1/1]'],
   plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 }
