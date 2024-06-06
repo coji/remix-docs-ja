@@ -20,7 +20,7 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <div className="flex max-h-screen flex-col overflow-auto border-y md:hidden">
+    <div className="flex max-h-dvh flex-col overflow-auto border-y md:hidden">
       <Button
         type="button"
         variant="ghost"

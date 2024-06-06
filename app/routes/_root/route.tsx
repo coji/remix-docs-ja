@@ -43,7 +43,7 @@ export default function Layout() {
   }, [pathname])
 
   return (
-    <div className="grid h-screen grid-rows-[auto_1fr] lg:container">
+    <div className="grid h-dvh grid-rows-[auto_1fr] lg:container">
       <header className="w-full bg-background text-foreground">
         <div className="flex items-center px-4 py-2">
           <div className="flex items-center gap-2">
