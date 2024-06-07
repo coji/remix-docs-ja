@@ -528,7 +528,7 @@ export function Logo() {
 
 SVG ファイルを React コンポーネントとして使用する場合、最初にコンポーネントを作成し、直接インポートする必要があります。[React SVGR][react-svgr] は、これらのコンポーネントを [コマンドライン][command-line] から生成したり、[オンラインのプレイグラウンド][online-playground] で生成してコピー＆ペーストしたりするのに役立つ、優れたツールセットです。
 
-```svg filename=icon.svg
+```xml filename=icon.svg
 <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 20 20" fill="currentColor">
   <path fill-rule="evenodd" clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" />
 </svg>
