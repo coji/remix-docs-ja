@@ -1023,7 +1023,7 @@ export default function Index() {
 
 ルート名 `_index` は特別です。ユーザーが親ルートの正確なパスにいて、 `<Outlet />` にレンダリングする他の子ルートがない場合に、このルートを一致させてレンダリングするように Remix に指示します。
 
-<img class="tutorial"loading="lazy" src="/docs-images/contacts/18.webp" />
+<img class="tutorial" loading="lazy" src="/docs-images/contacts/18.webp" />
 
 ボイラ！空白はなくなりました。インデックスルートにダッシュボード、統計、フィードなどを置くのが一般的です。それらもデータの読み込みに参加できます。
 
