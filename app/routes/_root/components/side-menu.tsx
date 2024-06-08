@@ -7,7 +7,7 @@ interface SideMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 export const SideMenu = ({ menu }: SideMenuProps) => {
   return (
-    <div className="mx-2 hidden flex-col gap-4 overflow-auto whitespace-normal break-words bg-background text-sm text-muted-foreground md:flex">
+    <div className="mx-2 hidden flex-col gap-4 overflow-auto whitespace-normal break-words bg-background pb-8 text-sm text-muted-foreground md:flex">
       {menu.map((category) => {
         return (
           <SideMenuCategory key={category.slug}>
@@ -31,7 +31,7 @@ export const SideMenu = ({ menu }: SideMenuProps) => {
   )
 }
 export const SideMenuCategory = twc.div`group`
-export const SideMenuCategoryTitle = twc.div`py-1 px-2 py-1`
+export const SideMenuCategoryTitle = twc.div`px-2 py-1`
 export const SideMenuItem = twc.div`pl-4 leading-6`
 export const SideMenuNavLink = twc(NavLink).attrs({
   prefetch: 'intent',
