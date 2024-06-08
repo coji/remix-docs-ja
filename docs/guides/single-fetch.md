@@ -4,75 +4,97 @@ title: シングルフェッチ
 
 # シングルフェッチ
 
-<docs-warning>このAPIは不安定で今後も変更される可能性があります。本番環境での採用は避けてください</docs-warning>
+<docs-warning>これは不安定なAPIであり、今後も変更され続ける可能性があります。本番環境では採用しないでください。</docs-warning>
 
-シングルフェッチは新しいデータロード戦略とストリーミングフォーマットです。シングルフェッチを有効にすると、Remixは通常のようにコンポーネントごとに個別のHTTPリクエストを行うのではなく、クライアント側の遷移時に単一のHTTPリクエストを行います。さらに、シングルフェッチではローダーやアクションから生の(シリアル化されていない)オブジェクト、例えば`Date`、`Error`、`Promise`、`RegExp`などを返せるようになりました。
+シングルフェッチは、新しいデータのデータ読み込み戦略とストリーミング形式です。シングルフェッチを有効にすると、Remixはクライアント側の遷移時にサーバーに対して単一のHTTP呼び出しを行うようになり、複数のHTTP呼び出しを並行して行う（ローダーごとに1回）ことはありません。さらに、シングルフェッチでは、`Date`、`Error`、`Promise`、`RegExp`など、`loader`と`action`から裸のオブジェクトをダウンストリーム送信することもできます。
+
+## 概要
+
+Remixは、[`v2.9.0`][2.9.0]の[`future.unstable_singleFetch`][future-flags]フラグで、"シングルフェッチ"（[RFC][rfc]）のサポートを導入しました。これにより、この動作を選択できます。シングルフェッチは、[React Router v7][merging-remix-and-rr]でデフォルトになります。
+
+シングルフェッチを有効にすることで、初期段階での労力を抑え、時間をかけて段階的にすべての破壊的変更を採用することができます。[シングルフェッチを有効にする][start]ために必要な最小限の変更を適用し、[移行ガイド][migration-guide]を使用してアプリケーションの段階的な変更を行うことで、[React Router v7][merging-remix-and-rr]へのスムーズで破壊的でないアップグレードを保証できます。
+
+また、[破壊的変更][breaking-changes]も確認してください。特にシリアル化とステータス/ヘッダーの動作に関する、いくつかの根本的な動作変更について理解しておく必要があります。
 
 ## シングルフェッチの有効化
 
-Remix は [`future.unstable_singleFetch`][future-flags] フラグを使って、[`v2.9.0`][2.9.0]からこの "シングルフェッチ" ([RFC][rfc])を導入し、この動作を選択できるようになりました。シングルフェッチはやがて[React Router v7][merging-remix-and-rr]のデフォルトになる予定です。
+**1. 未来のフラグを有効にする**
 
-シングルフェッチの有効化は非常に簡単です。現在ローダーから`Response`インスタンスを返している (つまり`json`/`defer`を使っている) 場合、アプリケーションコードにほとんど変更を加える必要はありませんが、以下の "breaking" 変更について知っておいてください - 特にシリアル化や状態/ヘッダーの動作に関する変更です。
-
-**1. フューチャーフラグを有効化**
-
-```diff
-  remix({
-    future: {
-      // ...
-+     unstable_singleFetch: true,
-    },
-  }),
+```ts filename=vite.config.ts lines=[6]
+export default defineConfig({
+  plugins: [
+    remix({
+      future: {
+        // ...
+        unstable_singleFetch: true,
+      },
+    }),
+    // ...
+  ],
+});
 ```
 
-**2. `installGlobals`を更新または削除**
+**2. 廃止された`fetch`ポリフィル**
 
-シングルフェッチでは、`fetch`ポリフィルとして[`undici`][undici]を使う必要があるか、Node 20以降の組み込み`fetch`を使う必要があります。これは、`@remix-run/web-fetch`ポリフィルにない API に依存しているためです。詳細については、以下の[Undici][undici-polyfill]セクションをご覧ください。
+シングルフェッチでは、[`undici`][undici]を`fetch`ポリフィルとして使用するか、Node 20+の組み込みの`fetch`を使用する必要があります。これは、`@remix-run/web-fetch`ポリフィルには存在しない、そこに利用可能なAPIに依存しているためです。詳細は、以下の2.9.0リリースノートの[Undici][undici-polyfill]セクションを参照してください。
 
-- Node 20以降の場合は`installGlobals()`を削除し、Node組み込みの`fetch`を使ってください (これは`undici`と同じです)。
+- Node 20+を使用している場合は、`installGlobals()`への呼び出しを削除し、Nodeの組み込みの`fetch`（これは`undici`と同じです）を使用します。
 
-- 独自のサーバーを使っていて`installGlobals()`を呼び出している場合は、`installGlobals({ nativeFetch: true })`と呼び出す必要があります。
+- 独自サーバーを管理し、`installGlobals()`を呼び出している場合は、`undici`を使用するために`installGlobals({ nativeFetch: true })`を呼び出す必要があります。
 
   ```diff
-  - installGlobals()
-  + installGlobals({ nativeFetch: true })
+  - installGlobals();
+  + installGlobals({ nativeFetch: true });
   ```
 
-- `remix-serve`を使っている場合は、シングルフェッチが有効な時に自動的に`undici`を使います。
+- `remix-serve`を使用している場合は、シングルフェッチが有効になっていると自動的に`undici`が使用されます。
 
-**3. `renderToString`を置き換え**
+- miniflare/cloudflare workerをRemixプロジェクトで使用している場合は、[互換性フラグ][compatibility-flag]が`2023-03-01`以降に設定されていることを確認してください。
 
-ほとんどのRemixアプリではおそらく`renderToString`を使っていないと思いますが、`entry.server.tsx`で使っている場合は続きを読んでください。それ以外は飛ばしてください。
+**3. ドキュメントレベルの`headers`実装を削除する（存在する場合）**
 
-ドキュメントとデータリクエストの一貫性を維持するために、[`turbo-stream`][turbo-stream]もドキュメントの初期リクエストでデータを送信するフォーマットとして使用されます。これは、シングルフェッチに切り替えると、アプリケーションは`renderToString`を使えなくなり、[`renderToPipeableStream`][rendertopipeablestream]や[`renderToReadableStream`][rendertoreadablestream]などのReactストリーミングレンダラーAPIを使う必要があります。[`entry.server.tsx`][entry-server]
+シングルフェッチが有効になっている場合は、[`headers`][headers]エクスポートは使用されなくなります。多くの場合、ローダーの`Response`インスタンスからヘッダーを再返却してドキュメントリクエストに適用していた可能性があり、その場合はエクスポートを削除するだけで、これらのRepsonseヘッダーがドキュメントリクエストに自動的に適用されます。`headers`関数でより複雑なロジックをドキュメントヘッダーに適用していた場合は、`loader`関数内の新しい[Responseスタブ][responsestub]インスタンスにそれらを移行する必要があります。
 
-これは、HTTPレスポンスをストリーミングする必要があることを意味しているわけではありません。`renderToPipeableStream`の`onAllReady`オプションや`renderToReadableStream`の`allReady`プロミスを利用して、一度にフル文書を送信することができます。
+**4. `<RemixServer>`に`nonce`を追加する（CSPを使用している場合）**
 
-クライアント側では、ストリームされたデータが `Suspense`境界でラップされるため、クライアントサイドの `hydrateRoot`呼び出しを `startTransition`呼び出しで囲む必要があります。
+`<RemixServer>`コンポーネントは、クライアント側でストリーミングデータを処理するインラインスクリプトをレンダリングします。[スクリプトのコンテンツセキュリティポリシー][csp]を[nonceソース][csp-nonce]とともに使用している場合は、`<RemixServer nonce>`を使用してnonceをこれらの`<script>`タグに渡すことができます。
+
+**5. `renderToString`を置き換える（使用している場合）**
+
+ほとんどのRemixアプリでは`renderToString`を使用していないと考えられますが、`entry.server.tsx`で使用するように選択した場合は、以下を読み進めてください。そうでなければ、この手順はスキップできます。
+
+ドキュメントリクエストとデータリクエスト間の整合性を維持するために、`turbo-stream`も初期ドキュメントリクエストでデータを送信するための形式として使用されます。つまり、シングルフェッチを選択すると、アプリケーションでは[`renderToString`][rendertostring]を使用できなくなり、[`entry.server.tsx`][entry-server]で[`renderToPipeableStream`][rendertopipeablestream]または[`renderToReadableStream`][rendertoreadablestream]などのReactストリーミングレンダラーAPIを使用する必要があります。
+
+これは、HTTPレスポンスをストリーミングする必要があるという意味ではありません。`renderToPipeableStream`の`onAllReady`オプションまたは`renderToReadableStream`の`allReady`プロミスを活用することで、引き続き一度に完全なドキュメントを送信することができます。
+
+クライアント側では、ストリーミングされたデータは`Suspense`境界でラップされて配信されるため、クライアント側の[`hydrateRoot`][hydrateroot]呼び出しを[`startTransition`][starttransition]呼び出しでラップする必要があることも意味します。
 
 ## 破壊的変更
 
-先述のとおり、ローダーから`Response`インスタンスを返している (つまり`json`/`defer`を使っている) 場合、アプリケーションコードにほとんど変更を加える必要はありません。より良い型推論を得て、React Router v7に備えるには、[ルートを一つずつ移行][migration-guide]することができます。
+シングルフェッチには、いくつかの破壊的変更が導入されています。一部はフラグを有効にしたときにすぐに処理する必要があるもの、一部はフラグを有効にした後に段階的に処理できるものです。次のメジャーバージョンにアップグレードする前に、これらのすべてが処理されていることを確認する必要があります。
 
-シングルフェッチが導入する重要な破壊的変更がいくつかあります:
+**すぐに処理する必要がある変更:**
 
-- **[新しいストリーミングデータフォーマット][streaming-format]**: シングルフェッチは、内部で[`turbo-stream`][turbo-stream]を使う新しいストリーミングフォーマットを使用しており、単なるJSONだけでなく、より複雑なデータをストリーミングできるようになりました
-- **自動シリアル化の廃止**: `loader`および`action`関数から返された生のオブジェクトは、もはずJSON`Response`に自動的に変換されず、そのままネットワーク経由で送信されます
-- **型推論の更新**: 最も正確な型推論を得るには、次の2つのことを行う必要があります:
-  - `tsconfig.json`の`compilerOptions.types`配列の末尾に`@remix-run/react/future/single-fetch.d.ts`を追加する
-  - ルートで`unstable_defineLoader`/`unstable_defineAction`の使用を開始する
-    - これは段階的に行えます - 現在の状態でも、ほとんど正確な型推論が得られます
-- [**オプトイン`action`の再検証**][action-revalidation]: `4xx`/`5xx`の`Response`を返すアクションの再検証がオプトアウトからオプトインに変更されました
-- **非推奨の`headers`エクスポート**: シングルフェッチが有効な場合、ローダーやアクション関数に渡される新しい`response`スタブに置き換えられ、[`headers`][headers]関数は使用されなくなりました
-- **非推奨の`fetch`ポリフィル**: 以前の`installGlobals()`ポリフィルはシングルフェッチでは機能しません。代わりにNode 20の組み込み`fetch` APIを使うか、[undici ベースのポリフィル][undici-polyfill]を使うために`installGlobals({ nativeFetch: true })`を呼び出す必要があります
+- **廃止された`fetch`ポリフィル**: 古い`installGlobals()`ポリフィルはシングルフェッチでは機能しません。[undiciベースのポリフィル][undici-polyfill]を取得するには、ネイティブのNode 20の`fetch`APIを使用するか、カスタムサーバーで`installGlobals({ nativeFetch: true })`を呼び出す必要があります。
+- **廃止された`headers`エクスポート**: [`headers`][headers]関数は、シングルフェッチが有効になっている場合は使用されなくなり、代わりに`loader` / `action`関数に渡される新しい`response`スタブが使用されます。
 
-## シングルフェッチを使った新しいルートの追加
+**時間をかけて処理する必要があることを理解しておくべき変更:**
 
-シングルフェッチを有効にすると、より強力なストリーミングフォーマットと`response`スタブを活用するルートを作成できます。
+- **[新しいストリーミングデータ形式][streaming-format]**: シングルフェッチは、[`turbo-stream`][turbo-stream]を介して新しいストリーミング形式を内部で使用します。これは、JSONよりも複雑なデータをストリーミングできることを意味します。
+- **自動シリアル化なし**: `loader`と`action`関数から返された裸のオブジェクトは、もはや自動的にJSON`Response`に変換されず、ワイヤー上でそのままシリアル化されます。
+- **タイプ推論の更新**: 最も正確なタイプ推論を得るためには、次の2つのことを行う必要があります。
+  - `tsconfig.json`の`compilerOptions.types`配列の最後に`@remix-run/react/future/single-fetch.d.ts`を追加します。
+  - ルートで`unstable_defineLoader`/`unstable_defineAction`を使用し始めます。
+    - これは段階的に行うことができます。現在の状態では、ほとんどの場合、正確なタイプ推論が得られます。
+- [**オプトインの`action`再検証**][action-revalidation]: `action`の`4xx`/`5xx` `Response`後の再検証は、オプトアウトではなく、オプトインになりました。
 
-<docs-info>適切な型推論を得るには、まず`tsconfig.json`の`compilerOptions.types`配列の末尾に`@remix-run/react/future/single-fetch.d.ts`を追加する必要があります。これについては[型推論のセクション][type-inference-section]で詳しく説明しています。</docs-info>
+## シングルフェッチを使用した新しいルートの追加
 
-シングルフェッチでは、ローダーから次のデータ型を返すことができます: `BigInt`、`Date`、`Error`、`Map`、`Promise`、`RegExp`、`Set`、`Symbol`、`URL`。
+シングルフェッチが有効になっている場合、より強力なストリーミング形式と[`response`スタブ][responsestub]を活用するルートを作成することができます。
+
+<docs-info>適切なタイプ推論を得るためには、最初に`tsconfig.json`の`compilerOptions.types`配列の最後に`@remix-run/react/future/single-fetch.d.ts`を追加する必要があります。これについては、[タイプ推論セクション][type-inference-section]で詳しく説明します。</docs-info>
+
+シングルフェッチでは、`BigInt`、`Date`、`Error`、`Map`、`Promise`、`RegExp`、`Set`、`Symbol`、`URL`などのデータ型をローダーから返すことができます。
 
 ```tsx
 // routes/blog.$slug.tsx
@@ -115,19 +137,19 @@ export default function BlogPost() {
 }
 ```
 
-## シングルフェッチへの移行
+## シングルフェッチを使用したルートの移行
 
-以下の変更は、シングルフェッチを利用するために必要というわけではありません (開始するには[シングルフェッチの有効化][start]を参照してください)。ヘッダーやデータ型の変更を確認しやすいように、ルートごとにこれらの変更を行うことをお勧めします。
+現在ローダーから`Response`インスタンス（つまり、`json`/`defer`）を返している場合は、シングルフェッチの利点を活用するためにアプリケーションコードを変更する必要はありません。
 
-これらの変更を行うことで、React Router v7への円滑で破壊的ではないアップグレードが可能になります。
+ただし、将来的に[React Router v7][merging-remix-and-rr]にアップグレードする準備として、ルートごとに以下の変更を行うことをお勧めします。これは、ヘッダーとデータ型を更新しても何も壊れないことを検証する最も簡単な方法です。
 
 ### 型推論
 
-シングルフェッチ無しの場合、`loader`や`action`から返されるすべての単純Javascriptオブジェクトは自動的にJSON応答にシリアル化されます (あたかも`json`で返したかのように)。型推論はこのようなケースを前提としており、生のオブジェクトの返却を JSON シリアライズされたものと推論します。
+シングルフェッチなしでは、`loader`または`action`から返されたプレーンなJavaScriptオブジェクトは自動的にJSONレスポンスにシリアル化されます（`json`を介して返された場合と同じです）。タイプ推論では、これが事実であると想定され、裸のオブジェクトの返却値は、JSONシリアル化された場合と同じように推論されます。
 
-シングルフェッチを使用すると、生のオブジェクトは直接ストリーミングされるため、シングルフェッチに切り替えた後の組み込みの型推論は正確ではなくなります。例えば、`Date`がクライアントでは文字列としてシリアル化されると推論してしまいます 😕。
+シングルフェッチでは、裸のオブジェクトは直接ストリーミングされるため、シングルフェッチを選択すると、組み込みのタイプ推論はもはや正確ではありません。たとえば、`Date`はクライアント側で文字列にシリアル化されると想定されます😕。
 
-シングルフェッチを使用する際に適切な型を得るために、`tsconfig.json`の`compilerOptions.types`配列に型オーバーライドセットを含めることができます。これにより、シングルフェッチの動作に合わせて型がアラインされます:
+シングルフェッチを使用するときに適切なタイプを取得するには、`tsconfig.json`の`compilerOptions.types`配列に含めることができる、一連のタイプオーバーライドを用意しました。これにより、タイプがシングルフェッチの動作と一致するようになります。
 
 ```json
 {
@@ -141,11 +163,11 @@ export default function BlogPost() {
 }
 ```
 
-🚨 single-fetchの型が他のRemixパッケージの型より前に来るようにしてください。そうしないと上書きされません。
+🚨 シングルフェッチのタイプは、`types`内の他のRemixパッケージの後にあることを確認してください。これにより、既存のタイプをオーバーライドできます。
 
 #### ローダー/アクション定義ユーティリティ
 
-シングルフェッチでローダーとアクションを定義する際のタイプセーフティを高めるために、新しい`unstable_defineLoader`と`unstable_defineAction`ユーティリティを使うことができます:
+シングルフェッチを使用してローダーとアクションを定義する場合、タイプセーフティを高めるために、新しい`unstable_defineLoader`と`unstable_defineAction`ユーティリティを使用できます。
 
 ```ts
 import { unstable_defineLoader as defineLoader } from "@remix-run/node";
@@ -155,21 +177,21 @@ export const loader = defineLoader(({ request }) => {
 });
 ```
 
-これにより、引数の型が得られるだけでなく、シングルフェッチ対応の型を返していることも確認されます:
+これにより、引数のタイプが得られるだけでなく（`LoaderFunctionArgs`は廃止されます）、シングルフェッチと互換性のあるタイプを返していることも保証されます。
 
 ```ts
 export const loader = defineLoader(() => {
   return { hello: "world", badData: () => 1 };
-  //                       ^^^^^^^ エラー: `badData`はシリアライズ可能ではありません
+  //                       ^^^^^^^ タイプエラー: `badData`はシリアル化できません
 });
 
 export const action = defineAction(() => {
   return { hello: "world", badData: new CustomType() };
-  //                       ^^^^^^^ エラー: `badData`はシリアライズ可能ではありません
+  //                       ^^^^^^^ タイプエラー: `badData`はシリアル化できません
 });
 ```
 
-シングルフェッチでサポートされる返却型は以下のとおりです:
+シングルフェッチは、以下の返却タイプをサポートしています。
 
 ```ts
 type Serializable =
@@ -185,13 +207,13 @@ type Serializable =
   | RegExp
   | Error
   | Array<Serializable>
-  | { [key: PropertyKey]: Serializable } // シリアライズ可能な値を持つオブジェクト
+  | { [key: PropertyKey]: Serializable } // シリアル化可能な値を持つオブジェクト
   | Map<Serializable, Serializable>
   | Set<Serializable>
   | Promise<Serializable>;
 ```
 
-クライアント側の`defineClientLoader`/`defineClientAction`にも同様の機能がありますが、ネットワーク経由でシリアル化する必要がないため、返り値の制限はありません:
+`defineClientLoader`/`defineClientAction`というクライアント側の同等のユーティリティもあります。これらは、`clientLoader`/`clientAction`から返されるデータはワイヤー上でシリアル化する必要がないため、同じ返却値の制限はありません。
 
 ```ts
 import { unstable_defineLoader as defineLoader } from "@remix-run/node";
@@ -218,12 +240,11 @@ export default function Component() {
 }
 ```
 
-<docs-info>これらのユーティリティは主に`useLoaderData`とその相当物の型推論のためのものです。`Response`を返しているリソースルートで、Remix API(`useFetcher`など)によって消費されていない場合は、通常の`loader`/`action`定義を続けることができます。これらのルートを`defineLoader`/`defineAction`に変換すると、`turbo-stream`がResponse インスタンスをシリアル化できないため、型エラーが発生します。</docs-info>
+<docs-info>これらのユーティリティは、主に`useLoaderData`とその同等のユーティリティに対するタイプ推論のためです。特定の`Response`を返し、Remix API（`useFetcher`など）では使用されないリソースルートがある場合は、通常の`loader`/`action`定義のままにすることができます。これらのルートを`defineLoader`/`defineAction`を使用して変換すると、`turbo-stream`は`Response`インスタンスをシリアル化できないため、タイプエラーが発生します。</docs-info>
 
 #### `useLoaderData`、`useActionData`、`useRouteLoaderData`、`useFetcher`
 
-これらのメソッドはコードの変更は不要です - シングルフェッチの型を追加するだけで、正しくデシリアライズされるようになります:
-
+これらのメソッドは、コードの変更を必要としません。シングルフェッチのタイプを追加すると、ジェネリックが正しく逆シリアル化されます。
 
 ```ts
 export const loader = defineLoader(async () => {
@@ -235,11 +256,11 @@ export const loader = defineLoader(async () => {
 });
 
 export default function Component() {
-  // ❌ シングルフェッチ前は、型はJSON.stringifyでシリアル化されていました
+  // ❌ シングルフェッチの前は、タイプはJSON.stringifyを介してシリアル化されていました。
   const data = useLoaderData<typeof loader>();
   //    ^? { message: string, date: string }
 
-  // ✅ シングルフェッチ使用後は、型はturbo-streamでシリアル化されます
+  // ✅ シングルフェッチでは、タイプはturbo-streamを介してシリアル化されます。
   const data = useLoaderData<typeof loader>();
   //    ^? { message: string, date: Date }
 }
@@ -247,7 +268,7 @@ export default function Component() {
 
 #### `useMatches`
 
-`useMatches`では、ある`match.data`の型推論を得るために、手動でキャストする必要があります。シングルフェッチを使う場合は、`UIMatch`型を`UIMatch_SingleFetch`に置き換える必要があります:
+`useMatches`では、手動でキャストしてローダータイプを指定する必要があります。これにより、`match.data`に対する適切なタイプ推論が得られます。シングルフェッチを使用する場合は、`UIMatch`タイプを`UIMatch_SingleFetch`に置き換える必要があります。
 
 ```diff
   let matches = useMatches();
@@ -257,7 +278,7 @@ export default function Component() {
 
 #### `meta`関数
 
-`meta`関数では、現在のルートとそのひいき先のルートのローダー型を示すジェネリックを指定する必要があります。これにより、`data`と`matches`パラメータを適切に型付けできます。シングルフェッチを使う場合は、`MetaArgs`型を`MetaArgs_SingleFetch`に置き換える必要があります:
+`meta`関数も、現在のルートローダーと祖先ルートローダーのタイプを示すジェネリックを必要とし、これにより`data`と`matches`パラメーターが正しく型付けされます。シングルフェッチを使用する場合は、`MetaArgs`タイプを`MetaArgs_SingleFetch`に置き換える必要があります。
 
 ```diff
   export function meta({
@@ -271,12 +292,12 @@ export default function Component() {
 
 ### ヘッダー
 
-シングルフェッチが有効な場合、[`headers`][headers]関数は使用されなくなりました。
-代わりに、`loader`/`action`関数に固有の変更可能な`ResponseStub`が渡されます:
+[`headers`][headers]関数は、シングルフェッチが有効になっている場合は使用されなくなります。
+代わりに、`loader` / `action`関数には、その実行に固有の変更可能な`ResponseStub`が渡されます。
 
-- HTTPレスポンスのステータスを変更するには、`status`フィールドに直接設定します:
+- HTTPレスポンスのステータスを変更するには、`status`フィールドを直接設定します。
   - `response.status = 201`
-- HTTPレスポンスのヘッダーを設定するには、標準の [`Headers`][mdn-headers] APIを使います:
+- HTTPレスポンスのヘッダーを設定するには、標準の[`Headers`][mdn-headers]APIを使用します。
   - `response.headers.set(name, value)`
   - `response.headers.append(name, value)`
   - `response.headers.delete(name)`
@@ -295,7 +316,7 @@ export const action = defineAction(
 );
 ```
 
-これらのレスポンススタブをスローすることで、ローダーやアクションの実行フローを短絡させることもできます:
+これらのレスポンススタブをスローして、ローダーとアクションのフローを短絡させることもできます。
 
 ```tsx
 export const loader = defineLoader(
@@ -310,31 +331,31 @@ export const loader = defineLoader(
 );
 ```
 
-それぞれの`loader`/`action`には固有の`response`インスタンスが渡されるので、他の`loader`/`action`関数が設定したものを見ることはできません(これはレースコンディションの原因となります)。最終的なHTTPレスポンスのステータスとヘッダーは以下のように決まります:
+各`loader`/`action`には、それぞれ固有の`response`インスタンスが渡されるため、他の`loader`/`action`関数で設定された内容を確認することはできません（これは競合状態が発生する可能性があります）。結果として得られるHTTPレスポンスのステータスとヘッダーは、以下のように決定されます。
 
 - ステータスコード
-  - すべてのステータスコードが未設定または300未満の場合は、最も深いステータスコードが使用されます
-  - 300以上のステータスコードが設定された場合は、最も浅い300以上の値が使用されます
+  - すべてのステータスコードが設定されていないか、値が<300の場合は、最も深いステータスコードがHTTPレスポンスに使用されます。
+  - すべてのステータスコードが設定されているか、値が>=300の場合は、最も浅い>=300の値がHTTPレスポンスに使用されます。
 - ヘッダー
-  - Remixはヘッダー操作を追跡し、すべてのハンドラー完了後に新しい`Headers`インスタンスに再生します
-  - これらは順番に再生されます - アクションファーストで、その後トップダウン順にローダー
-  - 任意の子ハンドラーでの`headers.set`は、親ハンドラーの値を上書きします
-  - `headers.append`を使うと、親と子の両方からヘッダーを設定できます
-  - `headers.delete`を使うと、親ハンドラーで設定された値は削除できますが、子ハンドラーで設定された値は削除できません
+  - Remixはヘッダー操作を追跡し、すべてのハンドラーが完了した後に新しい`Headers`インスタンスでそれらを再生します。
+  - これらは、順序どおりに、最初にアクション（存在する場合）、次に上から下にローダーの順で再生されます。
+  - 子ハンドラーの`headers.set`は、親ハンドラーの値を上書きします。
+  - `headers.append`を使用すると、親ハンドラーと子ハンドラーの両方から同じヘッダーを設定できます。
+  - `headers.delete`を使用すると、親ハンドラーで設定された値を削除できますが、子ハンドラーで設定された値を削除することはできません。
 
-シングルフェッチは生のオブジェクトの返却をサポートし、ステータス/ヘッダーを設定するために`Response`インスタンスを返す必要がなくなったため、`json`/`redirect`/`redirectDocument`/`defer`ユーティリティはシングルフェッチ使用時には非推奨とみなされます。これらはv2の期間中は残りますので、すぐに削除する必要はありません。次のメジャーバージョンでは恐らく削除されると思われますので、その間に段階的に削除するのがよいでしょう。
+シングルフェッチは裸のオブジェクトの返却をサポートしており、ステータス/ヘッダーを設定するために`Response`インスタンスを返す必要がなくなったため、`json`/`redirect`/`redirectDocument`/`defer`ユーティリティは、シングルフェッチを使用する場合は廃止されているとみなしてください。これらはv2の間は残りますが、すぐに削除する必要はありません。次のメジャーバージョンでは、おそらく削除されるため、できるだけ早く段階的に削除することをお勧めします。
 
-これらのユーティリティは Remix v2 の残りの期間中も存続し、将来的には[`remix-utils`][remix-utils]のようなものに移動されるか、簡単に自分で再実装できるようになるでしょう。
+これらのユーティリティは、Remix v2の残りの期間は引き続き使用できます。今後のバージョンでは、[`remix-utils`][remix-utils]などのものから利用できるようになる可能性があります（または、自分で簡単に再実装することもできます）。
 
-v2では、通常の`Response`インスタンスを返し続けることができ、ステータスコードは`response`スタブと同じように適用され、すべてのヘッダーは`headers.set`で適用されます - 親から同名のヘッダー値を上書きします。ヘッダーを追加する必要がある場合は、`Response`インスタンスを返す代わりに新しい`response`パラメータを使う必要があります。
+v2では、引き続き通常の`Response`インスタンスを返すことができ、`response`スタブと同じ方法でステータスコードが適用され、すべてのヘッダーが`headers.set`を介して適用され、親からの同じ名前のヘッダーの値は上書きされます。ヘッダーを追加する必要がある場合は、`Response`インスタンスを返すことから、新しい`response`パラメーターを使用するように切り替える必要があります。
 
-これらの機能を段階的に採用できるように、`loader`/`action`関数全てを`response`スタブを利用するように変更する必要はなく、シングルフェッチを有効にできるようにすることが目標です。その後、個別のルートを段階的に新しい`response`スタブを利用するように変更していくことができます。
+これらの機能を段階的に採用できるようにするために、シングルフェッチを有効にしても、すべての`loader`/`action`関数を変更して`response`スタブを利用する必要はありません。その後、時間をかけて個々のルートを段階的に変換して、新しい`response`スタブを利用することができます。
 
 ### クライアントローダー
 
-アプリに[`clientLoader`][client-loader]機能を持つルートがある場合、シングルフェッチの動作がわずかに変わることに注意が必要です。`clientLoader`はサーバーの`loader`関数を呼び出さずにすむようにするためのものですが、シングルフェッチの呼び出しでは、その server loader を実行するのは正しくありません。しかし、すべてのローダーを並列に実行し、どの`clientLoader`が実際にサーバーデータを要求するかを待つわけにはいきません。
+アプリケーションで[`clientLoader`][client-loader]関数を使用するルートがある場合は、シングルフェッチの動作がわずかに変化することに注意することが重要です。`clientLoader`は、サーバーの`loader`関数の呼び出しをオプトアウトする方法を提供することを目的としているため、シングルフェッチの呼び出しでそのサーバーローダーを実行することは正しくありません。しかし、すべてのローダーは並行して実行され、どの`clientLoader`が実際にサーバーデータを求めているかを知るまでは、その呼び出しを待つべきではありません。
 
-例えば、次のような `/a/b/c` ルートを考えてみましょう:
+たとえば、以下の`/a/b/c`ルートを考えてみましょう。
 
 ```ts
 // routes/a.tsx
@@ -359,17 +380,17 @@ export function clientLoader({ serverLoader }) {
 }
 ```
 
-ユーザーが`/ -> /a/b/c`と遷移した場合、`a`と`b`のサーバーローダーを実行し、`c`のクライアントローダーを実行する必要があります。このクライアントローダーは最終的に (あるいは最終的にではない) 自身のサーバーローダーを呼び出す可能性があります。シングルフェッチのコールに`c`のサーバーローダーを含めるか、`c`が実際にサーバーローダーの呼び出し (または返却) を待つまで遅延させるかを決めるのは、ウォーターフォールを導入してしまうため難しいです。
+ユーザーが`/ -> /a/b/c`にナビゲートする場合、`a`と`b`のサーバーローダーと`c`の`clientLoader`を実行する必要があります。これは最終的に（またはそうでなければ）独自のサーバー`loader`を呼び出す可能性があります。`c`のサーバー`loader`を`a`/`b`の`loader`を取得するためのシングルフェッチ呼び出しに含めるかどうかを決定することはできませんし、ウォーターフォールを導入せずに`c`が実際に`serverLoader`呼び出しを行ったり（または返したり）するまで遅らせることもできません。
 
-したがって、`clientLoader`をエクスポートしているルートはシングルフェッチから外れ、`serverLoader`を呼び出す際はそのルートのサーバーローダーのみを取得するため、単一のフェッチになります。`clientLoader`をエクスポートしていないすべてのルートは、単一のHTTPリクエストでフェッチされます。
+したがって、`clientLoader`をエクスポートするルートは、シングルフェッチをオプトアウトし、`serverLoader`を呼び出すと、そのルートのサーバー`loader`のみを取得するための単一のフェッチが行われます。`clientLoader`をエクスポートしないすべてのルートは、単一のHTTPリクエストでフェッチされます。
 
-上記のルート設定で`/ -> /a/b/c`に遷移すると、最初に`a`と`b`のルートについての単一のフェッチコールが行われます:
+したがって、上記のルート設定で`/ -> /a/b/c`にナビゲートすると、最初に`a`と`b`のルートに対して単一のシングルフェッチ呼び出しが行われます。
 
 ```
 GET /a/b/c.data?_routes=routes/a,routes/b
 ```
 
-そして`c`が`serverLoader`を呼び出すときに、`c`のサーバーローダーについての個別のコールが行われます:
+そして、`c`が`serverLoader`を呼び出すと、`c`のサーバー`loader`だけを取得するための独自の呼び出しが行われます。
 
 ```
 GET /a/b/c.data?_routes=routes/c
@@ -377,23 +398,23 @@ GET /a/b/c.data?_routes=routes/c
 
 ### リソースルート
 
-[ストリーミングフォーマット][streaming-format]の変更により、`loader`と`action`関数から返された生のJavaScriptオブジェクトは、もはや`json()`ユーティリティ経由での`Response`インスタンスへの自動変換は行われません。代わりに、Remix APIによる操縦的なデータロードでは、他のローダーデータと組み合わされて`turbo-stream`レスポンスでストリーミングされます。
+シングルフェッチで使用される新しい[ストリーミング形式][streaming-format]により、`loader`と`action`関数から返される生のJavaScriptオブジェクトは、もはや`json()`ユーティリティを介して自動的に`Response`インスタンスに変換されなくなりました。代わりに、ナビゲーションデータの読み込みでは、他のローダーデータと結合され、`turbo-stream`レスポンスでダウンストリーム送信されます。
 
-これは[リソースルート][resource-routes]に対して興味深い問題を提起します。リソースルートは、Remix APIを通じてのみアクセスされることを前提としていないからです。他のHTTPクライアント(`fetch`、`cURL`など)からもアクセスできます。
+これは、個別にヒットすることを目的とした[リソースルート][resource-routes]にとっては興味深いジレンマです。これは、常にRemix APIを介するとは限りません。また、他のHTTPクライアント（`fetch`、`cURL`など）からもアクセスできます。
 
-リソースルートがRemix内部APIによって消費されることを意図している場合、`turbo-stream`エンコーディングを活用して、`Date`や`Promise`インスタンスなどの複雑な構造をストリーミングダウンできるようにしたいです。一方で、外部からアクセスされた場合は、より簡単に使えるJSONストラクチャーを返したい可能性があります。したがって、v2でオブジェクトを直接返すとどのように扱うべきか微妙な点があります - `turbo-stream`でシリアル化するべきか、それとも`json()`でシリアル化するべきか?
+リソースルートが内部のRemix APIで消費されることを目的としている場合は、より複雑な構造（`Date`や`Promise`インスタンスなど）をストリーミングダウンできるように、`turbo-stream`エンコーディングを活用したいと考えています。しかし、外部からアクセスされる場合は、より簡単に消費できるJSON構造を返す方が良いでしょう。したがって、生のオブジェクトをv2で返す場合、動作は少し曖昧です。`turbo-stream`と`json()`のどちらでシリアル化する必要がありますか？
 
-下位互換性を確保し、シングルフェッチの将来のフラグの採用を容易にするために、Remix v2ではアクセス元(Remix API or 外部)によって動作が変わることにしました。今後のVersionでは、生のオブジェクトをストリーミングダウンしたくない場合は、自分で[JSONレスポンス][returning-response]を返す必要があります。
+Remix v2では、後方互換性を維持し、シングルフェッチの未来のフラグの採用を容易にするために、Remix APIからアクセスされる場合と外部からアクセスされる場合で動作が異なります。将来的には、Remixでは、外部からアクセスされる場合に生のオブジェクトをストリーミングダウンしたくない場合は、独自の[JSONレスポンス][returning-response]を返す必要があります。
 
-Remix v2のシングルフェッチ有効時の動作は以下の通りです:
+シングルフェッチが有効になっている場合のRemix v2の動作は次のとおりです。
 
-- Remix API(例えば`useFetcher`)からアクセスする場合、生のJavaScriptオブジェクトは通常のローダーやアクションと同様に`turbo-stream`レスポンスで返されます(これは`useFetcher`が`.data`サフィックスをリクエストに付加するためです)
+- `useFetcher`などのRemix APIからアクセスする場合、生のJavaScriptオブジェクトは、通常のローダーとアクションと同様に`turbo-stream`レスポンスとして返されます（これは、`useFetcher`がリクエストに`.data`サフィックスを追加するためです）。
 
-- `fetch`や`cURL`などの外部ツールからアクセスする場合、v2の下位互換性のため、引き続き自動的に`json()`に変換されます:
+- `fetch`や`cURL`などの外部ツールからアクセスする場合、v2の後方互換性を維持するために、引き続き自動的に`json()`に変換されます。
 
-  - この場合、Remixがデプリケーション警告をログに出します
-  - ご都合の良い時に、影響を受けたリソースルートのハンドラーを`Response`オブジェクトを返すように更新してください
-  - これらのデプリケーション警告に対処することで、最終的なRemix v3アップグレードの準備が整います
+  - Remixはこの状況が発生すると、廃止予定の警告をログに記録します。
+  - 必要に応じて、影響を受けるリソースルートハンドラーを更新して、`Response`オブジェクトを返すことができます。
+  - これらの廃止予定の警告に対処することで、今後のRemix v3へのアップグレードの準備が整います。
 
   ```tsx filename=app/routes/resource.tsx bad
   export function loader() {
@@ -411,14 +432,14 @@ Remix v2のシングルフェッチ有効時の動作は以下の通りです:
   }
   ```
 
-注意: 外部からアクセスされるリソースルートで特定の`Response`インスタンスを返す必要がある場合、`defineLoader`/`defineAction`の使用は推奨されません。`loader`/`LoaderFunctionArgs`を使い続けるのがベストです。
+注: 特定の`Response`インスタンスを返す必要がある外部からアクセスされるリソースルートに`defineLoader`/`defineAction`を使用することはお勧めしません。これらの場合は、`loader`/`LoaderFunctionArgs`を使用することをお勧めします。
 
-#### Responseスタブとリソースルート
+#### レスポンススタブとリソースルート
 
-上述のとおり、`headers`エクスポートは、`loader`および`action`関数に渡される新しい[`response`スタブ][responsestub]に置き換えられました。ただし、リソースルートでは少し混乱しやすいかもしれません。なぜなら、実際の`Response`を返すことができるので、複数のローダーの結果をマージする必要がないため、"スタブ"の概念はそれほど必要ありません:
+上記のように、[`headers`][headers]エクスポートは廃止され、代わりに`loader`と`action`関数に渡される新しい[`response`スタブ][responsestub]が使用されます。これは、リソースルートではやや混乱する可能性がありますが、これは、実際には"スタブ"の概念が必要ないためです。複数のローダーの結果を単一のレスポンスにマージする必要がないからです。
 
 ```tsx filename=app/routes/resource.tsx
-// 自分で`Response`を使うのが最も簡単な方法
+// 独自のリソースを使用するのが最も簡単な方法です。
 export async function loader() {
   const data = await getData();
   return Response.json(data, {
@@ -430,10 +451,10 @@ export async function loader() {
 }
 ```
 
-一貫性を保つために、リソースルートの`loader`/`action`関数にも`response`スタブが渡されるので、必要に応じてそれを使うことができます(例えば、非リソースルートのハンドラーと共有するコードがある場合など):
+一貫性を保つために、リソースルートの`loader`/`action`関数には引き続き`response`スタブが渡されます。必要に応じて使用できます（非リソースルートハンドラー間でコードを共有する場合など）。
 
 ```tsx filename=app/routes/resource.tsx
-// しかし、`response`スタブの値を設定することもできます
+// しかし、responseスタブで値を設定することもできます。
 export async function loader({
   response,
 }: LoaderFunctionArgs) {
@@ -444,40 +465,39 @@ export async function loader({
 }
 ```
 
-`response`スタブを使いつつ、カスタムステータス/ヘッダーを持つ`Response`インスタンスを返すのは避ける
-状況によっては不可避かもしれませんが、それ以外は避けるようにしましょう:
+`response`スタブと、カスタムステータス/ヘッダーを持つ`Response`を返すのを避けるのが最善ですが、そうした場合、以下のロジックが適用されます。
 
-- `Response`インスタンスのステータスが、`response`スタブのステータスよりも優先されます
-- `response`スタブの`headers`操作は、返された`Response`ヘッダーインスタンスに再適用されます
+- `Response`インスタンスのステータスは、`response`スタブのステータスよりも優先されます。
+- `response`スタブの`headers`に対するヘッダー操作は、返された`Response`のヘッダーインスタンスに再適用されます。
 
-## 追加情報
+## その他の詳細
 
-### ストリーミングデータフォーマット
+### ストリーミングデータ形式
 
-これまで、Remixは`loader`/`action`データを `JSON.stringify`してネットワーク経由で送信していました。また、`defer`レスポンスをサポートするために、カスタムのストリーミングフォーマットを実装していました。
+以前は、Remixは`JSON.stringify`を使用してローダー/アクションのデータをワイヤー上でシリアル化していました。また、`defer`レスポンスをサポートするためにカスタムのストリーミング形式を実装する必要がありました。
 
-シングルフェッチでは、内部で[`turbo-stream`][turbo-stream]を使用しており、ストリーミングの直接サポートや、JSONを超えた複雑なデータのシリアル化/デシリアル化が可能になりました。以下のデータ型は `turbo-stream` を介して直接ストリーミングできます: `BigInt`、`Date`、`Error`、`Map`、`Promise`、`RegExp`、`Set`、`Symbol`、`URL`。`Error`のサブタイプも、クライアントで大域的に利用可能なコンストラクタがある限り、サポートされます(`SyntaxError`、`TypeError`など)。
+シングルフェッチでは、Remixは内部で[`turbo-stream`][turbo-stream]を使用するようになりました。これは、ストリーミングをファーストクラスでサポートし、JSONよりも複雑なデータを自動的にシリアル化/逆シリアル化することができます。`BigInt`、`Date`、`Error`、`Map`、`Promise`、`RegExp`、`Set`、`Symbol`、`URL`などのデータ型は、`turbo-stream`を介して直接ストリーミングダウンできます。`Error`のサブタイプも、クライアントにグローバルに利用可能なコンストラクターがある場合はサポートされます（`SyntaxError`、`TypeError`など）。
 
-これにより、シングルフェッチを有効にした時点で、直ちにコードに変更が必要になるわけではありません:
+シングルフェッチを有効にしたときにコードを変更する必要があるかどうかは、以下のとおりです。
 
-- ✅ `loader`/`action`関数から返された`json`レスポンスは、依然として`JSON.stringify`でシリアル化されるため、`Date`を返すと`useLoaderData`/`useActionData`からは`string`が得られます
-- ⚠️ `defer`インスタンスや生のオブジェクトを返す場合は、今度は`turbo-stream`でシリアル化されるため、`Date`を返すと`useLoaderData`/`useActionData`からは`Date`が得られます
-  - 現在の動作を維持したい場合(streaming `defer`レスポンスを除く)、生のオブジェクトの返却を`json`で囲むことができます
+- ✅ `loader`/`action`関数から返された`json`レスポンスは引き続き`JSON.stringify`を介してシリアル化されるため、`Date`を返すと、`useLoaderData`/`useActionData`から`string`が受け取られます。
+- ⚠️ `defer`インスタンスまたは裸のオブジェクトを返している場合は、`turbo-stream`を介してシリアル化されるようになりました。そのため、`Date`を返すと、`useLoaderData`/`useActionData`から`Date`が受け取られます。
+  - 現在の動作（ストリーミングされた`defer`レスポンスを除く）を維持する場合は、既存の裸のオブジェクトの返却値を`json`でラップするだけです。
 
-これにより、`Promise`インスタンスをネットワーク経由で送信するために`defer`ユーティリティを使う必要がなくなりました! 生のオブジェクトのどこにでも`Promise`を含めることができ、`useLoaderData().whatever`で取得できます。必要に応じて`Promise`をネストすることもできます - ただし、UXへの影響に注意が必要です。
+これは、`Promise`インスタンスをワイヤー上で送信するために`defer`ユーティリティを使用する必要がなくなったことも意味します！`Promise`は裸のオブジェクトのどこにでも含めることができ、`useLoaderData().whatever`で取得することができます。必要に応じて`Promise`をネストすることもできますが、UXへの影響に注意してください。
 
-シングルフェッチを採用したら、アプリケーション全体から`json`/`defer`の使用を段階的に削除し、生のオブジェクトを返すようにすることをお勧めします。
+シングルフェッチを採用したら、`json`/`defer`の使用を段階的に削除し、生のオブジェクトを返すようにすることをお勧めします。
 
 ### ストリーミングタイムアウト
 
-これまでRemixには、デフォルトの[`entry.server.tsx`][entry-server]ファイルに組み込まれていた`ABORT_TIMEOUT`という概念がありました。これはReactレンダラーを終了させますが、保留中の遅延プロミスをクリーンアップするための特別な処理はありませんでした。
+以前は、Remixには、デフォルトの[`entry.server.tsx`][entry-server]ファイルに組み込まれた`ABORT_TIMEOUT`という概念があり、Reactレンダラーを終了していましたが、保留中の遅延プロミスをクリーンアップする特別なことは行いませんでした。
 
-Remixがストリーミングを内部で行うようになったため、`turbo-stream`処理をキャンセルし、保留中のプロミスを自動的に拒否し、それらの拒否をReactレンダラーを通じてクライアントにストリーミングアップできるようになりました。デフォルトでは、これらは4950ms後に行われます - これは、Reactサイドの終了前にそれらの拒否をストリーミングアップする必要があるため、ほとんどのentry.server.tsxファイルの現在の5000ms `ABORT_DELAY`の少し下の値に選択されました。
+Remixが内部でストリーミングするようになったため、`turbo-stream`処理をキャンセルし、保留中のプロミスを自動的に拒否し、それらのエラーをクライアントにストリーミングアップすることができます。デフォルトでは、これは4950ミリ秒後に発生します。これは、ほとんどのentry.server.tsxファイルの現在の5000ミリ秒の`ABORT_DELAY`よりわずかに小さい値で、プロミスをキャンセルし、React側の処理を中止する前に、拒否をReactレンダラーを介してストリーミングアップする必要があるためです。
 
-`entry.server.tsx`から`streamTimeout`数値値をエクスポートすることで、この値を制御できます。Remixは、ミリ秒単位のこの値を使って、`loader`/`action`からの保留中のプロミスを拒否します。Reactレンダラーを中止するタイムアウトよりも高い値に設定することをお勧めします。
+これは、`entry.server.tsx`から`streamTimeout`という数値をエクスポートすることで制御できます。Remixはこの値を、`loader`/`action`の保留中のプロミスを拒否するミリ秒数として使用します。この値は、Reactレンダラーを中止するタイムアウトとは切り離しておくことをお勧めします。また、Reactのタイムアウトを常に高い値に設定しておく必要があります。これにより、`streamTimeout`から基礎となる拒否をストリーミングダウンする時間があります。
 
 ```tsx filename=app/entry.server.tsx lines=[1-2,32-33]
-// ハンドラー関数からの保留中のプロミスを5秒後に拒否
+// ハンドラー関数の保留中のすべてのプロミスを5秒後に拒否します。
 export const streamTimeout = 5000;
 
 // ...
@@ -508,7 +528,7 @@ function handleBrowserRequest(
       }
     );
 
-    // Reactレンダラーを10秒後に自動的に中止
+    // Reactレンダラーを10秒後に自動的にタイムアウトします。
     setTimeout(abort, 10000);
   });
 }
@@ -516,18 +536,13 @@ function handleBrowserRequest(
 
 ### 再検証
 
-これまでは、アクションの結果に関わらず、アクション送信後にすべてのアクティブなローダーが再検証されていました。個別のルートでの再検証をオプトアウトできる`shouldRevalidate`機能もありました。
+以前は、Remixはすべての`action`送信後に、アクティブなすべてのローダーを再検証していました。これは、`action`の結果に関係なく行われていました。[`shouldRevalidate`][should-revalidate]を使用して、ルートごとに再検証をオプトアウトすることができました。
 
-シングルフェッチでは、アクションが`4xx`/`5xx`のレスポンスを返す/投げた場合、デフォルトでは再検証は行われません。アクションが`4xx`/`5xx`以外のものを返す/投げた場合は、従来の再検証動作のままです。これは、ほとんどの場合`4xx`/`5xx`レスポンスを返す際は、データが変更されていないため再検証の必要がないと考えられるためです。
+シングルフェッチでは、`action`が`4xx/5xx`ステータスコードを持つ`Response`を返し、またはスローした場合、Remixはデフォルトではローダーを再検証しません。`action`が`4xx/5xx`レスポンスではないものを返し、またはスローした場合、再検証の動作は変更されません。ここでの理由は、ほとんどの場合、`4xx`/`5xx`レスポンスを返す場合、実際にはデータを変更していないため、データを再読み込みする必要がないからです。
 
-特定のローダーを`4xx`/`5xx`アクションレスポンス後も再検証したい場合は、[`shouldRevalidate`][should-revalidate]関数から`true`を返すことでオプトインできます。また、`unstable_actionStatus`パラメータが新しく追加されており、アクションのステータスコードに基づいて判断できます。
+`4xx/5xx`アクションレスポンス後に、1つ以上のローダーを再検証する必要がある場合は、[`shouldRevalidate`][should-revalidate]関数から`true`を返すことで、ルートごとに再検証をオプトインすることができます。また、`action`のステータスコードに基づいて決定する必要がある場合は、関数に渡される新しい`unstable_actionStatus`パラメーターもあります。
 
-再検証は`?_routes`クエリパラメータを介して処理されます。これにより、fine-grainedな再検証を行う際にルートベースのキャッシュ番号が得られ、CDNの設定を変更する必要もなくなります(カスタムヘッダーを使ってVary ヘッダーを尊重する必要があった場合とは対照的)。
-
-### インラインスクリプト
-
-`<RemixServer>`コンポーネントは、クライアント側のストリーミングデータを処理するためのインラインスクリプトをレンダリングします。[スクリプトの内容セキュリティポリシー][csp]に[ノンス ソース][csp-nonce]がある場合は、`<RemixServer nonce>`を使ってこれらの`<script>`タグにノンスを渡すことができます。
-
+再検証は、シングルフェッチのHTTP呼び出しの`?_routes`クエリ文字列パラメーターを介して処理され、呼び出されるローダーが制限されます。つまり、細かい再検証を行う場合、リクエストされているルートに基づいてキャッシュ列挙が行われます。ただし、すべての情報はURLに含まれているため、特別なCDN構成は不要です（これはカスタムヘッダーを介して行われた場合とは異なり、CDNで`Vary`ヘッダーを尊重する必要がありました）。
 
 [future-flags]: ../file-conventions/remix-config#future
 [should-revalidate]: ../route/should-revalidate
@@ -545,8 +560,8 @@ function handleBrowserRequest(
 [mdn-headers]: https://developer.mozilla.org/en-US/docs/Web/API/Headers
 [resource-routes]: ../guides/resource-routes
 [returning-response]: ../route/loader.md#returning-response-instances
-[responsestub]: #ヘッダー
-[streaming-format]: #ストリーミングデータフォーマット
+[responsestub]: #headers
+[streaming-format]: #streaming-data-format
 [undici-polyfill]: https://github.com/remix-run/remix/blob/main/CHANGELOG.md#undici
 [undici]: https://github.com/nodejs/undici
 [csp]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src
@@ -554,6 +569,9 @@ function handleBrowserRequest(
 [remix-utils]: https://github.com/sergiodxa/remix-utils
 [merging-remix-and-rr]: https://remix.run/blog/merging-remix-and-react-router
 [migration-guide]: #migrating-a-route-with-single-fetch
-[action-revalidation]: #ストリーミングデータフォーマット
-[start]: #シングルフェッチの有効化
-[type-inference-section]: #型推論
+[breaking-changes]: #breaking-changes
+[action-revalidation]: #streaming-data-format
+[start]: #enabling-single-fetch
+[type-inference-section]: #type-inference
+[compatibility-flag]: https://developers.cloudflare.com/workers/configuration/compatibility-dates
+

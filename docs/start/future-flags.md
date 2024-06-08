@@ -1,39 +1,39 @@
 ---
-title: 未来のフラグ
+title: 未来の機能
 order: 5
 ---
 
-# 未来のフラグ
+# 未来の機能
 
-以下の未来のフラグは安定しており、採用する準備ができています。未来のフラグの詳細については、[開発戦略][development-strategy] を参照してください。
+以下の未来の機能は安定しており、導入の準備が整っています。未来の機能の詳細については、[開発戦略][development-strategy]を参照してください。
 
-## 最新の v2.x への更新
+## 最新のv2.xへの更新
 
-まず、最新の未来のフラグを含む、v2.x の最新のマイナーバージョンに更新します。
+最新の未来の機能を利用するには、まずv2.xの最新マイナーバージョンに更新します。
 
-👉 **最新の v2 に更新**
+👉 **最新のv2に更新**
 
 ```shellscript nonumber
 npm install @remix-run/{dev,react,node,etc.}@2
 ```
 
-## Vite プラグイン
+## Viteプラグイン
 
 **背景**
 
-Remix は、独自のクローズドコンパイラ（現在は「クラシックコンパイラ」と呼ばれています）を使用しなくなり、代わりに [Vite][vite] を使用します。Vite は、JavaScript プロジェクト向けの強力で、高性能で、拡張可能な開発環境です。パフォーマンス、トラブルシューティングなどの詳細については、[Vite ドキュメント][vite-docs] を参照してください。
+Remixは、独自のクローズドコンパイラ（現在「クラシックコンパイラ」と呼ばれています）を使用しなくなりました。代わりに[Vite][vite]を使用するようになりました。Viteは、JavaScriptプロジェクト用の強力で高性能な拡張可能な開発環境です。パフォーマンス、トラブルシューティングなどの詳細については、[Viteドキュメント][vite-docs]を参照してください。
 
-これは未来のフラグではありませんが、新しい機能と一部の機能フラグは Vite プラグインでのみ利用可能であり、クラシックコンパイラは Remix の次のバージョンで削除されます。
+これは未来の機能ではありませんが、新しい機能や一部の機能フラグはViteプラグインでのみ利用可能で、クラシックコンパイラは次のバージョンのRemixで削除されます。
 
-👉 **Vite をインストール**
+👉 **Viteのインストール**
 
 ```shellscript nonumber
 npm install -D vite
 ```
 
-**コードを更新**
+**コードの更新**
 
-👉 **`remix.config.js` を Remix アプリのルートにある `vite.config.ts` に置き換える**
+👉 **ルートのRemixアプリで`remix.config.js`を`vite.config.ts`に置き換えます**
 
 ```ts filename=vite.config.ts
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -44,7 +44,7 @@ export default defineConfig({
 });
 ```
 
-[サポートされている Remix 設定オプション][supported-remix-config-options] のサブセットは、プラグインに直接渡される必要があります。
+[サポートされているRemix構成オプション][supported-remix-config-options]のサブセットは、プラグインに直接渡す必要があります。
 
 ```ts filename=vite.config.ts lines=[3-5]
 export default defineConfig({
@@ -56,7 +56,7 @@ export default defineConfig({
 });
 ```
 
-👉 **`<LiveReload/>` を削除し、`<Scripts />` を保持**
+👉 **`<LiveReload/>`を削除し、`<Scripts />`を保持します**
 
 ```diff
   import {
@@ -80,9 +80,9 @@ export default defineConfig({
   }
 ```
 
-👉 **`tsconfig.json` を更新**
+👉 **`tsconfig.json`の更新**
 
-`tsconfig.json` の `types` フィールドを更新し、`skipLibCheck`、`module`、`moduleResolution` がすべて正しく設定されていることを確認します。
+`tsconfig.json`の`types`フィールドを更新し、`skipLibCheck`、`module`、`moduleResolution`がすべて正しく設定されていることを確認してください。
 
 ```json filename=tsconfig.json lines=[3-6]
 {
@@ -95,16 +95,16 @@ export default defineConfig({
 }
 ```
 
-👉 **`remix.env.d.ts` を更新/削除**
+👉 **`remix.env.d.ts`の更新/削除**
 
-`remix.env.d.ts` の以下の型宣言を削除します
+`remix.env.d.ts`で以下の型宣言を削除します
 
 ```diff filename=remix.env.d.ts
 - /// <reference types="@remix-run/dev" />
 - /// <reference types="@remix-run/node" />
 ```
 
-`remix.env.d.ts` が空になった場合は、削除します
+`remix.env.d.ts`が空になったら、削除します
 
 ```shellscript nonumber
 rm remix.env.d.ts
@@ -112,15 +112,15 @@ rm remix.env.d.ts
 
 **パスエイリアスの設定**
 
-Vite は、デフォルトでパスエイリアスを提供しません。`~` を `app` ディレクトリのエイリアスとして定義するなど、この機能に依存していた場合は、[vite-tsconfig-paths][vite-tsconfig-paths] プラグインをインストールして、Remix コンパイラの動作と一致するように、`tsconfig.json` から Vite のパスエイリアスを自動的に解決できます。
+Viteはデフォルトでパスエイリアスを提供しません。`~`を`app`ディレクトリのエイリアスとして定義するなど、この機能に依存していた場合は、[vite-tsconfig-paths][vite-tsconfig-paths]プラグインをインストールして、Remixコンパイラの動作に合わせて、`tsconfig.json`のパスエイリアスをViteで自動的に解決することができます。
 
-👉 **`vite-tsconfig-paths` をインストール**
+👉 **`vite-tsconfig-paths`のインストール**
 
 ```shellscript nonumber
 npm install -D vite-tsconfig-paths
 ```
 
-👉 **Vite 設定に `vite-tsconfig-paths` を追加**
+👉 **Vite構成に`vite-tsconfig-paths`を追加します**
 
 ```ts filename=vite.config.ts lines=[3,6]
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -132,19 +132,19 @@ export default defineConfig({
 });
 ```
 
-**`@remix-run/css-bundle` を削除**
+**`@remix-run/css-bundle`の削除**
 
-Vite は、CSS サブエフェクトインポート、PostCSS、CSS モジュール、その他の CSS バンドル機能に対する組み込みサポートを提供しています。Remix Vite プラグインは、バンドルされた CSS を関連するルートに自動的に添付します。
+Viteには、CSS副作用のインポート、PostCSS、CSSモジュールなどのCSSバンドリング機能が組み込まれています。Remix Viteプラグインは、バンドルされたCSSを関連するルートに自動的にアタッチします。
 
-<nobr>[`@remix-run/css-bundle`][css-bundling]</nobr> パッケージは、Vite を使用する場合、その `cssBundleHref` エクスポートが常に `undefined` になるため、冗長です。
+<nobr>[`@remix-run/css-bundle`][css-bundling]</nobr>パッケージは、Viteを使用する場合、その`cssBundleHref`エクスポートは常に`undefined`になるため、冗長です。
 
-👉 **`@remix-run/css-bundle` をアンインストール**
+👉 **`@remix-run/css-bundle`のアンインストール**
 
 ```shellscript nonumber
 npm uninstall @remix-run/css-bundle
 ```
 
-👉 **`cssBundleHref` への参照を削除**
+👉 **`cssBundleHref`への参照を削除します**
 
 ```diff filename=app/root.tsx
 - import { cssBundleHref } from "@remix-run/css-bundle";
@@ -158,11 +158,11 @@ npm uninstall @remix-run/css-bundle
   ];
 ```
 
-**`links` で参照される CSS インポートを修正する**
+**`links`で参照されているCSSインポートの修正**
 
-[CSS を `links` 関数で参照している場合][regular-css]、[Vite の明示的な `?url` インポート構文][vite-url-imports] を使用して、対応する CSS インポートを更新する必要があります。
+[`links`関数でCSSを参照している場合][regular-css]は、対応するCSSインポートを[Viteの明示的な`?url`インポート構文][vite-url-imports]を使用するように更新する必要があります。
 
-👉 **`links` で使用される CSS インポートに `?url` を追加**
+👉 **`links`で使用されているCSSインポートに`?url`を追加します**
 
 ```diff
 -import styles from "~/styles/dashboard.css";
@@ -175,13 +175,13 @@ export const links = () => {
 }
 ```
 
-**Tailwind CSS または Vanilla Extract を移行する**
+**Tailwind CSSまたはVanilla Extractの移行**
 
-Tailwind CSS または Vanilla Extract を使用している場合は、[完全な移行ガイド][migrate-css-frameworks] を参照してください。
+Tailwind CSSまたはVanilla Extractを使用している場合は、[完全な移行ガイド][migrate-css-frameworks]を参照してください。
 
-**Remix アプリサーバーから移行する**
+**Remixアプリサーバーからの移行**
 
-👉 **`dev`、`build`、`start` スクリプトを更新する**
+👉 **`dev`、`build`、`start`スクリプトを更新します**
 
 ```json filename=package.json lines=[3-5]
 {
@@ -193,7 +193,7 @@ Tailwind CSS または Vanilla Extract を使用している場合は、[完全�
 }
 ```
 
-👉 **Vite 設定にグローバル Node ポリフィルをインストールする**
+👉 **Vite構成にグローバルノードポリフィルをインストールします**
 
 ```diff filename=vite.config.ts
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -207,7 +207,7 @@ export default defineConfig({
 });
 ```
 
-👉 **Vite dev サーバーポートを設定する（オプション）**
+👉 **Vite開発サーバーのポートを設定します（オプション）**
 
 ```js filename=vite.config.ts lines=[2-4]
 export default defineConfig({
@@ -218,19 +218,19 @@ export default defineConfig({
 });
 ```
 
-**カスタムサーバーを移行する**
+**カスタムサーバーの移行**
 
-カスタムサーバーまたは Cloudflare Functions を移行している場合は、[完全な移行ガイド][migrate-a-custom-server] を参照してください。
+カスタムサーバーまたはCloudflare Functionsに移行する場合は、[完全な移行ガイド][migrate-a-custom-server]を参照してください。
 
-**MDX ルートを移行する**
+**MDXルートの移行**
 
-[MDX][mdx] を使用している場合は、公式の [MDX Rollup プラグイン][mdx-rollup-plugin] を使用する必要があります。段階的な手順については、[完全な移行ガイド][migrate-mdx] を参照してください。
+[MDX][mdx]を使用している場合は、公式の[MDX Rollupプラグイン][mdx-rollup-plugin]を使用する必要があります。ステップバイステップのウォークスルーについては、[完全な移行ガイド][migrate-mdx]を参照してください。
 
 ## v3_fetcherPersist
 
 **背景**
 
-フェッチャーのライフサイクルは、所有者コンポーネントがアンマウントされたときではなく、アイドル状態に戻ったときに基づいています。詳細については、[RFC を参照してください][fetcherpersist-rfc]。
+フェッチャのライフサイクルは、所有者コンポーネントがアンマウントされたときではなく、アイドル状態に戻ったときに基づくようになりました。詳細については、[RFCを参照してください][fetcherpersist-rfc]。
 
 👉 **フラグを有効にする**
 
@@ -242,15 +242,15 @@ remix({
 });
 ```
 
-**コードを更新**
+**コードの更新**
 
-アプリに影響することはほとんどありません。`useFetchers` の使用状況を確認する必要があるかもしれません。これらは以前よりも長く持続する可能性があります。何をしているかによって、以前よりも長い間何かがレンダリングされる可能性があります。
+アプリに影響を与える可能性は低いですが、`useFetchers`の使用状況を確認する必要があるかもしれません。それらは以前よりも長く保持される可能性があります。何をしているかによって、以前よりも長くレンダリングされる可能性があります。
 
 ## v3_relativeSplatPath
 
 **背景**
 
-`dashboard/*`（単なる `*` ではなく）のような、複数のセグメントを持つスプラットパスに対する相対パスの一致とリンクを変更します。詳細については、[CHANGELOG を参照してください][relativesplatpath-changelog]。
+`dashboard/*`（単なる`*`ではなく）のようなマルチセグメントスプラットパスに対する相対パスのマッチングとリンクを変更します。詳細については、[CHANGELOGを参照してください][relativesplatpath-changelog]。
 
 👉 **フラグを有効にする**
 
@@ -262,13 +262,13 @@ remix({
 });
 ```
 
-**コードを更新**
+**コードの更新**
 
-`dashboard.$.tsx` または `route("dashboard/*")` のように、パスとスプラットを含むルートがあり、その下に ` <Link to="relative">` または ` <Link to="../relative">` のような相対リンクがある場合、コードを更新する必要があります。
+`dashboard.$.tsx`や`route("dashboard/*")`のように、パスとスプラットを持つルートがあり、その下に`<Link to="relative">`や`<Link to="../relative">`のような相対リンクがある場合は、コードを更新する必要があります。
 
-👉 **ルートを 2 つに分割する**
+👉 **ルートを2つに分割します**
 
-スプラットルートはすべて、レイアウトルートとスプラットを含む子ルートに分割します。
+スプラットルートがあれば、レイアウトルートとスプラットを持つ子ルートに分割します。
 
 ```diff
 
@@ -289,9 +289,9 @@ routes(defineRoutes) {
 },
 ```
 
-👉 **相対リンクを更新する**
+👉 **相対リンクを更新します**
 
-そのルートツリー内の相対リンクを持つ `<Link>` 要素をすべて更新して、同じ場所に引き続きリンクするために、追加の `..` 相対セグメントを含めます。
+そのルートツリー内の相対リンクを持つ`<Link>`要素をすべて更新して、追加の`..`相対セグメントを含め、同じ場所にリンクし続けます。
 
 ```diff
 // dashboard.$.tsx or dashboard/route.tsx
@@ -316,7 +316,7 @@ function Dashboard() {
 
 **背景**
 
-サーバー側のリクエストが中止された場合（たとえば、ローダーが完了する前にユーザーがページから移動した場合）、Remix は `new Error("query() call aborted...")` などのエラーではなく、`request.signal.reason` をスローします。
+ローダーが完了する前にユーザーがページから移動するなど、サーバー側のリクエストが中止された場合、Remixは`new Error("query() call aborted...")`などのエラーではなく、`request.signal.reason`をスローします。
 
 👉 **フラグを有効にする**
 
@@ -328,9 +328,9 @@ remix({
 });
 ```
 
-**コードを更新**
+**コードの更新**
 
-`handleError` 内でカスタムロジックを使用して、以前のエラーメッセージと一致させて、他のエラーと区別していた場合を除き、コードを調整する必要はありません。
+`handleError`内に、以前のエラーメッセージを一致させて他のエラーと区別するカスタムロジックがなければ、コードを調整する必要はありません。
 
 [development-strategy]: ../guides/api-development-strategy
 [fetcherpersist-rfc]: https://github.com/remix-run/remix/discussions/7698
