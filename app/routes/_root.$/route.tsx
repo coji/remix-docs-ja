@@ -3,6 +3,11 @@ import { useLoaderData, useRouteError } from '@remix-run/react'
 import { cn } from '~/libs/utils'
 import { getDoc } from '~/services/document.server'
 import markdownStyles from '~/styles/md.css?url'
+import {
+  TableOfContents,
+  TableOfContentsItem,
+  TableOfContentsTitle,
+} from './components/toc'
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: markdownStyles },
@@ -31,22 +36,20 @@ export default function Docs() {
         // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
         dangerouslySetInnerHTML={{ __html: doc.html }}
       />
+
       <div>
         {doc.headings.length > 0 && (
-          <ul className="sticky top-20 hidden gap-2 px-8 text-sm leading-4 lg:flex lg:flex-col">
-            <div>目次</div>
+          <TableOfContents>
+            <TableOfContentsTitle>目次</TableOfContentsTitle>
             {doc.headings.map((heading) => (
-              <li
+              <TableOfContentsItem
                 key={heading.slug}
-                className={cn(
-                  'text-muted-foreground hover:underline',
-                  heading.headingLevel === 'h3' && 'ml-4',
-                )}
+                className={cn(heading.headingLevel === 'h3' && 'ml-4')}
               >
                 <a href={`#${heading.slug}`}>{heading.html}</a>
-              </li>
+              </TableOfContentsItem>
             ))}
-          </ul>
+          </TableOfContents>
         )}
       </div>
     </div>
