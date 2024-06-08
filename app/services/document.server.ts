@@ -20,7 +20,7 @@ const createTableOfContentsFromHeadings = (html: string) => {
 
   const headings = $headings.toArray().map((heading) => ({
     headingLevel: heading.name,
-    html: $(heading)('a').remove().end().children().html(),
+    html: $(heading)('a').remove().end().children().text(),
     slug: heading.attributes.find((attr) => attr.name === 'id')?.value,
   }))
 
