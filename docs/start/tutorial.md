@@ -720,7 +720,7 @@ export const action = async ({
 
 フォームに入力し、保存すると、次のようなものが表示されるはずです！ <small>(目に優しく、毛深くないかもしれませんが。)</small>
 
-<img class="tutorial" loading="lazy"src="/docs-images/contacts/13.webp" />
+<img class="tutorial" loading="lazy" src="/docs-images/contacts/13.webp" />
 
 ## 変更の議論
 
@@ -1112,7 +1112,7 @@ export const loader = async ({
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/19.webp" />
 
-これは `GET` であり、 `POST` ではないため、 Remix は `action` 関数を呼び出し*ません*。 `GET` `form` を送信することは、リンクをクリックすることと同じです。 URL だけが変更されます。
+これは `GET` であり、 `POST` ではないため、 Remix は `action` 関数を呼び出し_ません_。 `GET` `form` を送信することは、リンクをクリックすることと同じです。 URL だけが変更されます。
 
 これはまた、通常のページナビゲーションを意味します。戻るボタンをクリックすると、元の場所に戻ることができます。
 
@@ -1632,7 +1632,6 @@ const Favorite: FunctionComponent<{
 [nav-link]: ../components/nav-link
 [use-fetcher]: ../hooks/use-fetcher
 [fetcher-state]: ../hooks/use-fetcher#fetcherstate
-[assets-build-directory]: ../file-conventions/remix-config#assetsbuilddirectory
 [links]: ../route/links
 [routes-file-conventions]: ../file-conventions/routes
 [quickstart]: ./quickstart
