@@ -1,5 +1,7 @@
-import rehypeShiki from '@shikijs/rehype'
+import { transformerCopyButton } from '@rehype-pretty/transformers'
+import { transformerNotationDiff } from '@shikijs/transformers'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypePrettyCode from 'rehype-pretty-code'
 import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 import rehypeStringify from 'rehype-stringify'
@@ -32,10 +34,18 @@ export function getProcessor(options?: ProcessorOptions) {
     .use(stripLinkExtPlugin, options)
     .use(remarkGfm)
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeStringify, { allowDangerousHtml: true })
+    .use(rehypePrettyCode, {
+      transformers: [
+        transformerNotationDiff(),
+        transformerCopyButton({
+          visibility: 'always',
+          feedbackDuration: 3_000,
+        }),
+      ],
+    })
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings)
     .use(rehypeRaw)
     .use(addBaseUrl)
-    .use(rehypeShiki, { theme: 'github-dark' })
+    .use(rehypeStringify, { allowDangerousHtml: true })
 }
