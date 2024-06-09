@@ -4,14 +4,18 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { processMarkdown } from '~/services/md.server'
 
+const getDocImpl = async (file: string) => {
+  const filepath = path.join('./docs', `${file}.md`)
+  const content = await fs.readFile(filepath, 'utf-8')
+  const doc = await processMarkdown(content)
+  const headings = createTableOfContentsFromHeadings(doc.html)
+  return { ...doc, headings }
+}
+
 export const getDoc = async (file: string) => {
-  return await remember(`doc-${file}`, async () => {
-    const filepath = path.join('./docs', `${file}.md`)
-    const content = await fs.readFile(filepath, 'utf-8')
-    const doc = await processMarkdown(content)
-    const headings = createTableOfContentsFromHeadings(doc.html)
-    return { ...doc, headings }
-  })
+  return process.env.NODE_ENV === 'production'
+    ? await remember(`doc-${file}`, async () => await getDocImpl(file))
+    : await getDocImpl(file)
 }
 
 // create table of contents from h2 and h3 headings
