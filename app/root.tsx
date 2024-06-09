@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react'
+import { PageLoadingProgress } from './components/page-loading-progress'
 import { ThemeProvider } from './components/theme-provider'
 import { buildPageMeta } from './libs/seo'
 import globalStyles from './styles/globals.css?url'
@@ -28,6 +29,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <PageLoadingProgress />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
