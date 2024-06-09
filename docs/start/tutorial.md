@@ -40,8 +40,6 @@ npm run dev
 
 <img class="tutorial" src="/docs-images/contacts/03.webp" />
 
-[quickstart]: https://remix.run/docs/en/v1/getting-started/quick-start
-[http-localhost-5173]: http://localhost:5173
 ## ルートルート
 
 `app/root.tsx` のファイルに注目してください。これは「ルートルート」と呼ばれるものです。これはUIで最初にレンダリングされるコンポーネントなので、通常はページのグローバルレイアウトを含みます。
@@ -140,8 +138,6 @@ export const links: LinksFunction = () => [
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/04.webp" />
 
-[links]: https://remix.run/docs/en/v1/api/links "Links API"
-[jim]: https://github.com/jxnblk "Jim's Github"
 ## コンタクトルートUI
 
 サイドバーのアイテムをクリックすると、デフォルトの404ページが表示されます。` /contacts/1`と一致するルートを作成しましょう。
@@ -263,6 +259,7 @@ const Favorite: FunctionComponent<{
 これで、リンクをクリックするか、`/contacts/1`にアクセスすると…何も新しいものは表示されませんか？
 
 <img class="tutorial" loading="lazy" alt="空白のメインコンテンツを持つコンタクトルート" src="/docs-images/contacts/05.webp" />
+
 ## ネストされたルートとアウトレット
 
 RemixはReact Router上に構築されているため、ネストされたルーティングをサポートしています。子ルートを親レイアウト内にレンダリングするには、親に[`Outlet`][outlet-component]をレンダリングする必要があります。修正しましょう。`app/root.tsx`を開いて、アウトレットをレンダリングします。
@@ -556,8 +553,6 @@ Remixは、JavaScript カンブリア爆発以前に唯一の方法であった�
 
 Remixは、このフォームナビゲーションを処理するサーバー側のコードがないため、405を送信します。
 
-[url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-[action]: https://remix.run/docs/en/v1/api/conventions#action
 ## 連絡先の作成
 
 ルートルートに `action` 関数をエクスポートすることで、新しい連絡先を作成します。ユーザーが「新規」ボタンをクリックすると、フォームはルートルートアクションに `POST` します。
@@ -792,14 +787,6 @@ export const action = async ({
 
 最後の点です。JavaScript がなければ、[`redirect`][redirect] は通常のリダイレクトになります。しかし、JavaScript を使用すると、それはクライアントサイドのリダイレクトになり、ユーザーはスクロール位置やコンポーネントの状態などのクライアントの状態を失いません。
 
-[form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
-[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-[object-from-entries]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
-[request]: https://developer.mozilla.org/en-US/docs/Web/API/Request
-[request-form-data]: https://developer.mozilla.org/en-US/docs/Web/API/Request/formData
-[redirect]: https://remix.run/docs/en/v1/api/remix#redirect
-[returning-response-instances]: https://remix.run/docs/en/v1/api/remix#returning-response-instances
-[response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
 ## 新しいレコードを編集ページにリダイレクトする
 
 リダイレクトの方法が分かったので、新しい連絡先を作成するアクションを編集ページにリダイレクトするように更新してみましょう。
@@ -938,7 +925,6 @@ export default function App() {
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/16.webp" />
 
-[`useNavigation`]: https://remix.run/docs/en/v1/api/remix#usenavigation
 ## レコードの削除
 
 連絡先ルートのコードを確認すると、削除ボタンは次のようになっています。
@@ -1084,6 +1070,7 @@ export default function EditContact() {
 `<button type="button">` は、一見冗長ですが、ボタンがフォームを送信しないようにする HTML の方法です。
 
 あと2つの機能を残すのみです。ゴールは目前です！
+
 ## `URLSearchParams` と `GET` サブミット
 
 これまで見てきたインタラクティブなUIは、URLを変更するリンクか、データを`action`関数に送信する`form`のいずれかでした。検索フィールドは興味深いもので、この両方の要素を兼ね備えています。`form`ではありますが、データの変更ではなく、URLのみを変更します。
@@ -1129,9 +1116,6 @@ export const loader = async ({
 これは`POST`ではなく`GET`であるため、Remixは`action`関数を呼び出しません。`GET`の`form`を送信することは、リンクをクリックすることと同じです。URLだけが変更されます。
 
 これは、通常のページナビゲーションであることも意味します。戻るボタンをクリックして前の場所に戻ることができます。
-
-[url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-[form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
 
 ## URLとフォーム状態の同期
 
@@ -1627,58 +1611,30 @@ const Favorite: FunctionComponent<{
 以上です！Remixを試していただきありがとうございます。このチュートリアルが、優れたユーザーエクスペリエンスを構築するための良いスタートになることを願っています。もっとできることはたくさんあるので、すべてのAPIを確認してください😀
 
 [jim]: https://blog.jim-nielsen.com
-
 [outlet-component]: ../components/outlet
-
 [link-component]: ../components/link
-
 [loader]: ../route/loader
-
 [use-loader-data]: ../hooks/use-loader-data
-
 [action]: ../route/action
-
 [params]: ../route/loader#params
-
 [form-component]: ../components/form
-
 [request]: https://developer.mozilla.org/en-US/docs/Web/API/Request
-
 [form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
-
 [object-from-entries]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
-
 [request-form-data]: https://developer.mozilla.org/en-US/docs/Web/API/Request/formData
-
 [response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
-
 [redirect]: ../utils/redirect
-
 [returning-response-instances]: ../route/loader#returning-response-instances
-
 [use-navigation]: ../hooks/use-navigation
-
 [use-navigate]: ../hooks/use-navigate
-
 [url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-
 [use-submit]: ../hooks/use-submit
-
 [nav-link]: ../components/nav-link
-
 [use-fetcher]: ../hooks/use-fetcher
-
 [fetcher-state]: ../hooks/use-fetcher#fetcherstate
-
 [assets-build-directory]: ../file-conventions/remix-config#assetsbuilddirectory
-
 [links]: ../route/links
-
 [routes-file-conventions]: ../file-conventions/routes
-
 [quickstart]: ./quickstart
-
 [http-localhost-5173]: http://localhost:5173
-
 [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/fetch
-
