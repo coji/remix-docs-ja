@@ -1,0 +1,13 @@
+diff --git a/dist/index.js b/dist/index.js
+index 98afe17f387589bd579041e06d00cea449a22885..bab2f0b12e5d5fe535110f62a5c6ef55faa9a73d 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -33,7 +33,7 @@ function parseBlockMetaString(element, filter, defaultFallback) {
+     // @ts-expect-error: TODO handle this
+     element.data?.meta ?? element.properties?.metastring ?? ""
+   );
+-  const titleMatch = meta.match(/title="([^"]*)"/);
++  const titleMatch = meta.match(/filename=([^\s"]+)/);
+   const title = titleMatch?.[1] ?? null;
+   meta = meta.replace(titleMatch?.[0] ?? "", "");
+   const captionMatch = meta.match(/caption="([^"]*)"/);

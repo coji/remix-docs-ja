@@ -11,7 +11,7 @@ order: 2
 
 👉 **このマークが表示されたら、アプリで何か操作する必要があることを意味します！**
 
-残りの部分は、情報提供と理解を深めるためのものです。始めましょう。 
+残りの部分は、情報提供と理解を深めるためのものです。始めましょう。
 
 ## セットアップ
 
@@ -111,7 +111,7 @@ export default function App() {
 }
 ```
 
-</details> 
+</details>
 
 ## `links` を使用したスタイルシートの追加
 
@@ -140,7 +140,7 @@ export const links: LinksFunction = () => [
 
 ## コンタクトルートUI
 
-サイドバーのアイテムをクリックすると、デフォルトの404ページが表示されます。` /contacts/1`と一致するルートを作成しましょう。
+サイドバーのアイテムをクリックすると、デフォルトの404ページが表示されます。`/contacts/1`と一致するルートを作成しましょう。
 
 👉 **`app/routes`ディレクトリとコンタクトルートモジュールを作成する**
 
@@ -297,7 +297,7 @@ export default function App() {
 
 これで、子ルートはアウトレットを通じてレンダリングされるはずです。
 
-<img class="tutorial" loading="lazy" alt="メインコンテンツを持つ連絡先ルート" src="/docs-images/contacts/06.webp" /> 
+<img class="tutorial" loading="lazy" alt="メインコンテンツを持つ連絡先ルート" src="/docs-images/contacts/06.webp" />
 
 ## クライアントサイドルーティング
 
@@ -346,7 +346,7 @@ export default function App() {
 }
 ```
 
-ブラウザの開発者ツールでネットワークタブを開くと、ドキュメントがもはや要求されていないことがわかります。 
+ブラウザの開発者ツールでネットワークタブを開くと、ドキュメントがもはや要求されていないことがわかります。
 
 ## データの読み込み
 
@@ -449,6 +449,7 @@ export default function App() {
   // 既存のコード
 }
 ```
+
 ## ローダーにおけるURLパラメータ
 
 👉 **サイドバーのいずれかのリンクをクリックしてください**
@@ -586,7 +587,7 @@ Web セマンティクスでは、`POST` は通常、データが変更されて
 
 実際、すべてが HTML と HTTP であるため、JavaScript を無効にしても、すべてが正常に動作します。Remix がフォームをシリアル化してサーバーに [`fetch`][fetch] リクエストを行う代わりに、ブラウザがフォームをシリアル化してドキュメントリクエストを行います。そこから、Remix はサーバーサイドでページをレンダリングして送信します。最終的に UI は同じです。
 
-しかし、スピニングファビコンや静的なドキュメントよりも優れたユーザーエクスペリエンスを実現するために、JavaScript を維持します。 
+しかし、スピニングファビコンや静的なドキュメントよりも優れたユーザーエクスペリエンスを実現するために、JavaScript を維持します。
 
 ## データの更新
 
@@ -687,7 +688,6 @@ export default function EditContact() {
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/12.webp" />
 
-
 ## `FormData`を使った連絡先情報の更新
 
 作成した編集ルートはすでに`form`をレンダリングしています。必要なのは`action`関数の追加だけです。Remixは`form`をシリアライズし、[`fetch`][fetch]を使って`POST`し、すべてのデータを自動的に再検証します。
@@ -720,7 +720,7 @@ export const action = async ({
 
 フォームに記入して保存をクリックすると、このような画面が表示されます！<small>(見やすく、もじゃもじゃしていないでしょう。) </small>
 
-<img class="tutorial" loading="lazy" src="/docs-images/contacts/13.webp" /> 
+<img class="tutorial" loading="lazy" src="/docs-images/contacts/13.webp" />
 
 ## 変異に関する議論
 
@@ -808,7 +808,7 @@ export const action = async () => {
 
 これで、「新規」をクリックすると、編集ページに移動するはずです。
 
-<img class="tutorial" loading="lazy" src="/docs-images/contacts/14.webp" /> 
+<img class="tutorial" loading="lazy" src="/docs-images/contacts/14.webp" />
 
 ## アクティブなリンクのスタイリング
 
@@ -869,7 +869,7 @@ export default function App() {
 
 `className` に関数を渡していることに注意してください。ユーザーが `<NavLink to>` と一致する URL にいる場合、`isActive` は true になります。アクティブになる *前* （データがまだロードされていない）の場合、`isPending` は true になります。これにより、ユーザーがどこにいるかを簡単に示し、リンクがクリックされたがデータがロードされる必要がある場合にすぐにフィードバックを提供できます。
 
-<img class="tutorial" loading="lazy" src="/docs-images/contacts/15.webp"/> 
+<img class="tutorial" loading="lazy" src="/docs-images/contacts/15.webp"/>
 
 ## グローバル保留UI
 
@@ -991,7 +991,6 @@ export const action = async ({
 
 `Form` を追加し、`action` を追加すると、Remix が残りを処理します。
 
-
 ## インデックスルート
 
 アプリを起動すると、リストの右側には大きな空白ページが表示されることに気付くでしょう。
@@ -1026,7 +1025,7 @@ export default function Index() {
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/18.webp" />
 
-ほら！空白がなくなりました。インデックスルートには、ダッシュボード、統計情報、フィードなどを配置することが一般的です。インデックスルートは、データの読み込みにも参加できます。 
+ほら！空白がなくなりました。インデックスルートには、ダッシュボード、統計情報、フィードなどを配置することが一般的です。インデックスルートは、データの読み込みにも参加できます。
 
 ## キャンセルボタン
 
@@ -1323,7 +1322,7 @@ export default function App() {
 
 入力するたびに`form`が自動的に送信されるようになりました！
 
-[`submit`][use-submit]への引数に注目してください。`submit`関数は、渡されたフォームをシリアライズして送信します。ここでは`event.currentTarget`を渡しています。`currentTarget`は、イベントがアタッチされているDOMノード（`form`）です。 
+[`submit`][use-submit]への引数に注目してください。`submit`関数は、渡されたフォームをシリアライズして送信します。ここでは`event.currentTarget`を渡しています。`currentTarget`は、イベントがアタッチされているDOMノード（`form`）です。
 
 ## 検索スピナーの追加
 
@@ -1482,7 +1481,7 @@ export default function App() {
 }
 ```
 
-これが最初の検索かどうかをすばやく確認した後、置き換えることを決定します。 これにより、最初の検索は新しいエントリを追加しますが、それ以降のキーストロークは現在のエントリを置き換えます。 検索を削除するために 7 回戻る代わりに、ユーザーは 1 回戻るだけで済みます。 
+これが最初の検索かどうかをすばやく確認した後、置き換えることを決定します。 これにより、最初の検索は新しいエントリを追加しますが、それ以降のキーストロークは現在のエントリを置き換えます。 検索を削除するために 7 回戻る代わりに、ユーザーは 1 回戻るだけで済みます。
 
 ## ナビゲーションなしの `Form`
 
@@ -1632,7 +1631,6 @@ const Favorite: FunctionComponent<{
 [nav-link]: ../components/nav-link
 [use-fetcher]: ../hooks/use-fetcher
 [fetcher-state]: ../hooks/use-fetcher#fetcherstate
-[assets-build-directory]: ../file-conventions/remix-config#assetsbuilddirectory
 [links]: ../route/links
 [routes-file-conventions]: ../file-conventions/routes
 [quickstart]: ./quickstart
