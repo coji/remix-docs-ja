@@ -44,20 +44,22 @@ export default function Docs() {
 
       <div className="sticky top-0 z-10 order-1 bg-card md:static md:inset-auto md:order-2 md:block">
         {doc.headings.length > 0 && (
-          <TableOfContents>
-            <TableOfContentsTitle>目次</TableOfContentsTitle>
-            {doc.headings.map((heading) => (
-              <TableOfContentsItem
-                key={heading.slug}
-                className={cn(heading.headingLevel === 'h3' && 'ml-4')}
-              >
-                <a href={`#${heading.slug}`}>{heading.html}</a>
-              </TableOfContentsItem>
-            ))}
-          </TableOfContents>
-        )}
+          <>
+            <TableOfContents>
+              <TableOfContentsTitle>目次</TableOfContentsTitle>
+              {doc.headings.map((heading) => (
+                <TableOfContentsItem
+                  key={heading.slug}
+                  className={cn(heading.headingLevel === 'h3' && 'ml-4')}
+                >
+                  <a href={`#${heading.slug}`}>{heading.html}</a>
+                </TableOfContentsItem>
+              ))}
+            </TableOfContents>
 
-        <MobileToc headings={doc.headings} />
+            <MobileToc headings={doc.headings} />
+          </>
+        )}
       </div>
     </div>
   )
