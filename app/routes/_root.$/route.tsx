@@ -1,5 +1,12 @@
-import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
-import { useLoaderData, useRouteError } from '@remix-run/react'
+import {
+  unstable_defineLoader as defineLoader,
+  type LinksFunction,
+} from '@remix-run/node'
+import {
+  isRouteErrorResponse,
+  useLoaderData,
+  useRouteError,
+} from '@remix-run/react'
 import { cn } from '~/libs/utils'
 import { getDoc } from '~/services/document.server'
 import markdownStyles from '~/styles/md.css?url'
@@ -12,19 +19,20 @@ import {
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: markdownStyles },
 ]
-
-export const loader = async ({ params, response }: LoaderFunctionArgs) => {
+export const loader = defineLoader(async ({ params, response }) => {
   const filename = params['*'] ?? 'index'
   const doc = await getDoc(filename)
-
-  if (response) {
-    response.headers.set(
-      'Cache-Control',
-      's-maxage=600, stale-while-revalidate=120',
-    )
+  if (!doc) {
+    response.status = 404
+    throw new Response('File not found', { status: 404 })
   }
+
+  response.headers.set(
+    'Cache-Control',
+    's-maxage=600, stale-while-revalidate=120',
+  )
   return { doc }
-}
+})
 
 export default function Docs() {
   const { doc } = useLoaderData<typeof loader>()
@@ -59,13 +67,12 @@ export default function Docs() {
 export const ErrorBoundary = () => {
   const error = useRouteError()
 
-  if (error instanceof Error) {
+  if (isRouteErrorResponse(error)) {
     return (
       <div>
-        <h1 className="font-bold text-destructive">Oops! An error occurred.</h1>
-        <p>{error.name}</p>
-        <p>{error.message}</p>
-        <p>{error.stack}</p>
+        <h1>
+          {error.status} {error.data}
+        </h1>
       </div>
     )
   }
@@ -73,7 +80,7 @@ export const ErrorBoundary = () => {
   return (
     <div>
       <h1>Oops! An error occurred.</h1>
-      <pre>{String(error)}</pre>
+      <pre>{JSON.stringify(error)}</pre>
     </div>
   )
 }

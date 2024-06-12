@@ -6,10 +6,14 @@ import { processMarkdown } from '~/services/md.server'
 
 const getDocImpl = async (file: string) => {
   const filepath = path.join('./docs', `${file}.md`)
-  const content = await fs.readFile(filepath, 'utf-8')
-  const doc = await processMarkdown(content)
-  const headings = createTableOfContentsFromHeadings(doc.html)
-  return { ...doc, headings }
+  try {
+    const content = await fs.readFile(filepath, 'utf-8')
+    const doc = await processMarkdown(content)
+    const headings = createTableOfContentsFromHeadings(doc.html)
+    return { ...doc, headings }
+  } catch (e) {
+    return null
+  }
 }
 
 export const getDoc = async (file: string) => {

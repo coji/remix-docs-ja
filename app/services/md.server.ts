@@ -22,7 +22,8 @@ export async function processMarkdown(
   options?: ProcessorOptions,
 ) {
   processor = processor || (await getProcessor(options))
-  const { attributes, body: raw } = parseFrontMatter(content)
+  const { attributes, body: raw } =
+    parseFrontMatter<Record<string, number | string>>(content)
   const vfile = await processor.process(raw)
   const html = vfile.value.toString()
   return { attributes, raw, html }
