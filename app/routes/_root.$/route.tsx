@@ -2,14 +2,11 @@ import {
   unstable_defineLoader as defineLoader,
   type LinksFunction,
 } from '@remix-run/node'
-import {
-  isRouteErrorResponse,
-  useLoaderData,
-  useRouteError,
-} from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 import { cn } from '~/libs/utils'
 import { getDoc } from '~/services/document.server'
 import markdownStyles from '~/styles/md.css?url'
+import { MobileToc } from './components/mobile-toc'
 import {
   TableOfContents,
   TableOfContentsItem,
@@ -38,14 +35,14 @@ export default function Docs() {
   const { doc } = useLoaderData<typeof loader>()
 
   return (
-    <div className="relative grid grid-cols-1 lg:grid-cols-[auto_1fr]">
+    <div className="relative grid max-h-full grid-cols-1 grid-rows-1 md:grid-cols-[auto_minmax(10rem,1fr)]">
       <div
-        className="md-prose prose mb-32 overflow-x-hidden px-4 py-8 dark:prose-invert md:py-2"
+        className="md-prose prose order-2 mb-32 scroll-pt-32 overflow-x-hidden scroll-smooth px-4 py-8 dark:prose-invert md:order-1 md:py-2"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
         dangerouslySetInnerHTML={{ __html: doc.html }}
       />
 
-      <div>
+      <div className="sticky top-0 z-10 order-1 bg-card md:static md:inset-auto md:order-2 md:block">
         {doc.headings.length > 0 && (
           <TableOfContents>
             <TableOfContentsTitle>目次</TableOfContentsTitle>
@@ -59,28 +56,9 @@ export default function Docs() {
             ))}
           </TableOfContents>
         )}
+
+        <MobileToc headings={doc.headings} />
       </div>
-    </div>
-  )
-}
-
-export const ErrorBoundary = () => {
-  const error = useRouteError()
-
-  if (isRouteErrorResponse(error)) {
-    return (
-      <div>
-        <h1>
-          {error.status} {error.data}
-        </h1>
-      </div>
-    )
-  }
-
-  return (
-    <div>
-      <h1>Oops! An error occurred.</h1>
-      <pre>{JSON.stringify(error)}</pre>
     </div>
   )
 }
