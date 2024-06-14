@@ -2,7 +2,8 @@ import {
   unstable_defineLoader as defineLoader,
   type LinksFunction,
 } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { useLoaderData, type MetaArgs_SingleFetch } from '@remix-run/react'
+import { buildPageMeta } from '~/libs/seo'
 import { cn } from '~/libs/utils'
 import { getDoc } from '~/services/document.server'
 import markdownStyles from '~/styles/md.css?url'
@@ -13,9 +14,24 @@ import {
   TableOfContentsTitle,
 } from './components/toc'
 
+export const meta = ({
+  location,
+  data,
+}: MetaArgs_SingleFetch<typeof loader>) => {
+  if (!data) {
+    return []
+  }
+  const { doc } = data
+  return buildPageMeta({
+    title: String(doc.attributes.title),
+    pathname: location.pathname,
+  })
+}
+
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: markdownStyles },
 ]
+
 export const loader = defineLoader(async ({ params, response }) => {
   const filename = params['*'] ?? 'index'
   const doc = await getDoc(filename)

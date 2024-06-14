@@ -12,7 +12,7 @@ import { buildPageMeta } from './libs/seo'
 import globalStyles from './styles/globals.css?url'
 
 export const meta: MetaFunction = () => {
-  return buildPageMeta()
+  return buildPageMeta({ title: undefined, pathname: '/' })
 }
 
 export const links: LinksFunction = () => [
