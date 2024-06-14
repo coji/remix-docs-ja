@@ -60,7 +60,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
             fontSize: '32px',
           }}
         >
-          <div>Remix ドキュメント日本語版</div>
+          {filename !== 'index' && <div>Remix ドキュメント日本語版</div>}
           <div style={{ flexGrow: '1' }} />
           {/* biome-ignore lint/a11y/useAltText: <explanation> */}
           <img
@@ -81,5 +81,11 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
       ],
     },
   )
+
+  response.headers.set(
+    'Cache-Control',
+    's-maxage=600, stale-while-revalidate=120',
+  )
+
   return response
 }
