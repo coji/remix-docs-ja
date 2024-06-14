@@ -1,4 +1,9 @@
-export const buildPageMeta = (title?: string, slug?: string) => {
+interface buildPageMetaProps {
+  title?: string
+  pathname?: string
+}
+
+export const buildPageMeta = ({ title, pathname }: buildPageMetaProps) => {
   return [
     {
       title: title
@@ -7,7 +12,7 @@ export const buildPageMeta = (title?: string, slug?: string) => {
     },
     {
       property: 'og:url',
-      content: `https://remix-docs-ja.techtalk.jp/${slug}`,
+      content: `https://remix-docs-ja.techtalk.jp${pathname}`,
     },
     {
       property: 'og:title',
@@ -17,7 +22,9 @@ export const buildPageMeta = (title?: string, slug?: string) => {
     },
     {
       property: 'og:image',
-      content: 'https://remix.run/img/og.1.jpg',
+      content: pathname
+        ? `https://remix-docs-ja.techtalk.jp/resources/og${pathname}`
+        : 'https://remix.run/img/og.1.jpg',
     },
     {
       property: 'twitter:card',
@@ -31,7 +38,9 @@ export const buildPageMeta = (title?: string, slug?: string) => {
     },
     {
       property: 'twitter:image',
-      content: 'https://remix.run/img/og.1.jpg',
+      content: pathname
+        ? `https://remix-docs-ja.techtalk.jp/resources/og${pathname}`
+        : 'https://remix.run/img/og.1.jpg',
     },
     {
       property: 'og:type',

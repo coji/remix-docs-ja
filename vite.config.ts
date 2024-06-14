@@ -17,4 +17,7 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  build: {
+    ssrEmitAssets: true,
+  },
 })
