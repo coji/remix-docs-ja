@@ -2,9 +2,9 @@ import type { LoaderFunctionArgs } from '@remix-run/node'
 import { Link, Outlet, useLoaderData, useLocation } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { ModeToggle } from '~/components/dark-mode-toggle'
+import { SearchPanel } from '~/routes/resources.search/route'
 import { buildMenu, getCurrentMenuItem } from '~/services/menu.server'
 import { MobileMenu, SideMenu } from './components'
-
 export const shouldRevalidate = () => true
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -43,6 +43,8 @@ export default function Layout() {
             </h1>
             <ModeToggle />
           </div>
+          <SearchPanel />
+
           <div className="flex-1" />
           <a
             className="hover text-sm hover:underline"
