@@ -40,6 +40,7 @@ export const SearchPanel = () => {
         variant="outline"
         className="md:inline-flex md:w-48 md:gap-2 md:bg-muted md:px-3 md:text-muted-foreground"
         size="icon"
+        type="button"
         onClick={handleClickSearchInput}
       >
         <SearchIcon size="16" />

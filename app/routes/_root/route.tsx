@@ -53,7 +53,7 @@ export default function Layout() {
           <div className="flex-1" />
 
           <a
-            className="hover text-sm hover:underline"
+            className="hover ml-2 text-sm hover:underline"
             href={`https://remix.run/docs${pathname}`}
           >
             English
