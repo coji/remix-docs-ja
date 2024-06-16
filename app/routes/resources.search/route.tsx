@@ -3,13 +3,26 @@ import {
   useFetcher,
   type ClientLoaderFunctionArgs,
 } from '@remix-run/react'
-import { CommandIcon, LoaderIcon, SearchIcon } from 'lucide-react'
-import React from 'react'
-import { Button } from '~/components/ui/button'
-import { Dialog, DialogContent, DialogHeader } from '~/components/ui/dialog'
-import { Input } from '~/components/ui/input'
-import { HStack } from '~/components/ui/stack'
+import React, { useCallback } from 'react'
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  HStack,
+  Input,
+} from '~/components/ui'
 import type { Pagefind } from '~/services/pagefind.types'
+import {
+  SearchLoading,
+  SearchResult,
+  SearchResultDescription,
+  SearchResultList,
+  SearchResultListItem,
+  SearchResultTitle,
+  SearchTrigger,
+} from './components'
+import { useHotkey } from './hooks'
 
 export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
   const url = new URL(request.url)
@@ -30,71 +43,45 @@ export const SearchPanel = () => {
   const [isOpen, setIsOpen] = React.useState(false)
   const query = String(fetcher.formData?.get('q'))
 
-  const handleClickSearchInput = () => {
-    setIsOpen(true)
-  }
+  useHotkey(
+    'k',
+    useCallback(() => {
+      setIsOpen(true)
+    }, []),
+  )
 
   return (
     <div>
-      <Button
-        variant="outline"
-        className="md:inline-flex md:w-48 md:gap-2 md:bg-muted md:px-3 md:text-muted-foreground"
-        size="icon"
-        type="button"
-        onClick={handleClickSearchInput}
-      >
-        <SearchIcon size="16" />
-        <div className="hidden md:block">Search...</div>
-        <div className="hidden flex-1 md:block" />
-        <div className="hidden h-5 w-5 rounded-md bg-card md:grid md:place-content-center">
-          <CommandIcon size="12" />
-        </div>
-        <div className="hidden h-5 w-5 rounded-md bg-card md:grid md:place-content-center">
-          K
-        </div>
-      </Button>
+      <SearchTrigger onClick={() => setIsOpen(true)} />
 
-      <Dialog
-        open={isOpen}
-        modal={true}
-        onOpenChange={(open) => setIsOpen(open)}
-      >
+      <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <DialogContent className="p-4">
           <DialogHeader>
             <fetcher.Form action="/resources/search">
-              <HStack className="items-center">
+              <HStack>
                 <Input id="query" name="q" placeholder="Search..." />
                 <Button size="sm">Search</Button>
               </HStack>
             </fetcher.Form>
           </DialogHeader>
 
-          <div className="max-h-96 overflow-auto">
-            {fetcher.state === 'loading' && (
-              <div className="mx-auto text-center">
-                <LoaderIcon size="16" className="block animate-spin">
-                  Loading...
-                </LoaderIcon>
-              </div>
-            )}
+          <SearchResult>
+            {fetcher.state === 'loading' && <SearchLoading />}
             {fetcher.data && (
-              <ul>
+              <SearchResultList>
                 {fetcher.data.results.map((result) => (
-                  <li
-                    key={`${query}_${result.url}`}
-                    className="flex flex-col gap-4"
-                  >
+                  <SearchResultListItem key={`${query}_${result.url}`}>
                     <Link to={result.url} onClick={() => setIsOpen(false)}>
-                      <div>{result.meta.title}</div>
-                      <div className="text-xs text-muted-foreground">
+                      <SearchResultTitle>{result.meta.title}</SearchResultTitle>
+                      <SearchResultDescription>
                         {result.url}
-                      </div>
+                      </SearchResultDescription>
                     </Link>
-                  </li>
+                  </SearchResultListItem>
                 ))}
-              </ul>
+              </SearchResultList>
             )}
-          </div>
+          </SearchResult>
         </DialogContent>
       </Dialog>
     </div>
