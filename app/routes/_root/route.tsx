@@ -44,7 +44,7 @@ export default function Layout() {
               </Link>
             </h1>
 
-            <HStack className="gap-0.5">
+            <HStack className="gap-2">
               <ModeToggle />
               <SearchPanel />
             </HStack>
