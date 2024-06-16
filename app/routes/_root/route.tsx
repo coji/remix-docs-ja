@@ -2,9 +2,10 @@ import type { LoaderFunctionArgs } from '@remix-run/node'
 import { Link, Outlet, useLoaderData, useLocation } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { ModeToggle } from '~/components/dark-mode-toggle'
+import { HStack } from '~/components/ui/stack'
+import { SearchPanel } from '~/routes/resources.search/route'
 import { buildMenu, getCurrentMenuItem } from '~/services/menu.server'
 import { MobileMenu, SideMenu } from './components'
-
 export const shouldRevalidate = () => true
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -38,12 +39,19 @@ export default function Layout() {
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold">
               <Link to="/" prefetch="intent">
-                Remix ドキュメント日本語版
+                Remix ドキュメント
+                <span className="whitespace-nowrap">日本語版</span>
               </Link>
             </h1>
-            <ModeToggle />
+
+            <HStack className="gap-0.5">
+              <ModeToggle />
+              <SearchPanel />
+            </HStack>
           </div>
+
           <div className="flex-1" />
+
           <a
             className="hover text-sm hover:underline"
             href={`https://remix.run/docs${pathname}`}

@@ -17,7 +17,5 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
-  build: {
-    ssrEmitAssets: true,
-  },
+  build: { rollupOptions: { external: ['/pagefind/pagefind.js?url'] } },
 })
