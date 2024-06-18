@@ -26,14 +26,14 @@ import { useHotkey } from './hooks'
 
 export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
   const url = new URL(request.url)
-  const search = url.searchParams.get('q')
-  if (!search) return { results: [] }
+  const query = url.searchParams.get('q')
+  if (!query) return { results: [] }
 
   const pagefind = (await import(
     '/pagefind/pagefind.js?url'
   )) as unknown as Pagefind
   await pagefind.init()
-  const ret = await pagefind.search(search)
+  const ret = await pagefind.search(query)
   const results = await Promise.all(ret.results.map((result) => result.data()))
   return { results }
 }
