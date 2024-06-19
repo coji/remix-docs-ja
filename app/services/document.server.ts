@@ -22,6 +22,21 @@ export const getDoc = async (file: string) => {
     : await getDocImpl(file)
 }
 
+export const getDocJson = async (file: string) => {
+  const filepath = path.join('./public/docs', `${file}.json`)
+  try {
+    const content = await fs.readFile(filepath, 'utf-8')
+    return JSON.parse(content) as {
+      attributes: { title: string }
+      raw: string
+      html: string
+      headings: { headingLevel: string; html: string; slug: string }[]
+    }
+  } catch (e) {
+    return null
+  }
+}
+
 // create table of contents from h2 and h3 headings
 const createTableOfContentsFromHeadings = (html: string) => {
   const $headings = $(html)('h2,h3')
