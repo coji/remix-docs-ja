@@ -5,7 +5,7 @@ import {
 import { useLoaderData, type MetaArgs_SingleFetch } from '@remix-run/react'
 import { buildPageMeta } from '~/libs/seo'
 import { cn } from '~/libs/utils'
-import { getDoc } from '~/services/document.server'
+import { getDocJson } from '~/services/document.server'
 import markdownStyles from '~/styles/md.css?url'
 import { MobileToc } from './components/mobile-toc'
 import {
@@ -34,7 +34,7 @@ export const links: LinksFunction = () => [
 
 export const loader = defineLoader(async ({ params, response }) => {
   const filename = params['*'] ?? 'index'
-  const doc = await getDoc(filename)
+  const doc = await getDocJson(filename)
   if (!doc) {
     response.status = 404
     throw new Response('File not found', { status: 404 })

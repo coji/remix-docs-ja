@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
 import { ImageResponse } from '@vercel/og'
-import { getDoc } from '~/services/document.server'
+import { getDocJson } from '~/services/document.server'
 import { getFontData } from './functions/get-font-data.server'
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -11,7 +11,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const doc =
     filename === 'index'
       ? { attributes: { title: 'Remixドキュメント日本語版' } }
-      : await getDoc(filename)
+      : await getDocJson(filename)
   if (!doc) {
     return new Response('Not Found', { status: 404 })
   }
