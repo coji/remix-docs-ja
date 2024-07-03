@@ -7,3 +7,4 @@ node_modules
 vite.config.ts.timestamp*
 public/pagefind
 public/docs
+public/ogp
