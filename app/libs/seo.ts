@@ -4,6 +4,8 @@ interface buildPageMetaProps {
 }
 
 export const buildPageMeta = ({ title, pathname }: buildPageMetaProps) => {
+  const ogpImage = `${pathname === '/' ? '/index' : pathname}.png`
+
   return [
     {
       title: title
@@ -23,7 +25,7 @@ export const buildPageMeta = ({ title, pathname }: buildPageMetaProps) => {
     {
       property: 'og:image',
       content: pathname
-        ? `https://remix-docs-ja.techtalk.jp/resources/og${pathname}`
+        ? `https://remix-docs-ja.techtalk.jp/ogp${ogpImage}`
         : 'https://remix.run/img/og.1.jpg',
     },
     {
@@ -39,7 +41,7 @@ export const buildPageMeta = ({ title, pathname }: buildPageMetaProps) => {
     {
       property: 'twitter:image',
       content: pathname
-        ? `https://remix-docs-ja.techtalk.jp/resources/og${pathname}`
+        ? `https://remix-docs-ja.techtalk.jp/ogp${ogpImage}`
         : 'https://remix.run/img/og.1.jpg',
     },
     {

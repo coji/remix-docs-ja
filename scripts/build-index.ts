@@ -3,6 +3,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import * as pagefind from 'pagefind'
 import { getDoc } from '~/services/document.server'
+import { getOgpImageResponse } from '~/services/ogp-image.server'
 
 const buildIndex = async () => {
   const { index } = await pagefind.createIndex({})
@@ -13,6 +14,8 @@ const buildIndex = async () => {
     const pathname = filename.replace(/^docs\//, '').replace(/\.md$/, '')
     const doc = await getDoc(pathname)
     if (!doc) continue
+
+    console.log(filename)
 
     const htmlFilename = path.join('public/docs', `${pathname}.json`)
     const htmlDirname = path.dirname(htmlFilename)
@@ -29,6 +32,17 @@ const buildIndex = async () => {
         url: pathname,
       })
     }
+
+    const ogpImage = await getOgpImageResponse(
+      new Request(`https://remix.run/docs/${pathname}`),
+      pathname,
+    )
+
+    await fs.mkdir(path.dirname(`public/ogp/${pathname}`), { recursive: true })
+    await fs.writeFile(
+      `public/ogp/${pathname}.png`,
+      Buffer.from(await ogpImage.arrayBuffer()),
+    )
   }
 
   await index.writeFiles({ outputPath: 'public/pagefind' })
