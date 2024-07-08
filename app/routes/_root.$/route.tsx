@@ -10,7 +10,7 @@ import {
 import { useEffect, useRef } from 'react'
 import { buildPageMeta } from '~/libs/seo'
 import { cn } from '~/libs/utils'
-import { JobBoard } from '~/routes/job-board'
+import { JobBoard } from '~/routes/job-board.widget'
 import { getDocJson } from '~/services/document.server'
 import markdownStyles from '~/styles/md.css?url'
 import { MobileToc } from './components/mobile-toc'
