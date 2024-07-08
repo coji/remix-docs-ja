@@ -1,4 +1,4 @@
-import { unstable_defineLoader as defineLoader } from '@remix-run/node'
+import { unstable_defineLoader as defineLoader, json } from '@remix-run/node'
 import { Link, useFetcher, useLocation } from '@remix-run/react'
 import { ChevronsRightIcon } from 'lucide-react'
 import { useEffect } from 'react'
@@ -14,7 +14,16 @@ export const loader = defineLoader(() => {
     )
   })
   const job = openJobs[Math.floor(Math.random() * openJobs.length)]
-  return { job, count: openJobs.length }
+
+  // キャッシュ完全無効
+  return json(
+    { job, count: openJobs.length },
+    {
+      headers: {
+        'Cache-Control': 'no-store',
+      },
+    },
+  )
 })
 
 interface JobBoardProps extends React.HTMLAttributes<HTMLDivElement> {}
