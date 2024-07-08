@@ -9,14 +9,19 @@ export const SideMenuCategoryTitle = twc.div`px-2 py-1`
 export const SideMenuItem = twc.div`pl-4 leading-6`
 export const SideMenuNavLink = twc.a`hover:underline aria-[current]:font-bold aria-[current]:text-foreground`
 
-interface MobileTocProps {
+interface MobileTocProps extends React.HTMLAttributes<HTMLDivElement> {
   headings: { slug?: string; headingLevel: string; html: string }[]
 }
-export const MobileToc = ({ headings }: MobileTocProps) => {
+export const MobileToc = ({ headings, className }: MobileTocProps) => {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <div className="sticky top-0 max-h-dvh flex-col overflow-auto border-b md:hidden">
+    <div
+      className={cn(
+        'max-h-dvh flex-col overflow-auto border-b md:hidden',
+        className,
+      )}
+    >
       <Button
         type="button"
         variant="ghost"
@@ -27,7 +32,6 @@ export const MobileToc = ({ headings }: MobileTocProps) => {
         目次
         <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
       </Button>
-
       {isOpen && (
         <div className="flex flex-col gap-1">
           {headings.map((heading) => {

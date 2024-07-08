@@ -2,9 +2,15 @@ import {
   unstable_defineLoader as defineLoader,
   type LinksFunction,
 } from '@remix-run/node'
-import { useLoaderData, type MetaArgs_SingleFetch } from '@remix-run/react'
+import {
+  useLoaderData,
+  useLocation,
+  type MetaArgs_SingleFetch,
+} from '@remix-run/react'
+import { useEffect, useRef } from 'react'
 import { buildPageMeta } from '~/libs/seo'
 import { cn } from '~/libs/utils'
+import { JobBoard } from '~/routes/resources.job-board'
 import { getDocJson } from '~/services/document.server'
 import markdownStyles from '~/styles/md.css?url'
 import { MobileToc } from './components/mobile-toc'
@@ -49,19 +55,43 @@ export const loader = defineLoader(async ({ params, response }) => {
 
 export default function Docs() {
   const { doc } = useLoaderData<typeof loader>()
+  const { hash, pathname } = useLocation()
+  const mainRef = useRef<HTMLDivElement>(null)
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (hash) {
+      setTimeout(() => {
+        const element = document.querySelector(
+          decodeURIComponent(location.hash),
+        )
+        if (element) {
+          element.scrollIntoView()
+        }
+      }, 100)
+    } else {
+      mainRef.current?.scrollTo(0, 0)
+    }
+  }, [hash, pathname])
 
   return (
-    <div className="relative grid max-h-full grid-cols-1 grid-rows-1 md:grid-cols-[auto_minmax(10rem,1fr)]">
+    <div className="grid grid-cols-1 grid-rows-[auto_1fr] md:grid-cols-[auto_minmax(14rem,1fr)]">
       <div
-        className="md-prose prose order-2 mb-32 scroll-pt-32 overflow-x-hidden scroll-smooth px-4 py-8 dark:prose-invert md:order-1 md:py-2"
+        ref={mainRef}
+        className={cn(
+          'md-prose prose order-2 overflow-auto scroll-smooth px-4 pb-32 pt-8 dark:prose-invert md:order-1 md:pt-2',
+          'max-w-none',
+        )}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
         dangerouslySetInnerHTML={{ __html: doc.html }}
       />
 
-      <div className="sticky top-0 z-10 order-1 bg-card md:static md:inset-auto md:order-2 md:block">
+      <div className="order-1 grid grid-rows-[auto_auto_auto] md:order-2 md:mr-2 md:grid-rows-[auto_1fr] md:gap-4">
+        <JobBoard className="order-2" />
+
         {doc.headings.length > 0 && (
           <>
-            <TableOfContents>
+            <TableOfContents className="order-3">
               <TableOfContentsTitle>目次</TableOfContentsTitle>
               {doc.headings.map((heading) => (
                 <TableOfContentsItem
@@ -73,7 +103,7 @@ export default function Docs() {
               ))}
             </TableOfContents>
 
-            <MobileToc headings={doc.headings} />
+            <MobileToc className="order-1" headings={doc.headings} />
           </>
         )}
       </div>
