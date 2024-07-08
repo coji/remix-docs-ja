@@ -75,19 +75,18 @@ export default function Docs() {
   }, [hash, pathname])
 
   return (
-    <div className="grid grid-cols-1 grid-rows-[auto_1fr] md:grid-cols-[auto_minmax(10rem,1fr)]">
+    <div className="grid grid-cols-1 grid-rows-[auto_1fr] md:grid-cols-[auto_minmax(14rem,1fr)]">
       <div
         ref={mainRef}
         className={cn(
           'md-prose prose order-2 overflow-auto scroll-smooth px-4 pb-32 pt-8 dark:prose-invert md:order-1 md:pt-2',
-          'min-w-[40ch]',
+          'max-w-none',
         )}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
         dangerouslySetInnerHTML={{ __html: doc.html }}
       />
 
-      <div className="order-1 grid grid-rows-[auto_auto_auto] bg-card md:order-2 md:mr-2 md:grid-rows-[auto_1fr] md:gap-4">
-        {/* job board here */}
+      <div className="order-1 grid grid-rows-[auto_auto_auto] md:order-2 md:mr-2 md:grid-rows-[auto_1fr] md:gap-4">
         <JobBoard className="order-2" />
 
         {doc.headings.length > 0 && (
