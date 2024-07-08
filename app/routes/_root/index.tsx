@@ -5,6 +5,7 @@ import { HStack } from '~/components/ui/stack'
 import { SearchPanel } from '~/routes/resources.search/route'
 import { buildMenu, getCurrentMenuItem } from '~/services/menu.server'
 import { MobileMenu, SideMenu } from './components'
+
 export const shouldRevalidate = () => true
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

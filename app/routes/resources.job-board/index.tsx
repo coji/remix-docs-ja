@@ -25,7 +25,7 @@ export const JobBoard = ({ className }: JobBoardProps) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    fetcher.load('/job-board/widget')
+    fetcher.load('/resources/job-board')
   }, [pathname])
 
   const job = fetcher?.data?.job
