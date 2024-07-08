@@ -55,11 +55,11 @@ export const loader = defineLoader(async ({ params, response }) => {
 
 export default function Docs() {
   const { doc } = useLoaderData<typeof loader>()
-  const { hash } = useLocation()
+  const { hash, pathname } = useLocation()
   const mainRef = useRef<HTMLDivElement>(null)
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    console.log(hash)
     if (hash) {
       setTimeout(() => {
         const element = document.querySelector(
@@ -69,16 +69,18 @@ export default function Docs() {
           element.scrollIntoView()
         }
       }, 100)
+    } else {
+      mainRef.current?.scrollTo(0, 0)
     }
-  }, [hash])
+  }, [hash, pathname])
 
   return (
     <div className="grid grid-cols-1 grid-rows-[auto_1fr] md:grid-cols-[auto_minmax(10rem,1fr)]">
       <div
         ref={mainRef}
         className={cn(
-          'md-prose prose order-2 scroll-pt-32 overflow-auto scroll-smooth px-4 pb-32 pt-8 dark:prose-invert md:order-1 md:pt-2',
-          'w-auto',
+          'md-prose prose order-2 overflow-auto scroll-smooth px-4 pb-32 pt-8 dark:prose-invert md:order-1 md:pt-2',
+          'min-w-[40ch]',
         )}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
         dangerouslySetInnerHTML={{ __html: doc.html }}
