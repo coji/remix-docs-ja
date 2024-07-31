@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs } from '@remix-run/node'
 import { Link, Outlet, useLoaderData, useLocation } from '@remix-run/react'
 import { ModeToggle } from '~/components/dark-mode-toggle'
 import { HStack } from '~/components/ui/stack'
-import { SearchPanel } from '~/routes/resources.search/route'
+import { SearchPanel } from '~/routes/resources.search'
 import { buildMenu, getCurrentMenuItem } from '~/services/menu.server'
 import { MobileMenu, SideMenu } from './components'
 

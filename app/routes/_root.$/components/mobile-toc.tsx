@@ -16,12 +16,7 @@ export const MobileToc = ({ headings, className }: MobileTocProps) => {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <div
-      className={cn(
-        'max-h-dvh flex-col overflow-auto border-b md:hidden',
-        className,
-      )}
-    >
+    <div className={cn('flex-col overflow-auto border-b md:hidden', className)}>
       <Button
         type="button"
         variant="ghost"

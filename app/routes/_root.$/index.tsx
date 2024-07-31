@@ -8,6 +8,7 @@ import {
   type MetaArgs_SingleFetch,
 } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
+import { Stack } from '~/components/ui'
 import { buildPageMeta } from '~/libs/seo'
 import { cn } from '~/libs/utils'
 import { JobBoard } from '~/routes/resources.job-board'
@@ -86,12 +87,12 @@ export default function Docs() {
         dangerouslySetInnerHTML={{ __html: doc.html }}
       />
 
-      <div className="order-1 grid grid-rows-[auto_auto_auto] md:order-2 md:mr-2 md:grid-rows-[auto_1fr] md:gap-4">
-        <JobBoard className="order-2" />
+      <Stack className="order-1 gap-0 overflow-auto md:order-2 md:mr-2 md:gap-4">
+        <JobBoard className="hidden md:block" />
 
         {doc.headings.length > 0 && (
           <>
-            <TableOfContents className="order-3">
+            <TableOfContents>
               <TableOfContentsTitle>目次</TableOfContentsTitle>
               {doc.headings.map((heading) => (
                 <TableOfContentsItem
@@ -103,10 +104,10 @@ export default function Docs() {
               ))}
             </TableOfContents>
 
-            <MobileToc className="order-1" headings={doc.headings} />
+            <MobileToc headings={doc.headings} />
           </>
         )}
-      </div>
+      </Stack>
     </div>
   )
 }
