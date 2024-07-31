@@ -8,6 +8,7 @@ import {
   type MetaArgs_SingleFetch,
 } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
+import { Stack } from '~/components/ui'
 import { buildPageMeta } from '~/libs/seo'
 import { cn } from '~/libs/utils'
 import { JobBoard } from '~/routes/resources.job-board'
@@ -86,8 +87,8 @@ export default function Docs() {
         dangerouslySetInnerHTML={{ __html: doc.html }}
       />
 
-      <div className="order-1 grid gap-4 overflow-auto md:order-2 md:mr-2">
-        <JobBoard />
+      <Stack className="order-1 gap-0 overflow-auto md:order-2 md:mr-2 md:gap-4">
+        <JobBoard className="hidden md:block" />
 
         {doc.headings.length > 0 && (
           <>
@@ -106,7 +107,7 @@ export default function Docs() {
             <MobileToc headings={doc.headings} />
           </>
         )}
-      </div>
+      </Stack>
     </div>
   )
 }
