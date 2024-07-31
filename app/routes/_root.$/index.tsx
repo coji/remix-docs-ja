@@ -86,12 +86,12 @@ export default function Docs() {
         dangerouslySetInnerHTML={{ __html: doc.html }}
       />
 
-      <div className="order-1 grid grid-rows-[auto_auto_auto] md:order-2 md:mr-2 md:grid-rows-[auto_1fr] md:gap-4">
-        <JobBoard className="order-2" />
+      <div className="order-1 grid gap-4 overflow-auto md:order-2 md:mr-2">
+        <JobBoard />
 
         {doc.headings.length > 0 && (
           <>
-            <TableOfContents className="order-3">
+            <TableOfContents>
               <TableOfContentsTitle>目次</TableOfContentsTitle>
               {doc.headings.map((heading) => (
                 <TableOfContentsItem
@@ -103,7 +103,7 @@ export default function Docs() {
               ))}
             </TableOfContents>
 
-            <MobileToc className="order-1" headings={doc.headings} />
+            <MobileToc headings={doc.headings} />
           </>
         )}
       </div>
