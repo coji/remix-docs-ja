@@ -4,7 +4,7 @@ title: Link
 
 # `<Link>`
 
-クライアントサイドルーティングでナビゲーションを有効にするための `<a href>` ラッパーです。
+クライアントサイドルーティングによるナビゲーションを可能にする `<a href>` ラッパー。
 
 ```tsx
 import { Link } from "@remix-run/react";
@@ -12,7 +12,7 @@ import { Link } from "@remix-run/react";
 <Link to="/dashboard">ダッシュボード</Link>;
 ```
 
-<docs-info>スプラットルート内の相対的な `<Link to>` の動作に関する `future.v3_relativeSplatPath` の未来フラグの動作については、`useResolvedPath` ドキュメントの [スプラットパス][relativesplatpath] セクションを参照してください。</docs-info>
+<docs-info>相対的な `<Link to>` の動作については、`future.v3_relativeSplatPath` 未来フラグの`useResolvedPath` ドキュメントの[スプラットパス][relativesplatpath] セクションを参照してください。</docs-info>
 
 ## プロパティ
 
@@ -40,7 +40,7 @@ import { Link } from "@remix-run/react";
 
 ### `discover`
 
-[`future.unstable_fogOfWar`][fog-of-war] を使用する場合、ルートの検出動作を定義します。
+[`future.unstable_lazyRouteDiscovery`][lazy-route-discovery] を使用する場合のルート検出動作を定義します。
 
 ```tsx
 <>
@@ -49,8 +49,8 @@ import { Link } from "@remix-run/react";
 </>
 ```
 
-- **render** - デフォルト、リンクがレンダリングされるときにルートを検出します
-- **none** - 熱心に検出しない、リンクがクリックされた場合にのみ検出します
+- **render** - デフォルト、リンクのレンダリング時にルートを検出
+- **none** - 熱心に検出しない、リンクがクリックされた場合にのみ検出
 
 ### `prefetch`
 
@@ -67,44 +67,44 @@ import { Link } from "@remix-run/react";
 ```
 
 - **none** - デフォルト、プリフェッチなし
-- **intent** - ユーザーがリンクにホバーまたはフォーカスしたときにプリフェッチします
-- **render** - リンクがレンダリングされるときにプリフェッチします
-- **viewport** - リンクがビューポート内にあるときにプリフェッチします、モバイルに非常に便利です
+- **intent** - ユーザーがリンクにホバーまたはフォーカスしたときにプリフェッチ
+- **render** - リンクがレンダリングされたときにプリフェッチ
+- **viewport** - リンクがビューポート内にあるときにプリフェッチ、モバイルに非常に役立ちます
 
-プリフェッチは、HTML `<link rel="prefetch">` タグで行われます。それらはリンクの後に入力されます。
+プリフェッチは、HTML `<link rel="prefetch">` タグで行われます。リンクの後に挿入されます。
 
 ```tsx
 <nav>
   <a href="..." />
   <a href="..." />
-  <link rel="prefetch" /> {/* 条件付きでレンダリングされる可能性があります */}
+  <link rel="prefetch" /> {/* 場合によってはレンダリングされます */}
 </nav>
 ```
 
-このため、`nav :last-child` を使用している場合は、`nav :last-of-type` を使用する必要があります。そうしないと、スタイルが条件付きで最後のリンク（および同様のセレクター）から外れてしまいます。
+そのため、`nav :last-child` を使用している場合は、スタイルが最後のリンク（および同様のセレクター）から条件付きで外れないように、`nav :last-of-type` を使用する必要があります。
 
 ### `preventScrollReset`
 
-[`<ScrollRestoration>`][scroll-restoration-component] を使用している場合、このプロパティを使用すると、リンクをクリックしたときにスクロール位置がウィンドウの上部にリセットされるのを防ぐことができます。
+[`<ScrollRestoration>`][scroll-restoration-component] を使用している場合、このプロパティを使用すると、リンクがクリックされたときにスクロール位置がウィンドウの上部にリセットされるのを防ぐことができます。
 
 ```tsx
 <Link to="?tab=one" preventScrollReset />
 ```
 
-これは、ユーザーが戻る/進むボタンを使用して場所に移動したときにスクロール位置が復元されるのを防ぐものではなく、ユーザーがリンクをクリックしたときにリセットされるのを防ぐだけです。
+これは、ユーザーが戻る/進むボタンでその場所に移動したときにスクロール位置が復元されるのを防ぐものではありません。これは、ユーザーがリンクをクリックしたときにリセットされるのを防ぐだけです。
 
 <details>
 
-<summary>議論</summary>
+<summary>ディスカッション</summary>
 
-この動作が必要になる可能性のある例として、ページの上部ではなく、URL 検索パラメータを操作するタブのリストがあります。トグルされたコンテンツがビューポートからスクロールアウトされる可能性があるため、スクロール位置が上にジャンプするのは避けたいです！
+この動作が必要になる可能性のある例として、ページの上部にない URL 検索パラメーターを操作するタブのリストがあります。タブの切り替えによってコンテンツがビューポートからスクロールアウトされる可能性があるため、スクロール位置が最上部にジャンプするのを防ぐ必要があります。
 
 ```text
       ┌─────────────────────────┐
       │                         ├──┐
       │                         │  │
       │                         │  │ スクロール
-      │                         │  │ ビューから外れています
+      │                         │  │ ビューから外れる
       │                         │  │
       │                         │ ◄┘
     ┌─┴─────────────────────────┴─┐
@@ -115,7 +115,7 @@ import { Link } from "@remix-run/react";
     │   ├─────────────────────┤   │ │
     │   │                     │   │ │
     │   │                     │   │ │
-    │   │ コンテンツ             │   │ │
+    │   │ コンテンツ            │   │ │
     │   │                     │   │ │
     │   │                     │   │ │
     │   └─────────────────────┘   │ │
@@ -128,7 +128,7 @@ import { Link } from "@remix-run/react";
 
 ### `relative`
 
-リンクの相対パスの動作を定義します。
+リンクの相対パス動作を定義します。
 
 ```tsx
 <Link to=".." />; // デフォルト: "route"
@@ -141,7 +141,7 @@ import { Link } from "@remix-run/react";
 
 ### `reloadDocument`
 
-リンクがクリックされたときに、クライアントサイドルーティングの代わりにドキュメントナビゲーションを使用します。ブラウザは通常どおり移行を処理します（`<a href>` であるかのように）。
+リンクがクリックされたときにクライアントサイドルーティングではなくドキュメントナビゲーションを使用します。ブラウザは、`<a href>` であるかのように、遷移を通常どおり処理します。
 
 ```tsx
 <Link to="/logout" reloadDocument />
@@ -149,14 +149,14 @@ import { Link } from "@remix-run/react";
 
 ### `replace`
 
-`replace` プロパティを使用すると、新しいエントリを履歴スタックにプッシュするのではなく、現在のエントリを履歴スタックから置き換えます。
+`replace` プロパティは、新しいエントリを履歴スタックにプッシュするのではなく、現在のエントリを置き換えます。
 
 ```tsx
 <Link replace />
 ```
 
 ```
-# 履歴スタックはこのようになります
+# 履歴スタックがこのような場合
 A -> B
 
 # 通常のリンククリックは新しいエントリをプッシュします
@@ -168,13 +168,13 @@ A -> C
 
 ### `state`
 
-次のロケーションに永続的なクライアントサイドルーティング状態を追加します。
+次の場所に永続的なクライアントサイドルーティング状態を追加します。
 
 ```tsx
 <Link to="/somewhere/else" state={{ some: "value" }} />
 ```
 
-ロケーション状態には、`location` からアクセスできます。
+場所の状態は `location` からアクセスされます。
 
 ```tsx
 function SomeComp() {
@@ -183,11 +183,11 @@ function SomeComp() {
 }
 ```
 
-この状態はサーバーではアクセスできません。これは [`history.state`][history-state] の上に実装されているためです。
+この状態はサーバーではアクセスできません。これは、[`history.state`][history-state] の上に実装されているためです。
 
 ## `unstable_viewTransition`
 
-`unstable_viewTransition` プロパティを使用すると、最終的な状態の更新を [`document.startViewTransition()`][document-start-view-transition] でラップすることにより、このナビゲーションの [ビュー遷移][view-transitions] を有効にすることができます。
+`unstable_viewTransition` プロパティは、[`document.startViewTransition()`][document-start-view-transition] で最終的な状態の更新をラップすることで、このナビゲーションの[ビュー遷移][view-transitions] を有効にします。
 
 ```jsx
 <Link to={to} unstable_viewTransition>
@@ -195,7 +195,7 @@ function SomeComp() {
 </Link>
 ```
 
-このビュー遷移に特定のスタイルを適用する必要がある場合は、[`unstable_useViewTransitionState()`][use-view-transition-state] も利用する必要があります。
+このビュー遷移に特定のスタイルを適用する必要がある場合は、[`unstable_useViewTransitionState()`][use-view-transition-state] も使用する必要があります。
 
 ```jsx
 function ImageLink(to) {
@@ -227,7 +227,7 @@ function ImageLink(to) {
 ```
 
 <docs-warning>
-この API は不安定とマークされており、メジャーリリースなしに破壊的な変更が発生する可能性があります。
+この API は不安定としてマークされており、メジャーリリースなしに破壊的な変更が発生する可能性があります。
 </docs-warning>
 
 [scroll-restoration-component]: ./scroll-restoration
@@ -236,6 +236,7 @@ function ImageLink(to) {
 [document-start-view-transition]: https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition
 [use-view-transition-state]: ../hooks/use-view-transition-state
 [relativesplatpath]: ../hooks/use-resolved-path#splat-paths
-[fog-of-war]: ../guides/fog-of-war
+[lazy-route-discovery]: ../guides/lazy-route-discovery
+
 
 

@@ -4,25 +4,25 @@ title: ルートファイルの命名
 
 # ルートファイルの命名
 
-[「routes」プラグインオプション][routes_config] を使用してルートを設定できますが、ほとんどのルートは次のファイルシステム規則で作成されます。ファイルを追加すると、ルートが作成されます。
+[ "routes" プラグインオプション][routes_config] を使用してルートを設定できますが、ほとんどのルートは次のファイルシステム規則に従って作成されます。ファイルを追加すると、ルートが作成されます。
 
-.js、.jsx、.ts、または .tsx のファイル拡張子を使用できます。重複を避けるために、例では .tsx を使用します。
+`.js`、`.jsx`、`.ts`、`.tsx` のいずれかのファイル拡張子を使用できます。重複を避けるために、例では `.tsx` を使用します。
 
-<docs-info>Dilum Sanjaya は、[ファイルシステムのルートがアプリの URL にどのようにマップされるかを示す素晴らしいビジュアライゼーション][an_awesome_visualization] を作成しました。この規則を理解するのに役立つかもしれません。</docs-info>
+<docs-info>Dilum Sanjaya は、[ファイルシステムのルートがアプリの URL にどのようにマッピングされるかを示す素晴らしい視覚化][an_awesome_visualization] を作成しました。これにより、これらの規則を理解するのに役立つかもしれません。</docs-info>
 
 ## 免責事項
 
-Remix の規則について詳しく説明する前に、ファイルベースのルーティングは非常に主観的なアイデアであることを指摘しておきたいと思います。フラットルートのアイデアが好きな人もいれば、嫌いな人もいます。ルートをフォルダにネストしたい人もいれば、単純にファイルベースのルーティングが嫌いな人もいます。JSON を使用してルートを設定したい人もいます。React Router SPA でのように JSX を使用してルートを設定したい人もいます。
+Remix の規則について詳しく説明する前に、ファイルベースのルーティングは非常に主観的な考え方であることを指摘しておきたいと思います。フラットルートの考え方が好きな人もいれば、嫌いな人もいます。フォルダにルートをネストすることを好む人もいれば、ファイルベースのルーティングを嫌う人もいます。JSON を介してルートを設定することを好む人もいれば、React Router SPA のように JSX を介してルートを設定することを好む人もいます。
 
-つまり、私たちはこれを認識しており、Remix は最初から、[`routes`][routes_config]/[`ignoredRouteFiles`][ignoredroutefiles_config] を使用してオプトアウトし、[ルートを手動で構成する][manual-route-configuration] 方法を提供してきました。しかし、人々が迅速かつ簡単に使い始めるために、何らかのデフォルトが必要です。そして、下のフラットルート規則ドキュメントは、中小規模のアプリに適した優れたデフォルトだと考えています。
+要点は、私たちはこれを認識しており、Remix は最初から、[`routes`][routes_config] / [`ignoredRouteFiles`][ignoredroutefiles_config] を介してオプトアウトし、[手動でルートを設定する][manual-route-configuration] 方法を提供してきました。しかし、人々が迅速かつ簡単に使い始めるために、_何らかの_ デフォルトを設定する必要があり、以下のフラットルート規則ドキュメントは、中小規模のアプリに適した、優れたデフォルトであると考えています。
 
-数百または数千のルートを持つ大規模なアプリケーションでは、どのような規則を使用しても必ず少し混乱が生じます。`routes` 設定を使用すれば、アプリケーションやチームにとって最適な規則を構築できます。Remix に、全員が満足できるデフォルトの規則を持つことは、文字通り不可能です。むしろ、かなり単純なデフォルトを提供し、コミュニティに、さまざまな規則を構築してもらいたいと考えています。
+数百または数千のルートを持つ大規模アプリケーションの場合、どのような規則を使用しても必ず少しは混乱します。そして、`routes` 設定を使用することで、アプリケーション/チームに最適な規則を_正確に_構築することができます。Remix に、全員を満足させるデフォルト規則があることは事実上不可能です。むしろ、かなり簡単なデフォルトを提供し、コミュニティがさまざまな規則を構築できるようにしたいと考えています。そこから、選択することができます。
 
-そこで、Remix のデフォルト規則の詳細に進む前に、デフォルトが気に入らない場合は、コミュニティで提供されている代替手段をご紹介します。
+そこで、Remix のデフォルト規則の詳細に入る前に、当社のデフォルト規則が気に入らなければ確認できる、コミュニティが提供する代替手段をいくつか紹介します。
 
-- [`remix-flat-routes`][flat_routes] - Remix のデフォルトは、基本的にこのパッケージの簡略化されたバージョンです。作者はこのパッケージを継続的に改善し、進化させてきました。そのため、「フラットルート」というアイデアは好きだが、もう少し機能（ファイルとフォルダのハイブリッドアプローチを含む）が必要な場合は、このパッケージをチェックしてみることをお勧めします。
-- [`remix-custom-routes`][custom_routes] - さらにカスタマイズしたい場合は、このパッケージを使用すると、ルートとして扱うファイルの種類を定義できます。これにより、単純なフラット/ネストだけでなく、たとえば、`.route.tsx` という拡張子のファイルはすべてルートというようなことができます。
-- [`remix-json-routes`][json_routes] - 単純に設定でルートを指定したい場合は、これが最適です。Remix にルートの JSON オブジェクトを渡すだけで、フラット/ネストの概念を完全に省略できます。JSX オプションもあります。
+- [`remix-flat-routes`][flat_routes] - Remix のデフォルトは、基本的にこのパッケージの簡易版です。作成者は、このパッケージの繰り返しを行い、進化させてきました。そのため、「フラットルート」の考え方全般が好きで、さらに多くの機能（ファイルとフォルダのハイブリッドアプローチを含む）が必要な場合は、必ずチェックしてください。
+- [`remix-custom-routes`][custom_routes] - さらにカスタマイズが必要な場合は、このパッケージを使用すると、ルートとして処理するファイルの種類を定義できます。これにより、単純なフラット/ネストの概念を超えて、「拡張子が `.route.tsx` のファイルはすべてルートである」などの操作が可能になります。
+- [`remix-json-routes`][json_routes] - 設定ファイルを使用してルートを指定したいだけなら、これが最適です。フラット/ネストの概念を完全に省略して、ルートを含む JSON オブジェクトを Remix に提供するだけです。JSX オプションもあります。
 
 ## ルートルート
 
@@ -32,9 +32,9 @@ app/
 └── root.tsx
 ```
 
-`app/root.tsx` 内のファイルは、ルートレイアウトまたは「ルートルート」（同じように発音する人にとっては申し訳ありません！）です。他のすべてのルートと同様に動作するため、[`loader`][loader]、[`action`][action] などをエクスポートできます。
+`app/root.tsx` のファイルは、ルートレイアウトまたは「ルートルート」です（これらの単語を同じように発音する人に申し訳ありません）。他のルートと同じように機能するため、[`loader`][loader]、[`action`][action] などをエクスポートできます。
 
-ルートルートは、通常、次のようになります。これは、アプリ全体のルートレイアウトとして機能し、他のすべてのルートは [`<Outlet />`][outlet_component] 内にレンダリングされます。
+ルートルートは通常、次のようになります。これは、アプリ全体のルートレイアウトとして機能し、他のすべてのルートは [`<Outlet />`][outlet_component] 内にレンダリングされます。
 
 ```tsx
 import {
@@ -64,7 +64,7 @@ export default function Root() {
 
 ## 基本ルート
 
-`app/routes` ディレクトリの JavaScript または TypeScript ファイルはすべて、アプリケーションのルートになります。ファイル名はルートの URL パス名にマップされます。ただし、`_index.tsx` は [ルートルート][root_route] の [インデックスルート][index_route] です。
+`app/routes` ディレクトリ内の JavaScript または TypeScript ファイルはすべて、アプリケーションのルートになります。ファイル名は、ルートの URL パス名にマッピングされます。ただし、`_index.tsx` は [ルートルート][root_route] の [インデックスルート][index_route] です。
 
 ```text lines=[3-4]
 app/
@@ -79,9 +79,9 @@ app/
 | `/`      | `app/routes/_index.tsx` |
 | `/about` | `app/routes/about.tsx`  |
 
-[ネストされたルーティング][nested_routing] のため、これらのルートは `app/root.tsx` のアウトレットにレンダリングされます。
+これらのルートは、[ネストされたルーティング][nested_routing] のため、`app/root.tsx` のアウトレットにレンダリングされます。
 
-## ドット区切り文字
+## ドット区切り記号
 
 ルートファイル名に `.` を追加すると、URL に `/` が作成されます。
 
@@ -104,11 +104,11 @@ app/
 | `/concerts/salt-lake-city` | `app/routes/concerts.salt-lake-city.tsx` |
 | `/concerts/san-diego`      | `app/routes/concerts.san-diego.tsx`      |
 
-ドット区切り文字はネストも作成します。詳細については、[ネストセクション][nested_routes] を参照してください。
+ドット区切り記号により、ネストも作成されます。詳細については、[ネストセクション][nested_routes] を参照してください。
 
 ## 動的セグメント
 
-通常、URL は静的ではなく、データ駆動型です。動的セグメントを使用すると、URL のセグメントをマッチングし、その値をコードで使用できます。`$` プレフィックスを使用して作成します。
+通常、URL は静的ではなく、データ駆動型です。動的セグメントを使用すると、URL のセグメントを一致させ、その値をコード内で使用できます。`$` プレフィックスを使用して作成します。
 
 ```text lines=[5]
  app/
@@ -128,7 +128,7 @@ app/
 | `/concerts/salt-lake-city` | `app/routes/concerts.$city.tsx`    |
 | `/concerts/san-diego`      | `app/routes/concerts.$city.tsx`    |
 
-Remix は、URL から値を解析し、さまざまな API に渡します。これらの値を「URL パラメータ」と呼びます。URL パラメータにアクセスするのに最も役立つ場所は、[ローダー][loader] と [アクション][action] です。
+Remix は URL から値を解析し、さまざまな API に渡します。これらの値を「URL パラメーター」と呼びます。URL パラメーターにアクセスするのに最も役立つ場所は、[ローダー][loader] と [アクション][action] です。
 
 ```tsx
 export async function loader({
@@ -138,9 +138,9 @@ export async function loader({
 }
 ```
 
-`params` オブジェクトのプロパティ名は、ファイル名に直接マップされます。`$city.tsx` は `params.city` になります。
+`params` オブジェクトのプロパティ名は、ファイル名に直接マッピングされます。`$city.tsx` は `params.city` になります。
 
-ルートには、`concerts.$city.$date` のように、複数の動的セグメントを含めることができます。どちらも `params` オブジェクトで名前でアクセスできます。
+ルートには、`concerts.$city.$date` のように、複数の動的セグメントを含めることができます。どちらも、名前で `params` オブジェクトにアクセスできます。
 
 ```tsx
 export async function loader({
@@ -157,9 +157,9 @@ export async function loader({
 
 ## ネストされたルート
 
-ネストされたルーティングとは、URL のセグメントをコンポーネント階層とデータに関連付ける一般的なアイデアです。[ルーティングガイド][nested_routing] で詳細を読むことができます。
+ネストされたルーティングは、URL のセグメントをコンポーネント階層とデータに結合するという一般的な考え方です。詳細については、[ルーティングガイド][nested_routing] を参照してください。
 
-[ドット区切り文字][dot_delimiters] を使用して、ネストされたルートを作成します。`.` の前のファイル名が他のルートファイル名と一致する場合、自動的に一致する親ルートの子ルートになります。次のルートを考えてみましょう。
+[ドット区切り記号][dot_delimiters] を使用して、ネストされたルートを作成します。`.` の前のファイル名が別のルートファイル名と一致する場合、自動的に一致する親ルートの子ルートになります。次のルートについて考えてみましょう。
 
 ```text lines=[5-8]
  app/
@@ -173,7 +173,7 @@ export async function loader({
 └── root.tsx
 ```
 
-`app/routes/concerts.` で始まるすべてのルートは、`app/routes/concerts.tsx` の子ルートとなり、親ルートの [outlet_component][outlet_component] 内にレンダリングされます。
+`app/routes/concerts.` で始まるすべてのルートは、`app/routes/concerts.tsx` の子ルートになり、親ルートの [outlet_component][outlet_component] 内にレンダリングされます。
 
 | URL                        | マッチしたルート                      | レイアウト                    |
 | -------------------------- | ---------------------------------- | ------------------------- |
@@ -183,7 +183,7 @@ export async function loader({
 | `/concerts/trending`       | `app/routes/concerts.trending.tsx` | `app/routes/concerts.tsx` |
 | `/concerts/salt-lake-city` | `app/routes/concerts.$city.tsx`    | `app/routes/concerts.tsx` |
 
-通常、ネストされたルートを追加する場合は、インデックスルートを追加して、ユーザーが親 URL を直接訪問したときに、親のアウトレットに何かがレンダリングされるようにします。
+通常、ネストされたルートを追加するときは、インデックスルートを追加して、ユーザーが親 URL を直接訪問したときに、親のアウトレットに何かがレンダリングされるようにします。
 
 たとえば、URL が `/concerts/salt-lake-city` の場合、UI 階層は次のようになります。
 
@@ -195,9 +195,9 @@ export async function loader({
 </Root>
 ```
 
-## レイアウトのネストなしで URL をネストする
+## レイアウトのネストなしのネストされた URL
 
-場合によっては、URL をネストしたい場合がありますが、自動レイアウトのネストは避けたい場合があります。親セグメントに下線を追加することで、ネストを回避できます。
+URL をネストしたいが、自動的なレイアウトのネストは不要な場合もあります。親セグメントに末尾のアンダースコアを付けることで、ネストをオプトアウトできます。
 
 ```text lines=[8]
  app/
@@ -219,15 +219,15 @@ export async function loader({
 | `/concerts/trending`       | `app/routes/concerts.trending.tsx` | `app/routes/concerts.tsx` |
 | `/concerts/salt-lake-city` | `app/routes/concerts.$city.tsx`    | `app/routes/concerts.tsx` |
 
-`/concerts/mine` は、`app/routes/concerts.tsx` とはネストされなくなりますが、`app/root.tsx` とネストされます。`trailing_` 下線はパスセグメントを作成しますが、レイアウトのネストは作成しません。
+`/concerts/mine` は、`app/routes/concerts.tsx` ではなく、`app/root.tsx` にネストされていないことに注意してください。`trailing_` アンダースコアはパスセグメントを作成しますが、レイアウトのネストは作成しません。
 
-`trailing_` 下線を、親の署名の最後にある長い部分と考えてください。親の署名から名前を消し、その後のセグメントをレイアウトのネストから削除します。
+`trailing_` アンダースコアは、親の署名の末尾にある長いビットと考えてください。それは、親の署名から書き出され、その後のセグメントをレイアウトのネストから削除します。
 
-## ネストされたレイアウトを URL をネストせずに使用
+## ネストされたレイアウトとネストされていない URL
 
-これらを <a name="pathless-routes"><b>パスなしルート</b></a> と呼びます。
+これらを<a name="pathless-routes"><b>パスレスルート</b></a> と呼びます。
 
-場合によっては、URL にパスセグメントを追加せずに、ルートグループとレイアウトを共有したい場合があります。一般的な例としては、パブリックページやログイン済みアプリのエクスペリエンスとは異なるヘッダー/フッターを持つ認証ルートのセットがあります。`_leading` 下線を使用して、これを実現できます。
+URL にパスセグメントを追加せずに、レイアウトをルートのグループと共有したい場合があります。一般的な例として、パブリックページとは異なるヘッダー/フッターを持つ認証ルートセットや、ログインしたアプリエクスペリエンスがあります。`_leading` アンダースコアを使用すると、これを実現できます。
 
 ```text lines=[3-5]
  app/
@@ -249,11 +249,11 @@ export async function loader({
 | `/concerts`                | `app/routes/concerts.tsx`       | `app/routes/concerts.tsx` |
 | `/concerts/salt-lake-city` | `app/routes/concerts.$city.tsx` | `app/routes/concerts.tsx` |
 
-`_leading` 下線を、ファイル名の上に引っ張る毛布と考えてください。ファイル名を URL から隠します。
+`_leading` アンダースコアは、ファイル名の上に引っ張る毛布のように考えてください。ファイル名を URL から隠しています。
 
 ## オプションのセグメント
 
-ルートセグメントを括弧で囲むと、そのセグメントはオプションになります。
+ルートセグメントを括弧で囲むと、そのセグメントがオプションになります。
 
 ```text lines=[3-5]
  app/
@@ -274,11 +274,11 @@ export async function loader({
 | `/en/american-flag-speedo` | `app/routes/($lang).$productId.tsx` |
 | `/fr/american-flag-speedo` | `app/routes/($lang).$productId.tsx` |
 
-`/american-flag-speedo` が `($lang).$productId.tsx` ではなく `($lang)._index.tsx` ルートとマッチングするのはなぜでしょうか。これは、オプションの動的パラメータセグメントの後に別の動的パラメータがある場合、Remix は `/american-flag-speedo` などの単一セグメント URL が `/:lang` `/:productId` とマッチングするかどうかを確実に判断できません。オプションのセグメントは貪欲にマッチングするため、`/:lang` とマッチングします。このような設定の場合、`($lang)._index.tsx` ローダーで `params.lang` を確認し、`params.lang` が有効な言語コードでない場合は、現在の/デフォルト言語の `/:lang/american-flag-speedo` にリダイレクトすることをお勧めします。
+`/american-flag-speedo` が、`($lang).$productId.tsx` ではなく、`($lang)._index.tsx` ルートと一致する理由を疑問に思うかもしれません。これは、オプションの動的パラメーターセグメントの後に別の動的パラメーターがある場合、Remix は、`/american-flag-speedo` などの単一セグメント URL が `/:lang` `/:productId` と一致するかどうかを確実に判断できないためです。オプションのセグメントは貪欲に一致するため、`/:lang` と一致します。このようなセットアップがある場合は、`($lang)._index.tsx` ローダーで `params.lang` を確認し、`params.lang` が有効な言語コードでない場合、現在の/デフォルトの言語の `/:lang/american-flag-speedo` にリダイレクトすることをお勧めします。
 
 ## スプラットルート
 
-[動的セグメント][dynamic_segments] は、URL の 2 つの `/` の間の部分（セグメント）とマッチングしますが、スプラットルートはスラッシュを含む URL の残りの部分とマッチングします。
+[動的セグメント][dynamic_segments] は単一のパスセグメント（URL 内の 2 つの `/` 間の文字列）と一致しますが、スプラットルートはスラッシュを含む、URL の残りの部分をすべてと一致します。
 
 ```text lines=[4,6]
  app/
@@ -300,7 +300,7 @@ export async function loader({
 | `/files/talks/remix-conf_final.pdf`          | `app/routes/files.$.tsx` |
 | `/files/talks/remix-conf-FINAL-MAY_2022.pdf` | `app/routes/files.$.tsx` |
 
-動的ルートパラメータと同様に、マッチングされたパスの値を、スプラットルートの `params` の `"*"` キーでアクセスできます。
+動的ルートパラメーターと同様に、マッチしたパスの値に、スプラットルートの `params` で `"*"` キーを使用してアクセスできます。
 
 ```tsx filename=app/routes/files.$.tsx
 export async function loader({
@@ -313,7 +313,7 @@ export async function loader({
 
 ## 特殊文字のエスケープ
 
-これらのルート規則に使用される特殊文字を URL の一部として使用したい場合は、`[]` 文字を使用して規則をエスケープできます。
+Remix がこれらのルート規則に使用している特殊文字のいずれかを、実際に URL の一部に含めたい場合は、`[]` 文字を使用して規則をエスケープできます。
 
 | ファイル名                            | URL                 |
 | ----------------------------------- | ------------------- |
@@ -325,11 +325,11 @@ export async function loader({
 
 ## フォルダによる整理
 
-ルートは、`route.tsx` ファイルを含むフォルダにすることもできます。フォルダ内のファイルはルートにはなりません。これにより、コードをルートで使用されるコードに近い場所に整理し、他のフォルダで機能名を繰り返す必要がなくなります。
+ルートは、ルートモジュールを定義する `route.tsx` ファイルを含むフォルダにすることもできます。フォルダ内の残りのファイルは、ルートにはなりません。これにより、他のフォルダで機能名を繰り返すことなく、コードを使用するルートに近づけて整理できます。
 
-<docs-info>フォルダ内のファイルはルートパスとは無関係です。ルートパスはフォルダ名で完全に定義されます</docs-info>
+<docs-info>フォルダ内のファイルは、ルートパスに対して意味を持ちません。ルートパスは、フォルダ名によって完全に定義されます。</docs-info>
 
-次のルートを考えてみましょう。
+次のルートについて考えてみましょう。
 
 ```text
  app/
@@ -344,7 +344,7 @@ export async function loader({
 └── root.tsx
 ```
 
-これらのルートの一部またはすべては、フォルダにすることができ、その中に独自の `route` モジュールが含まれます。
+これらのルートの一部またはすべてを、独自の `route` モジュールを含むフォルダにすることができます。
 
 ```text
 app/
@@ -381,7 +381,7 @@ app/
 └── root.tsx
 ```
 
-ルートモジュールをフォルダに変換すると、ルートモジュールは `folder/route.tsx` になります。フォルダ内の他のモジュールは、ルートにはなりません。たとえば、
+ルートモジュールをフォルダに変換すると、ルートモジュールは `folder/route.tsx` になり、フォルダ内の他のモジュールはルートにはならないことに注意してください。たとえば、次のようになります。
 
 ```
 # これらは同じルートです。
@@ -393,12 +393,12 @@ app/routes/app._index.tsx
 app/routes/app._index/route.tsx
 ```
 
-## スケーリング
+## スケールアップ
 
-一般的に、スケーリングの推奨事項は、すべてのルートをフォルダにすることです。そのルートでしか使用されないモジュールをフォルダに入れ、共有モジュールはルートフォルダの外の別の場所に配置します。これには、いくつかの利点があります。
+スケールアップするための一般的な推奨事項は、すべてのルートをフォルダにし、そのルートのみで使用されるモジュールをフォルダに配置し、共有モジュールはルートフォルダ以外の別の場所に配置することです。これには、いくつかの利点があります。
 
-- 共有モジュールを簡単に特定できるため、変更する際は慎重に進めることができます。
-- 特定のルートのモジュールを簡単に整理してリファクタリングできます。「ファイル整理疲労」を防ぎ、アプリの他の部分を混乱させることもありません。
+- 共有モジュールを簡単に特定できるため、変更する際は慎重に処理できます。
+- 特定のルートのモジュールを簡単に整理してリファクタリングできるため、「ファイルの整理の疲労感」が軽減され、アプリの他の部分を混乱させません。
 
 [loader]: ../route/loader
 [action]: ../route/action
@@ -410,12 +410,13 @@ app/routes/app._index/route.tsx
 [nested_routes]: #ネストされたルート
 [routes_config]: ./vite-config#routes
 [ignoredroutefiles_config]: ./vite-config#ignoredroutefiles
-[dot_delimiters]: #ドット区切り文字
+[dot_delimiters]: #ドット区切り記号
 [dynamic_segments]: #動的セグメント
 [an_awesome_visualization]: https://interactive-remix-routing-v2.netlify.app/
 [flat_routes]: https://github.com/kiliman/remix-flat-routes
 [custom_routes]: https://github.com/jacobparis-insiders/remix-custom-routes
 [json_routes]: https://github.com/brophdawg11/remix-json-routes
-[manual-route-configuration]: ../discussion/routes#ルートを手動で構成する
+[manual-route-configuration]: ../discussion/routes#手動のルート設定
+
 
 
