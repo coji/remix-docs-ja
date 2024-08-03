@@ -5,7 +5,7 @@ toc: false
 
 # `useActionData`
 
-最も最近のルートアクションからのシリアル化されたデータ、または存在しない場合は `undefined` を返します。
+最も最近のルート[アクション][action]からシリアル化されたデータ、または存在しない場合は`undefined`を返します。このフックは、コンテキスト内のルートからのアクションデータのみを返します。親または子ルートのデータにはアクセスできません。
 
 ```tsx lines=[10,14]
 import type { ActionFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
@@ -31,13 +31,13 @@ export default function Invoices() {
 }
 ```
 
-## 関連リソース
+## 追加のリソース
 
 **ガイド**
 
-- [フォームの検証][form_validation]
+- [フォーム検証][form_validation]
 
-**関連 API**
+**関連API**
 
 - [`action`][action]
 - [`useNavigation`][use_navigation]
@@ -50,5 +50,4 @@ export default function Invoices() {
 [action]: ../route/action
 [use_navigation]: ../hooks/use-navigation
 [fullstack_data_flow]: ../discussion/data-flow
-
 
