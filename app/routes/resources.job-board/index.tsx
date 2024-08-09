@@ -1,6 +1,6 @@
 import {
   unstable_defineLoader as defineLoader,
-  HeadersFunction,
+  type HeadersFunction,
 } from '@remix-run/node'
 import { Link, useFetcher, useLocation } from '@remix-run/react'
 import { ChevronsRightIcon } from 'lucide-react'
@@ -39,6 +39,7 @@ export const JobBoard = ({ className }: JobBoardProps) => {
   const fetcher = useFetcher<typeof loader>()
   const { pathname } = useLocation()
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     fetcher.load(`/resources/job-board?current=${fetcher.data?.job.id}`)
   }, [pathname])
