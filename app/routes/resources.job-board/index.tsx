@@ -1,4 +1,7 @@
-import { unstable_defineLoader as defineLoader, json } from '@remix-run/node'
+import {
+  unstable_defineLoader as defineLoader,
+  HeadersFunction,
+} from '@remix-run/node'
 import { Link, useFetcher, useLocation } from '@remix-run/react'
 import { ChevronsRightIcon } from 'lucide-react'
 import { useEffect } from 'react'
@@ -6,35 +9,38 @@ import jobs from '~/assets/jobs.json'
 import { Badge, HStack, Stack } from '~/components/ui'
 import { cn } from '~/libs/utils'
 
-export const loader = defineLoader(() => {
-  // ランダムに１件の求人情報を返す
+// キャッシュ完全無効
+export const headers: HeadersFunction = () => {
+  return { 'Cache-Control': 'no-store' }
+}
+
+export const loader = defineLoader(({ request }) => {
+  const url = new URL(request.url)
+  const currentId = url.searchParams.get('current')
   const openJobs = jobs.filter((job) => {
+    if (job.id === currentId) {
+      // 現在表示中の求人情報は除外
+      return false
+    }
     return (
+      // 公開中の求人情報のみ
       new Date(job.openAt) <= new Date() && new Date(job.expiredAt) > new Date()
     )
   })
+
+  // ランダムに１件の求人情報を返す
   const job = openJobs[Math.floor(Math.random() * openJobs.length)]
 
-  // キャッシュ完全無効
-  return json(
-    { job, count: openJobs.length },
-    {
-      headers: {
-        'Cache-Control': 'no-store',
-      },
-    },
-  )
+  return { job, count: openJobs.length }
 })
 
 interface JobBoardProps extends React.HTMLAttributes<HTMLDivElement> {}
-
 export const JobBoard = ({ className }: JobBoardProps) => {
   const fetcher = useFetcher<typeof loader>()
   const { pathname } = useLocation()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    fetcher.load('/resources/job-board')
+    fetcher.load(`/resources/job-board?current=${fetcher.data?.job.id}`)
   }, [pathname])
 
   const job = fetcher?.data?.job
