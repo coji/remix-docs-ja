@@ -38,13 +38,13 @@ importers:
         specifier: ^0.13.2
         version: 0.13.2
       '@remix-run/node':
-        specifier: ^2.10.3
+        specifier: ^2.11.1
         version: 2.11.1(typescript@5.5.4)
       '@remix-run/react':
-        specifier: ^2.10.3
+        specifier: ^2.11.1
         version: 2.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4)
       '@remix-run/serve':
-        specifier: ^2.10.3
+        specifier: ^2.11.1
         version: 2.11.1(typescript@5.5.4)
       '@shikijs/transformers':
         specifier: ^1.12.1
@@ -77,8 +77,8 @@ importers:
         specifier: ^5.1.14
         version: 5.1.14
       lucide-react:
-        specifier: ^0.426.0
-        version: 0.426.0(react@18.3.1)
+        specifier: ^0.427.0
+        version: 0.427.0(react@18.3.1)
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -153,7 +153,7 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1(rollup@4.20.0)
       '@remix-run/dev':
-        specifier: ^2.10.3
+        specifier: ^2.11.1
         version: 2.11.1(@remix-run/react@2.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4))(@remix-run/serve@2.11.1(typescript@5.5.4))(@types/node@22.1.0)(typescript@5.5.4)(vite@5.4.0(@types/node@22.1.0))
       '@tailwindcss/typography':
         specifier: ^0.5.14
@@ -2780,8 +2780,8 @@ packages:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
 
-  lucide-react@0.426.0:
-    resolution: {integrity: sha512-aby5G+Zt+LIIEU0n9900XQNJFJUcs7/S+jOEgIhkV08NX3kGx1zxALKh1JvAKcYqutWLg07exbnYvh66szhrRA==}
+  lucide-react@0.427.0:
+    resolution: {integrity: sha512-lv9s6c5BDF/ccuA0EgTdskTxIe11qpwBDmzRZHJAKtp8LTewAvDvOM+pTES9IpbBuTqkjiMhOmGpJ/CB+mKjFw==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
 
@@ -4184,8 +4184,8 @@ packages:
   undici-types@6.13.0:
     resolution: {integrity: sha512-xtFJHudx8S2DSoujjMd1WeWvn7KKWFRESZTMeL1RptAYERu29D6jphMjjY+vn96jvN3kVPDNxU/E13VTaXj6jg==}
 
-  undici@6.19.5:
-    resolution: {integrity: sha512-LryC15SWzqQsREHIOUybavaIHF5IoL0dJ9aWWxL/PgT1KfqAW5225FZpDUFlt9xiDMS2/S7DOKhFWA7RLksWdg==}
+  undici@6.19.6:
+    resolution: {integrity: sha512-KfINKY5js30ub8NAGQlUyxldk2NTvNkyKBnJtMpSVCk8fqrPpUDEvDkHV6t+lTHCv9NwbUcHU3Jnm2ohE01G+Q==}
     engines: {node: '>=18.17'}
 
   unicode-trie@2.0.0:
@@ -5503,7 +5503,7 @@ snapshots:
       cookie-signature: 1.2.1
       source-map-support: 0.5.21
       stream-slice: 0.1.2
-      undici: 6.19.5
+      undici: 6.19.6
     optionalDependencies:
       typescript: 5.5.4
 
@@ -7216,7 +7216,7 @@ snapshots:
 
   lru-cache@7.18.3: {}
 
-  lucide-react@0.426.0(react@18.3.1):
+  lucide-react@0.427.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 
@@ -9219,7 +9219,7 @@ snapshots:
 
   undici-types@6.13.0: {}
 
-  undici@6.19.5: {}
+  undici@6.19.6: {}
 
   unicode-trie@2.0.0:
     dependencies:
