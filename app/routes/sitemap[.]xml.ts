@@ -1,12 +1,12 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
-import { buildMenu } from '~/services/menu.server'
+import { getMenu } from '~/services/menu.server'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const host =
     request.headers.get('x-forwarded-host') ?? request.headers.get('host')
   const proto = request.headers.get('x-forwarded-proto') ?? 'https'
   const siteRoot = `${proto}://${host}/`
-  const menu = (await buildMenu())
+  const menu = (await getMenu())
     .flatMap((doc) => doc.children)
     .filter((doc) => doc.hasContent && doc.children.length === 0)
 
