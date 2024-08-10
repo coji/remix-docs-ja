@@ -24,13 +24,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     </urlset>
   `
 
-  return new Response(content, {
+  return Response.json(content, {
     status: 200,
     headers: {
       'Content-Type': 'application/xml',
       'xml-version': '1.0',
       encoding: 'UTF-8',
-      'Cache-Control': 's-maxage=600, stale-while-revalidate=120',
     },
   })
 }
