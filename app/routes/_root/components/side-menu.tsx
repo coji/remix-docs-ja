@@ -1,6 +1,6 @@
 import { NavLink } from '@remix-run/react'
 import { twc } from 'react-twc'
-import type { MenuDoc } from '../types'
+import type { MenuDoc } from '~/services/menu.server'
 
 interface SideMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   menu: MenuDoc[]

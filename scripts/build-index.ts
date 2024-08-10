@@ -2,9 +2,9 @@ import glob from 'fast-glob'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import * as pagefind from 'pagefind'
-import { getDoc } from '~/services/document.server'
-import { prebuildMenu } from '~/services/menu.server'
 import { getOgpImageResponse } from '~/services/ogp-image.server'
+import { getDoc } from './services/document'
+import { prebuildMenu } from './services/menu'
 
 const buildIndex = async () => {
   const { index } = await pagefind.createIndex({})
