@@ -8,7 +8,7 @@ import {
 } from '~/components/ui/accordion'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/libs/utils'
-import type { MenuDoc } from '../types'
+import type { MenuDoc } from '~/services/menu.server'
 
 import { SideMenuItem, SideMenuNavLink } from './side-menu'
 interface MobileMenuProps extends React.HTMLAttributes<HTMLDivElement> {
