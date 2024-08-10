@@ -1,4 +1,3 @@
-import { remember } from '@epic-web/remember'
 import fg from 'fast-glob'
 import parseYamlHeader from 'gray-matter'
 import fs from 'node:fs/promises'
@@ -31,7 +30,7 @@ const parseAttrs = (
   }
 }
 
-const buildMenuImpl = async () => {
+const buildMenu = async () => {
   const docs: MenuDoc[] = []
   const files = await fg('docs/**/*.md', { onlyFiles: true })
   for (const filepath of files) {
@@ -88,10 +87,14 @@ const buildMenuImpl = async () => {
   return tree
 }
 
-export const buildMenu = async () => {
-  return process.env.NODE_ENV === 'production'
-    ? remember('menu', async () => await buildMenuImpl())
-    : await buildMenuImpl()
+export const prebuildMenu = async () => {
+  const menu = await buildMenu()
+  await fs.writeFile('public/menu.json', JSON.stringify(menu, null, 2))
+}
+
+export const getMenu = async () => {
+  const menu = await fs.readFile('public/menu.json', 'utf-8')
+  return JSON.parse(menu) as MenuDoc[]
 }
 
 export const getCurrentMenuItem = (menu: MenuDoc[], filename: string) => {

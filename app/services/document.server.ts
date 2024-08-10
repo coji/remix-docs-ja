@@ -1,10 +1,9 @@
-import { remember } from '@epic-web/remember'
 import { load as $ } from 'cheerio'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { processMarkdown } from '~/services/md.server'
 
-const getDocImpl = async (file: string) => {
+export const getDoc = async (file: string) => {
   const filepath = path.join('./docs', `${file}.md`)
   try {
     const content = await fs.readFile(filepath, 'utf-8')
@@ -14,12 +13,6 @@ const getDocImpl = async (file: string) => {
   } catch (e) {
     return null
   }
-}
-
-export const getDoc = async (file: string) => {
-  return process.env.NODE_ENV === 'production'
-    ? await remember(`doc-${file}`, async () => await getDocImpl(file))
-    : await getDocImpl(file)
 }
 
 export const getDocJson = async (file: string) => {

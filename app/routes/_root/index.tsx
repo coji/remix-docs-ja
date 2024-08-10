@@ -3,7 +3,7 @@ import { Link, Outlet, useLoaderData, useLocation } from '@remix-run/react'
 import { ModeToggle } from '~/components/dark-mode-toggle'
 import { HStack } from '~/components/ui/stack'
 import { SearchPanel } from '~/routes/resources.search'
-import { buildMenu, getCurrentMenuItem } from '~/services/menu.server'
+import { getCurrentMenuItem, getMenu } from '~/services/menu.server'
 import { MobileMenu, SideMenu } from './components'
 
 export const shouldRevalidate = () => true
@@ -11,7 +11,7 @@ export const shouldRevalidate = () => true
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url)
   const filename = `docs${url.pathname === '/' ? '/index.md' : url.pathname}.md`
-  const menu = await buildMenu()
+  const menu = await getMenu()
   const currentMenuItem = getCurrentMenuItem(menu, filename) ?? {
     attrs: { title: 'Remix ドキュメント' },
     slug: '',
