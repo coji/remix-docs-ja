@@ -1,6 +1,5 @@
 import {
   unstable_defineLoader as defineLoader,
-  type HeadersFunction,
   type LinksFunction,
 } from '@remix-run/node'
 import {
@@ -39,12 +38,6 @@ export const meta = ({
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: markdownStyles },
 ]
-
-export const headers: HeadersFunction = () => {
-  return {
-    'Cache-Control': 's-maxage=600, stale-while-revalidate=120',
-  }
-}
 
 export const loader = defineLoader(async ({ params }) => {
   const filename = params['*'] ?? 'index'
