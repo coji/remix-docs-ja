@@ -3,6 +3,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import * as pagefind from 'pagefind'
 import { getDoc } from '~/services/document.server'
+import { prebuildMenu } from '~/services/menu.server'
 import { getOgpImageResponse } from '~/services/ogp-image.server'
 
 const buildIndex = async () => {
@@ -17,10 +18,10 @@ const buildIndex = async () => {
 
     console.log(filename)
 
-    const htmlFilename = path.join('public/docs', `${pathname}.json`)
-    const htmlDirname = path.dirname(htmlFilename)
-    await fs.mkdir(htmlDirname, { recursive: true })
-    await fs.writeFile(htmlFilename, JSON.stringify(doc, null, 2), {
+    const jsonFilename = path.join('public/docs', `${pathname}.json`)
+    const jsonDir = path.dirname(jsonFilename)
+    await fs.mkdir(jsonDir, { recursive: true })
+    await fs.writeFile(jsonFilename, JSON.stringify(doc, null, 2), {
       encoding: 'utf-8',
     })
 
@@ -49,3 +50,4 @@ const buildIndex = async () => {
 }
 
 await buildIndex()
+await prebuildMenu()
