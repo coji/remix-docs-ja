@@ -24,7 +24,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     </urlset>
   `
 
-  return Response.json(content, {
+  return new Response(content, {
     status: 200,
     headers: {
       'Content-Type': 'application/xml',
