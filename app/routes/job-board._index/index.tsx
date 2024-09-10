@@ -1,4 +1,3 @@
-import { unstable_defineLoader as defineLoader } from '@remix-run/node'
 import { Link, useLoaderData } from '@remix-run/react'
 import { ExternalLinkIcon } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
@@ -26,7 +25,7 @@ export const meta = [
   { title: 'Remix のお仕事あります - Remix ドキュメント日本語版' },
 ]
 
-export const loader = defineLoader(() => {
+export const loader = () => {
   // 表示期間中の求人情報を取得し、シャッフルする
   const filteredJobs = jobs.filter((job) => {
     return (
@@ -35,11 +34,10 @@ export const loader = defineLoader(() => {
   })
 
   // ランダム表示
-
   return {
     jobs: shuffleArray(filteredJobs),
   }
-})
+}
 
 export default function JobBoardIndex() {
   const { jobs } = useLoaderData<typeof loader>()

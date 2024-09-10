@@ -1,7 +1,4 @@
-import {
-  unstable_defineLoader as defineLoader,
-  type HeadersFunction,
-} from '@remix-run/node'
+import type { HeadersFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { Link, useFetcher, useLocation } from '@remix-run/react'
 import { ChevronsRightIcon } from 'lucide-react'
 import { useEffect } from 'react'
@@ -14,7 +11,7 @@ export const headers: HeadersFunction = () => {
   return { 'Cache-Control': 'no-store' }
 }
 
-export const loader = defineLoader(({ request }) => {
+export const loader = ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url)
   const currentId = url.searchParams.get('current')
   const openJobs = jobs.filter((job) => {
@@ -32,7 +29,7 @@ export const loader = defineLoader(({ request }) => {
   const job = openJobs[Math.floor(Math.random() * openJobs.length)]
 
   return { job, count: openJobs.length }
-})
+}
 
 interface JobBoardProps extends React.HTMLAttributes<HTMLDivElement> {}
 export const JobBoard = ({ className }: JobBoardProps) => {

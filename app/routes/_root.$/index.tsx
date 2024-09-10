@@ -1,12 +1,5 @@
-import {
-  unstable_defineLoader as defineLoader,
-  type LinksFunction,
-} from '@remix-run/node'
-import {
-  useLoaderData,
-  useLocation,
-  type MetaArgs_SingleFetch,
-} from '@remix-run/react'
+import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
+import { useLoaderData, useLocation, type MetaArgs } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { Stack } from '~/components/ui'
 import { buildPageMeta } from '~/libs/seo'
@@ -21,10 +14,7 @@ import {
   TableOfContentsTitle,
 } from './components/toc'
 
-export const meta = ({
-  location,
-  data,
-}: MetaArgs_SingleFetch<typeof loader>) => {
+export const meta = ({ location, data }: MetaArgs<typeof loader>) => {
   if (!data) {
     return []
   }
@@ -39,7 +29,7 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: markdownStyles },
 ]
 
-export const loader = defineLoader(async ({ params }) => {
+export const loader = async ({ params }: LoaderFunctionArgs) => {
   const filename = params['*'] ?? 'index'
   const doc = await getDocJson(filename)
   if (!doc) {
@@ -47,7 +37,7 @@ export const loader = defineLoader(async ({ params }) => {
   }
 
   return { doc }
-})
+}
 
 export default function Docs() {
   const { doc } = useLoaderData<typeof loader>()
