@@ -7,38 +7,38 @@ order: 3
 
 ## 公式アダプター
 
-イディオムな Remix アプリは、一般的にどこでもデプロイできます。なぜなら Remix は、サーバーの要求/応答を [Web Fetch API][web-fetch-api] に適応させるからです。これはアダプターによって行われます。私たちはいくつかアダプターを管理しています。
+イディオム的なRemixアプリは、一般的にどこでもデプロイできます。Remixはサーバーのリクエスト/レスポンスを[Web Fetch API][web-fetch-api]に適応させるからです。これは、アダプターを通じて行われます。私たちは、いくつかのアダプターを維持しています。
 
 - `@remix-run/architect`
 - `@remix-run/cloudflare-pages`
 - `@remix-run/cloudflare-workers`
 - `@remix-run/express`
 
-これらのアダプターは、サーバーのエントリポイントにインポートされますが、Remix アプリ自体では使用されません。
+これらのアダプターはサーバーの入り口にインポートされ、Remixアプリ内では使用されません。
 
-`npx create-remix@latest` で Remix アプリサーバー以外のものを使用してアプリを初期化した場合は、 `server/index.js` ファイルがあることに気付くでしょう。これは、これらのアダプターのいずれかをインポートして使用します。
+`npx create-remix@latest`でアプリを初期化した場合、組み込みのRemix App Server以外を選択すると、`server/index.js`ファイルにこれらのアダプターのいずれかをインポートして使用していることに気付くでしょう。
 
-<docs-info>組み込みの Remix アプリサーバーを使用している場合は、この API と対話する必要はありません</docs-info>
+<docs-info>組み込みのRemix App Serverを使用している場合、このAPIと対話する必要はありません。</docs-info>
 
-各アダプターは同じ API を持っています。将来は、デプロイしているプラットフォームに固有のヘルパーがあるかもしれません。
+各アダプターは同じAPIを持っています。将来的には、デプロイしているプラットフォームに特化したヘルパーが登場する可能性があります。
 
 ## コミュニティアダプター
 
-- [`@fastly/remix-server-adapter`][fastly-remix-server-adapter] - [Fastly Compute][fastly-compute] 用。
-- [`@mcansh/remix-fastify`][remix-fastify] - [Fastify][fastify] 用。
-- [`@mcansh/remix-raw-http`][remix-raw-http] - 素朴な Node サーバー用。
-- [`@netlify/remix-adapter`][netlify-remix-adapter] - [Netlify][netlify] 用。
-- [`@netlify/remix-edge-adapter`][netlify-remix-edge-adapter] - [Netlify][netlify] Edge 用。
-- [`@vercel/remix`][vercel-remix] - [Vercel][vercel] 用。
-- [`remix-google-cloud-functions`][remix-google-cloud-functions] - [Google Cloud][google-cloud-functions] と [Firebase][firebase-functions] の関数用。
-- [`partymix`][partymix] - [PartyKit][partykit] 用。
-- [`@scandinavianairlines/remix-azure-functions`][remix-azure-functions]: [Azure Functions][azure-functions] と [Azure Static Web Apps][azure-static-web-apps] 用。
+- [`@fastly/remix-server-adapter`][fastly-remix-server-adapter] - [Fastly Compute][fastly-compute]用。
+- [`@mcansh/remix-fastify`][remix-fastify] - [Fastify][fastify]用。
+- [`@mcansh/remix-raw-http`][remix-raw-http] - 素朴なNodeサーバー用。
+- [`@netlify/remix-adapter`][netlify-remix-adapter] - [Netlify][netlify]用。
+- [`@netlify/remix-edge-adapter`][netlify-remix-edge-adapter] - [Netlify][netlify] Edge用。
+- [`@vercel/remix`][vercel-remix] - [Vercel][vercel]用。
+- [`remix-google-cloud-functions`][remix-google-cloud-functions] - [Google Cloud][google-cloud-functions]と[Firebase][firebase-functions]の関数用。
+- [`partymix`][partymix] - [PartyKit][partykit]用。
+- [`@scandinavianairlines/remix-azure-functions`][remix-azure-functions]: [Azure Functions][azure-functions]と[Azure Static Web Apps][azure-static-web-apps]用。
 
 ## アダプターの作成
 
 ### `createRequestHandler`
 
-サーバーがアプリを提供するための要求ハンドラーを作成します。これは、Remix アプリケーションの究極のエントリポイントです。
+サーバーがアプリを提供するリクエストハンドラーを作成します。これは、Remixアプリケーションの究極のエントリポイントです。
 
 ```ts
 const {
@@ -47,7 +47,7 @@ const {
 createRequestHandler({ build, getLoadContext });
 ```
 
-以下は、express を使った完全な例です。
+以下はexpressを使用した完全な例です。
 
 ```ts lines=[1-3,11-22]
 const {
@@ -57,16 +57,16 @@ const express = require("express");
 
 const app = express();
 
-// すべての動詞（GET、POST など）を処理する必要があります
+// すべての動詞（GET、POSTなど）を処理する必要があります
 app.all(
   "*",
   createRequestHandler({
-    // `remix build` と `remix dev` はビルドディレクトリに出力ファイルを生成します。
-    // そのビルドを要求ハンドラーに渡す必要があります
+    // `remix build`と`remix dev`はビルドディレクトリに出力ファイルを生成するため、
+    // そのビルドをリクエストハンドラーに渡す必要があります
     build: require("./build"),
 
-    // ローダーとアクションで `context` として利用できるように、ここに何かを返します。
-    // これは、Remix とサーバー間のギャップを埋めることができる場所です。
+    // ローダーとアクションで`context`として使用できるものをここに返します。
+    // これは、Remixとサーバー間のギャップを埋めることができる場所です
     getLoadContext(req, res) {
       return {};
     },
@@ -74,7 +74,7 @@ app.all(
 );
 ```
 
-以下は、Architect（AWS）の例です。
+以下は、Architect（AWS）を使用した例です。
 
 ```ts
 const {
@@ -85,7 +85,7 @@ exports.handler = createRequestHandler({
 });
 ```
 
-以下は、簡略化された Cloudflare Workers API の例です。
+以下は、簡略化されたCloudflare Workers APIを使用した例です。
 
 ```ts
 import { createEventHandler } from "@remix-run/cloudflare-workers";
@@ -95,7 +95,7 @@ import * as build from "../build";
 addEventListener("fetch", createEventHandler({ build }));
 ```
 
-以下は、低レベルの Cloudflare Workers API の例です。
+以下は、低レベルのCloudflare Workers APIを使用した例です。
 
 ```ts
 import {

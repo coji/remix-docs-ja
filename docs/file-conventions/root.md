@@ -1,13 +1,13 @@
 ---
-title: ルート
+title: root
 toc: false
 ---
 
 # ルートルート
 
-"ルート" ルート (`app/root.tsx`) は、Remix アプリケーションで唯一 _必須_ のルートです。これは、`routes/` ディレクトリ内のすべてのルートの親であり、ルート `<html>` ドキュメントのレンダリングを担当します。
+"ルート" ルート (`app/root.tsx`) は、`routes/` ディレクトリ内のすべてのルートの親であり、ルート `<html>` ドキュメントのレンダリングを担当するため、Remix アプリケーションで唯一 _必須_ のルートです。
 
-それ以外では、他のルートとほとんど同じで、すべての標準ルートエクスポートをサポートしています。
+それ以外では、ほとんど他のルートと同じように、標準的なルートのエクスポートをすべてサポートしています。
 
 - [`headers`][headers]
 - [`meta`][meta]
@@ -22,10 +22,10 @@ toc: false
 - [`handle`][handle]
 - [`shouldRevalidate`][shouldrevalidate]
 
-ルートルートはドキュメントを管理するため、Remix が提供するいくつかの "ドキュメントレベル" コンポーネントをレンダリングする適切な場所です。これらのコンポーネントは、ルートルート内で 1 回だけ使用され、ページが正しくレンダリングされるために Remix が把握した情報や構築した情報が含まれています。
+ルートルートはドキュメントを管理するため、Remix が提供するいくつかの "ドキュメントレベル" コンポーネントをレンダリングするのに適した場所です。これらのコンポーネントは、ルートルート内で一度使用され、ページを正しくレンダリングするために Remix が判別または構築したすべてのものを含んでいます。
 
 ```tsx filename=app/root.tsx
-import type { LinksFunction } from "@remix-run/node"; // or cloudflare/deno
+import type { LinksFunction } from "@remix-run/node"; // または cloudflare/deno
 import {
   Links,
   LiveReload,
@@ -61,17 +61,17 @@ export default function App() {
         {/* 子ルートがここにレンダリングされます */}
         <Outlet />
 
-        {/* クライアント側のトランジションのスクロール位置を管理します */}
-        {/* スクリプトに nonce ベースのコンテンツセキュリティポリシーを使用している場合は、`nonce` プロップを提供する必要があります。それ以外の場合は、ここに示すように nonce プロップを省略してください。 */}
+        {/* クライアント側の遷移のスクロール位置を管理します */}
+        {/* スクリプトに nonce ベースのコンテンツセキュリティポリシーを使用する場合、`nonce` プロップを指定する必要があります。そうでない場合は、ここで示すように、nonce プロップを省略してください。 */}
         <ScrollRestoration />
 
-        {/* スクリプトタグはここにあります */}
-        {/* スクリプトに nonce ベースのコンテンツセキュリティポリシーを使用している場合は、`nonce` プロップを提供する必要があります。それ以外の場合は、ここに示すように nonce プロップを省略してください。 */}
+        {/* スクリプトタグがここにあります */}
+        {/* スクリプトに nonce ベースのコンテンツセキュリティポリシーを使用する場合、`nonce` プロップを指定する必要があります。そうでない場合は、ここで示すように、nonce プロップを省略してください。 */}
         <Scripts />
 
-        {/* コードを変更すると自動的にリロードされます */}
-        {/* 開発中はのみ機能します */}
-        {/* スクリプトに nonce ベースのコンテンツセキュリティポリシーを使用している場合は、`nonce` プロップを提供する必要があります。それ以外の場合は、ここに示すように nonce プロップを省略してください。 */}
+        {/* コードを変更すると自動的に再読み込みされます */}
+        {/* 開発時にのみ動作します */}
+        {/* スクリプトに nonce ベースのコンテンツセキュリティポリシーを使用する場合、`nonce` プロップを指定する必要があります。そうでない場合は、ここで示すように、nonce プロップを省略してください。 */}
         <LiveReload />
       </body>
     </html>
@@ -81,10 +81,10 @@ export default function App() {
 
 ## レイアウトエクスポート
 
-ルートルートはすべてのルートのドキュメントを管理するため、追加のオプションの `Layout` エクスポートもサポートしています。詳細については、この [RFC][layout-rfc] を参照してください。レイアウトルートには、2 つの目的があります。
+ルートルートはすべてのルートのドキュメントを管理するため、追加のオプションの `Layout` エクスポートもサポートしています。この [RFC][layout-rfc] で詳細を読むことができますが、レイアウトルートは 2 つの目的を果たします。
 
-- ルートコンポーネント、`HydrateFallback`、`ErrorBoundary` でドキュメント/"アプリシェル" を複製しない。
-- React がルートコンポーネント/`HydrateFallback`/`ErrorBoundary` 間を切り替える際にアプリシェル要素を再マウントしないようにします。これは、React が `<Links>` コンポーネントから `<link rel="stylesheet">` タグを削除して再追加すると FOUC が発生する可能性があるためです。
+- ルートコンポーネント、`HydrateFallback`、および `ErrorBoundary` にわたってドキュメント/ "アプリシェル" を複製しないようにします。
+- React がルートコンポーネント/`HydrateFallback`/`ErrorBoundary` 間を切り替えるときにアプリシェルの要素を再マウントしないようにします。これは、React が `<Links>` コンポーネントから `<link rel="stylesheet">` タグを削除して再追加した場合、FOUC が発生する可能性があります。
 
 ```tsx filename=app/root.tsx lines=[10-31]
 import {
@@ -109,7 +109,7 @@ export function Layout({ children }) {
         <Links />
       </head>
       <body>
-        {/* children は、ルートコンポーネント、ErrorBoundary、または HydrateFallback になります */}
+        {/* children は、ルートコンポーネント、ErrorBoundary、または HydrateFallback です */}
         {children}
         <Scripts />
         <ScrollRestoration />
@@ -146,13 +146,13 @@ export function ErrorBoundary() {
 }
 ```
 
-**`Layout` コンポーネントにおける `useLoaderData` について**
+**`Layout` コンポーネントでの `useLoaderData` に関する注意**
 
-`useLoaderData` は、`ErrorBoundary` コンポーネントで使用することはできません。これは、ハッピーパスのルートレンダリングを目的としており、その型定義には、`loader` が正常に実行され、何かを返したという前提が組み込まれているためです。この前提は、`ErrorBoundary` では成立しません。これは、`loader` がエラーをスローして境界をトリガーした可能性があるためです。`ErrorBoundary` でローダーデータにアクセスするには、`useRouteLoaderData` を使用できます。これは、ローダーデータが `undefined` になる可能性を考慮しています。
+`useLoaderData` は、`ErrorBoundary` コンポーネントで使用することはできません。これは、ハッピーパスルートのレンダリングを目的としており、その型には、`loader` が正常に実行されて何かを返したという組み込みの仮定があるためです。その仮定は、`ErrorBoundary` では成り立ちません。これは、`loader` がエラーをスローして境界をトリガーしている可能性があるためです。`ErrorBoundary` でローダーデータにアクセスするには、`useRouteLoaderData` を使用できます。これは、ローダーデータが `undefined` になる可能性を考慮しています。
 
-`Layout` コンポーネントは成功フローとエラーフローの両方で使用されるため、同じ制限が適用されます。成功したリクエストかどうかで `Layout` 内のロジックを分岐する必要がある場合は、`useRouteLoaderData("root")` と `useRouteError()` を使用できます。
+`Layout` コンポーネントは成功フローとエラーフローの両方で使用されるため、この同じ制限が適用されます。`Layout` で成功したリクエストかどうかに応じてロジックを分岐する必要がある場合は、`useRouteLoaderData("root")` と `useRouteError()` を使用できます。
 
-<docs-warn>`<Layout>` コンポーネントは `ErrorBoundary` のレンダリングに使用されるため、レンダリングエラーが発生しないように _非常に防御的_ である必要があります。`Layout` が境界のレンダリングを試みて別のエラーをスローした場合、`Layout` を使用することはできず、UI は非常に最小限の組み込みのデフォルト `ErrorBoundary` にフォールバックします。</docs-warn>
+<docs-warn>`<Layout>` コンポーネントは `ErrorBoundary` をレンダリングするために使用されるため、レンダリングエラーが発生しないように、非常に防御的にする必要があります。`Layout` が境界をレンダリングしようとして別のエラーをスローした場合、`Layout` は使用できず、UI は非常に最小限の組み込みのデフォルト `ErrorBoundary` にフォールバックします。</docs-warn>
 
 ```tsx filename="app/root.tsx" lines=[6-7,19-29,32-34]
 export function Layout({
@@ -226,5 +226,4 @@ export function Layout({
 [livereload-component]: ../components/live-reload
 [scrollrestoration-component]: ../components/scroll-restoration
 [outlet-component]: ../components/outlet
-
 

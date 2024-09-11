@@ -1,34 +1,34 @@
 ---
 title: データの読み込み
-description: Remix の主要な機能の 1 つは、サーバーとのやり取りを簡素化してデータをコンポーネントに取得することです。このドキュメントは、Remix のデータ読み込みを最大限に活用するのに役立ちます。
+description: Remix の主要な機能の 1 つは、サーバーとのやり取りを簡素化して、コンポーネントにデータを取得することです。このドキュメントでは、Remix のデータの読み込みを最大限に活用するのに役立ちます。
 ---
 
 # データの読み込み
 
-Remix の主要な機能の 1 つは、サーバーとのやり取りを簡素化してデータをコンポーネントに取得することです。これらの規則に従うと、Remix は自動的に次のことを行うことができます。
+Remix の主要な機能の 1 つは、サーバーとのやり取りを簡素化して、コンポーネントにデータを取得することです。これらの規則に従うと、Remix は自動的に次のような処理を実行できます。
 
-- ページをサーバーレンダリングします。
-- JavaScript がロードに失敗した場合でも、ネットワーク状況に耐性があります。
-- ユーザーがサイトと対話する際に最適化を行い、ページの変更部分のデータのみを読み込むことで高速化します。
-- トランジション時にデータ、JavaScript モジュール、CSS、その他の資産を並行してフェッチし、UI がぎこちなくなる原因となるレンダー + フェッチのウォーターフォールを回避します。
-- [アクション][action] の後に再検証することで、UI のデータとサーバーのデータが同期していることを確認します。
-- 前後へのクリック時の優れたスクロール復元（ドメイン間でも）
-- [エラーバウンダリ][error-boundary] を使用してサーバー側のエラーを処理します。
-- [エラーバウンダリ][error-boundary] を使用して、「見つかりません」や「承認されていません」の堅牢な UX を実現します。
-- UI のハッピーパスをハッピーに保つのに役立ちます。
+- ページをサーバーでレンダリングします
+- JavaScript の読み込みに失敗した場合でも、ネットワークの状態に左右されません
+- ユーザーがサイトと対話する際に、ページの変更部分のデータのみを読み込むことで、最適化を実行して高速化します
+- トランジション時にデータ、JavaScript モジュール、CSS、その他の資産を並行してフェッチし、UI がぎこちなくなる原因となるレンダー+フェッチのウォーターフォールを回避します
+- [アクション][action] の後に再検証することで、UI のデータがサーバー上のデータと同期していることを確認します
+- 前後へのクリック（ドメイン間でも）での優れたスクロール復元
+- [エラー境界][error-boundary] でサーバー側のエラーを処理します
+- [エラー境界][error-boundary] を使用して、「見つかりません」と「権限がありません」の堅牢な UX を有効にします
+- UI のハッピーパスをハッピーに保つのに役立ちます
 
 ## 基礎
 
 各ルートモジュールは、コンポーネントと [`loader`][loader] をエクスポートできます。[`useLoaderData`][useloaderdata] は、ローダーのデータをコンポーネントに提供します。
 
 ```tsx filename=app/routes/products.tsx lines=[1-2,4-9,12]
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 import { useLoaderData } from "@remix-run/react";
 
 export const loader = async () => {
   return json([
-    { id: "1", name: "Pants" },
-    { id: "2", name: "Jacket" },
+    { id: "1", name: "パンツ" },
+    { id: "2", name: "ジャケット" },
   ]);
 };
 
@@ -36,7 +36,7 @@ export default function Products() {
   const products = useLoaderData<typeof loader>();
   return (
     <div>
-      <h1>Products</h1>
+      <h1>商品</h1>
       {products.map((product) => (
         <div key={product.id}>{product.name}</div>
       ))}
@@ -45,16 +45,16 @@ export default function Products() {
 }
 ```
 
-コンポーネントは、サーバーとブラウザの両方でレンダリングされます。ローダーは _サーバーでのみ実行されます_。つまり、ハードコーディングされた products 配列はブラウザバンドルに含まれず、データベース、支払い処理、コンテンツ管理システムなどの、サーバーのみの API や SDK に安全に使用できます。
+コンポーネントはサーバーとブラウザでレンダリングされます。ローダーは _サーバー上でのみ_ 実行されます。つまり、ハードコードされた products 配列はブラウザバンドルに含まれず、データベース、決済処理、コンテンツ管理システムなど、API や SDK のサーバー専用に使用できます。
 
 サーバー側のモジュールがクライアントバンドルに含まれてしまう場合は、[サーバーとクライアントのコード実行][server-vs-client-code] に関するガイドを参照してください。
 
-## ルートパラメータ
+## ルートパラメーター
 
-`app/routes/users.$userId.tsx` や `app/routes/users.$userId.projects.$projectId.tsx` のように `$` を使用してファイルを名前付けると、動的セグメント（`$` で始まるもの）が URL から解析され、`params` オブジェクトにローダーに渡されます。
+`app/routes/users.$userId.tsx` や `app/routes/users.$userId.projects.$projectId.tsx` のように `$` を含む名前のファイルを指定すると、動的なセグメント（`$` で始まるセグメント）は URL から解析され、`params` オブジェクトでローダーに渡されます。
 
 ```tsx filename=app/routes/users.$userId.projects.$projectId.tsx
-import type { LoaderFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
+import type { LoaderFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
 
 export const loader = async ({
   params,
@@ -64,18 +64,18 @@ export const loader = async ({
 };
 ```
 
-次の URL を例に挙げます。パラメータは次のように解析されます。
+次の URL が与えられた場合、パラメーターは次のように解析されます。
 
 | URL                             | `params.userId` | `params.projectId` |
 | ------------------------------- | --------------- | ------------------ |
 | `/users/123/projects/abc`       | `"123"`         | `"abc"`            |
 | `/users/aec34g/projects/22cba9` | `"aec34g"`      | `"22cba9"`         |
 
-これらのパラメータは、データの検索に最も役立ちます。
+これらのパラメーターは、データの検索に最も役立ちます。
 
 ```tsx filename=app/routes/users.$userId.projects.$projectId.tsx lines=[10-11]
-import type { LoaderFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import type { LoaderFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 
 export const loader = async ({
   params,
@@ -91,32 +91,32 @@ export const loader = async ({
 };
 ```
 
-### パラメータの型安全性
+### パラメーターの型安全性
 
-これらのパラメータは、ソースコードではなく URL から取得されるため、定義されているかどうかは確実にはわかりません。そのため、パラメータのキーの型は `string | undefined` になります。特に TypeScript を使用して型安全性を得るために、使用する前に検証することをお勧めします。`invariant` を使用すると簡単です。
+これらのパラメーターは URL から取得されるため、ソースコードでは定義されているかどうかを確認できません。そのため、パラメーターキーの型は `string | undefined` になります。特に TypeScript で型安全性を得るには、使用する前に検証することが良い習慣です。`invariant` を使用すると、簡単です。
 
 ```tsx filename=app/routes/users.$userId.projects.$projectId.tsx lines=[2,7-8]
-import type { LoaderFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
+import type { LoaderFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
 import invariant from "tiny-invariant";
 
 export const loader = async ({
   params,
 }: LoaderFunctionArgs) => {
-  invariant(params.userId, "Expected params.userId");
-  invariant(params.projectId, "Expected params.projectId");
+  invariant(params.userId, "params.userId が必要です");
+  invariant(params.projectId, "params.projectId が必要です");
 
-  params.projectId; // <-- TypeScript は、これが string であることを認識するようになりました
+  params.projectId; // <-- TypeScript はこれで string であることを認識します
 };
 ```
 
-`invariant` が失敗した場合に、このようなエラーをスローすることに抵抗があるかもしれませんが、Remix では、ユーザーが[エラーバウンダリ][error-boundary] に入り、壊れた UI ではなく問題から回復できることを覚えておいてください。
+`invariant` が失敗した場合にこのようなエラーをスローすることを不安に思うかもしれませんが、Remix では、ユーザーは壊れた UI ではなく、[エラー境界][error-boundary] に到達することになるので、問題から回復できると覚えておいてください。
 
 ## 外部 API
 
-Remix はサーバー上の `fetch` API をポリフィルするため、既存の JSON API からデータをフェッチするのが非常に簡単です。状態、エラー、競合状態などを自分で管理する代わりに、ローダー（サーバー上）からフェッチを行い、残りを Remix に処理させることができます。
+Remix はサーバー上で `fetch` API をポリフィルするため、既存の JSON API からデータをフェッチするのは非常に簡単です。状態、エラー、競合状態などを自分で管理する代わりに、ローダー（サーバー上）からフェッチを実行し、残りを Remix に任せることができます。
 
 ```tsx filename=app/routes/gists.tsx lines=[5]
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 import { useLoaderData } from "@remix-run/react";
 
 export async function loader() {
@@ -138,11 +138,11 @@ export default function GistsRoute() {
 }
 ```
 
-これは、すでに API があり、Remix アプリで直接データソースに接続する必要がない場合に最適です。
+これは、すでに API があり、Remix アプリでデータソースに直接接続する必要がない場合に便利です。
 
 ## データベース
 
-Remix はサーバー上で実行されるため、ルートモジュールからデータベースに直接接続できます。たとえば、[Prisma][prisma] を使用して Postgres データベースに接続できます。
+Remix はサーバー上で実行されるため、ルートモジュールでデータベースに直接接続できます。たとえば、[Prisma][prisma] を使用して Postgres データベースに接続できます。
 
 ```tsx filename=app/db.server.ts
 import { PrismaClient } from "@prisma/client";
@@ -150,11 +150,11 @@ const db = new PrismaClient();
 export { db };
 ```
 
-そして、ルートからそれをインポートしてクエリを実行できます。
+次に、ルートでこれをインポートして、クエリを実行できます。
 
 ```tsx filename=app/routes/products.$categoryId.tsx
-import type { LoaderFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import type { LoaderFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 import { useLoaderData } from "@remix-run/react";
 
 import { db } from "~/db.server";
@@ -175,18 +175,18 @@ export default function ProductCategory() {
   const products = useLoaderData<typeof loader>();
   return (
     <div>
-      <p>{products.length} Products</p>
+      <p>{products.length} 商品</p>
       {/* ... */}
     </div>
   );
 }
 ```
 
-TypeScript を使用している場合は、型推論を使用して、`useLoaderData` を呼び出す際に Prisma Client で生成された型を使用できます。これにより、読み込まれたデータを使用するコードを記述する際に、より優れた型安全性とインテリセンスが実現します。
+TypeScript を使用している場合、`useLoaderData` を呼び出す際に Prisma Client で生成された型を使用するように型推論を使用できます。これにより、ロードされたデータを使用するコードを記述する際に、より良い型安全性とインテリセンスが得られます。
 
 ```tsx filename=app/routes/products.$productId.tsx
-import type { LoaderFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import type { LoaderFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 import { useLoaderData } from "@remix-run/react";
 
 import { db } from "~/db.server";
@@ -216,7 +216,7 @@ export default function Product() {
   const product = useLoaderData<typeof loader>();
   return (
     <div>
-      <p>Product {product.id}</p>
+      <p>商品 {product.id}</p>
       {/* ... */}
     </div>
   );
@@ -225,9 +225,9 @@ export default function Product() {
 
 ## Cloudflare KV
 
-Cloudflare Pages または Workers を環境として選択した場合、[Cloudflare Key Value][cloudflare-kv] ストレージを使用すると、静的リソースのようにエッジにデータを永続化できます。
+Cloudflare Pages または Workers を環境として選択した場合、[Cloudflare Key Value][cloudflare-kv] ストレージを使用すると、エッジにデータを静的リソースのように永続化できます。
 
-Pages の場合、ローカル開発を開始するには、`--kv` パラメータを namespace の名前と共に `package.json` タスクに追加する必要があります。そのため、次のように表示されます。
+Pages の場合、ローカル開発を開始するには、`--kv` パラメーターをパッケージ.json タスクに名前空間の名前とともに追加する必要があります。これは次のようになります。
 
 ```
 "dev:wrangler": "cross-env NODE_ENV=development wrangler pages dev ./public --kv PRODUCTS_KV"
@@ -258,7 +258,7 @@ export default function Product() {
   const product = useLoaderData<typeof loader>();
   return (
     <div>
-      <p>Product</p>
+      <p>商品</p>
       {product.name}
     </div>
   );
@@ -267,7 +267,7 @@ export default function Product() {
 
 ## 見つかりません
 
-データを読み込む際に、レコードが見つからないことはよくあります。コンポーネントを期待通りにレンダリングできないとわかったらすぐに、応答を `throw` します。Remix は、現在のローダーでのコードの実行を停止し、最も近い[エラーバウンダリ][error-boundary] に切り替えます。
+データを読み込む際に、レコードが見つからないことはよくあります。コンポーネントを期待どおりにレンダリングできないことがわかったら、すぐにレスポンスを `throw` します。Remix は現在のローダーでのコードの実行を停止し、最も近い[エラー境界][error-boundary] に切り替えます。
 
 ```tsx lines=[10-13]
 export const loader = async ({
@@ -279,10 +279,10 @@ export const loader = async ({
   });
 
   if (!product) {
-    // コンポーネントをレンダリングできないことがわかっています。
-    // したがって、すぐに throw してコードの実行を停止し、
-    // 見つからないページを表示します。
-    throw new Response("Not Found", { status: 404 });
+    // コンポーネントをレンダリングできないことがわかっています
+    // したがって、コードの実行を停止し、
+    // 見つかりませんページを表示するために、すぐにスローします
+    throw new Response("見つかりません", { status: 404 });
   }
 
   const cart = await getCart(request);
@@ -293,13 +293,13 @@ export const loader = async ({
 };
 ```
 
-## URL 検索パラメータ
+## URL 検索パラメーター
 
-URL 検索パラメータは、`?` の後の URL の部分です。この名称は、クエリ文字列、検索文字列、またはロケーション検索とも呼ばれます。`request.url` から URL を作成することで、値にアクセスできます。
+URL 検索パラメーターは、`?` の後の URL の部分です。これは、「クエリ文字列」、「検索文字列」、「場所の検索」とも呼ばれます。`request.url` から URL を作成することで、値にアクセスできます。
 
 ```tsx filename=app/routes/products.tsx lines=[7-8]
-import type { LoaderFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import type { LoaderFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 
 export const loader = async ({
   request,
@@ -310,13 +310,13 @@ export const loader = async ({
 };
 ```
 
-ここで使用されるウェブプラットフォームの型はいくつかあります。
+ここで使用するウェブプラットフォームの型はいくつかあります。
 
-- [`request`][request] オブジェクトには、`url` プロパティがあります。
-- [URL コンストラクタ][url] は、URL 文字列をオブジェクトに解析します。
-- `url.searchParams` は、[URLSearchParams][url-search-params] のインスタンスです。これは、ロケーション検索文字列を解析したバージョンであり、検索文字列の読み取りと操作を容易にします。
+- [`request`][request] オブジェクトには、`url` プロパティがあります
+- URL を文字列からオブジェクトに解析する[URL コンストラクター][url]
+- `url.searchParams` は[URLSearchParams][url-search-params] のインスタンスであり、場所の検索文字列を解析したバージョンで、検索文字列の読み取りと操作が簡単になります
 
-次の URL を例に挙げます。検索パラメータは次のように解析されます。
+次の URL が与えられた場合、検索パラメーターは次のように解析されます。
 
 | URL                             | `url.searchParams.get("term")` |
 | ------------------------------- | ------------------------------ |
@@ -326,15 +326,17 @@ export const loader = async ({
 
 ### データの再読み込み
 
-複数のネストされたルートがレンダリングされており、検索パラメータが変更されると、すべてのルートが再読み込みされます（新しく変更されたルートのみではなく）。これは、検索パラメータはクロスカットする懸念事項であり、すべてのローダーに影響を与える可能性があるためです。このようなシナリオで一部のルートが再読み込みされないようにするには、[shouldRevalidate][should-revalidate] を使用してください。
+複数のネストされたルートがレンダリングされていて、検索パラメーターが変更された場合、すべてのルートが再読み込みされます（新しいルートや変更されたルートのみが再読み込みされるのではなく）。これは、検索パラメーターはクロスカットの懸念事項であり、どのローダーにも影響を与える可能性があるためです。このような状況で、一部のルートの再読み込みを防ぎたい場合は、[shouldRevalidate][should-revalidate] を使用してください。
 
-### コンポーネントでの検索パラメータ
+### コンポーネントでの検索パラメーター
 
-ローダーで検索パラメータを読み取るだけでなく、コンポーネントでもアクセスする必要があることがよくあります。これには、ユースケースに応じていくつかの方法があります。
+ローダーで検索パラメーターを読み取るだけでなく、コンポーネントでもアクセスする必要がある場合もあります。
 
-**検索パラメータの設定**
+これを行うには、ユースケースに応じていくつかの方法があります。
 
-検索パラメータを設定する最も一般的な方法の 1 つは、ユーザーがフォームで制御できるようにすることです。
+**検索パラメーターの設定**
+
+検索パラメーターを設定する最も一般的な方法はおそらく、ユーザーがフォームで制御できるようにすることです。
 
 ```tsx filename=app/routes/products.shoes.tsx lines=[8,9,16,17]
 export default function ProductFilters() {
@@ -356,31 +358,31 @@ export default function ProductFilters() {
         value="adidas"
       />
 
-      <button type="submit">Update</button>
+      <button type="submit">更新</button>
     </Form>
   );
 }
 ```
 
-ユーザーが 1 つだけ選択している場合：
+ユーザーが 1 つだけ選択した場合：
 
 - [x] Nike
 - [ ] Adidas
 
 URL は `/products/shoes?brand=nike` になります。
 
-ユーザーが両方とも選択している場合：
+ユーザーが両方を選択した場合：
 
 - [x] Nike
 - [x] Adidas
 
 URL は `/products/shoes?brand=nike&brand=adidas` になります。
 
-ブランドは、両方のチェックボックスの名前が `"brand"` であるため、URL 検索文字列に繰り返されていることに注意してください。ローダーでは、[`searchParams.getAll`][search-params-getall] を使用して、これらのすべての値にアクセスできます。
+`brand` は両方のチェックボックスの名前が `"brand"` であるため、URL 検索文字列で繰り返されることに注意してください。ローダーでは、[`searchParams.getAll`][search-params-getall] を使用して、これらの値すべてにアクセスできます。
 
 ```tsx lines=[8]
-import type { LoaderFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import type { LoaderFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 
 export async function loader({
   request,
@@ -391,17 +393,17 @@ export async function loader({
 }
 ```
 
-**検索パラメータへのリンク**
+**検索パラメーターへのリンク**
 
-開発者として、検索パラメータを制御するために、検索文字列を含む URL にリンクできます。リンクは、現在の URL の検索文字列を（存在する場合）リンク内のものに置き換えます。
+開発者として、検索文字列を含む URL にリンクすることで、検索パラメーターを制御できます。リンクは、現在の URL の検索文字列を（存在する場合）リンクの検索文字列に置き換えます。
 
 ```tsx
-<Link to="?brand=nike">Nike (only)</Link>
+<Link to="?brand=nike">Nike（のみ）</Link>
 ```
 
-**コンポーネントでの検索パラメータの読み取り**
+**コンポーネントでの検索パラメーターの読み取り**
 
-ローダーで検索パラメータを読み取るだけでなく、コンポーネントでも読み取る必要があることがよくあります。
+ローダーで検索パラメーターを読み取ることに加えて、多くの場合、コンポーネントでも検索パラメーターにアクセスする必要があります。
 
 ```tsx lines=[1,4-5,15,24]
 import { useSearchParams } from "@remix-run/react";
@@ -430,13 +432,13 @@ export default function ProductFilters() {
         defaultChecked={brands.includes("adidas")}
       />
 
-      <button type="submit">Update</button>
+      <button type="submit">更新</button>
     </Form>
   );
 }
 ```
 
-フォームをフィールドの変更時に自動的に送信したい場合は、[`useSubmit`][use-submit] があります。
+フォームのフィールドをすべて変更したときにフォームを自動送信する場合があります。そのためには、[`useSubmit`][use-submit] を使用します。
 
 ```tsx lines=[2,7,14]
 import {
@@ -460,9 +462,9 @@ export default function ProductFilters() {
 }
 ```
 
-**検索パラメータを命令的に設定する**
+**検索パラメーターの設定（命令的）**
 
-一般的ではありませんが、任意の理由で任意のタイミングで検索パラメータを命令的に設定することもできます。このユースケースは非常に少なく、適切なユースケースを思いつくことができませんでした。しかし、ここでは、ばかげた例を挙げてみます。
+まれにですが、あらゆる理由で、いつでも検索パラメーターを命令的に設定することもできます。ここでのユースケースは非常に限られており、良い例さえ思いつきませんでしたが、ばかげた例を以下に示します。
 
 ```tsx
 import { useSearchParams } from "@remix-run/react";
@@ -481,11 +483,11 @@ export default function ProductFilters() {
 }
 ```
 
-### 検索パラメータと制御された入力
+### 検索パラメーターと制御された入力
 
-多くの場合、チェックボックスなど、入力内容を URL の検索パラメータと同期させたい場合があります。これは、React の制御されたコンポーネントの概念では少し難しくなる可能性があります。
+多くの場合、チェックボックスなどの入力を、URL の検索パラメーターと同期させたい場合があります。React の制御されたコンポーネントの概念を使用すると、これは少し難しい場合があります。
 
-これは、検索パラメータが 2 つの方法で設定できる場合にのみ必要です。たとえば、このコンポーネントでは、`<input type="checkbox">` と `Link` の両方でブランドを変更できます。
+これは、検索パラメーターを 2 つの方法で設定でき、入力を検索パラメーターと同期させたい場合にのみ必要になります。たとえば、このコンポーネントでは、`<input type="checkbox">` と `Link` の両方でブランドを変更できます。
 
 ```tsx bad lines=[11-18]
 import { useSearchParams } from "@remix-run/react";
@@ -505,16 +507,16 @@ export default function ProductFilters() {
           value="nike"
           defaultChecked={brands.includes("nike")}
         />
-        <Link to="?brand=nike">(only)</Link>
+        <Link to="?brand=nike">(のみ)</Link>
       </p>
 
-      <button type="submit">Update</button>
+      <button type="submit">更新</button>
     </Form>
   );
 }
 ```
 
-ユーザーがチェックボックスをクリックしてフォームを送信すると、URL が更新され、チェックボックスの状態も変化します。しかし、ユーザーがリンクをクリックした場合 _URL のみが更新され、チェックボックスは更新されません_。これは私たちが求めるものではありません。ここで React の制御されたコンポーネントについてよく知っているかもしれませんが、`defaultChecked` ではなく `checked` に切り替えることを考えているかもしれません。
+ユーザーがチェックボックスをクリックしてフォームを送信すると、URL が更新され、チェックボックスの状態も変更されます。ただし、ユーザーがリンクをクリックした場合、_URL は更新されるだけで、チェックボックスの状態は更新されません_。これは期待する動作ではありません。React の制御されたコンポーネントに精通している場合は、ここで `defaultChecked` ではなく `checked` に切り替えることを考えるかもしれません。
 
 ```tsx bad lines=[6]
 <input
@@ -526,13 +528,13 @@ export default function ProductFilters() {
 />
 ```
 
-これで、逆の問題が発生します。リンクをクリックすると、URL とチェックボックスの状態の両方が更新されますが、_チェックボックスは機能しなくなります_。これは、React は、それを制御する URL が変更されるまで、状態の変更を防止するためです。そして、チェックボックスを変更してフォームを再送信することはできないため、決して変更されることはありません。
+これで、逆の問題が発生します。リンクをクリックすると、URL とチェックボックスの状態の両方が更新されますが、_チェックボックスは動作しなくなります_。これは、React は URL が変更されるまで状態を変更することを防ぐため、コントロールする URL は変更されません。つまり、チェックボックスを変更してフォームを再送信することはできません。
 
-React は、ある状態を使用して制御することを期待していますが、私たちはユーザーがフォームを送信するまで制御することを期待しており、その後、URL が変更されたときに URL に制御することを期待しています。そのため、私たちは「一種の制御された」状態にあります。
+React は状態を制御することを望んでいますが、ユーザーがフォームを送信するまでは制御させたいと考えており、送信後に URL が変更されたときは、URL を制御させたいと考えています。そのため、「一種制御されている」状態です。
 
-2 つの選択肢があり、どちらを選ぶかは、実現したいユーザーエクスペリエンスによって異なります。
+2 つの選択肢があり、どちらを選択するかは、望むユーザーエクスペリエンスによって異なります。
 
-**最初の選択肢**: 最も単純な方法は、ユーザーがチェックボックスをクリックしたときにフォームを自動送信することです。
+**最初の選択肢**: 最も簡単な方法は、ユーザーがチェックボックスをクリックしたときにフォームを自動送信することです。
 
 ```tsx lines=[2,7,20]
 import {
@@ -557,7 +559,7 @@ export default function ProductFilters() {
           onChange={(e) => submit(e.currentTarget.form)}
           checked={brands.includes("nike")}
         />
-        <Link to="?brand=nike">(only)</Link>
+        <Link to="?brand=nike">(のみ)</Link>
       </p>
 
       {/* ... */}
@@ -566,13 +568,13 @@ export default function ProductFilters() {
 }
 ```
 
-（フォームの `onChange` で自動送信も行っている場合は、イベントがフォームにバブルアップしないように `e.stopPropagation()` を実行してください。そうでない場合、チェックボックスをクリックするたびに 2 回送信されます。）
+（フォームの `onChange` で自動送信もしている場合は、イベントがフォームにバブルアップしないように `e.stopPropagation()` を実行してください。そうでないと、チェックボックスをクリックするたびに 2 回送信されてしまいます。）
 
-**2 番目の選択肢**: 入力内容を「半制御」にする場合、つまり、チェックボックスが URL の状態を反映しますが、ユーザーはフォームを送信して URL を変更する前に、チェックボックスをオンとオフに切り替えることができる場合は、状態を接続する必要があります。これは少し作業が必要ですが、簡単です。
+**2 番目の選択肢**: チェックボックスが URL の状態を反映し、ユーザーがフォームを送信して URL を変更する前にオンとオフを切り替えることができるように、入力を「半制御」にする場合は、状態を配線する必要があります。少し手間がかかりますが、簡単です。
 
-- 検索パラメータから状態を初期化します。
-- ユーザーがチェックボックスをクリックしたときに状態を更新して、ボックスを「チェック済み」に変更します。
-- 検索パラメータが変更されたときに状態を更新して（ユーザーがフォームを送信したか、リンクをクリックした）、URL の検索パラメータを反映します。
+- 検索パラメーターから状態を初期化します
+- ユーザーがチェックボックスをクリックしたときに状態を更新して、ボックスを「チェック済み」に変更します
+- 検索パラメーターが変更されたときに状態を更新して（ユーザーがフォームを送信したかリンクをクリックしたか）、URL の検索パラメーターを反映します
 
 ```tsx lines=[11-14,16-20,31-35]
 import {
@@ -590,7 +592,7 @@ export default function ProductFilters() {
     brands.includes("nike")
   );
 
-  // パラメータが変更されたときに状態を更新します。
+  // パラメーターが変更されたときに状態を更新します
   // （フォームの送信またはリンクのクリック）
   React.useEffect(() => {
     setNikeChecked(brands.includes("nike"));
@@ -606,12 +608,12 @@ export default function ProductFilters() {
           name="brand"
           value="nike"
           onChange={(e) => {
-            // フォームを送信せずにチェックボックスの状態を更新します。
+            // フォームを送信せずにチェックボックスの状態を更新します
             setNikeChecked(true);
           }}
           checked={nikeChecked}
         />
-        <Link to="?brand=nike">(only)</Link>
+        <Link to="?brand=nike">(のみ)</Link>
       </p>
 
       {/* ... */}
@@ -620,7 +622,7 @@ export default function ProductFilters() {
 }
 ```
 
-このようなチェックボックスの抽象化を作成する必要があるかもしれません。
+このようなチェックボックスの抽象化を作成したい場合があります。
 
 ```tsx
 <div>
@@ -631,14 +633,16 @@ export default function ProductFilters() {
 
 function SearchCheckbox({ name, value }) {
   const [searchParams] = useSearchParams();
-  const all = searchParams.getAll(name);
+  const paramsIncludeValue = searchParams
+    .getAll(name)
+    .includes(value);
   const [checked, setChecked] = React.useState(
-    all.includes(value)
+    paramsIncludeValue
   );
 
   React.useEffect(() => {
-    setChecked(all.includes(value));
-  }, [all, searchParams, value]);
+    setChecked(paramsIncludeValue);
+  }, [paramsIncludeValue]);
 
   return (
     <input
@@ -652,9 +656,9 @@ function SearchCheckbox({ name, value }) {
 }
 ```
 
-**オプション 3**: 2 つの選択肢しかないと言いましたが、React をよく知っている場合、誘惑する可能性のある 3 番目の不吉な選択肢があります。`key` プロップのいたずらで、入力を破棄して再マウントしたいと思うかもしれません。これは賢い方法ですが、ユーザーがクリックしたときに React がノードをドキュメントから削除するため、アクセシビリティの問題が発生します。
+**3 番目の選択肢**: 2 つの選択肢しかないと言いましたが、React をよく知っていれば、3 番目の不聖な選択肢が誘惑するかもしれません。`key` プロップのいたずらで、入力部分を削除して再マウントしたいと思うかもしれません。賢い方法ですが、ユーザーがクリックしたときに React がノードをドキュメントから削除するため、アクセシビリティの問題が発生します。
 
-<docs-error>これはしないでください。アクセシビリティの問題が発生します。</docs-error>
+<docs-error>これを実行しないでください。アクセシビリティの問題が発生します</docs-error>
 
 ```tsx bad lines=[6,7]
 <input
@@ -669,47 +673,47 @@ function SearchCheckbox({ name, value }) {
 
 ## Remix の最適化
 
-Remix は、ナビゲーション時に変更されるページの部分のデータのみを読み込むことで、ユーザーエクスペリエンスを最適化します。たとえば、このドキュメントで現在使用している UI を考えてみてください。サイドのナビゲーションバーは、動的に生成されたすべてのドキュメントのメニューをフェッチした親ルートにあり、子ルートは現在読んでいるドキュメントをフェッチしました。サイドバーのリンクをクリックすると、Remix は、親ルートはページに残ることを認識しますが、ドキュメントの URL パラメータが変更されるため、子ルートのデータは変更されます。この認識により、Remix は _親ルートのデータを再フェッチしません_。
+Remix は、ナビゲーション時に変更されるページの部分のデータのみを読み込むことで、ユーザーエクスペリエンスを最適化します。たとえば、これらのドキュメントで現在使用している UI を考えてみてください。サイドのナビゲーションバーは、親ルートにあり、動的に生成されたすべてのドキュメントのメニューをフェッチしています。子ルートは、現在読んでいるドキュメントをフェッチしています。サイドバーのリンクをクリックすると、Remix は親ルートがページに残ることを認識しますが、ドキュメントの URL パラメーターが変更されるため、子ルートのデータは変更されます。この洞察に基づいて、Remix は_親ルートのデータを再フェッチしません_。
 
-Remix がなければ、次の質問は「どのようにすべてのデータを再読み込みするか」です。これは、Remix にも組み込まれています。[アクション][action] が呼び出されると（ユーザーがフォームを送信するか、プログラマーが `useSubmit` から `submit` を呼び出す）、Remix は、ページ上のすべてのルートを自動的に再読み込みして、発生した可能性のある変更をすべて取得します。
+Remix がなければ、次の質問は「すべてのデータをどのように再読み込みするか」です。これも Remix に組み込まれています。[アクション][action] が呼び出されるたびに（ユーザーがフォームを送信するか、プログラマーが `useSubmit` から `submit` を呼び出した場合）、Remix はページ上のすべてのルートを自動的に再読み込みして、発生した可能性のある変更をすべて取得します。
 
-ユーザーがアプリと対話する際に、キャッシュの期限切れやデータの過剰なフェッチを心配する必要はありません。すべて自動的に処理されます。
+ユーザーがアプリと対話するときに、キャッシュの期限切れや過剰なデータのフェッチを心配する必要はありません。すべて自動で行われます。
 
 Remix がすべてのルートを再読み込みするケースは 3 つあります。
 
 - アクションの後（フォーム、`useSubmit`、[`fetcher.submit`][fetcher-submit]）
-- URL 検索パラメータが変更された場合（すべてのローダーが使用できる）
-- ユーザーが、現在いる URL とまったく同じ URL へのリンクをクリックした場合（これにより、履歴スタックの現在のエントリも置き換えられます）
+- URL 検索パラメーターが変更された場合（どのローダーでも使用できます）
+- ユーザーが、すでに存在する URL とまったく同じ URL へのリンクをクリックした場合（これにより、履歴スタックの現在のエントリも置き換えられます）
 
-これらの動作はすべて、ブラウザのデフォルトの動作をエミュレートしています。これらのケースでは、Remix はコードについて十分に理解していないため、データの読み込みを最適化できませんが、[shouldRevalidate][should-revalidate] を使用して自分で最適化できます。
+これらの動作はすべて、ブラウザのデフォルトの動作を模倣しています。これらの場合、Remix はコードについて十分に理解していないため、データの読み込みを最適化できませんが、[shouldRevalidate][should-revalidate] を使用して、自分で最適化できます。
 
 ## データライブラリ
 
-Remix のデータ規則とネストされたルートのおかげで、多くの場合、React Query、SWR、Apollo、Relay、`urql` などのクライアント側のデータライブラリは不要になります。redux などのグローバルな状態管理ライブラリを主にサーバー上のデータとのやり取りに使用している場合も、これらのライブラリは不要になる可能性があります。
+Remix のデータ規則とネストされたルートのおかげで、多くの場合、React Query、SWR、Apollo、Relay、`urql` などのクライアント側のデータライブラリに頼る必要はありません。redux などのグローバル状態管理ライブラリを、主にサーバー上のデータと対話するために使用している場合も、これらのライブラリは必要ありません。
 
-もちろん、Remix はこれらのライブラリを使用することを妨げません（バンドラーの統合を必要とする場合を除く）。好きな React データライブラリを持ち込み、Remix API よりも UI に適していると考える場所に使用できます。場合によっては、Remix を最初のサーバーレンダリングに使用し、その後の対話にはお気に入りのライブラリに切り替えることができます。
+もちろん、Remix はこれらのライブラリを使用することを防ぎません（バンドラーの統合が必要な場合を除く）。お気に入りの React データライブラリを導入して、Remix API よりも UI に適していると考える場所で自由に使用できます。場合によっては、Remix を最初のサーバーレンダリングに使用し、その後は、お気に入りのライブラリに切り替えて対話を行うこともできます。
 
-ただし、外部のデータライブラリを持ち込んで、Remix の独自のデータ規則を回避すると、Remix は自動的に次のことができなくなります。
+とはいえ、外部のデータライブラリを導入して、Remix の独自のデータ規則を回避した場合、Remix は自動的に次の操作を実行できなくなります。
 
-- ページをサーバーレンダリングします。
-- JavaScript がロードに失敗した場合でも、ネットワーク状況に耐性があります。
-- ユーザーがサイトと対話する際に最適化を行い、ページの変更部分のデータのみを読み込むことで高速化します。
-- トランジション時にデータ、JavaScript モジュール、CSS、その他の資産を並行してフェッチし、UI がぎこちなくなる原因となるレンダー + フェッチのウォーターフォールを回避します。
-- [アクション][action] の後に再検証することで、UI のデータとサーバーのデータが同期していることを確認します。
-- 前後へのクリック時の優れたスクロール復元（ドメイン間でも）
-- [エラーバウンダリ][error-boundary] を使用してサーバー側のエラーを処理します。
-- [エラーバウンダリ][error-boundary] を使用して、「見つかりません」や「承認されていません」の堅牢な UX を実現します。
+- ページをサーバーでレンダリングします
+- JavaScript の読み込みに失敗した場合でも、ネットワークの状態に左右されません
+- ユーザーがサイトと対話する際に、ページの変更部分のデータのみを読み込むことで、最適化を実行して高速化します
+- トランジション時にデータ、JavaScript モジュール、CSS、その他の資産を並行してフェッチし、UI がぎこちなくなる原因となるレンダー+フェッチのウォーターフォールを回避します
+- アクションの後で再検証することで、UI のデータがサーバー上のデータと同期していることを確認します
+- 前後へのクリック（ドメイン間でも）での優れたスクロール復元
+- [エラー境界][error-boundary] でサーバー側のエラーを処理します
+- [エラー境界][error-boundary] を使用して、「見つかりません」と「権限がありません」の堅牢な UX を有効にします
 - UI のハッピーパスをハッピーに保つのに役立ちます。
 
 代わりに、優れたユーザーエクスペリエンスを提供するために、追加の作業を行う必要があります。
 
-Remix は、設計できるあらゆるユーザーエクスペリエンスを満たすように設計されています。外部のデータライブラリが _必要_ であることは予想外ですが、それでも _必要_ となる可能性があり、それは問題ありません。
+Remix は、設計可能なすべてのユーザーエクスペリエンスに対応するように設計されています。外部のデータライブラリが_必要_になることは考えにくいですが、それでも_必要_になる場合があり、それは問題ありません！
 
-Remix を学習していくと、クライアントの状態ではなく、URL について考えるようになり、そうすれば、多くの機能が無料で提供されます。
+Remix を学習していくうちに、クライアントの状態ではなく URL で考えるようになり、そうすれば多くの機能が無料で提供されるようになります。
 
-## 注意事項
+## 注意点
 
-ローダーはサーバーでのみ呼び出され、ブラウザから `fetch` 経由で呼び出されるため、データは `JSON.stringify` でシリアル化され、ネットワークを介して送信されてからコンポーネントに渡されます。これは、データがシリアル化可能である必要があることを意味します。たとえば：
+ローダーはサーバー上でのみ呼び出され、ブラウザからの `fetch` を介して呼び出されるため、データは `JSON.stringify` でシリアル化され、ネットワークを介して送信されてからコンポーネントに到達します。つまり、データはシリアル化可能である必要があります。たとえば、次のようになります。
 
 <docs-error>これは機能しません！</docs-error>
 
@@ -730,13 +734,13 @@ export default function RouteComp() {
 }
 ```
 
-すべてが渡されるわけではありません！ローダーは _データ_ 用であり、データはシリアル化可能である必要があります。
+すべてが渡されるわけではありません！ローダーは_データ_用であり、データはシリアル化可能である必要があります。
 
-一部のデータベース（[FaunaDB][fauna] など）は、ローダーから返す前にシリアル化する必要があるメソッドを含むオブジェクトを返します。通常は問題ありませんが、データがネットワークを介して移動することを理解しておくことは重要です。
+一部のデータベース（[FaunaDB][fauna] など）は、メソッドを含むオブジェクトを返しますが、ローダーから返す前にシリアル化する必要があることに注意する必要があります。通常は問題ありませんが、データがネットワークを介して転送されていることを理解しておくことは重要です。
 
-さらに、Remix はローダーを呼び出すため、ローダーを直接呼び出そうとしないでください。
+さらに、Remix はローダーを自動的に呼び出すため、ローダーを直接呼び出そうとしてはいけません。
 
-<docs-error>これは機能しません。</docs-error>
+<docs-error>これは機能しません</docs-error>
 
 ```tsx bad nocopy
 export const loader = async () => {
@@ -765,3 +769,6 @@ export default function RouteComp() {
 [use-submit]: ../hooks/use-submit
 [useloaderdata]: ../hooks/use-loader-data
 [server-vs-client-code]: ../discussion/server-vs-client
+
+
+
