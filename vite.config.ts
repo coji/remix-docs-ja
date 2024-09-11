@@ -8,6 +8,12 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 installGlobals({ nativeFetch: true })
 
+declare module '@remix-run/server-runtime' {
+  interface Future {
+    unstable_singleFetch: true
+  }
+}
+
 export default defineConfig({
   plugins: [
     mdx({ remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter] }),
@@ -18,7 +24,7 @@ export default defineConfig({
         v3_throwAbortReason: true,
         unstable_singleFetch: true,
         unstable_lazyRouteDiscovery: true,
-        unstable_optimizeDeps: true
+        unstable_optimizeDeps: true,
       },
     }),
     tsconfigPaths(),
