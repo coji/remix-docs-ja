@@ -16,7 +16,6 @@ export const getOgpImageResponse = async (
   request: Request,
   filename: string,
 ) => {
-  const url = new URL(request.url)
   const { productId, product } = getProduct(request)
   const doc =
     filename === 'index'

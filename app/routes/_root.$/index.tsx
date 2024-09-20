@@ -63,7 +63,7 @@ export default function Docs() {
   }, [hash, pathname])
 
   return (
-    <div className="grid grid-cols-1 grid-rows-[auto_1fr] md:grid-cols-[auto_minmax(14rem,1fr)]">
+    <div className="grid grid-cols-1 grid-rows-[auto_1fr] md:grid-cols-[auto_14rem]">
       <div
         ref={mainRef}
         className={cn(

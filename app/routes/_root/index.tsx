@@ -1,8 +1,15 @@
 import type { LoaderFunctionArgs } from '@remix-run/node'
-import { Link, Outlet, useLoaderData, useLocation } from '@remix-run/react'
+import {
+  Link,
+  Outlet,
+  useLoaderData,
+  useLocation,
+  useRouteLoaderData,
+} from '@remix-run/react'
 import { ModeToggle } from '~/components/dark-mode-toggle'
 import { HStack } from '~/components/ui/stack'
 import { getProduct } from '~/features/product'
+import type { loader as rootLoader } from '~/root'
 import { SearchPanel } from '~/routes/resources.search'
 import { getCurrentMenuItem, getMenu } from '~/services/menu.server'
 import { MobileMenu, SideMenu } from './components'
@@ -26,6 +33,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function Layout() {
   const { menu, currentMenuItem } = useLoaderData<typeof loader>()
   const { pathname } = useLocation()
+  const rootLoaderData = useRouteLoaderData<typeof rootLoader>('root')
+
+  const title = rootLoaderData?.product.title ?? 'Remixドキュメント日本語版'
 
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr_auto] overflow-hidden lg:container">
@@ -35,8 +45,7 @@ export default function Layout() {
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold">
               <Link to="/" prefetch="intent">
-                Remix ドキュメント
-                <span className="whitespace-nowrap">日本語版</span>
+                {title}
               </Link>
             </h1>
 

@@ -36,15 +36,14 @@ const buildIndex = async (productId: ProductId) => {
     }
 
     const ogpImage = await getOgpImageResponse(
-      new Request(`https://remix.run/docs/${pathname}`),
+      new Request(`https://${productId}.techtalk.jp/${pathname}`),
       pathname,
     )
-
-    await fs.mkdir(path.dirname(`public/ogp/${pathname}`), { recursive: true })
-    await fs.writeFile(
-      `public/ogp/${pathname}.png`,
-      Buffer.from(await ogpImage.arrayBuffer()),
-    )
+    await fs.mkdir(path.dirname(`public/ogp/${productId}/${pathname}`), {
+      recursive: true,
+    })
+    const ogpFilename = `public/ogp/${productId}/${pathname}.png`
+    await fs.writeFile(ogpFilename, Buffer.from(await ogpImage.arrayBuffer()))
   }
 
   await index.writeFiles({ outputPath: `public/pagefind/${productId}` })
