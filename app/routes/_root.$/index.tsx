@@ -2,6 +2,7 @@ import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData, useLocation, type MetaArgs } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { Stack } from '~/components/ui'
+import { getProduct } from '~/features/product'
 import { buildPageMeta } from '~/libs/seo'
 import { cn } from '~/libs/utils'
 import { JobBoard } from '~/routes/resources.job-board'
@@ -29,9 +30,10 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: markdownStyles },
 ]
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const filename = params['*'] ?? 'index'
-  const doc = await getDocJson(filename)
+  const { productId } = getProduct(request)
+  const doc = await getDocJson(productId, filename)
   if (!doc) {
     throw new Response('File not found', { status: 404 })
   }

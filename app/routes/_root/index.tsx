@@ -2,22 +2,23 @@ import type { LoaderFunctionArgs } from '@remix-run/node'
 import { Link, Outlet, useLoaderData, useLocation } from '@remix-run/react'
 import { ModeToggle } from '~/components/dark-mode-toggle'
 import { HStack } from '~/components/ui/stack'
+import { getProduct } from '~/features/product'
 import { SearchPanel } from '~/routes/resources.search'
 import { getCurrentMenuItem, getMenu } from '~/services/menu.server'
 import { MobileMenu, SideMenu } from './components'
-
 export const shouldRevalidate = () => true
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const { productId, product } = getProduct(request)
   const url = new URL(request.url)
-  const filename = `docs${url.pathname === '/' ? '/index.md' : url.pathname}.md`
-  const menu = await getMenu()
+  const filename = `docs/${productId}${url.pathname === '/' ? '/index.md' : url.pathname}.md`
+  const menu = await getMenu(productId)
   const currentMenuItem = getCurrentMenuItem(menu, filename) ?? {
-    attrs: { title: 'Remix ドキュメント' },
+    attrs: { title: product.title },
     slug: '',
     children: [],
     hasContent: false,
-    filename: 'docs/index.md',
+    filename: `docs/${productId}/index.md`,
   }
   return { menu, currentMenuItem }
 }

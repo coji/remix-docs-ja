@@ -61,6 +61,7 @@ const BreadcrumbPage = React.forwardRef<
   HTMLSpanElement,
   React.ComponentPropsWithoutRef<'span'>
 >(({ className, ...props }, ref) => (
+  // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
   <span
     ref={ref}
     role="link"
@@ -78,6 +79,7 @@ const BreadcrumbSeparator = ({
   ...props
 }: React.ComponentProps<'li'>) => (
   <li
+    // biome-ignore lint/a11y/useSemanticElements: <explanation>
     role="presentation"
     aria-hidden="true"
     className={cn('[&>svg]:size-3.5', className)}
@@ -93,6 +95,7 @@ const BreadcrumbEllipsis = ({
   ...props
 }: React.ComponentProps<'span'>) => (
   <span
+    // biome-ignore lint/a11y/useSemanticElements: <explanation>
     role="presentation"
     aria-hidden="true"
     className={cn('flex h-9 w-9 items-center justify-center', className)}

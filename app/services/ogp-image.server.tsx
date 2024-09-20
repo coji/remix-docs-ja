@@ -1,5 +1,6 @@
 import { ImageResponse } from '@vercel/og'
 import fs from 'node:fs/promises'
+import { getProduct } from '~/features/product'
 import { getDocJson } from '~/services/document.server'
 
 const getFontData = async () => {
@@ -16,12 +17,11 @@ export const getOgpImageResponse = async (
   filename: string,
 ) => {
   const url = new URL(request.url)
-  const schema = url.protocol === 'http:' ? 'http' : 'https'
-  const origin = request.headers.get('host') ?? url.origin
+  const { productId, product } = getProduct(request)
   const doc =
     filename === 'index'
-      ? { attributes: { title: 'Remixドキュメント日本語版' } }
-      : await getDocJson(filename)
+      ? { attributes: { title: product.title } }
+      : await getDocJson(productId, filename)
   if (!doc) {
     return new Response('Not Found', { status: 404 })
   }
@@ -70,7 +70,7 @@ export const getOgpImageResponse = async (
             fontSize: '32px',
           }}
         >
-          {filename !== 'index' && <div>Remix ドキュメント日本語版</div>}
+          {filename !== 'index' && <div>{product.title}</div>}
           <div style={{ flexGrow: '1' }} />
           <RemixLogo />
         </div>

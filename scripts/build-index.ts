@@ -2,23 +2,24 @@ import glob from 'fast-glob'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import * as pagefind from 'pagefind'
+import { type ProductId, products } from '~/features/product/products'
 import { getOgpImageResponse } from '~/services/ogp-image.server'
 import { getDoc } from './services/document'
-import { prebuildMenu } from './services/menu'
+import { buildMenus } from './services/menu'
 
-const buildIndex = async () => {
+const buildIndex = async (productId: ProductId) => {
   const { index } = await pagefind.createIndex({})
   if (!index) throw new Error('index is not created')
 
-  const docs = await glob('docs/**/*.md')
+  const docs = await glob(path.join('docs', productId, '/**/*.md'))
   for (const filename of docs) {
-    const pathname = filename.replace(/^docs\//, '').replace(/\.md$/, '')
-    const doc = await getDoc(pathname)
+    const regexp = new RegExp(`^docs/${productId}/`)
+    const pathname = filename.replace(regexp, '').replace(/\.md$/, '')
+    const doc = await getDoc(productId, pathname)
     if (!doc) continue
 
-    console.log(filename)
-
-    const jsonFilename = path.join('public/docs', `${pathname}.json`)
+    console.log(path.join(productId, pathname))
+    const jsonFilename = path.join('public/docs', productId, `${pathname}.json`)
     const jsonDir = path.dirname(jsonFilename)
     await fs.mkdir(jsonDir, { recursive: true })
     await fs.writeFile(jsonFilename, JSON.stringify(doc, null, 2), {
@@ -46,8 +47,10 @@ const buildIndex = async () => {
     )
   }
 
-  await index.writeFiles({ outputPath: 'public/pagefind' })
+  await index.writeFiles({ outputPath: `public/pagefind/${productId}` })
 }
 
-await buildIndex()
-await prebuildMenu()
+for (const productId of Object.keys(products) as ProductId[]) {
+  await buildIndex(productId)
+  await buildMenus(productId)
+}

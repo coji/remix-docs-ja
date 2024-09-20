@@ -1,10 +1,11 @@
 import { load as $ } from 'cheerio'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import type { ProductId } from '~/features/product/products'
 import { processMarkdown } from './md.server'
 
-export const getDoc = async (file: string) => {
-  const filepath = path.join('./docs', `${file}.md`)
+export const getDoc = async (productId: ProductId, file: string) => {
+  const filepath = path.join('./docs', productId, `${file}.md`)
   try {
     const content = await fs.readFile(filepath, 'utf-8')
     const doc = await processMarkdown(content)
@@ -15,8 +16,8 @@ export const getDoc = async (file: string) => {
   }
 }
 
-export const getDocJson = async (file: string) => {
-  const filepath = path.join('./public/docs', `${file}.json`)
+export const getDocJson = async (productId: ProductId, file: string) => {
+  const filepath = path.join('./public/docs', productId, `${file}.json`)
   try {
     const content = await fs.readFile(filepath, 'utf-8')
     return JSON.parse(content) as {
