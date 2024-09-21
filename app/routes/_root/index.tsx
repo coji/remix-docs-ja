@@ -16,16 +16,16 @@ import { MobileMenu, SideMenu } from './components'
 export const shouldRevalidate = () => true
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { productId, product } = getProduct(request)
+  const { product } = getProduct(request)
   const url = new URL(request.url)
-  const filename = `docs/${productId}${url.pathname === '/' ? '/index.md' : url.pathname}.md`
-  const menu = await getMenu(productId)
+  const filename = `docs/${product.id}${url.pathname === '/' ? '/index.md' : url.pathname}.md`
+  const menu = await getMenu(product.id)
   const currentMenuItem = getCurrentMenuItem(menu, filename) ?? {
     attrs: { title: product.title },
     slug: '',
     children: [],
     hasContent: false,
-    filename: `docs/${productId}/index.md`,
+    filename: `docs/${product.id}/index.md`,
   }
   return { menu, currentMenuItem }
 }

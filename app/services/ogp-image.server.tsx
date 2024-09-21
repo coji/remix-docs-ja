@@ -16,11 +16,11 @@ export const getOgpImageResponse = async (
   request: Request,
   filename: string,
 ) => {
-  const { productId, product } = getProduct(request)
+  const { product } = getProduct(request)
   const doc =
     filename === 'index'
       ? { attributes: { title: product.title } }
-      : await getDocJson(productId, filename)
+      : await getDocJson(product.id, filename)
   if (!doc) {
     return new Response('Not Found', { status: 404 })
   }

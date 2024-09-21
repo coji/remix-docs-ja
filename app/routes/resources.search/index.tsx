@@ -28,16 +28,14 @@ import {
 import { useHotkey } from './hooks'
 
 export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
-  const { productId } = getProduct(request)
+  const { product } = getProduct(request)
   const url = new URL(request.url)
   const query = url.searchParams.get('q')
   if (!query) return { results: [] }
 
   const pagefind = (await import(
-    '/pagefind/remix-docs-ja/pagefind.js?url'
+    /* @vite-ignore */ product.pagefind
   )) as unknown as Pagefind
-
-  console.log({ pagefind })
   await pagefind.init()
   const ret = await pagefind.search(query)
   const results = await Promise.all(ret.results.map((result) => result.data()))

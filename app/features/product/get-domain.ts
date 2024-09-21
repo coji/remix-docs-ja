@@ -1,4 +1,4 @@
-import type { products } from './products'
+import type { ProductId } from './products'
 
 const SPECIAL_DOMAINS = ['localhost', 'techtalk.jp'] as const
 type SpecialDomain = (typeof SPECIAL_DOMAINS)[number]
@@ -41,7 +41,7 @@ const handleRegularDomain = (hostname: string, productId?: string): string => {
   return parts.join('.')
 }
 
-export const getDomain = (url: URL, productId?: keyof typeof products): URL => {
+export const getDomain = (url: URL, productId?: ProductId): URL => {
   const newUrl = new URL(url.href)
 
   newUrl.hostname = isSpecialDomain(newUrl.hostname)

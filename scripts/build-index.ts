@@ -49,7 +49,7 @@ const buildIndex = async (productId: ProductId) => {
   await index.writeFiles({ outputPath: `public/pagefind/${productId}` })
 }
 
-for (const productId of Object.keys(products) as ProductId[]) {
-  await buildIndex(productId)
-  await buildMenus(productId)
+for (const product of products) {
+  await buildIndex(product.id)
+  await buildMenus(product.id)
 }

@@ -4,7 +4,7 @@ import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
-
+import { products } from './app/features/product/products'
 
 declare module '@remix-run/server-runtime' {
   interface Future {
@@ -27,5 +27,11 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
-  build: { rollupOptions: { external: ['/pagefind/pagefind.js?url'] } },
+  build: {
+    rollupOptions: {
+      external: products.map((product) => {
+        return `/pagefind/${product.id}/pagefind.js?url`
+      }),
+    },
+  },
 })

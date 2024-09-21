@@ -34,7 +34,8 @@
     "react-dom": "^18.3.1",
     "react-markdown": "^9.0.1",
     "react-twc": "^1.4.2",
-    "tailwind-merge": "^2.5.2"
+    "tailwind-merge": "^2.5.2",
+    "ts-pattern": "^5.3.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.2",

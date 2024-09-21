@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { getDomain } from './get-domain'
 import type { ProductId } from './products' // Adjust the import path as needed
 
-describe('getCityDomain', () => {
+describe('getDomain', () => {
   const testCases: Array<{
     description: string
     input: { url: string; productId?: ProductId }

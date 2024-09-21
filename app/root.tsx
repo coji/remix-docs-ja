@@ -21,8 +21,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 }
 
 export const loader = ({ request }: LoaderFunctionArgs) => {
-  const { product, productId } = getProduct(request)
-  return { product, productId }
+  const { product } = getProduct(request)
+  return { product }
 }
 
 export const links: LinksFunction = () => [

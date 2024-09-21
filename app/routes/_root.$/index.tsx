@@ -32,8 +32,8 @@ export const links: LinksFunction = () => [
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const filename = params['*'] ?? 'index'
-  const { productId } = getProduct(request)
-  const doc = await getDocJson(productId, filename)
+  const { product } = getProduct(request)
+  const doc = await getDocJson(product.id, filename)
   if (!doc) {
     throw new Response('File not found', { status: 404 })
   }
