@@ -2,6 +2,7 @@ import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { useLoaderData, useLocation, type MetaArgs } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
 import { Stack } from '~/components/ui'
+import { getProduct } from '~/features/product'
 import { buildPageMeta } from '~/libs/seo'
 import { cn } from '~/libs/utils'
 import { JobBoard } from '~/routes/resources.job-board'
@@ -29,9 +30,10 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: markdownStyles },
 ]
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const filename = params['*'] ?? 'index'
-  const doc = await getDocJson(filename)
+  const { product } = getProduct(request)
+  const doc = await getDocJson(product.id, filename)
   if (!doc) {
     throw new Response('File not found', { status: 404 })
   }
@@ -61,7 +63,7 @@ export default function Docs() {
   }, [hash, pathname])
 
   return (
-    <div className="grid grid-cols-1 grid-rows-[auto_1fr] md:grid-cols-[auto_minmax(14rem,1fr)]">
+    <div className="grid grid-cols-1 grid-rows-[auto_1fr] md:grid-cols-[auto_14rem]">
       <div
         ref={mainRef}
         className={cn(
@@ -79,9 +81,9 @@ export default function Docs() {
           <>
             <TableOfContents>
               <TableOfContentsTitle>目次</TableOfContentsTitle>
-              {doc.headings.map((heading) => (
+              {doc.headings.map((heading, index) => (
                 <TableOfContentsItem
-                  key={heading.slug}
+                  key={`${heading.slug}-${index}`}
                   className={cn(heading.headingLevel === 'h3' && 'ml-4')}
                 >
                   <a href={`#${heading.slug}`}>{heading.html}</a>

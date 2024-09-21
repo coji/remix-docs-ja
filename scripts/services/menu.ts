@@ -2,11 +2,13 @@ import fg from 'fast-glob'
 import parseYamlHeader from 'gray-matter'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import type { ProductId } from '~/features/product/products'
 import type { MenuDoc } from '~/services/menu.server'
 
-const makeSlug = (filepath: string) => {
+const makeSlug = (filepath: string, productId: ProductId) => {
+  const regexp = new RegExp(`^(.+\/)?docs/${productId}/`)
   return filepath
-    .replace(/^(.+\/)?docs\//, '')
+    .replace(regexp, '')
     .replace(/\.md$/, '')
     .replace(/\/index$/, '')
     .replace(/\/$/, '')
@@ -30,13 +32,13 @@ const parseAttrs = (
   }
 }
 
-const buildMenu = async () => {
+const buildMenu = async (productId: ProductId) => {
   const docs: MenuDoc[] = []
-  const files = await fg('docs/**/*.md', { onlyFiles: true })
+  const files = await fg(`docs/${productId}/**/*.md`, { onlyFiles: true })
   for (const filepath of files) {
     const content = await fs.readFile(filepath, 'utf-8')
     const { attrs, content: md } = parseAttrs(filepath, content)
-    const slug = makeSlug(filepath)
+    const slug = makeSlug(filepath, productId)
 
     // don't need docs/index.md in the menu
     if (slug === '') continue
@@ -87,7 +89,11 @@ const buildMenu = async () => {
   return tree
 }
 
-export const prebuildMenu = async () => {
-  const menu = await buildMenu()
-  await fs.writeFile('public/menu.json', JSON.stringify(menu, null, 2))
+export const buildMenus = async (productId: ProductId) => {
+  const menus = await buildMenu(productId)
+  const filename = `public/menus/${productId}/menu.json`
+  const dir = path.dirname(filename)
+  console.log(filename)
+  await fs.mkdir(dir, { recursive: true })
+  await fs.writeFile(filename, JSON.stringify(menus, null, 2))
 }

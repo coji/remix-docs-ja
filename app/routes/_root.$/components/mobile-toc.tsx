@@ -29,10 +29,10 @@ export const MobileToc = ({ headings, className }: MobileTocProps) => {
       </Button>
       {isOpen && (
         <div className="flex flex-col gap-1">
-          {headings.map((heading) => {
+          {headings.map((heading, index) => {
             return (
               <SideMenuItem
-                key={heading.slug}
+                key={`${heading.slug}-${index}`}
                 className={cn('text-muted-foreground aria-[current]:font-bold')}
               >
                 <SideMenuNavLink

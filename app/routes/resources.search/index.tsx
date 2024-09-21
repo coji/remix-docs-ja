@@ -8,10 +8,13 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
+  DialogTitle,
   HStack,
   Input,
 } from '~/components/ui'
+import { getProduct } from '~/features/product'
 import type { Pagefind } from '~/services/pagefind.types'
 import {
   SearchLoading,
@@ -25,12 +28,13 @@ import {
 import { useHotkey } from './hooks'
 
 export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
+  const { product } = getProduct(request)
   const url = new URL(request.url)
   const query = url.searchParams.get('q')
   if (!query) return { results: [] }
 
   const pagefind = (await import(
-    '/pagefind/pagefind.js?url'
+    /* @vite-ignore */ product.pagefind
   )) as unknown as Pagefind
   await pagefind.init()
   const ret = await pagefind.search(query)
@@ -57,12 +61,15 @@ export const SearchPanel = () => {
       <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <DialogContent className="p-4">
           <DialogHeader>
-            <fetcher.Form action="/resources/search">
-              <HStack>
-                <Input id="query" name="q" placeholder="Search..." />
-                <Button size="sm">Search</Button>
-              </HStack>
-            </fetcher.Form>
+            <DialogTitle>
+              <fetcher.Form action="/resources/search">
+                <HStack>
+                  <Input id="query" name="q" placeholder="Search..." />
+                  <Button size="sm">Search</Button>
+                </HStack>
+              </fetcher.Form>
+            </DialogTitle>
+            <DialogDescription />
           </DialogHeader>
 
           <SearchResult>
