@@ -23,6 +23,7 @@ export const meta = ({ location, data }: MetaArgs<typeof loader>) => {
   return buildPageMeta({
     title: String(doc.attributes.title),
     pathname: location.pathname,
+    productId: data.product.id,
   })
 }
 
@@ -38,7 +39,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     throw new Response('File not found', { status: 404 })
   }
 
-  return { doc }
+  return { doc, product }
 }
 
 export default function Docs() {

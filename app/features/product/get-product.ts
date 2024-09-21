@@ -1,7 +1,7 @@
 import { products } from './products'
 
 export const getProduct = (request: Request) => {
-  // リクエストURLのドメイン名から、都市を判定する
+  // リクエストURLのドメイン名から、製品を判定する
   // 例: https://remix-docs-ja.example.com -> product = 'remix-docs-ja'
   // 例: https://react-router-docs-ja.example.com -> product = 'react-router-docs-ja'
   const host =
