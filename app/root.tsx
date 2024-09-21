@@ -17,7 +17,11 @@ import { buildPageMeta } from './libs/seo'
 import globalStyles from './styles/globals.css?url'
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return buildPageMeta({ title: data?.product.title, pathname: '/' })
+  return buildPageMeta({
+    title: data?.product.title,
+    pathname: '/',
+    productId: data?.product.id,
+  })
 }
 
 export const loader = ({ request }: LoaderFunctionArgs) => {

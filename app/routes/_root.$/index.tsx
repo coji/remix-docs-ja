@@ -81,9 +81,9 @@ export default function Docs() {
           <>
             <TableOfContents>
               <TableOfContentsTitle>目次</TableOfContentsTitle>
-              {doc.headings.map((heading) => (
+              {doc.headings.map((heading, index) => (
                 <TableOfContentsItem
-                  key={heading.slug}
+                  key={`${heading.slug}-${index}`}
                   className={cn(heading.headingLevel === 'h3' && 'ml-4')}
                 >
                   <a href={`#${heading.slug}`}>{heading.html}</a>

@@ -1,31 +1,36 @@
+import { products } from '~/features/product/products'
+
 interface buildPageMetaProps {
   title?: string
   pathname?: string
+  productId?: string
 }
 
-export const buildPageMeta = ({ title, pathname }: buildPageMetaProps) => {
+export const buildPageMeta = ({
+  title,
+  pathname,
+  productId,
+}: buildPageMetaProps) => {
+  const product =
+    products.find((product) => product.id === productId) ?? products[0]
   const ogpImage = `${pathname === '/' ? '/index' : pathname}.png`
 
   return [
     {
-      title: title
-        ? `${title} - Remix ドキュメント日本語版`
-        : 'Remix ドキュメント日本語版',
+      title: title ? `${title} - ${product.title}` : product.title,
     },
     {
       property: 'og:url',
-      content: `https://remix-docs-ja.techtalk.jp${pathname}`,
+      content: `${product.url}${pathname}`,
     },
     {
       property: 'og:title',
-      content: title
-        ? `${title} - Remix ドキュメント日本語版`
-        : 'Remix ドキュメント日本語版',
+      content: title ? `${title} - ${product.title}` : product.title,
     },
     {
       property: 'og:image',
       content: pathname
-        ? `https://remix-docs-ja.techtalk.jp/ogp${ogpImage}`
+        ? `${product.url}/ogp/${product.id}${ogpImage}`
         : 'https://remix.run/img/og.1.jpg',
     },
     {
@@ -34,14 +39,12 @@ export const buildPageMeta = ({ title, pathname }: buildPageMetaProps) => {
     },
     {
       property: 'twitter:title',
-      content: title
-        ? `${title} - Remix ドキュメント日本語版`
-        : 'Remix ドキュメント日本語版',
+      content: title ? `${title} - ${product.title}` : product.title,
     },
     {
       property: 'twitter:image',
       content: pathname
-        ? `https://remix-docs-ja.techtalk.jp/ogp${ogpImage}`
+        ? `${product.url}/ogp/${product.id}${ogpImage}`
         : 'https://remix.run/img/og.1.jpg',
     },
     {
@@ -50,7 +53,7 @@ export const buildPageMeta = ({ title, pathname }: buildPageMetaProps) => {
     },
     {
       peroperty: 'og:site_name',
-      content: 'Remix ドキュメント日本語版',
+      content: product.title,
     },
     {
       property: 'docsearch:language',
