@@ -35,6 +35,7 @@ const buildIndex = async (productId: ProductId) => {
       })
     }
 
+    // OGP画像生成
     const ogpImage = await getOgpImageResponse(
       new Request(`https://${productId}.techtalk.jp/${pathname}`),
       pathname,
