@@ -264,6 +264,7 @@ const Favorite: FunctionComponent<{
 これで、リンクをクリックするか `/contacts/1` にアクセスしても... 新しいものは何も表示されないでしょう？
 
 <img class="tutorial" loading="lazy" alt="空白のメインコンテンツを持つ連絡先ルート" src="/docs-images/contacts/05.webp" />
+
 ## ネストされたルートとアウトレット
 
 Remix は React Router をベースに構築されているため、ネストされたルーティングをサポートしています。子ルートを親レイアウト内にレンダリングするには、親内に [`Outlet`][outlet-component] をレンダリングする必要があります。修正するために、`app/root.tsx` を開き、アウトレットをレンダリングしましょう。
@@ -439,6 +440,7 @@ export default function App() {
 以上です！Remix は、このデータを UI と同期させ続けます。サイドバーは次のようになります。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/07.webp" />
+
 ## 型推論
 
 マップ内の `contact` 型について、TypeScript が警告を出していることに気づいたかもしれません。`typeof loader` を使用してデータについて型推論を行うために、簡単な注釈を追加できます。
