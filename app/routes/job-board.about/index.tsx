@@ -1,4 +1,4 @@
-import { Link } from '@remix-run/react'
+import { Link } from 'react-router'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,6 +14,7 @@ import {
 } from '~/components/ui'
 import { cn } from '~/libs/utils'
 import AboutDoc from './job-board.about.mdx'
+
 export default function job() {
   return (
     <Stack className="gap-2">

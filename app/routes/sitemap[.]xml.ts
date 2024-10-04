@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs } from '@remix-run/node'
+import type { LoaderFunctionArgs } from 'react-router'
 import { getProduct } from '~/features/product'
 import { getMenu } from '~/services/menu.server'
 

@@ -1,6 +1,6 @@
-import { Link, useLoaderData } from '@remix-run/react'
 import { ExternalLinkIcon } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
+import { Link } from 'react-router'
 import jobs from '~/assets/jobs.json'
 import {
   Badge,
@@ -19,6 +19,7 @@ import {
   HStack,
   Stack,
 } from '~/components/ui'
+import type * as Route from './+types.index'
 import { shuffleArray } from './utils'
 
 export const meta = [
@@ -39,9 +40,9 @@ export const loader = () => {
   }
 }
 
-export default function JobBoardIndex() {
-  const { jobs } = useLoaderData<typeof loader>()
-
+export default function JobBoardIndex({
+  loaderData: { jobs },
+}: Route.ComponentProps) {
   return (
     <Stack className="gap-2">
       <Breadcrumb>

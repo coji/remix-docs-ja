@@ -1,22 +1,13 @@
-import type {
-  LinksFunction,
-  LoaderFunctionArgs,
-  MetaFunction,
-} from '@remix-run/node'
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from '@remix-run/react'
+import type { LinksFunction } from 'react-router'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
+import type * as Route from './+types.root'
 import { PageLoadingProgress } from './components/page-loading-progress'
 import { ThemeProvider } from './components/theme-provider'
 import { getProduct } from './features/product'
 import { buildPageMeta } from './libs/seo'
 import globalStyles from './styles/globals.css?url'
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta = ({ data }: { data: ReturnType<typeof loader> }) => {
   return buildPageMeta({
     title: data?.product.title,
     pathname: '/',
@@ -24,7 +15,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   })
 }
 
-export const loader = ({ request }: LoaderFunctionArgs) => {
+export const loader = ({ request }: Route.LoaderArgs) => {
   const { product } = getProduct(request)
   return { product }
 }

@@ -1,21 +1,16 @@
-import type { LoaderFunctionArgs } from '@remix-run/node'
-import {
-  Link,
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useRouteLoaderData,
-} from '@remix-run/react'
+import { Link, Outlet, useLocation, useRouteLoaderData } from 'react-router'
 import { ModeToggle } from '~/components/dark-mode-toggle'
 import { HStack } from '~/components/ui/stack'
 import { getProduct } from '~/features/product'
 import type { loader as rootLoader } from '~/root'
 import { SearchPanel } from '~/routes/resources.search'
 import { getCurrentMenuItem, getMenu } from '~/services/menu.server'
+import type * as Route from './+types.index'
 import { MobileMenu, SideMenu } from './components'
+
 export const shouldRevalidate = () => true
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const { product } = getProduct(request)
   const url = new URL(request.url)
   const filename = `docs/${product.id}${url.pathname === '/' ? '/index.md' : url.pathname}.md`
@@ -30,10 +25,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return { menu, currentMenuItem }
 }
 
-export default function Layout() {
-  const { menu, currentMenuItem } = useLoaderData<typeof loader>()
+export default function Layout({
+  loaderData: { menu, currentMenuItem },
+}: Route.ComponentProps) {
   const { pathname } = useLocation()
-  const rootLoaderData = useRouteLoaderData<typeof rootLoader>('root')
+  const rootLoaderData = useRouteLoaderData('root') as Awaited<
+    ReturnType<typeof rootLoader>
+  >
 
   const title = rootLoaderData?.product.title ?? 'Remixドキュメント日本語版'
 

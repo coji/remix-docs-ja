@@ -1,7 +1,7 @@
-import type { HeadersFunction, LoaderFunctionArgs } from '@remix-run/node'
-import { Link, useFetcher, useLocation } from '@remix-run/react'
 import { ChevronsRightIcon } from 'lucide-react'
 import { useEffect } from 'react'
+import type { HeadersFunction, LoaderFunctionArgs } from 'react-router'
+import { Link, useFetcher, useLocation } from 'react-router'
 import jobs from '~/assets/jobs.json'
 import { Badge, HStack, Stack } from '~/components/ui'
 import { cn } from '~/libs/utils'
@@ -33,7 +33,7 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 
 interface JobBoardProps extends React.HTMLAttributes<HTMLDivElement> {}
 export const JobBoard = ({ className }: JobBoardProps) => {
-  const fetcher = useFetcher<typeof loader>()
+  const fetcher = useFetcher<ReturnType<typeof loader>>()
   const { pathname } = useLocation()
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>

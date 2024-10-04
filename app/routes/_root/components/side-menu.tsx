@@ -1,4 +1,4 @@
-import { NavLink } from '@remix-run/react'
+import { NavLink } from 'react-router'
 import { twc } from 'react-twc'
 import type { MenuDoc } from '~/services/menu.server'
 

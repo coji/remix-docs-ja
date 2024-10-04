@@ -1,9 +1,5 @@
-import {
-  Link,
-  useFetcher,
-  type ClientLoaderFunctionArgs,
-} from '@remix-run/react'
 import React, { useCallback } from 'react'
+import { Link, useFetcher, type ClientLoaderFunctionArgs } from 'react-router'
 import {
   Button,
   Dialog,
@@ -43,7 +39,7 @@ export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 }
 
 export const SearchPanel = () => {
-  const fetcher = useFetcher<typeof clientLoader>()
+  const fetcher = useFetcher<Awaited<ReturnType<typeof clientLoader>>>()
   const [isOpen, setIsOpen] = React.useState(false)
   const query = String(fetcher.formData?.get('q'))
 
