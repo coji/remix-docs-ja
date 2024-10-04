@@ -4,7 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "react-router build",
+    "build": "tsx scripts/build-index.ts && react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "lint": "biome lint .",
