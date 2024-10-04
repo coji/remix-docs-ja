@@ -1,4 +1,4 @@
-import type { LinksFunction } from '@remix-run/node'
+import type { LinksFunction } from 'react-router'
 import Page, { loader } from '~/routes/_root.$'
 import markdownStyles from '~/styles/md.css?url'
 

@@ -1,6 +1,6 @@
-import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
-import { useLoaderData, useLocation, type MetaArgs } from '@remix-run/react'
 import { useEffect, useRef } from 'react'
+import type { LinksFunction, LoaderFunctionArgs } from 'react-router'
+import { useLocation } from 'react-router'
 import { Stack } from '~/components/ui'
 import { getProduct } from '~/features/product'
 import { buildPageMeta } from '~/libs/seo'
@@ -8,6 +8,7 @@ import { cn } from '~/libs/utils'
 import { JobBoard } from '~/routes/resources.job-board'
 import { getDocJson } from '~/services/document.server'
 import markdownStyles from '~/styles/md.css?url'
+import type * as Route from './+types.index'
 import { MobileToc } from './components/mobile-toc'
 import {
   TableOfContents,
@@ -15,7 +16,13 @@ import {
   TableOfContentsTitle,
 } from './components/toc'
 
-export const meta = ({ location, data }: MetaArgs<typeof loader>) => {
+export const meta = ({
+  location,
+  data,
+}: {
+  location: Location
+  data: Route.LoaderData
+}) => {
   if (!data) {
     return []
   }
@@ -42,8 +49,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   return { doc, product }
 }
 
-export default function Docs() {
-  const { doc } = useLoaderData<typeof loader>()
+export default function Docs({ loaderData: { doc } }: Route.ComponentProps) {
   const { hash, pathname } = useLocation()
   const mainRef = useRef<HTMLDivElement>(null)
 
