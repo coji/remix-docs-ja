@@ -26,7 +26,7 @@ export const meta = [
   { title: 'Remix のお仕事あります - Remix ドキュメント日本語版' },
 ]
 
-export const loader = () => {
+export const loader = ({ request }: Route.LoaderArgs) => {
   // 表示期間中の求人情報を取得し、シャッフルする
   const filteredJobs = jobs.filter((job) => {
     return (

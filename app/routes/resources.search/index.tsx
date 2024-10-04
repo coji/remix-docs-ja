@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Link, useFetcher, type ClientLoaderFunctionArgs } from 'react-router'
+import { Link, useFetcher } from 'react-router'
 import {
   Button,
   Dialog,
@@ -12,6 +12,7 @@ import {
 } from '~/components/ui'
 import { getProduct } from '~/features/product'
 import type { Pagefind } from '~/services/pagefind.types'
+import type * as Route from './+types.index'
 import {
   SearchLoading,
   SearchResult,
@@ -23,7 +24,7 @@ import {
 } from './components'
 import { useHotkey } from './hooks'
 
-export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
+export const clientLoader = async ({ request }: Route.ClientLoaderArgs) => {
   const { product } = getProduct(request)
   const url = new URL(request.url)
   const query = url.searchParams.get('q')
@@ -39,7 +40,7 @@ export const clientLoader = async ({ request }: ClientLoaderFunctionArgs) => {
 }
 
 export const SearchPanel = () => {
-  const fetcher = useFetcher<Awaited<ReturnType<typeof clientLoader>>>()
+  const fetcher = useFetcher<Route.LoaderData>()
   const [isOpen, setIsOpen] = React.useState(false)
   const query = String(fetcher.formData?.get('q'))
 

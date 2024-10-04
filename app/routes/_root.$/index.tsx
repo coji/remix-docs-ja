@@ -21,7 +21,7 @@ export const meta = ({
   data,
 }: {
   location: Location
-  data: Awaited<ReturnType<typeof loader>>
+  data: Route.LoaderData
 }) => {
   if (!data) {
     return []

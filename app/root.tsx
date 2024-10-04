@@ -7,7 +7,7 @@ import { getProduct } from './features/product'
 import { buildPageMeta } from './libs/seo'
 import globalStyles from './styles/globals.css?url'
 
-export const meta = ({ data }: { data: ReturnType<typeof loader> }) => {
+export const meta = ({ data }: { data: Route.LoaderData }) => {
   return buildPageMeta({
     title: data?.product.title,
     pathname: '/',
