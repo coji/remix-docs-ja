@@ -1,5 +1,5 @@
-import type { LoaderFunction } from 'react-router'
+import type * as Route from './+types.healthcheck'
 
-export const loader: LoaderFunction = ({ request }) => {
+export const loader = ({ request }: Route.LoaderArgs) => {
   return new Response('OK')
 }
