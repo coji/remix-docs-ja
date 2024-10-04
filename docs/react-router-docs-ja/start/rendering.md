@@ -5,40 +5,42 @@ order: 4
 
 # レンダリング戦略
 
-React Router には 3 つのレンダリング戦略があります。
+React Routerには3つのレンダリング戦略があります。
 
 - クライアントサイドレンダリング
 - サーバーサイドレンダリング
 - 静的プリレンダリング
 
-すべてのルートは、ユーザーがアプリ内を移動するときに常にクライアントサイドでレンダリングされます。ただし、Vite プラグインの `ssr` および `prerender` オプションを使用して、サーバーレンダリングと静的プリレンダリングを制御できます。
+すべてのルートは、ユーザーがアプリ内を移動するときに常にクライアントサイドでレンダリングされます。ただし、Viteプラグインの `ssr` オプションと `prerender` オプションを使用して、サーバーレンダリングと静的プリレンダリングを制御できます。
 
 ## サーバーサイドレンダリング
 
 ```ts filename=vite.config.ts
-import { plugin as app } from "@react-router/vite";
+import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
+
 export default defineConfig({
   plugins: [
-    app({
-      // デフォルトは false
+    reactRouter({
+      // デフォルトはfalse
       ssr: true,
     }),
   ],
 });
 ```
 
-サーバーサイドレンダリングには、それをサポートするデプロイメントが必要です。これはグローバル設定ですが、個々のルートは静的にプリレンダリングすることも、`clientLoader` を使用してクライアントデータのロードを実行して、UI のその部分のサーバーレンダリング/フェッチを回避することもできます。
+サーバーサイドレンダリングには、それをサポートするデプロイメントが必要です。これはグローバル設定ですが、個々のルートは静的にプリレンダリングされたり、 `clientLoader` を使用してクライアントデータのロードを行うことで、サーバーレンダリング/フェッチを回避したりできます。
 
 ## 静的プリレンダリング
 
 ```ts filename=vite.config.ts
-import { plugin as app } from "@react-router/vite";
+import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
+
 export default defineConfig({
   plugins: [
-    app({
-      // ビルド時にプリレンダリングする URL のリストを返します
+    reactRouter({
+      // ビルド時にプリレンダリングするURLのリストを返します
       async prerender() {
         return ["/", "/about", "/contact"];
       },
@@ -47,30 +49,30 @@ export default defineConfig({
 });
 ```
 
-プリレンダリングは、ビルド時の操作であり、URL のリストに対する静的 HTML とクライアントナビゲーションデータのペイロードを生成します。これは、特にサーバーレンダリングのないデプロイメントの場合、SEO とパフォーマンスに役立ちます。プリレンダリングを行う場合、`loader` メソッドはビルド時にデータを取得するために使用されます。
+プリレンダリングは、ビルド時の操作であり、URLのリストに対して静的HTMLとクライアントナビゲーションデータのペイロードを生成します。これは、特にサーバーレンダリングを行わないデプロイメントの場合、SEOとパフォーマンスに役立ちます。プリレンダリングの場合、ルートモジュールローダーを使用して、ビルド時にデータをフェッチします。
 
 ## React Server Components
 
-ローダーとアクションから要素を返し、ブラウザバンドルから排除することができます。
+<docs-warning>RSCは開発中です</docs-warning>
+
+将来、ローダーとアクションから要素を返して、ブラウザバンドルから除外できるようになります。
 
 ```tsx
-export default defineRoute$({
-  async loader() {
-    return {
-      products: <Products />,
-      reviews: <Reviews />,
-    };
-  },
+export async function loader() {
+  return {
+    products: <Products />,
+    reviews: <Reviews />,
+  };
+}
 
-  Component({ data }) {
-    return (
-      <div>
-        {data.products}
-        {data.reviews}
-      </div>
-    );
-  },
-});
+export default function App({ data }) {
+  return (
+    <div>
+      {data.products}
+      {data.reviews}
+    </div>
+  );
+}
 ```
 
 

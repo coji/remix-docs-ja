@@ -5,41 +5,44 @@ order: 6
 
 # アクション
 
-データの変更は、ルートアクションを通じて行われます。アクションが完了すると、ページ上のすべてのローダーデータは再検証され、UIとデータが同期状態に保たれます。この処理は、コードを書くことなく行われます。
+データの変更は、ルートアクションを通じて行われます。アクションが完了すると、ページ上のすべてのローダーデータが再検証され、UIがデータと同期されます。コードを記述する必要はありません。
 
 `action`で定義されたルートアクションはサーバーでのみ呼び出され、`clientAction`で定義されたアクションはブラウザで実行されます。
 
 ## クライアントアクション
 
-クライアントアクションはブラウザでのみ実行され、サーバーアクションと両方が定義されている場合は優先されます。
+クライアントアクションはブラウザでのみ実行され、両方が定義されている場合、サーバーアクションよりも優先されます。
 
 ```tsx filename=app/project.tsx
 // route('/projects/:projectId', './project.tsx')
-import { defineRoute$, Form } from "react-router";
+import type * as Route from "./+types.project";
+import { Form } from "react-router";
 
-export default defineRoute$({
-  clientAction({ request }) {
-    let formData = await request.formData();
-    let title = await formData.get("title");
-    let project = await someApi.updateProject({ title });
-    return project;
-  },
+export async function clientAction({
+  request,
+}: Route.ClientActionArgs) {
+  let formData = await request.formData();
+  let title = await formData.get("title");
+  let project = await someApi.updateProject({ title });
+  return project;
+}
 
-  Component({ data, actionData }) {
-    return (
-      <div>
-        <h1>プロジェクト</h1>
-        <Form method="post">
-          <input type="text" name="title" />
-          <button type="submit">送信</button>
-        </Form>
-        {actionData ? (
-          <p>{actionData.title} が更新されました</p>
-        ) : null}
-      </div>
-    );
-  },
-});
+export default function Project({
+  clientActionData,
+}: Route.ComponentProps) {
+  return (
+    <div>
+      <h1>プロジェクト</h1>
+      <Form method="post">
+        <input type="text" name="title" />
+        <button type="submit">送信</button>
+      </Form>
+      {clientActionData ? (
+        <p>{clientActionData.title} が更新されました</p>
+      ) : null}
+    </div>
+  );
+}
 ```
 
 ## サーバーアクション
@@ -48,45 +51,48 @@ export default defineRoute$({
 
 ```tsx filename=app/project.tsx
 // route('/projects/:projectId', './project.tsx')
-import { defineRoute$, Form } from "react-router";
+import type * as Route from "./+types.project";
+import { Form } from "react-router";
 
-export default defineRoute$({
-  action({ request }) {
-    let formData = await request.formData();
-    let title = await formData.get("title");
-    let project = await someApi.updateProject({ title });
-    return project;
-  },
+export async function action({
+  request,
+}: Route.ActionArgs) {
+  let formData = await request.formData();
+  let title = await formData.get("title");
+  let project = await someApi.updateProject({ title });
+  return project;
+}
 
-  Component({ data, actionData }) {
-    return (
-      <div>
-        <h1>プロジェクト</h1>
-        <Form method="post">
-          <input type="text" name="title" />
-          <button type="submit">送信</button>
-        </Form>
-        {actionData ? (
-          <p>{actionData.title} が更新されました</p>
-        ) : null}
-      </div>
-    );
-  },
-});
+export default function Project({
+  actionData,
+}: Route.ComponentProps) {
+  return (
+    <div>
+      <h1>プロジェクト</h1>
+      <Form method="post">
+        <input type="text" name="title" />
+        <button type="submit">送信</button>
+      </Form>
+      {actionData ? (
+        <p>{actionData.title} が更新されました</p>
+      ) : null}
+    </div>
+  );
+}
 ```
 
 ## アクションの呼び出し
 
-アクションは、`<Form>`を介して宣言的に、または`useSubmit`（または`<fetcher.Form>`と`fetcher.submit`）を介して、ルートのパスと「post」メソッドを参照することで、命令的に呼び出されます。
+アクションは、`<Form>`を通じて宣言的に、または`useSubmit`（または`<fetcher.Form>`および`fetcher.submit`）を通じて命令的に呼び出されます。これは、ルートのパスと「post」メソッドを参照することで行われます。
 
-### フォームを使用したアクションの呼び出し
+### フォームでアクションを呼び出す
 
 ```tsx
 import { Form } from "react-router";
 
 function SomeComponent() {
   return (
-    <Form action="/projects/:projectId" method="post">
+    <Form action="/projects/123" method="post">
       <input type="text" name="title" />
       <button type="submit">送信</button>
     </Form>
@@ -94,11 +100,11 @@ function SomeComponent() {
 }
 ```
 
-これにより、ナビゲーションが発生し、ブラウザの履歴に新しいエントリが追加されます。
+これにより、ナビゲーションが発生し、ブラウザ履歴に新しいエントリが追加されます。
 
-### useSubmitを使用したアクションの呼び出し
+### useSubmitでアクションを呼び出す
 
-`useSubmit`を使用して、アクションにフォームデータを命令的に送信できます。
+`useSubmit`を使用すると、アクションにフォームデータを命令的に送信できます。
 
 ```tsx
 import { useCallback } from "react";
@@ -120,11 +126,11 @@ function useQuizTimer() {
 }
 ```
 
-これにより、ナビゲーションが発生し、ブラウザの履歴に新しいエントリが追加されます。
+これにより、ナビゲーションが発生し、ブラウザ履歴に新しいエントリが追加されます。
 
-### fetcherを使用したアクションの呼び出し
+### fetcherでアクションを呼び出す
 
-fetcherを使用すると、ナビゲーションが発生することなく（ブラウザの履歴に新しいエントリは追加されません）、アクション（およびローダー）にデータを送信できます。
+フェッチャーを使用すると、ナビゲーションなしで（ブラウザ履歴に新しいエントリが追加されずに）、アクション（およびローダー）にデータを送信できます。
 
 ```tsx
 import { useFetcher } from "react-router";
@@ -134,7 +140,7 @@ function Task() {
   let busy = fetcher.state !== "idle";
 
   return (
-    <fetcher.Form method="post">
+    <fetcher.Form method="post" action="/update-task/123">
       <input type="text" name="title" />
       <button type="submit">
         {busy ? "保存中..." : "保存"}
@@ -144,16 +150,16 @@ function Task() {
 }
 ```
 
-fetcherには、命令的な`submit`メソッドもあります。
+また、命令的な`submit`メソッドも備えています。
 
 ```tsx
 fetcher.submit(
-  { title: "New Title" },
-  { action: "/update-task", method: "post" }
+  { title: "新しいタイトル" },
+  { action: "/update-task/123", method: "post" }
 );
 ```
 
-詳細については、[フェッチャーの使用](../guides/fetchers)ガイドを参照してください。
+詳細については、[フェッチャーの使用](../misc/fetchers)ガイドを参照してください。
 
 
 

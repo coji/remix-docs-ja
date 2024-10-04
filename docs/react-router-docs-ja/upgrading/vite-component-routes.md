@@ -1,59 +1,60 @@
 ---
-title: Vite (Routes) の採用
+title: Vite の採用（Routes）
+hidden: true
 ---
 
-# Vite (Routes) の採用
+# Vite の採用（Routes）
 
-`<RouterProvider>` を使用している場合は、代わりに [RouterProvider からのルートモジュールの採用](./vite-router-provider) を参照してください。
+`<RouterProvider>` を使用している場合は、代わりに [RouterProvider からルートモジュールを採用する](./vite-router-provider) を参照してください。
 
 `<Routes>` を使用している場合は、ここが正しい場所です。
 
-React Router vite プラグインは、React Router にフレームワーク機能を追加します。このドキュメントは、アプリでプラグインを採用したい場合に役立ちます。
+React Router vite プラグインは、React Router にフレームワーク機能を追加します。このドキュメントは、必要に応じてアプリにプラグインを採用するのに役立ちます。
 
 ## 機能
 
-Vite プラグインは以下を追加します。
+Vite プラグインは次のものを追加します。
 
 - ルートローダー、アクション、自動データ再検証
-- タイプセーフなルートモジュール
-- アプリ全体でのタイプセーフなルートパス
+- 型安全なルートモジュール
+- アプリ全体での型安全なルートパス
 - 自動ルートコード分割
-- ナビゲーション間の自動スクロール復元
-- オプションの静的事前レンダリング
+- ナビゲーション全体での自動スクロール復元
+- オプションの静的プリレンダリング
 - オプションのサーバーレンダリング
 - オプションの React サーバーコンポーネント
 
-初期設定は少し面倒ですが、完了すれば新しい機能の採用は段階的に行うことができ、一度に1つのルートずつ行うことができます。
+初期設定は少し面倒かもしれませんが、完了したら、新しい機能の採用は段階的になり、一度に 1 つのルートを実行できます。
 
 ## 1. Vite のインストール
 
-最初に React Router vite プラグインをインストールします。
+まず、React Router vite プラグインをインストールします。
 
 ```shellscript nonumber
 npm install -D @react-router/dev
 ```
 
-次に、React プラグインを React Router に交換します。`react` キーは、React プラグインと同じオプションを受け入れます。
+次に、React プラグインを React Router に置き換えます。
 
 ```diff filename=vite.config.ts
 -import react from '@vitejs/plugin-react'
-+import { plugin as app } from "@react-router/vite";
++import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
 
 
 export default defineConfig({
   plugins: [
--    react(reactOptions)
-+    app({ react: reactOptions })
+-    react()
++    reactRouter()
   ],
 });
 ```
 
 ## 2. ルートエントリポイントの追加
 
-一般的な Vite アプリでは、`index.html` ファイルはバンドルのためのエントリポイントです。React Router Vite プラグインは、エントリポイントを `root.tsx` ファイルに移します。これにより、静的な HTML ではなく React を使用してアプリのシェルをレンダリングでき、最終的にはサーバーレンダリングにアップグレードすることができます。
+典型的な Vite アプリでは、`index.html` ファイルはバンドルのためのエントリポイントです。React Router Vite プラグインは、エントリポイントを `root.tsx` ファイルに移動するため、静的 HTML の代わりに React を使用してアプリのシェルをレンダリングし、最終的には必要に応じてサーバーレンダリングにアップグレードできます。
 
-たとえば、現在の `index.html` が次のようになっているとします。
+たとえば、現在の `index.html` が次のようになっている場合：
 
 ```html filename="index.html"
 <!DOCTYPE html>
@@ -105,9 +106,9 @@ export default function Root() {
 
 ## 3. クライアントエントリモジュールの追加
 
-一般的な Vite アプリのセットアップでは、`index.html` ファイルは `src/main.tsx` をクライアントエントリポイントとして指定します。React Router は、代わりに `src/entry.client.tsx` という名前のファイルを使用します。
+典型的な Vite アプリのセットアップでは、`index.html` ファイルは `src/main.tsx` をクライアントエントリポイントとして指しています。React Router は代わりに `src/entry.client.tsx` という名前のファイルを使用します。
 
-現在の `src/main.tsx` が次のようになっているとします。
+現在の `src/main.tsx` が次のようになっている場合：
 
 ```tsx filename=src/main.tsx
 import "./index.css";
@@ -124,7 +125,7 @@ ReactDOM.createRoot(
 );
 ```
 
-名前を `entry.client.tsx` に変更し、次のようにします。
+`entry.client.tsx` に名前を変更し、次のようになります。
 
 ```tsx filename=src/entry.client.tsx
 import "./index.css";
@@ -140,21 +141,21 @@ ReactDOM.hydrateRoot(
 );
 ```
 
-- `createRoot` の代わりに `hydrateRoot` を使用します
-- `<App/>` コンポーネントの代わりに `<HydratedRouter>` をレンダリングします
-- `<App/>` コンポーネントのレンダリングを停止したことに注意してください。これは後のステップで復活します。今のところ、新しいエントリポイントを使用してアプリを起動するだけです。
+- `createRoot` ではなく `hydrateRoot` を使用してください。
+- `<App/>` コンポーネントではなく、`<HydratedRouter>` をレンダリングします。
+- `<App/>` コンポーネントのレンダリングを停止したことに注意してください。これは後続の手順で戻ってきます。現時点では、新しいエントリポイントを使用してアプリを起動するだけです。
 
-## 4. ものをシャッフルする
+## 4. シャッフル
 
-`root.tsx` と `entry.client.tsx` の間では、いくつかのものをシャッフルする必要があるかもしれません。
+`root.tsx` と `entry.client.tsx` の間では、いくつかをシャッフルする必要があるかもしれません。
 
-一般的には、
+一般的に、
 
-- `root.tsx` には、コンテキストプロバイダー、レイアウト、スタイルなどのレンダリングに関するすべてのものが含まれています。
-- `entry.client.tsx` はできるだけ最小限にしておく必要があります。
-- 既存の `<App/>` コンポーネントをレンダリングしないようにして、手順を分離してください。
+- `root.tsx` には、コンテキストプロバイダー、レイアウト、スタイルなど、レンダリングに関するものが含まれます。
+- `entry.client.tsx` はできるだけ最小限にする必要があります
+- 既存の `<App/>` コンポーネントをレンダリングしようとしないように、手順を分離してください。
 
-`root.tsx` ファイルは静的に生成され、アプリのエントリポイントとして提供されるため、そのモジュールのみがサーバーレンダリングと互換性がある必要があります。これが、ほとんどの問題が発生する場所です。
+`root.tsx` ファイルは静的に生成され、アプリのエントリポイントとして提供されることに注意してください。そのため、そのモジュールのみがサーバーレンダリングと互換性を持つ必要があります。これがほとんどのトラブルの原因となります。
 
 ## 5. アプリの起動
 
@@ -164,14 +165,14 @@ ReactDOM.hydrateRoot(
 npm react-router vite:dev
 ```
 
-- [アップグレードに関するディスカッション](#TODO) カテゴリを検索します。
-- [Twitter](https://x.com/remix_run) または [Discord](https://rmx.as/discord) でヘルプを依頼します。
+- [アップグレードに関する議論](#TODO) カテゴリを検索します。
+- [Twitter](https://x.com/remix_run) または [Discord](https://rmx.as/discord) でヘルプを求めてください。
 
-この時点でアプリを起動できることを確認してから、先に進んでください。
+先に進む前に、アプリを起動できることを確認してください。
 
-## 6. Catchall ルートの構成
+## 6. キャッチオールルートの設定
 
-アプリのレンダリングに戻るには、すべての URL と一致する「catchall」ルートを構成して、既存の `<Routes>` がレンダリングされるようにします。
+アプリのレンダリングに戻すために、既存の `<Routes>` がレンダリングされるように、すべての URL に一致する「キャッチオール」ルートを設定します。
 
 `src/routes.ts` にファイルを作成し、以下を追加します。
 
@@ -186,10 +187,9 @@ export const routes: RouteConfig = [
 ];
 ```
 
-次に、catchall ルートモジュールを作成し、既存のルートAppコンポーネントをその中にレンダリングします。
+次に、キャッチオールルートモジュールを作成し、既存のルートAppコンポーネントをその中でレンダリングします。
 
 ```tsx filename=src/catchall.tsx
-import { defineRoute } from "react-router";
 import App from "./App";
 
 export default function Component() {
@@ -197,11 +197,11 @@ export default function Component() {
 }
 ```
 
-これで、アプリは画面に戻り、通常どおり動作するはずです！
+アプリは画面に戻り、通常どおりに動作するはずです！
 
 ## 6. ルートをルートモジュールに移行する
 
-これで、ルートを段階的にルートモジュールに移行することができます。
+これで、ルートをルートモジュールに段階的に移行できます。
 
 次の既存のルートがあるとします。
 
@@ -218,7 +218,7 @@ export default function App() {
 }
 ```
 
-定義を `routes.ts` ファイルに移動することができます。
+`routes.ts` ファイルに定義を移動できます。
 
 ```tsx filename=src/routes.ts
 import { type RouteConfig } from "@react-router/dev/routes";
@@ -235,7 +235,7 @@ export const routes: RouteConfig = [
 ];
 ```
 
-次に、ルートモジュールを編集してルートモジュールAPIを使用します。
+次に、ルートモジュールを編集して、ルートモジュールAPIを使用します。
 
 ```tsx filename=src/pages/about.tsx
 import { useLoaderData } from "react-router";
@@ -251,21 +251,21 @@ export default function Component() {
 }
 ```
 
-これで、パラメータ、ローダーデータなど、推論されたタイプセーフティが得られます。
+これで、パラメーター、ローダーデータなど、型推論された型安全性を得ることができます。
 
-最初のいくつかのルートの移行は、最も難しいものです。なぜなら、以前とは少し異なる方法でさまざまな抽象化にアクセスする必要があることが多いからです（フックやコンテキストからではなく、ローダーで）。しかし、最も難しい部分が処理されれば、段階的な作業に移行できます。
+最初に移行するルートは、多くの場合、フックやコンテキストではなく、ローダーなどでさまざまな抽象化にアクセスする必要があるため、最も難しいものです。しかし、最も難しい部分を処理したら、段階的に進めることができます。
 
-## SSR と事前レンダリングを有効にする
+## SSR とプリレンダリングを有効にする
 
-サーバーレンダリングと静的事前レンダリングを有効にするには、バンドラープラグインの `ssr` と `prerender` オプションを使用します。
+サーバーレンダリングと静的プリレンダリングを有効にするには、バンドラープラグインの `ssr` オプションと `prerender` オプションを使用できます。
 
 ```ts filename=vite.config.ts
-import { plugin as app } from "@react-router/vite";
+import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [
-    app({
+    reactRouter({
       ssr: true,
       async prerender() {
         return ["/", "/about", "/contact"];

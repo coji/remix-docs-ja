@@ -1,9 +1,12 @@
 ---
 title: React サーバーコンポーネント
-new: true
 ---
 
 # React サーバーコンポーネント
 
-動作します！ 
+<docs-warning>
+  このドキュメントは開発中です。まだ見るべきものはありません（今のところ）。
+</docs-warning>
+
+
 

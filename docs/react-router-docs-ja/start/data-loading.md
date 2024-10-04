@@ -1,137 +1,105 @@
 ---
-title: データ読み込み
+title: データの読み込み
 order: 5
 ---
 
-# データ読み込み
+# データの読み込み
 
-データは `loader` および `clientLoader` を介してルートに提供され、ルートコンポーネントの `data` プロパティでアクセスされます。
+データは`loader`と`clientLoader`からルートコンポーネントに提供されます。
 
-## クライアントデータ読み込み
+## クライアントデータの読み込み
 
-`clientLoader` は、クライアントでデータを取得するために使用されます。これは、サーバーレンダリングしていないプロジェクトや、ブラウザでデータを取得することを好むページに便利です。
+`clientLoader`は、クライアント上でデータを取得するために使用されます。これは、ブラウザからのみデータを取得することを好むページやプロジェクト全体に役立ちます。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
-import { defineRoute$ } from "react-router";
+import type * as Route from "./+types.product";
 
-export default defineRoute$({
-  params: ["pid"],
+export async function clientLoader({
+  params,
+}: Route.ClientLoaderArgs) {
+  const res = await fetch(`/api/products/${params.pid}`);
+  const product = await res.json();
+  return product;
+}
 
-  async clientLoader({ params }) {
-    const res = await fetch(`/api/products/${params.pid}`);
-    const product = await res.json();
-    return { product };
-  },
-
-  component: function Product({ data }) {
-    return (
-      <div>
-        <h1>{data.product.name}</h1>
-        <p>{data.product.description}</p>
-      </div>
-    );
-  },
-});
+export default function Product({
+  clientLoaderData,
+}: Route.ComponentProps) {
+  const { name, description } = clientLoaderData;
+  return (
+    <div>
+      <h1>{name}</h1>
+      <p>{description}</p>
+    </div>
+  );
+}
 ```
 
-## サーバーデータ読み込み
+## サーバーデータの読み込み
 
-サーバーレンダリングの場合、`loader` メソッドは、最初のページロードと、ブラウザでの React Router による自動 `fetch` によるクライアントナビゲーションの両方で、サーバー上でデータを取得するために使用されます。
+サーバーレンダリング時、`loader`は最初のページ読み込みとクライアントナビゲーションの両方で使用されます。クライアントナビゲーションは、ブラウザからサーバーへの自動`fetch`を介してReact Routerによってローダーを呼び出します。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
-import { defineRoute$ } from "react-router";
+import type * as Route from "./+types.product";
 import { fakeDb } from "../db";
 
-export default defineRoute$({
-  params: ["pid"],
+export async function loader({ params }: Route.LoaderArgs) {
+  const product = await fakeDb.getProduct(params.pid);
+  return product;
+}
 
-  async loader({ params }) {
-    const product = await fakeDb.getProduct(params.pid);
-    return { product };
-  },
-
-  Component({ data }) {
-    return (
-      <div>
-        <h1>{data.product.name}</h1>
-        <p>{data.product.description}</p>
-      </div>
-    );
-  },
-});
+export default function Product({
+  loaderData,
+}: Route.ComponentProps) {
+  const { name, description } = loaderData;
+  return (
+    <div>
+      <h1>{name}</h1>
+      <p>{description}</p>
+    </div>
+  );
+}
 ```
 
-`loader` 関数は、クライアントバンドルから削除されるため、サーバー専用 API を使用しても、ブラウザに含まれることを心配する必要はありません。
+`loader`関数はクライアントバンドルから削除されるため、サーバーのみのAPIを使用しても、ブラウザに含まれていることを心配する必要はありません。
 
-## React Server Components
+## 静的データの読み込み
 
-RSC は、ローダーとアクションからコンポーネントを返すことでサポートされています。
+事前レンダリング時、ローダーは本番ビルド中にデータを取得するために使用されます。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
-import { defineRoute$ } from "react-router";
-import Product from "./product";
-import Reviews from "./reviews";
+import type * as Route from "./+types.product";
 
-export default defineRoute$({
-  params: ["pid"],
+export async function loader({ params }: Route.LoaderArgs) {
+  let product = await getProductFromCSVFile(params.pid);
+  return product;
+}
 
-  async loader({ params }) {
-    return {
-      product: <Product id={params.pid} />,
-      reviews: <Reviews productId={params.pid} />,
-    };
-  },
-
-  Component({ data }) {
-    return (
-      <div>
-        {data.product}
-        {data.reviews}
-      </div>
-    );
-  },
-});
+export default function Product({
+  loaderData,
+}: Route.ComponentProps) {
+  const { name, description } = loaderData;
+  return (
+    <div>
+      <h1>{name}</h1>
+      <p>{description}</p>
+    </div>
+  );
+}
 ```
 
-## 静的データ読み込み
-
-事前レンダリングの場合、`loader` メソッドはビルド時にデータを取得するために使用されます。
-
-```tsx filename=app/product.tsx
-// route("products/:pid", "./product.tsx");
-import { defineRoute$ } from "react-router";
-
-export default defineRoute$({
-  params: ["pid"],
-
-  async loader({ params }) {
-    let product = await getProductFromCSVFile(params.pid);
-    return { product };
-  },
-
-  Component({ data }) {
-    return (
-      <div>
-        <h1>{data.product.name}</h1>
-        <p>{data.product.description}</p>
-      </div>
-    );
-  },
-});
-```
-
-事前レンダリングする URL は、Vite プラグインで指定されます。
+事前レンダリングするURLは、Viteプラグインで指定されます。
 
 ```ts filename=vite.config.ts
-import { plugin as app } from "@react-router/vite";
+import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [
-    app({
+    reactRouter({
       async prerender() {
         let products = await readProductsFromCSVFile();
         return products.map(
@@ -143,44 +111,91 @@ export default defineConfig({
 });
 ```
 
-サーバーレンダリングの場合、事前レンダリングされていない URL は、通常どおりサーバーレンダリングされます。
+サーバーレンダリング時、事前レンダリングされていないURLは、通常どおりサーバーレンダリングされます。
 
-## 2 つのローダーの使用
+## 両方のローダーを使用する
 
-`loader` と `clientLoader` は一緒に使用できます。`loader` は、最初の SSR（または事前レンダリング）でサーバーで使用され、`clientLoader` はその後のクライアントサイドナビゲーションでサーバーで使用されます。
+`loader`と`clientLoader`は一緒に使用できます。`loader`は、最初のSSR（または事前レンダリング）でサーバーで使用され、`clientLoader`は後続のクライアントサイドナビゲーションで使用されます。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
-import { defineRoute$ } from "react-router";
+import type * as Route from "./+types.product";
 import { fakeDb } from "../db";
 
-export default defineRoute$({
-  // SSR はデータベースから直接読み込みます
-  async loader({ params }) {
-    return fakeDb.getProduct(params.pid);
-  },
+export async function loader({ params }: Route.LoaderArgs) {
+  return fakeDb.getProduct(params.pid);
+}
 
-  // クライアントナビゲーションはブラウザから直接フェッチします
-  // React Router サーバーをスキップします
-  async clientLoader({ params }) {
-    const res = await fetch(`/api/products/${params.pid}`);
-    return res.json();
-  },
+export async function clientLoader({
+  params,
+}: Route.ClientLoader) {
+  const res = await fetch(`/api/products/${params.pid}`);
+  return res.json();
+}
 
-  Component({ data }) {
-    return (
-      <div>
-        <h1>{data.name}</h1>
-        <p>{data.description}</p>
-      </div>
-    );
-  },
-});
+export default function Product({
+  loaderData,
+  clientLoaderData,
+}: Route.ComponentProps) {
+  const { name, description } =
+    clientLoaderData || loaderData;
+
+  return (
+    <div>
+      <h1>{name}</h1>
+      <p>{description}</p>
+    </div>
+  );
+}
 ```
 
-キャッシュなどの `clientLoader` のより高度なユースケースについては、[高度なデータフェッチ][advanced_data_fetching] を参照してください。
+`clientLoader`を使用したキャッシュなどのより高度なユースケースについては、[高度なデータ取得][advanced_data_fetching]を参照してください。
+
+## React Server Componentsを使用した非同期コンポーネント
+
+<docs-warning>RSCはまだサポートされていません</docs-warning>
+
+将来的には、ローダーでレンダリングされた非同期コンポーネントは、他の値と同じように`loaderData`で利用できます。
+
+```tsx filename=app/product-page.tsx
+// route("products/:pid", "./product-page.tsx");
+import type * as Route from "./+types.product";
+import Product from "./product";
+import Reviews from "./reviews";
+
+export async function loader({ params }: Route.LoaderArgs) {
+  return {
+    product: <Product id={params.pid} />,
+    reviews: <Reviews productId={params.pid} />,
+  };
+}
+
+export default function ProductPage({
+  loaderData,
+}: Route.ComponentProps) {
+  return (
+    <div>
+      {loaderData.product}
+      <Suspense fallback={<div>loading...</div>}>
+        {loaderData.reviews}
+      </Suspense>
+    </div>
+  );
+}
+```
+
+```tsx filename=app/product.tsx
+export async function Product({ id }: { id: string }) {
+  const product = await fakeDb.getProduct(id);
+  return (
+    <div>
+      <h1>{product.title}</h1>
+      <p>{product.description}</p>
+    </div>
+  );
+}
+```
 
 [advanced_data_fetching]: ../tutorials/advanced-data-fetching
-
 
 
