@@ -4,11 +4,11 @@ title: Form
 
 # `<Form>`
 
-`fetch` を介してアクションにデータを提出する、漸進的に強化された HTML [`<form>`][form_element] であり、`useNavigation` 内の保留状態をアクティブにして、基本的な HTML フォームを超えた高度なユーザーインターフェイスを実現します。フォームのアクションが完了すると、ページ上のすべてのデータはサーバーから自動的に再検証され、UI をデータと同期させます。
+`fetch` を介してアクションにデータを送信する、漸進的に強化された HTML [`<form>`][form_element] です。`useNavigation` で保留状態をアクティブ化し、基本的な HTML フォームを超えた高度なユーザーインターフェースを可能にします。フォームのアクションが完了すると、ページ上のすべてのデータはサーバーから自動的に再検証され、UI とデータが同期した状態になります。
 
-HTML フォーム API を使用するため、サーバー側でレンダリングされたページは、JavaScript がロードされる前に基本的なレベルでインタラクティブになります。Remix が提出を管理するのではなく、ブラウザが提出と保留状態（スピニングファビコンなど）を管理します。JavaScript がロードされると、Remix が引き継ぎ、Web アプリケーションのユーザーエクスペリエンスを可能にします。
+HTML フォーム API を使用しているため、サーバーでレンダリングされたページは、JavaScript がロードされる前に基本レベルでインタラクティブになります。Remix が送信を管理するのではなく、ブラウザーが送信と保留状態（スピニングファビコンなど）を管理します。JavaScript がロードされると、Remix が引き継ぎ、ウェブアプリケーションのユーザーエクスペリエンスを実現します。
 
-フォームは、URL を変更したり、ブラウザの履歴スタックにエントリを追加したりする必要がある提出に最も役立ちます。ブラウザの履歴スタックを操作しないフォームの場合、[`<fetcher.Form>`][fetcher_form] を使用してください。
+Form は、URL を変更したり、ブラウザの履歴スタックにエントリを追加したりする必要がある送信に最も役立ちます。ブラウザの履歴スタックを操作しないフォームの場合、[`<fetcher.Form>`][fetcher_form] を使用してください。
 
 ```tsx
 import { Form } from "@remix-run/react";
@@ -23,41 +23,41 @@ function NewEvent() {
 }
 ```
 
-## プロパティ
+## Props
 
 ### `action`
 
-フォームデータを提出する URL。
+フォームデータを送信する URL。
 
-`undefined` の場合、これはコンテキスト内で最も近いルートにデフォルト設定されます。親ルートが `<Form>` をレンダリングするが、URL がより深い子ルートに一致する場合、フォームは親ルートに投稿されます。同様に、子ルート内のフォームは子ルートに投稿されます。これは、常に完全な URL を指すネイティブな [`<form>`][form_element] とは異なります。
+`undefined` の場合、これはコンテキスト内の最も近いルートにデフォルト設定されます。親ルートが `<Form>` をレンダリングしますが、URL がより深い子ルートと一致する場合、フォームは親ルートに投稿されます。同様に、子ルート内のフォームは子ルートに投稿されます。これは、ネイティブの [`<form>`][form_element] が常に完全な URL を指すこととは異なります。
 
 <docs-info>
-相対的な `<Form action>` の動作に関する `future.v3_relativeSplatPath` 未来フラグの動作については、`useResolvedPath` ドキュメントの [スプラットパス][relativesplatpath] セクションを参照してください。
+ スプラットルート内の相対的な `<Form action>` の動作に関する `future.v3_relativeSplatPath` の将来のフラグの動作については、`useResolvedPath` ドキュメントの [Splat パス][relativesplatpath] セクションを参照してください。
 </docs-info>
 
 ### `method`
 
-これは使用する [HTTP 動詞][http_verb] を決定します: `DELETE`、`GET`、`PATCH`、`POST`、`PUT`。デフォルトは `GET` です。
+これは、使用される [HTTP 動詞][http_verb] (`DELETE`, `GET`, `PATCH`, `POST`, `PUT`) を決定します。デフォルトは `GET` です。
 
 ```tsx
 <Form method="post" />
 ```
 
-ネイティブ [`<form>`][form_element] は `GET` と `POST` のみをサポートするため、[漸進的強化][progressive_enhancement] をサポートしたい場合は、他の動詞は避けてください。
+ネイティブの [`<form>`][form_element] は `GET` と `POST` のみをサポートしているので、[漸進的な強化][progressive_enhancement] をサポートしたい場合は、他の動詞を避けてください。
 
 ### `encType`
 
-フォーム提出に使用するエンコーディングタイプ。
+フォーム送信に使用するエンコードタイプ。
 
 ```tsx
 <Form encType="multipart/form-data" />
 ```
 
-デフォルトは `application/x-www-form-urlencoded` であり、ファイルアップロードには `multipart/form-data` を使用します。
+デフォルトは `application/x-www-form-urlencoded` で、ファイルアップロードには `multipart/form-data` を使用します。
 
 ### `navigate`
 
-`<Form navigate={false}>` を指定することで、フォームにナビゲーションをスキップさせて、内部的に [フェッチャー][use_fetcher] を使用するように指示できます。これは、結果のデータに関心がなく、提出を開始して [`useFetchers()`][use_fetchers] を介して保留状態にアクセスしたい場合の `useFetcher()` + `<fetcher.Form>` の省略形です。
+`<Form navigate={false}>` を指定することで、フォームにナビゲーションをスキップさせ、内部的に [fetcher][use_fetcher] を使用させることができます。これは本質的に `useFetcher()` + `<fetcher.Form>` の略で、結果のデータは関係なく、送信を開始し、[`useFetchers()`][use_fetchers] を介して保留状態にアクセスしたい場合に便利です。
 
 ```tsx
 <Form method="post" navigate={false} />
@@ -65,7 +65,7 @@ function NewEvent() {
 
 ### `fetcherKey`
 
-ナビゲーションを行わない `Form` を使用する場合、オプションで使用する独自のフェッチャー `key` を指定することもできます。
+ナビゲーションしない `Form` を使用する場合、オプションで独自の fetcher `key` を指定することもできます。
 
 ```tsx
 <Form method="post" navigate={false} fetcherKey="my-key" />
@@ -73,7 +73,7 @@ function NewEvent() {
 
 ### `preventScrollReset`
 
-[`<ScrollRestoration>`][scroll_restoration_component] を使用している場合、フォームが提出されたときにスクロール位置がウィンドウの上部にリセットされないようにすることができます。
+[`<ScrollRestoration>`][scroll_restoration_component] を使用している場合、このプロパティを使用すると、フォームが送信されたときにスクロール位置がウィンドウの一番上にリセットされるのを防ぐことができます。
 
 ```tsx
 <Form preventScrollReset />
@@ -81,7 +81,7 @@ function NewEvent() {
 
 ### `replace`
 
-新しいエントリをプッシュするのではなく、現在のエントリを履歴スタックで置き換えます。
+新しいエントリをプッシュするのではなく、履歴スタックの現在のエントリを置き換えます。
 
 ```tsx
 <Form replace />
@@ -89,54 +89,50 @@ function NewEvent() {
 
 ### `reloadDocument`
 
-true の場合、クライアント側ルーティングではなくブラウザでフォームを提出します。ネイティブな `<form>` と同じです。
+`true` の場合、クライアントサイドルーティングではなく、ブラウザーでフォームを送信します。ネイティブ `<form>` と同じです。
 
 ```tsx
 <Form reloadDocument />
 ```
 
-これは [`<form>`][form_element] よりも推奨されます。`action` プロパティが省略されている場合、`<Form>` と `<form>` は、`<form>` が現在の URL をデフォルトとして使用しますが、`<Form>` がフォームがレンダリングされているルートの URL を使用するため、現在の URL に応じて異なるアクションを呼び出す場合があります。
+これは、[`<form>`][form_element] よりも推奨されます。`action` プロパティが省略されている場合、`<Form>` と `<form>` は、`<form>` が現在の URL をデフォルトとして使用し、`<Form>` がフォームがレンダリングされているルートの URL を使用する一方で、現在の URL に応じて異なるアクションを呼び出すことがあります。
 
-### `unstable_viewTransition`
+### `viewTransition`
 
-`unstable_viewTransition` プロパティは、最終的な状態の更新を [`document.startViewTransition()`][document-start-view-transition] でラップすることで、このナビゲーションの [ビュー遷移][view-transitions] を有効にします。このビュー遷移に特定のスタイルを適用する必要がある場合は、[`unstable_useViewTransitionState()`][use-view-transition-state] を活用する必要もあります。
+`viewTransition` プロパティを使用すると、最終的な状態の更新を [`document.startViewTransition()`][document-start-view-transition] でラップすることで、このナビゲーションの [ビュー遷移][view-transitions] を有効にできます。このビュー遷移に特定のスタイルを適用する必要がある場合は、[`useViewTransitionState()`][use-view-transition-state] も活用する必要があります。
 
-<docs-warning>
-この API は不安定としてマークされており、メジャーリリースなしに破壊的な変更が発生する可能性があることに注意してください。
-</docs-warning>
-
-## 注意
+## メモ
 
 ### `?index`
 
-インデックスルートとその親ルートは同じ URL を共有するため、`?index` パラメータを使用してそれらを区別します。
+インデックスルートとその親ルートは同じ URL を共有するため、`?index` パラメータを使用して両者を区別します。
 
 ```tsx
 <Form action="/accounts?index" method="post" />
 ```
 
-| action url        | ルートアクション                     |
+| action url        | route action                     |
 | ----------------- | -------------------------------- |
 | `/accounts?index` | `app/routes/accounts._index.tsx` |
 | `/accounts`       | `app/routes/accounts.tsx`        |
 
-こちらもご覧ください。
+こちらも参照してください。
 
 - [`?index` クエリパラメータ][index_query_param]
 
-## さらなるリソース
+## その他のリソース
 
-**動画:**
+**ビデオ:**
 
-- [フォーム + アクションを使用したデータの変更][data_mutations_with_form_action]
+- [Form + action を使ったデータの変更][data_mutations_with_form_action]
 - [複数のフォームと単一のボタンによる変更][multiple_forms_and_single_button_mutations]
-- [フォーム提出後の入力のクリア][clearing_inputs_after_form_submissions]
+- [フォーム送信後の入力のクリア][clearing_inputs_after_form_submissions]
 
-**関連する議論:**
+**関連するディスカッション:**
 
 - [フルスタックデータフロー][fullstack_data_flow]
 - [保留中の UI][pending_ui]
-- [フォームとフェッチャー][form_vs_fetcher]
+- [Form と Fetcher の違い][form_vs_fetcher]
 
 **関連する API:**
 
@@ -165,5 +161,6 @@ true の場合、クライアント側ルーティングではなくブラウザ
 [document-start-view-transition]: https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition
 [use-view-transition-state]: ../hooks/use-view-transition-state
 [relativesplatpath]: ../hooks/use-resolved-path#splat-paths
+
 
 

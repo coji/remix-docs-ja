@@ -1,14 +1,14 @@
 ---
-title: unstable_data
+title: data
 toc: false
 ---
 
-# `unstable_data`
+# `data`
 
-これは、[Single Fetch][single-fetch] と共に使用するユーティリティで、ステータスコードまたはカスタムレスポンスヘッダーを伴う生データを返します。これにより、カスタムステータス/ヘッダーを提供するためにデータを `Response` インスタンスにシリアル化する必要がなくなります。これは、一般的に Single Fetch 以前の `json`[json] または `defer`[defer] を使用した `loader` / `action` 関数の代替です。
+これは、[Single Fetch][single-fetch] で使用するユーティリティで、ステータスコードまたはカスタムレスポンスヘッダーと共に生のデータを返します。これにより、カスタムステータス/ヘッダーを提供するためにデータを `Response` インスタンスにシリアル化する必要がなくなります。これは、一般的に Single Fetch 以前は [`json`][json] または [`defer`][defer] を使用していた `loader`/`action` 関数の代替となります。
 
 ```tsx
-import { unstable_data as data } from "@remix-run/node"; // または cloudflare/deno
+import { data } from "@remix-run/node"; // または cloudflare/deno
 
 export const loader = async () => {
   return data(
@@ -23,11 +23,11 @@ export const loader = async () => {
 };
 ```
 
-カスタムステータス/ヘッダーを返す必要がない場合は、この関数を使用しないでください。その場合は、データを直接返してください。
+カスタムステータス/ヘッダーを返す必要がない場合は、この関数を使用すべきではありません。その場合、データを直接返してください。
 
 ```tsx
 export const loader = async () => {
-  // ❌ 悪い
+  // ❌ 良くない
   return data({ not: "coffee" });
 
   // ✅ 良い

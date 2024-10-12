@@ -4,25 +4,25 @@ title: "create-remix (CLI)"
 
 # `create-remix`
 
-`create-remix` CLI は、新しい Remix プロジェクトを作成します。引数を渡さずにこのコマンドを実行すると、インタラクティブな CLI が起動し、新しいプロジェクトを構成して指定されたディレクトリにセットアップします。
+`create-remix` CLI は、新しい Remix プロジェクトを作成します。引数を渡さずにこのコマンドを実行すると、インタラクティブな CLI が起動し、新しいプロジェクトの構成と指定されたディレクトリへの設定が実行されます。
 
 ```sh
 npx create-remix@latest
 ```
 
-必要に応じて、目的のディレクトリパスを引数として渡すことができます。
+オプションとして、目的のディレクトリパスを引数として渡すことができます。
 
 ```sh
 npx create-remix@latest <projectDir>
 ```
 
-デフォルトのアプリケーションは、組み込みの [Remix App Server][remix-app-server] を使用する TypeScript アプリです。異なる設定に基づいてアプリケーションを作成する場合は、[`--template`][template-flag-hash-link] フラグを使用できます。
+デフォルトのアプリケーションは、組み込みの [Remix App Server][remix-app-server] を使用した TypeScript アプリです。異なる設定に基づいてアプリケーションを作成する場合は、[`--template`][template-flag-hash-link] フラグを使用できます。
 
 ```sh
 npx create-remix@latest --template <templateUrl>
 ```
 
-使用可能なコマンドとフラグの完全なリストを取得するには、次のように実行します。
+使用可能なコマンドとフラグの完全なリストを取得するには、次を実行します。
 
 ```sh
 npx create-remix@latest --help
@@ -35,11 +35,11 @@ npx create-remix@latest --help
 ```sh
 npm create remix@latest <projectDir>
 # または
-yarn create remix <projectDir>
+yarn create remix@latest <projectDir>
 # または
-pnpm create remix <projectDir>
+pnpm create remix@latest <projectDir>
 # または
-bunx create-remix <projectDir>
+bunx create-remix@latest <projectDir>
 ```
 
 ### `create-remix --template`
@@ -48,9 +48,9 @@ bunx create-remix <projectDir>
 
 有効なテンプレートは次のとおりです。
 
-- GitHub リポジトリの省略形 - `:username/:repo` または `:username/:repo/:directory`
+- GitHub リポジトリの略称 - `:username/:repo` または `:username/:repo/:directory`
 - GitHub リポジトリ（またはその中のディレクトリ）の URL - `https://github.com/:username/:repo` または `https://github.com/:username/:repo/tree/:branch/:directory`
-  - この形式を使用する場合、ブランチ名（`:branch`）に `/` を含めることはできません。`create-remix` はブランチ名とディレクトリパスを区別できません。
+  - この形式では、ブランチ名（`:branch`）に `/` を含めることはできません。`create-remix` は、ブランチ名とディレクトリパスを区別することができないためです。
 - リモートの tarball の URL - `https://example.com/remix-template.tar.gz`
 - ファイルのディレクトリのローカルファイルパス - `./path/to/remix-template`
 - tarball のローカルファイルパス - `./path/to/remix-template.tar.gz`
@@ -74,15 +74,16 @@ npx create-remix@latest ./my-app --template ./path/to/remix-template.tar.gz
 <aside aria-label="プライベート GitHub リポジトリテンプレート">
 <docs-info>
 
-プライベート GitHub リポジトリのテンプレートから新しいプロジェクトを作成するには、そのリポジトリへのアクセス権を持つパーソナルアクセストークンを `--token` フラグに渡します。
+プライベート GitHub リポジトリのテンプレートから新しいプロジェクトを作成するには、`--token` フラグに、そのリポジトリへのアクセス権を持つ個人用アクセス token を渡します。
 
 </docs-info>
 </aside>
 
 ### `create-remix --overwrite`
 
-`create-remix` は、テンプレートとアプリを作成するディレクトリ間のファイルの衝突を検出すると、テンプレートのバージョンでこれらのファイルを上書きしても問題ないかどうかを確認するプロンプトを表示します。`--overwrite` CLI フラグを使用すると、このプロンプトをスキップできます。
+`create-remix` は、テンプレートとアプリケーションを作成するディレクトリの間でファイルの衝突を検出すると、テンプレートのバージョンでそれらのファイルを上書きしても問題ないかどうかを確認するプロンプトを表示します。このプロンプトは、`--overwrite` CLI フラグを使用してスキップできます。
 
 [templates]: ../guides/templates
 [remix-app-server]: ./serve
 [template-flag-hash-link]: #create-remix---template
+

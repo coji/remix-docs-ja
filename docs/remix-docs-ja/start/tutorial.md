@@ -5,13 +5,13 @@ order: 2
 
 # Remix チュートリアル
 
-小さいながらも機能豊富なアプリを構築し、連絡先を管理できるようにします。データベースやその他の「本番環境対応」なものは使用しません。そのため、Remix に集中できます。一緒に作業すれば約30分かかります。そうでなければ、簡単に読めるはずです。
+小さくても機能豊富な連絡先管理アプリを作成します。データベースやその他の「本番環境対応」なものは使用しないので、Remix に集中できます。一緒に進めていれば約 30 分で完了しますが、そうでなければ素早く読める内容です。
 
 <img class="tutorial" src="/docs-images/contacts/01.webp" />
 
-👉 **このマークが表示されたら、アプリで何か操作を行う必要があることを意味します！**
+👉 **これが表示される場合は、アプリで何か操作する必要があります！**
 
-それ以外は、情報提供と理解を深めるためです。始めましょう。 
+残りは情報提供と理解を深めるためのものです。早速始めましょう。 
 
 ## セットアップ
 
@@ -21,34 +21,33 @@ order: 2
 npx create-remix@latest --template remix-run/remix/templates/remix-tutorial
 ```
 
-これは非常にシンプルなテンプレートを使用しますが、CSSとデータモデルが含まれているため、Remix に集中できます。 [クイックスタート][quickstart] では、Remix プロジェクトの基本的なセットアップについて詳しく知ることができます。
+これは非常にシンプルなテンプレートを使用しますが、CSSとデータモデルが含まれているため、Remixに集中できます。詳細を知りたい場合は、[クイックスタート][quickstart]でRemixプロジェクトの基本的なセットアップについて知ることができます。
 
 👉 **アプリを起動する**
 
 ```shellscript nonumber
-# アプリのディレクトリに移動する
-cd {アプリを置いた場所}
+# アプリディレクトリに移動します。
+cd {アプリの場所}
 
-# まだインストールしていない場合は、依存関係をインストールする
+# まだインストールしていない場合は依存関係をインストールします。
 npm install
 
-# サーバーを起動する
+# サーバーを起動します。
 npm run dev
 ```
 
-[http://localhost:5173][http-localhost-5173] を開くと、次のようないずれのスタイルも適用されていない画面が表示されるはずです。
+[http://localhost:5173][http-localhost-5173]を開くと、次のようなスタイルのない画面が表示されます。
 
 <img class="tutorial" src="/docs-images/contacts/03.webp" />
 
 [quickstart]: https://remix.run/docs/en/v1/guides/quick-start
-[http-localhost-5173]: http://localhost:5173
 ## ルートルート
 
-`app/root.tsx` のファイルに注目してください。これは「ルートルート」と呼ばれるものです。UI で最初にレンダリングされるコンポーネントであり、通常はページのグローバルレイアウトが含まれています。
+`app/root.tsx` のファイルに注目してください。これは「ルートルート」と呼ばれるものです。これは UI で最初にレンダリングされるコンポーネントなので、通常はページのグローバルレイアウトが含まれています。
 
 <details>
 
-<summary>ルートコンポーネントコードを見るにはここをクリック</summary>
+<summary>ルートコンポーネントのコードを見るにはここをクリック</summary>
 
 ```tsx filename=app/root.tsx
 import {
@@ -117,11 +116,11 @@ export default function App() {
 
 ## `links` を使ったスタイルシートの追加
 
-Remix アプリをスタイリングする方法はいくつかありますが、ここでは Remix に焦点を当てて、すでに記述されているプレーンなスタイルシートを使用します。
+Remix アプリのスタイル設定には複数の方法がありますが、ここでは、Remix に焦点を当てるために、事前に記述されたプレーンなスタイルシートを使用します。
 
-CSS ファイルを JavaScript モジュールに直接インポートできます。Vite はアセットにフィンガープリントを付け、ビルドのクライアントディレクトリに保存し、モジュールに公開可能な href を提供します。
+CSS ファイルは JavaScript モジュールに直接インポートできます。Vite はアセットのフィンガープリントを作成し、ビルドのクライアントディレクトリに保存し、モジュールに公開可能な href を提供します。
 
-👉 **アプリのスタイルをインポートする**
+👉 **アプリスタイルをインポートする**
 
 ```tsx filename=app/root.tsx lines=[1,4,6-8]
 import type { LinksFunction } from "@remix-run/node";
@@ -134,34 +133,34 @@ export const links: LinksFunction = () => [
 ];
 ```
 
-すべてのルートは [`links`][links] 関数をエクスポートできます。それらは収集され、`app/root.tsx` でレンダリングした `<Links />` コンポーネントにレンダリングされます。
+すべてのルートは [`links`][links] 関数をエクスポートできます。これらは収集され、`app/root.tsx` でレンダリングした `<Links />` コンポーネントにレンダリングされます。
 
-これで、アプリは次のようになります。デザイナーが CSS も書けるのは本当にいいですね。 (ありがとう、[ジム][jim] 🙏)。
+アプリは、このようになっているはずです。デザイナーが CSS も書けるのは素晴らしいですね。([ジム][jim] さん、ありがとうございます 🙏)。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/04.webp" />
 
-[links]: https://remix.run/docs/en/v1/api/remix#links-function
-[jim]: https://twitter.com/jmeas
+[links]: https://remix.run/docs/en/v1/api/links
+[jim]: https://twitter.com/jim_nielsen
 
-## 連絡先ルートUI
+## 連絡先ルート UI
 
-サイドバーの項目をクリックすると、デフォルトの404ページが表示されます。 `/contacts/1`に一致するルートを作成しましょう。
+サイドバーの項目をクリックすると、デフォルトの 404 ページが表示されます。 `/contacts/1` に一致するルートを作成しましょう。
 
-👉 **`app/routes`ディレクトリと連絡先ルートモジュールを作成する**
+👉 **`app/routes` ディレクトリと連絡先ルートモジュールを作成する**
 
 ```shellscript nonumber
 mkdir app/routes
 touch app/routes/contacts.\$contactId.tsx
 ```
 
-Remixの[ルートファイル規則][routes-file-conventions]では、`.`はURLに`/`を作成し、`$`はセグメントを動的にします。これで、次のようなURLに一致するルートが作成されました。
+Remix の [ルートファイル規則][routes-file-conventions] において、`.` は URL に `/` を作成し、`$` はセグメントを動的にします。 これにより、次のような URL に一致するルートが作成されました。
 
 * `/contacts/123`
 * `/contacts/abc`
 
-👉 **連絡先コンポーネントUIを追加する**
+👉 **連絡先コンポーネント UI を追加する**
 
-これは単なる要素の集まりなので、コピー＆ペーストして構いません。
+これは単なる要素の集まりです。 コピーして貼り付けることができます。
 
 ```tsx filename=app/routes/contacts.$contactId.tsx
 import { Form } from "@remix-run/react";
@@ -173,7 +172,7 @@ export default function Contact() {
   const contact = {
     first: "Your",
     last: "Name",
-    avatar: "https://placekitten.com/200/200",
+    avatar: "https://placecats.com/200/200",
     twitter: "your_handle",
     notes: "Some notes",
     favorite: true,
@@ -223,7 +222,7 @@ export default function Contact() {
             method="post"
             onSubmit={(event) => {
               const response = confirm(
-                "このレコードを削除してもよろしいですか。"
+                "このレコードを削除してもよろしいですか？"
               );
               if (!response) {
                 event.preventDefault();
@@ -248,8 +247,8 @@ const Favorite: FunctionComponent<{
       <button
         aria-label={
           favorite
-            ? "お気に入りから削除する"
-            : "お気に入りに追加する"
+            ? "お気に入りから削除"
+            : "お気に入りに追加"
         }
         name="favorite"
         value={favorite ? "false" : "true"}
@@ -261,12 +260,14 @@ const Favorite: FunctionComponent<{
 };
 ```
 
-これで、リンクをクリックするか `/contacts/1` にアクセスしても... 新しいものは何も表示されないでしょう？
+リンクをクリックしたり、`/contacts/1` にアクセスしたりしても、...何も変わりませんか？
 
-<img class="tutorial" loading="lazy" alt="空白のメインコンテンツを持つ連絡先ルート" src="/docs-images/contacts/05.webp" />
+<img class="tutorial" loading="lazy" alt="メインコンテンツが空白の連絡先ルート" src="/docs-images/contacts/05.webp" />
+
+[routes-file-conventions]: https://remix.run/docs/en/v1/guides/routing#file-conventions
 ## ネストされたルートとアウトレット
 
-Remix は React Router をベースに構築されているため、ネストされたルーティングをサポートしています。子ルートを親レイアウト内にレンダリングするには、親内に [`Outlet`][outlet-component] をレンダリングする必要があります。修正するために、`app/root.tsx` を開き、アウトレットをレンダリングしましょう。
+Remix は React Router をベースに構築されているため、ネストされたルーティングをサポートしています。子ルートを親レイアウト内にレンダリングするには、親に [`Outlet`][outlet-component] をレンダリングする必要があります。修正してみましょう。`app/root.tsx` を開き、アウトレットをレンダリングします。
 
 👉 **[`<Outlet />`][outlet-component] をレンダリングする**
 
@@ -299,17 +300,17 @@ export default function App() {
 }
 ```
 
-これで、子ルートがアウトレットを通じてレンダリングされるはずです。
+これで、子ルートはアウトレットを通じてレンダリングされるはずです。
 
 <img class="tutorial" loading="lazy" alt="メインコンテンツを含む連絡先ルート" src="/docs-images/contacts/06.webp" /> 
 
 ## クライアントサイドルーティング
 
-サイドバーのリンクをクリックすると、ブラウザはクライアントサイドルーティングではなく、次のURLのフルドキュメントリクエストを実行していることに気づいているかもしれません。
+気づいている方もいるかもしれませんが、サイドバーのリンクをクリックすると、ブラウザはクライアントサイドルーティングではなく、次のURLの完全なドキュメントリクエストを行っています。
 
-クライアントサイドルーティングを使用すると、アプリケーションはサーバーから別のドキュメントを要求せずに、URLを更新できます。代わりに、アプリはすぐに新しいUIをレンダリングできます。 [`<Link>`][link-component] を使用して、実現してみましょう。
+クライアントサイドルーティングを使用すると、アプリケーションはサーバーから別のドキュメントをリクエストせずにURLを更新できます。代わりに、アプリはすぐに新しいUIをレンダリングできます。[`<Link>`][link-component] を使って実現しましょう。
 
-👉 **サイドバーの `<a href>` を `<Link to>` に変更する**
+👉 **サイドバーの `<a href>` を `<Link to>` に変更**
 
 ```tsx filename=app/root.tsx lines=[4,24,27]
 // 既存のインポート
@@ -350,24 +351,24 @@ export default function App() {
 }
 ```
 
-ブラウザの開発者ツールでネットワークタブを開くと、もはやドキュメントをリクエストしていないことがわかります。
+ブラウザの開発者ツールのネットワークタブを開くと、もはやドキュメントをリクエストしていないことが確認できます。
 
 ## データの読み込み
 
-URL セグメント、レイアウト、データは、ほとんどの場合、密接に関連しています（三重に？）。このアプリでもそれがわかります。
+URL セグメント、レイアウト、データは、ほとんどの場合、互いに結合されています（3つ組み？）。このアプリでもすでに確認できます。
 
 | URL セグメント         | コンポーネント   | データ               |
 | ------------------- | ----------- | ------------------ |
 | /                   | `<Root>`    | 連絡先のリスト   |
-| contacts/:contactId | `<Contact>` | 個別の連絡先 |
+| contacts/:contactId | `<Contact>` | 個々の連絡先 |
 
-この自然な結合のために、Remix には、ルートコンポーネントに簡単にデータを取り込むためのデータ規約があります。
+この自然な結合により、Remix はデータの慣習を採用し、ルートコンポーネントに簡単にデータを取得できるようにしています。
 
-データの読み込みには、[`loader`][loader] と [`useLoaderData`][use-loader-data] の 2 つの API を使用します。最初にルートルートに `loader` 関数を定義してエクスポートし、そのデータをレンダリングします。
+データを読み込むには、[`loader`][loader] と [`useLoaderData`][use-loader-data] の 2 つの API を使用します。 まず、ルートルートに `loader` 関数を定義してエクスポートし、データをレンダリングします。
 
-👉 **`app/root.tsx` から `loader` 関数をエクスポートして、データをレンダリングします**
+👉 **`app/root.tsx` から `loader` 関数をエクスポートし、データをレンダリングする**
 
-<docs-info>次のコードには型エラーが含まれています。これは次のセクションで修正します。</docs-info>
+<docs-info>次のコードには型エラーが含まれています。次のセクションで修正します。</docs-info>
 
 ```tsx filename=app/root.tsx lines=[2,11,15,19-22,25,34-57]
 // 既存のインポート
@@ -436,12 +437,14 @@ export default function App() {
 }
 ```
 
-以上です！Remix は、このデータを UI と同期させ続けます。サイドバーは次のようになります。
+これで完了です！ Remix は、このデータを UI と自動的に同期させます。サイドバーは次のようになります。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/07.webp" />
+
+
 ## 型推論
 
-マップ内の `contact` 型について、TypeScript が警告を出していることに気づいたかもしれません。`typeof loader` を使用してデータについて型推論を行うために、簡単な注釈を追加できます。
+TypeScript がマップ内の `contact` 型について文句を言っていることに気づいたかもしれません。`typeof loader` を使って、データに関する型推論を得るために、簡単な注釈を追加することができます。
 
 ```tsx filename=app/root.tsx lines=[4]
 // 既存のインポートとエクスポート
@@ -452,23 +455,23 @@ export default function App() {
   // 既存のコード
 }
 ```
-## ローダーにおけるURLパラメータ
+## ローダーにおける URL パラメータ
 
-👉 **サイドバーのリンクをクリックしてください**
+👉 **サイドバーのいずれかのリンクをクリックしてください**
 
-以前の静的なコンタクトページが表示されますが、1つだけ違いがあります。URLにレコードの実際のIDが含まれるようになりました。
+以前の静的な連絡先ページが再び表示されますが、1つ違いがあります。URL には、レコードの実際の ID が含まれるようになりました。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/08.webp" />
 
-`app/routes/contacts.$contactId.tsx`にあるファイル名の`$contactId`部分を覚えていますか？これらの動的なセグメントは、URLのその位置にある動的な（変化する）値と一致します。これらのURLの値を「URLパラメータ」または単に「パラメータ」と呼びます。
+`app/routes/contacts.$contactId.tsx` のファイル名の `$contactId` 部分を覚えていますか？これらの動的セグメントは、URL 内のその位置にある動的な（変化する）値と一致します。URL 内のこれらの値を「URL パラメータ」または簡単に「パラメータ」と呼びます。
 
-これらの [`params`][params] は、動的なセグメントと一致するキーでローダーに渡されます。たとえば、セグメントの名前は`$contactId`なので、値は`params.contactId`として渡されます。
+これらの [`params`][params] は、動的セグメントと一致するキーを使用してローダーに渡されます。たとえば、セグメントの名前が `$contactId` の場合、値は `params.contactId` として渡されます。
 
-これらのパラメータは、ほとんどの場合、IDでレコードを見つけるために使用されます。試してみましょう。
+これらのパラメータは、ほとんどの場合、ID でレコードを見つけるために使用されます。試してみましょう。
 
-👉 **コンタクトページに`loader`関数を追加し、`useLoaderData`でデータにアクセスする**
+👉 **連絡先ページに `loader` 関数を追加し、`useLoaderData` を使用してデータにアクセスします**
 
-<docs-info>次のコードには型エラーが含まれています。次のセクションで修正します。</docs-info>
+<docs-info>次のコードには型エラーが含まれています。次のセクションで修正します</docs-info>
 
 ```tsx filename=app/routes/contacts.$contactId.tsx lines=[1-2,5,7-10,13]
 import { json } from "@remix-run/node";
@@ -492,10 +495,9 @@ export default function Contact() {
 ```
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/10.webp" />
+## パラメータの検証とレスポンスの送出
 
-## パラメータの検証とレスポンスの投げ方
-
-TypeScript が私たちに怒っています。TypeScript を満足させ、それが私たちにどのような検討を迫るのか見てみましょう。
+TypeScript は私たちにとても不満を持っています。TypeScript を満足させ、それが私たちに何を考えさせるのか見てみましょう。
 
 ```tsx filename=app/routes/contacts.$contactId.tsx lines=[1,3,7-10]
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -515,11 +517,11 @@ export const loader = async ({
 // 既存のコード
 ```
 
-ここで最初に明らかになる問題は、ファイル名とコード間でパラメータの名前が間違っている可能性があることです（ファイル名を変更したのかもしれません！）。Invariant は、コードで潜在的な問題が発生する可能性を予測している場合に、カスタムメッセージと共にエラーをスローする便利な関数です。
+このコードで最初に明らかになる問題は、ファイル名とコードの間でパラメータ名が間違っている可能性があることです（ファイル名を変更したのかもしれません！）。Invariant は、コードで潜在的な問題が発生した場合にカスタムメッセージ付きでエラーをスローするのに便利な関数です。
 
-次に、`useLoaderData<typeof loader>()` は、コンタクトを取得したか、または `null` を取得したかを認識するようになりました（その ID のコンタクトが存在しない可能性があります）。この潜在的な `null` は、コンポーネントコードにとって煩わしく、TS エラーが飛び交っています。
+次に、`useLoaderData<typeof loader>()` は、連絡先を取得したか、`null` を取得したかを認識するようになりました（その ID の連絡先が存在しない可能性があります）。この潜在的な `null` は、コンポーネントコードにとっては面倒で、TypeScript のエラーはまだたくさん発生しています。
 
-コンポーネントコードでコンタクトが見つからない可能性に対処することもできますが、ウェブらしいやり方は、適切な 404 を送信することです。これはローダーで実行でき、すべての問題を一度に解決できます。
+コンポーネントコードで連絡先が見つからない可能性に対処できますが、ウェブらしいやり方は適切な 404 を返すことです。これはローダーで実行でき、すべての問題を一度に解決できます。
 
 ```tsx filename=app/routes/contacts.$contactId.tsx lines=[8-10]
 // 既存のインポート
@@ -538,29 +540,26 @@ export const loader = async ({
 // 既存のコード
 ```
 
-これで、ユーザーが見つからない場合、このパスでのコードの実行は停止し、Remix は代わりにエラーパスをレンダリングします。Remix のコンポーネントは、ハッピーパスにのみ焦点を当てることができます 😁
-
+これで、ユーザーが見つからない場合、このパスでのコード実行は停止し、代わりに Remix はエラーパスをレンダリングします。Remix のコンポーネントは、ハッピーパスだけに集中できます 😁
 ## データの変更
 
-最初のコンタクトは後で作成しますが、まずはHTMLについて説明します。
+最初の連絡先を作成する前に、まず HTML について説明しましょう。
 
-Remixは、データ変更のプリミティブとして、HTMLフォームナビゲーションをエミュレートします。これは、JavaScriptのカンブリア爆発以前は唯一の方法でした。シンプルさに騙されてはいけません！Remixのフォームは、クライアント側のレンダリングアプリケーションのUX機能と、「旧式の」Webモデルのシンプルさを兼ね備えています。
+Remix は、HTML フォームのナビゲーションをデータ変更のプリミティブとしてエミュレートします。これは、JavaScript のカンブリア爆発以前に、唯一の方法でした。シンプルさに騙されないでください！Remix のフォームは、クライアント側でレンダリングされたアプリの UX 機能を、従来の Web モデルのシンプルさで実現します。
 
-一部のWeb開発者には馴染みが薄いかもしれませんが、HTMLの`form`は実際には、リンクをクリックするのと同じように、ブラウザ内でナビゲーションを引き起こします。唯一の違いはリクエストにあります。リンクはURLのみを変更できますが、`form`はリクエストメソッド（`GET` vs. `POST`）とリクエストボディ（`POST`フォームデータ）も変更できます。
+一部の Web 開発者にとってはなじみのないことですが、HTML の `form` は、実際にはリンクをクリックするのと同じように、ブラウザでナビゲーションを引き起こします。唯一の違いはリクエストです。リンクは URL を変更するだけですが、`form` はリクエストメソッド (`GET` vs. `POST`) とリクエストボディ (`POST` フォームデータ) も変更できます。
 
-クライアント側のルーティングがない場合、ブラウザは`form`のデータを自動的にシリアル化し、`POST`のリクエストボディとして、`GET`のリクエストボディとして[`URLSearchParams`][url-search-params]としてサーバーに送信します。Remixは同じことを行いますが、サーバーにリクエストを送信する代わりに、クライアント側のルーティングを使用して、ルートの[`action`][action]関数に送信します。
+クライアントサイドのルーティングがない場合、ブラウザは自動的に `form` のデータをシリアライズし、`POST` のリクエストボディとして、`GET` の場合は [`URLSearchParams`][url-search-params] としてサーバーに送信します。Remix は同じことを行いますが、サーバーにリクエストを送信する代わりに、クライアントサイドのルーティングを使用して、ルートの [`action`][action] 関数に送信します。
 
-これは、アプリケーションの「新規」ボタンをクリックすることで確認できます。
+これは、アプリの「新規」ボタンをクリックすることで確認できます。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/09.webp" />
 
-Remixは、このフォームナビゲーションを処理するサーバー側のコードがないため、405を返します。
+Remix は、このフォームナビゲーションを処理するコードがサーバーにないため、405 を返します。 
 
-[url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-[action]: https://remix.run/docs/en/v1/api/conventions#actions
 ## 連絡先の作成
 
-ルートルートに `action` 関数をエクスポートして、新しい連絡先を作成します。ユーザーが「新規」ボタンをクリックすると、フォームはルートルートアクションに `POST` します。
+ルートルートに `action` 関数をエクスポートすることで、新しい連絡先を作成します。ユーザーが「新規」ボタンをクリックすると、フォームはルートルートアクションに `POST` します。
 
 👉 **`app/root.tsx` から `action` 関数をエクスポートする**
 
@@ -577,39 +576,39 @@ export const action = async () => {
 // 既存のコード
 ```
 
-以上です！「新規」ボタンをクリックすると、リストに新しいレコードが追加されます🥳
+以上です！「新規」ボタンをクリックすると、リストに新しいレコードが追加されます 🥳
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/11.webp" />
 
-`createEmptyContact` メソッドは、名前やデータを持たない空の連絡先を作成するだけです。しかし、それでもレコードは作成されます！
+`createEmptyContact` メソッドは、名前やデータなど何もない空の連絡先を作成するだけです。しかし、レコードを作成することは約束します！
 
-> 🧐 えっと、サイドバーはどうやって更新されたのでしょうか？どこで `action` 関数を呼び出したのでしょうか？データを再取得するコードはどこにあるのでしょうか？`useState`、`onSubmit`、`useEffect`はどこにあるのでしょうか？
+> 🧐 えっ、ちょっと待って… サイドバーはどうやって更新されたの？ どこで `action` 関数を呼び出したの？ データを再取得するコードはどこにあるの？ `useState`、`onSubmit`、`useEffect` はどこにあるの？
 
-ここで、"古いウェブ" プログラミングモデルが登場します。 [`<Form>`][form-component] は、ブラウザがサーバーにリクエストを送信するのを阻止し、代わりに [`fetch`][fetch] を使用してルートの `action` 関数に送信します。
+これは、「従来の Web」プログラミングモデルが登場するところです。 [`<Form>`][form-component] は、ブラウザがサーバーへのリクエストを送信するのを防ぎ、代わりに [`fetch`][fetch] を使用してルートの `action` 関数に送信します。
 
-ウェブのセマンティクスでは、`POST` は通常、データが変更されていることを意味します。慣習的に、Remix はこれをヒントとして使用し、`action` が完了した後にページのデータを自動的に再検証します。
+Web のセマンティクスでは、`POST` は通常、データが変更されることを意味します。慣例として、Remix はこれをヒントとして使用し、`action` が完了した後、ページのデータを自動的に再検証します。
 
-実際、すべてが HTML と HTTP であるため、JavaScript を無効にしても、すべてが動作します。Remix がフォームをシリアライズしてサーバーに [`fetch`][fetch] リクエストを行う代わりに、ブラウザがフォームをシリアライズしてドキュメントリクエストを行います。そこから、Remix はページをサーバー側でレンダリングして送信します。最終的には、どちらの場合も UI は同じです。
+実際、すべてが HTML と HTTP であるため、JavaScript を無効にしても、すべて正常に機能します。Remix がフォームをシリアル化してサーバーに [`fetch`][fetch] リクエストを行うのではなく、ブラウザがフォームをシリアル化してドキュメントリクエストを行います。そこから、Remix はページをサーバー側でレンダリングして送信します。結局、UI は同じです。
 
-しかし、回転するファビコンや静的なドキュメントよりも優れたユーザーエクスペリエンスを提供するため、JavaScript を使い続けましょう。 
+しかし、ファビコンの回転や静的なドキュメントよりも優れたユーザーエクスペリエンスを実現するため、JavaScript は使い続けます。
 
 ## データの更新
 
-新しいレコードの情報を入力できるようにしましょう。
+新しいレコードの情報を埋める方法を追加しましょう。
 
-データの作成と同様に、[`<Form>`][form-component] を使用してデータを更新します。 `app/routes/contacts.$contactId_.edit.tsx` に新しいルートを作成しましょう。
+データの作成と同様に、[`<Form>`][form-component] を使用してデータを更新します。`app/routes/contacts.$contactId_.edit.tsx` に新しいルートを作成しましょう。
 
-👉 **編集コンポーネントの作成**
+👉 **編集コンポーネントを作成する**
 
 ```shellscript nonumber
 touch app/routes/contacts.\$contactId_.edit.tsx
 ```
 
-`$contactId_` の奇妙な `_` に注目してください。デフォルトでは、ルートは同じプレフィックス名を持つルート内に自動的にネストされます。末尾に `_` を追加すると、ルートは `app/routes/contacts.$contactId.tsx` 内に **ネストされません**。[ルートファイルの命名規則][routes-file-conventions] ガイドで詳しく説明されています。
+`$contactId_` の奇妙な `_` に注目してください。デフォルトでは、ルートは同じプレフィックスを持つルートの中に自動的にネストされます。末尾に `_` を追加することで、ルートが `app/routes/contacts.$contactId.tsx` に**ネストされない**ように指示します。詳細については、[ルートファイルの名前付け][routes-file-conventions] ガイドを参照してください。
 
-👉 **編集ページ UI の追加**
+👉 **編集ページのUIを追加する**
 
-これまで見たことのないものはありません。コピー＆ペーストして構いません。
+これまでに見たことがないものはありません。コピーして貼り付けることができます。
 
 ```tsx filename=app/routes/contacts.$contactId_.edit.tsx
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -636,19 +635,19 @@ export default function EditContact() {
   return (
     <Form key={contact.id} id="contact-form" method="post">
       <p>
-        <span>Name</span>
+        <span>名前</span>
         <input
+          aria-label="名"
           defaultValue={contact.first}
-          aria-label="First name"
           name="first"
+          placeholder="名"
           type="text"
-          placeholder="First"
         />
         <input
-          aria-label="Last name"
+          aria-label="姓"
           defaultValue={contact.last}
           name="last"
-          placeholder="Last"
+          placeholder="姓"
           type="text"
         />
       </p>
@@ -662,9 +661,9 @@ export default function EditContact() {
         />
       </label>
       <label>
-        <span>Avatar URL</span>
+        <span>アバターURL</span>
         <input
-          aria-label="Avatar URL"
+          aria-label="アバターURL"
           defaultValue={contact.avatar}
           name="avatar"
           placeholder="https://example.com/avatar.jpg"
@@ -672,7 +671,7 @@ export default function EditContact() {
         />
       </label>
       <label>
-        <span>Notes</span>
+        <span>メモ</span>
         <textarea
           defaultValue={contact.notes}
           name="notes"
@@ -680,26 +679,22 @@ export default function EditContact() {
         />
       </label>
       <p>
-        <button type="submit">Save</button>
-        <button type="button">Cancel</button>
+        <button type="submit">保存</button>
+        <button type="button">キャンセル</button>
       </p>
     </Form>
   );
 }
 ```
 
-これで、新しいレコードをクリックして「Edit」ボタンをクリックすると、新しいルートが表示されます。
+これで、新しいレコードをクリックし、"編集" ボタンをクリックしてください。新しいルートが表示されるはずです。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/12.webp" />
-
-[form-component]: https://remix.run/docs/en/v1/api/remix#form
-[routes-file-conventions]: https://remix.run/docs/en/v1/guides/routing#route-file-naming
-
 ## `FormData` を使用して連絡先を更新する
 
-作成した編集ルートは既に `form` をレンダリングしています。必要なのは `action` 関数 を追加することだけです。Remix は `form` をシリアライズし、 [`fetch`][fetch] を使用して `POST` し、自動的にすべてのデータを再検証します。
+作成した編集ルートはすでに `form` をレンダリングしています。必要なのは `action` 関数を追加することだけです。Remix は `form` をシリアライズし、[`fetch`][fetch] で `POST` し、自動的にすべてのデータを再検証します。
 
-👉 **編集ルートに `action` 関数を追加します**
+👉 **編集ルートに `action` 関数を追加する**
 
 ```tsx filename=app/routes/contacts.$contactId_.edit.tsx lines=[2,5,8,10-19]
 import type {
@@ -725,31 +720,31 @@ export const action = async ({
 // 既存のコード
 ```
 
-フォームに情報を入力して保存ボタンを押すと、以下のような画面が表示されます！<small>(見やすくて、それほど複雑ではありません。)</small>
+フォームに記入して保存ボタンを押すと、このような画面が表示されます！ <small>(見やすく、毛深い感じは少ないです。)</small>
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/13.webp" /> 
 
 ## 変異に関する議論
 
-> 😑 動いたけど、何が起きているのか全くわからない…
+> 😑 動いたけど、何が起こっているのか全くわからない…
 
-ちょっと詳しく見てみましょう。
+少し詳しく見ていきましょう…
 
-`contacts.$contactId_.edit.tsx` を開いて、`form` 要素を見てください。各要素には名前が付けられていることに注目してください。
+`contacts.$contactId_.edit.tsx`を開いて、`form`要素を見てください。各要素に名前が付いていることに注目してください。
 
 ```tsx filename=app/routes/contacts.$contactId_.edit.tsx lines=[4]
 <input
-  defaultValue={contact.first}
   aria-label="First name"
+  defaultValue={contact.first}
   name="first"
-  type="text"
   placeholder="First"
+  type="text"
 />
 ```
 
-JavaScript がなければ、フォームが送信されると、ブラウザは [`FormData`][form-data] を作成し、サーバーに送信する際にリクエストのボディとして設定します。前述のように、Remix はこれを防ぎ、ブラウザをエミュレートして [`fetch`][fetch] を使用して [`FormData`][form-data] を含めて `action` 関数にリクエストを送信します。
+JavaScriptがない場合、フォームが送信されると、ブラウザは[`FormData`][form-data]を作成し、サーバーに送信する際にリクエストの本文として設定します。前述のように、Remixはこの処理を阻止し、[`fetch`][fetch]を使用してリクエストを`action`関数に送信することでブラウザをエミュレートします。これには[`FormData`][form-data]も含まれます。
 
-`form` 内の各フィールドは、`formData.get(name)` でアクセスできます。たとえば、上記の入力フィールドの場合、次のようにして姓と名をアクセスできます。
+`form`内の各フィールドは`formData.get(name)`でアクセスできます。たとえば、上記の入力フィールドの場合、次のようにして名前を取得できます。
 
 ```tsx filename=app/routes/contacts.$contactId_.edit.tsx lines=[6,7] nocopy
 export const action = async ({
@@ -763,7 +758,7 @@ export const action = async ({
 };
 ```
 
-フォームフィールドがいくつかあるので、[`Object.fromEntries`][object-from-entries] を使用してそれらをすべてオブジェクトにまとめました。これは、`updateContact` 関数が必要とするものです。
+フォームフィールドがいくつかあるため、[`Object.fromEntries`][object-from-entries]を使用してすべてのフィールドをオブジェクトに収集しました。これは、`updateContact`関数が期待するものです。
 
 ```tsx filename=app/routes/contacts.$contactId_.edit.tsx nocopy
 const updates = Object.fromEntries(formData);
@@ -771,9 +766,9 @@ updates.first; // "Some"
 updates.last; // "Name"
 ```
 
-`action` 関数以外では、これらの API は Remix で提供されていません。[`request`][request]、[`request.formData`][request-form-data]、[`Object.fromEntries`][object-from-entries] はすべて Web プラットフォームで提供されています。
+`action`関数以外に、ここで説明するAPIはRemixによって提供されていません。[`request`][request]、[`request.formData`][request-form-data]、[`Object.fromEntries`][object-from-entries]はすべてウェブプラットフォームによって提供されています。
 
-`action` 関数が完了したら、最後に [`redirect`][redirect] に注目してください。
+`action`関数が完了したら、最後に[`redirect`][redirect]があることに注意してください。
 
 ```tsx filename=app/routes/contacts.$contactId_.edit.tsx lines=[9]
 export const action = async ({
@@ -788,26 +783,25 @@ export const action = async ({
 };
 ```
 
-`action` 関数と `loader` 関数は両方とも [Response を返す][returning-response-instances] ことができます（`Request`[request] を受け取るため、理にかなっています！）。[`redirect`][redirect] ヘルパーは、アプリに場所を変更するように指示する [`Response`][response] を返すことを簡単にするだけです。
+`action`関数と`loader`関数は両方とも[ `Response`を返せる][returning-response-instances]（[`Request`][request]を受け取るので当然です！）。[`redirect`][redirect]ヘルパーは、アプリケーションに場所を変更するよう指示する[`Response`][response]を返す際に便利です。
 
-クライアントサイドのルーティングがなければ、`POST` リクエスト後にサーバーがリダイレクトした場合、新しいページは最新のデータをフェッチしてレンダリングします。前に学んだように、Remix はこのモデルをエミュレートし、`action` 呼び出しの後、ページ上のデータを自動的に再検証します。これが、フォームを保存するとサイドバーが自動的に更新される理由です。クライアントサイドのルーティングがなければ、追加の再検証コードは存在しません。したがって、Remix のクライアントサイドのルーティングでは存在する必要はありません！
+クライアントサイドルーティングがない場合、`POST`リクエスト後にサーバーがリダイレクトすると、新しいページは最新のデータを取得してレンダリングします。前に学んだように、Remixはこのモデルをエミュレートし、`action`呼び出し後にページ上のデータを自動的に再検証します。これが、フォームを保存するとサイドバーが自動的に更新される理由です。追加の再検証コードは、クライアントサイドルーティングがない場合に存在せず、Remixではクライアントサイドルーティングがあるため存在する必要はありません。
 
-最後に、JavaScript がなければ、[`redirect`][redirect] は通常の redirect になります。しかし、JavaScript があれば、それはクライアントサイドの redirect になります。そのため、スクロール位置やコンポーネントの状態など、クライアントの状態が失われることはありません。
+最後にもう一点。JavaScriptがない場合、[`redirect`][redirect]は通常の転送になります。ただし、JavaScriptを使用すると、クライアントサイドの転送になるため、スクロール位置やコンポーネントの状態などのクライアントの状態が失われることはありません。
 
 [form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
 [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 [object-from-entries]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
 [request]: https://developer.mozilla.org/en-US/docs/Web/API/Request
 [request-form-data]: https://developer.mozilla.org/en-US/docs/Web/API/Request/formData
-[returning-response-instances]: https://remix.run/docs/en/v1/api/conventions#returning-response-instances
-[redirect]: https://remix.run/docs/en/v1/api/utils#redirect
+[returning-response-instances]: https://remix.run/docs/en/v1/api/remix#returning-response-instances
 [response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
-
+[redirect]: https://remix.run/docs/en/v1/api/remix#redirect
 ## 新規レコードを編集ページにリダイレクトする
 
-リダイレクトする方法がわかったところで、新規連絡先を作成するアクションを更新して、編集ページにリダイレクトするようにしましょう。
+リダイレクトの方法がわかったところで、新しい連絡先を作成するアクションを更新して、編集ページにリダイレクトするようにしましょう。
 
-👉 **新規レコードの編集ページにリダイレクトする**
+👉 **新しいレコードの編集ページにリダイレクトする**
 
 ```tsx filename=app/root.tsx lines=[2,7]
 // 既存のインポート
@@ -822,13 +816,13 @@ export const action = async () => {
 // 既存のコード
 ```
 
-これで、「新規」をクリックすると、編集ページが表示されるはずです。
+これで、「新規」をクリックすると、編集ページに移動します。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/14.webp" /> 
 
 ## アクティブリンクのスタイリング
 
-これでレコードがたくさんできましたが、サイドバーでどのレコードを見ているのか分かりません。これを修正するために、[`NavLink`][nav-link] を使用できます。
+これでたくさんのレコードが表示されるようになりましたが、サイドバーでどのレコードを見ているのか分かりません。これを解決するために [`NavLink`][nav-link] を使用できます。
 
 👉 **サイドバーの `<Link>` を `<NavLink>` に置き換えてください**
 
@@ -883,17 +877,17 @@ export default function App() {
 }
 ```
 
-`className` に関数を渡していることに注目してください。ユーザーが `<NavLink to>` に一致する URL にいる場合、`isActive` は true になります。アクティブになろうとしている時（データがまだ読み込まれている時）は、`isPending` が true になります。これにより、ユーザーがどこにいるかを簡単に示し、リンクをクリックしてもデータが読み込まれる必要がある場合にすぐにフィードバックを提供できます。
+`className` に関数を渡していることに注意してください。ユーザーが `<NavLink to>` に一致する URL にいる場合、`isActive` は true になります。アクティブになる *直前* の場合（データがまだロード中）、`isPending` は true になります。これにより、ユーザーがどこにいて、リンクをクリックしたときにデータがロードされるのを待つ必要があり、すぐにフィードバックを提供することができます。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/15.webp"/> 
 
-## グローバル保留中のUI
+## グローバル保留UI
 
-ユーザーがアプリ内を移動する際、Remix は次のページのデータが読み込まれる間、*古いページを表示したままにします*。リスト間をクリックする際にアプリが少し反応していないように感じるかもしれません。アプリが反応していないように感じないように、ユーザーにフィードバックを提供しましょう。
+ユーザーがアプリ内を移動すると、Remixは次のページのデータが読み込まれる間、*古いページを表示したままにします*。リスト間をクリックすると、アプリが少し反応しないように感じるかもしれません。アプリが反応していないように感じさせないように、ユーザーにフィードバックを提供しましょう。
 
-Remixは、ダイナミックなWebアプリを構築するために必要な部分を明らかにし、バックグラウンドですべての状態を管理しています。この場合、[`useNavigation`][use-navigation]フックを使用します。
+Remixは、すべてを舞台裏で管理し、動的なWebアプリを構築するために必要な部分を明らかにします。この場合、[`useNavigation`][use-navigation]フックを使用します。
 
-👉 **`useNavigation`を使ってグローバル保留中のUIを追加する**
+👉 **`useNavigation`を使ってグローバル保留UIを追加しましょう**
 
 ```tsx filename=app/root.tsx lines=[11,18,26-28]
 // 既存のインポート
@@ -909,7 +903,7 @@ import {
   useNavigation,
 } from "@remix-run/react";
 
-// 既存のインポート＆エクスポート
+// 既存のインポートとエクスポート
 
 export default function App() {
   const { contacts } = useLoaderData<typeof loader>();
@@ -935,16 +929,16 @@ export default function App() {
 }
 ```
 
-[`useNavigation`][use-navigation]は、現在のナビゲーション状態を返します。状態は`"idle"`、`"loading"`、`"submitting"`のいずれかになります。
+[`useNavigation`][use-navigation]は、現在のナビゲーションの状態を返します。これは、`"idle"`、`"loading"`、または`"submitting"`のいずれかです。
 
-この場合、アイドル状態ではない場合は、アプリのメイン部分に`"loading"`クラスを追加します。CSSはその後、短い遅延後にフェードを追加します（高速読み込み時のUIのちらつきを防ぐため）。スピナーを表示したり、トップにロードバーを表示したりなど、好きなようにすることができます。
+この場合、アイドル状態でない場合は、アプリのメイン部分に`"loading"`クラスを追加します。CSSは、短い遅延後に素敵なフェードを追加して、（高速読み込みのためにUIがちらつくのを避けるためです）。スピナーを表示したり、上部にローディングバーを表示したりするなど、好きなことを何でもできます。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/16.webp" />
 
 [use-navigation]: https://remix.run/docs/en/v1/api/remix#usenavigation
 ## レコードの削除
 
-連絡先ルートのコードを確認すると、削除ボタンは次のようになっていることがわかります。
+コンタクトルートのコードを確認すると、削除ボタンは次のようになっていることがわかります。
 
 ```tsx filename=app/routes/contact.$contactId.tsx lines=[2]
 <Form
@@ -963,22 +957,22 @@ export default function App() {
 </Form>
 ```
 
-`action`が`"destroy"`を指していることに注目してください。 `<Link to>`と同様に、 `<Form action>`は*相対*値を取ることができます。 フォームは`contacts.$contactId.tsx`でレンダリングされるため、`destroy`という相対的なアクションは、クリックされると`contacts.$contactId.destroy`にフォームを送信します。
+`action` が `"destroy"` を指していることに注目してください。`<Link to>` と同様に、`<Form action>` は*相対的な*値を取ることができます。フォームは `contacts.$contactId.tsx` でレンダリングされるため、`destroy` を使った相対的なアクションは、クリック時にフォームを `contacts.$contactId.destroy` に送信します。
 
-この時点で、削除ボタンを動作させるために必要なことはすべてわかっているはずです。 次に進める前に、自分で試してみてはいかがでしょうか？ 次のようなものが必要です。
+この時点で、削除ボタンを動作させるために必要な情報はすべて揃っているはずです。先に進む前に、試してみてはいかがでしょうか？次のものが必要です。
 
 1. 新しいルート
-2. そのルートの`action`
-3. `app/data.ts`から`deleteContact`
-4. どこかに`redirect`する
+2. そのルートのアクション
+3. `app/data.ts` から `deleteContact`
+4. リダイレクト先
 
-👉 **"destroy"ルートモジュールを作成する**
+👉 **"destroy" ルートモジュールを作成する**
 
 ```shellscript nonumber
 touch app/routes/contacts.\$contactId.destroy.tsx
 ```
 
-👉 **destroyアクションを追加する**
+👉 **destroy アクションを追加する**
 
 ```tsx filename=app/routes/contacts.$contactId.destroy.tsx
 import type { ActionFunctionArgs } from "@remix-run/node";
@@ -996,37 +990,36 @@ export const action = async ({
 };
 ```
 
-これで、レコードに移動して「削除」ボタンをクリックできます。 動作します！
+さて、レコードに移動して "Delete" ボタンをクリックしてください。動作します！
 
-> 😅 どうしてこれが機能するのかまだわかりません
+> 😅 まだよくわかりません
 
 ユーザーが送信ボタンをクリックすると、次のようになります。
 
-1. `<Form>`は、サーバーに新しいドキュメント`POST`リクエストを送信するというブラウザのデフォルトの動作を阻止しますが、代わりにクライアントサイドルーティングと[`fetch`][fetch]を使用してブラウザをエミュレートし、`POST`リクエストを作成します
-2. `<Form action="destroy">`は`"contacts.$contactId.destroy"`の新しいルートと一致し、リクエストを送信します
-3. `action`がリダイレクトされた後、Remixはページ上のデータのすべての`loader`を呼び出して最新値を取得します（これは「再検証」です）。 `useLoaderData`は新しい値を返し、コンポーネントを更新します！
+1. `<Form>` はサーバーへの新しいドキュメント `POST` リクエストを送信するというデフォルトのブラウザの動作を阻止しますが、代わりにクライアントサイドルーティングと [`fetch`][fetch] を使用して、ブラウザをエミュレートし、`POST` リクエストを作成します。
+2. `<Form action="destroy">` は `"contacts.$contactId.destroy"` の新しいルートに一致し、リクエストを送信します。
+3. `action` がリダイレクトした後、Remix はページのデータのすべての `loader` を呼び出して最新の値を取得します（これは "再検証" です）。`useLoaderData` は新しい値を返し、コンポーネントを更新します！
 
-`Form`を追加し、`action`を追加すると、Remixが処理します。
+`Form` を追加し、`action` を追加すれば、Remix が残りを処理します。
 
-[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 
 ## インデックスルート
 
-アプリを起動すると、リストの右側には何も表示されない大きな空白ページが表示されます。
+アプリを起動すると、リストの右側には大きな空白ページが表示されます。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/17.webp" />
 
-ルートに子ルートがある場合、親ルートのパスにいるときは、 `<Outlet>` は一致する子ルートがないため、レンダリングするものが何もありません。インデックスルートは、その空白を埋めるためのデフォルトの子ルートと考えることができます。
+ルートに子ルートがある場合、親ルートのパスにいるときは、 `<Outlet>` にはレンダリングする子ルートが一致しないため、何もレンダリングされません。インデックスルートは、そのスペースを埋めるためのデフォルトの子ルートとして考えることができます。
 
-👉 **ルートルートのインデックスルートを作成します**
+👉 **ルートルートのインデックスルートを作成する**
 
 ```shellscript nonumber
 touch app/routes/_index.tsx
 ```
 
-👉 **インデックスコンポーネントの要素を埋めます**
+👉 **インデックスコンポーネントの要素を埋める**
 
-コピーして貼り付けてください。特別なことは何もありません。
+コピー＆ペーストして構いません。特別なことは何もありません。
 
 ```tsx filename=app/routes/_index.tsx
 export default function Index() {
@@ -1034,25 +1027,25 @@ export default function Index() {
     <p id="index-page">
       これは Remix のデモです。
       <br />
-      <a href="https://remix.run">remix.run のドキュメント</a> を見てください。
+      <a href="https://remix.run">remix.run のドキュメント</a> を確認してください。
     </p>
   );
 }
 ```
 
-ルート名 `_index` は特別です。Remix に、ユーザーが親ルートの正確なパスにいる場合、 `<Outlet />` でレンダリングする他の子ルートがないため、このルートを一致させてレンダリングするように指示します。
+ルート名 `_index` は特別です。ユーザーが親ルートの正確なパスにいる場合、 `<Outlet />` でレンダリングする他の子ルートがないため、このルートを一致させてレンダリングするように Remix に指示します。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/18.webp" />
 
-ほら、空白がなくなりましたね！インデックスルートには、ダッシュボード、統計、フィードなどを配置するのが一般的です。インデックスルートは、データの読み込みにも参加できます。
+できました！空白がなくなりました。インデックスルートには、ダッシュボード、統計情報、フィードなどを置くのが一般的です。インデックスルートは、データの読み込みにも参加できます。 
 
 ## キャンセルボタン
 
-編集ページには、まだ何も機能していないキャンセルボタンがあります。ブラウザの戻るボタンと同じように動作させたいです。
+編集ページには、まだ何も動作しないキャンセルボタンがあります。ブラウザの戻るボタンと同じ動作にする必要があります。
 
-ボタンにはクリックハンドラーと、[`useNavigate`][use-navigate] が必要になります。
+ボタンのクリックハンドラと [`useNavigate`][use-navigate] が必要になります。
 
-👉 **`useNavigate` を使用してキャンセルボタンのクリックハンドラーを追加**
+👉 **`useNavigate` を使用してキャンセルボタンのクリックハンドラを追加**
 
 ```tsx filename=app/routes/contacts.$contactId_.edit.tsx lines=[5,11,18]
 // 既存のインポート
@@ -1081,33 +1074,33 @@ export default function EditContact() {
 }
 ```
 
-これで、ユーザーが「キャンセル」をクリックすると、ブラウザの履歴で1つ前のエントリに戻ります。
+これで、ユーザーが「キャンセル」をクリックすると、ブラウザの履歴で 1 つ前のエントリに戻されます。
 
 > 🧐 なぜボタンに `event.preventDefault()` がないのですか？
 
-`<button type="button">` は、一見冗長ですが、ボタンがフォームを送信するのを防ぐ HTML の方法です。
+`<button type="button">` は、一見冗長ですが、ボタンがフォームを送信しないようにするための HTML の方法です。
 
-あと2つの機能が残っています。ゴールはもうすぐです！ 
+あと 2 つの機能です。ゴールは目前です！
 
-## `URLSearchParams` と `GET` 提出
+## `URLSearchParams`と`GET`送信
 
-これまでのインタラクティブな UI は、URL を変更するリンクか、`action` 関数にデータを送信する `form` のいずれかでした。検索フィールドは、両方の組み合わせという点で興味深いものです。`form` である一方で、データは変更せず、URL を変更するだけです。
+これまで見てきたインタラクティブなUIは、URLを変更するリンクか、`action`関数にデータを送信する`form`でした。検索フィールドは、この両方の組み合わせで興味深いものです。`form`ですが、データは変更せず、URLのみを変更します。
 
 検索フォームを送信すると何が起こるか見てみましょう。
 
-👉 **検索フィールドに名前を入力して Enter キーを押します**
+👉 **検索フィールドに名前を入力してEnterキーを押してください**
 
-ブラウザの URL に、クエリが [`URLSearchParams`][url-search-params] として含まれていることに注目してください。
+ブラウザのURLにクエリが[`URLSearchParams`][url-search-params]として含まれているのがわかるはずです。
 
 ```
 http://localhost:5173/?q=ryan
 ```
 
-`<Form method="post">` ではないため、Remix はブラウザをエミュレートし、[`FormData`][form-data] をリクエストボディではなく [`URLSearchParams`][url-search-params] にシリアル化します。
+`<Form method="post">`ではないので、Remixはブラウザをエミュレートし、[`FormData`][form-data]をリクエストボディではなく[`URLSearchParams`][url-search-params]にシリアライズします。
 
-`loader` 関数は、`request` から検索パラメータにアクセスできます。これを利用してリストをフィルタリングしてみましょう。
+`loader`関数は、`request`から検索パラメータにアクセスできます。これを利用してリストをフィルターしてみましょう。
 
-👉 **`URLSearchParams` があればリストをフィルタリングする**
+👉 **`URLSearchParams`があればリストをフィルターする**
 
 ```tsx filename=app/root.tsx lines=[3,8-13]
 import type {
@@ -1131,21 +1124,24 @@ export const loader = async ({
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/19.webp" />
 
-これは `POST` ではなく `GET` なので、Remix は `action` 関数を呼び出しません。`GET` `form` を送信することは、リンクをクリックするのと同じです。URL が変わるだけです。
+これは`POST`ではなく`GET`なので、Remixは`action`関数を呼び出しません。`GET`の`form`を送信することは、リンクをクリックすることと同じです。URLだけが変更されます。
 
-これは、通常のページナビゲーションでもあることを意味します。戻るボタンをクリックすると、元の場所に戻ることができます。
-## URL とフォームステートの同期化
+これは、通常のページナビゲーションであることも意味します。戻るボタンをクリックすると、元の場所に戻ることができます。
 
-ここに、すぐに対応できる UX 上の問題点がいくつかあります。
+[url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+[form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
+## URL とフォームの状態を同期する
 
-1. 検索後に「戻る」をクリックすると、リストがフィルタリングされなくなっても、フォームフィールドには入力した値が残ります。
-2. 検索後にページをリフレッシュすると、リストがフィルタリングされているにもかかわらず、フォームフィールドには値が入らなくなります。
+いくつかの UX の問題点があり、すぐに対応できます。
 
-つまり、URL と入力のステートが同期していません。
+1. 検索後に戻るボタンをクリックしても、フォームフィールドには入力した値が残っているのに、リストはフィルターされなくなります。
+2. 検索後にページを更新すると、フォームフィールドには値が入らなくなりますが、リストはフィルターされます。
 
-まず (2) を解決し、URL から値を取得して入力のデフォルト値として設定してみましょう。
+つまり、URL と入力の状態が同期していません。
 
-👉 **`loader` から `q` を返し、入力のデフォルト値として設定する**
+まずは (2) を解決し、入力に URL からの値を設定しましょう。
+
+👉 **`loader` から `q` を返して、入力のデフォルト値に設定します。**
 
 ```tsx filename=app/root.tsx lines=[9,13,26]
 // 既存のインポートとエクスポート
@@ -1192,11 +1188,11 @@ export default function App() {
 }
 ```
 
-これで、検索後にページをリフレッシュしても、入力フィールドにクエリが表示されるようになりました。
+これで、検索後にページを更新した場合、入力フィールドにクエリが表示されます。
 
-次に、問題 (1) である「戻る」ボタンをクリックして入力値を更新する方法についてです。React の `useEffect` を使用して、DOM の入力値を直接操作することができます。
+次に、問題 (1) について、戻るボタンをクリックして入力を更新する問題に対処します。React の `useEffect` を使用して、DOM の入力値を直接操作できます。
 
-👉 **`URLSearchParams` と入力値を同期化する**
+👉 **入力値を `URLSearchParams` と同期させる**
 
 ```tsx filename=app/root.tsx lines=[2,10-15]
 // 既存のインポート
@@ -1219,13 +1215,13 @@ export default function App() {
 }
 ```
 
-> 🤔 コントロールされたコンポーネントと React ステートを使用すべきではないでしょうか？
+> 🤔 コントロールされたコンポーネントと React のステートを使うべきではないでしょうか？
 
-コントロールされたコンポーネントとして実装することもできます。同期ポイントは増えますが、どちらの方法を選ぶかはあなた次第です。
+もちろん、コントロールされたコンポーネントとして実装することもできます。同期ポイントが増えますが、どちらでも構いません。
 
 <details>
 
-<summary>展開して、どのように見えるか確認してください</summary>
+<summary>展開して詳細を確認する</summary>
 
 ```tsx filename=app/root.tsx lines=[2,9-10,12-16,30-33,36-37]
 // 既存のインポート
@@ -1239,7 +1235,8 @@ export default function App() {
   // クエリはステートに保持する必要があります
   const [query, setQuery] = useState(q || "");
 
-  // `useEffect` を使用して、バック/フォワードボタンクリック時にクエリをコンポーネントステートに同期します。
+  // 戻る/進むボタンをクリックしたときにクエリを
+  // コンポーネントステートと同期させる `useEffect` があります
   useEffect(() => {
     setQuery(q || "");
   }, [q]);
@@ -1256,13 +1253,13 @@ export default function App() {
                 aria-label="検索"
                 id="q"
                 name="q"
-                // ユーザーの入力をコンポーネントステートに同期
+                // ユーザーの入力をコンポーネントステートと同期させる
                 onChange={(event) =>
                   setQuery(event.currentTarget.value)
                 }
                 placeholder="検索"
                 type="search"
-                // `defaultValue` から `value` に変更
+                // `defaultValue` から `value` に変更されました
                 value={query}
               />
               {/* 既存の要素 */}
@@ -1280,13 +1277,14 @@ export default function App() {
 
 </details>
 
-これで、バック/フォワード/リフレッシュボタンをクリックしても、入力値が URL と結果と同期されるようになりました。
+これで、戻る/進む/更新ボタンをクリックしても、入力の値が URL と結果と同期するようになります。
 
-## `Form` の `onChange` の提出
 
-ここでは、製品に関する意思決定を行う必要があります。ユーザーに `form` を送信して結果をフィルタリングさせたい場合と、ユーザーが入力するたびにフィルタリングさせたい場合があります。前者はすでに実装しているので、後者について見てみましょう。
+## フォームの`onChange`を提出する
 
-すでに `useNavigate` を見てきましたが、ここではその兄弟である [`useSubmit`][use-submit] を使用します。
+ここには製品に関する意思決定が必要です。ユーザーに`form`を提出して結果をフィルタリングさせたい場合もあれば、ユーザーがタイプするたびにフィルタリングしたい場合もあります。前者はすでに実装済みなので、後者について見ていきましょう。
+
+すでに`useNavigate`を見てきましたが、今回はその仲間である[`useSubmit`][use-submit]を使用します。
 
 ```tsx filename=app/root.tsx lines=[12,19,32-34]
 // 既存のインポート
@@ -1338,17 +1336,17 @@ export default function App() {
 }
 ```
 
-入力するたびに、`form` が自動的に送信されます！
+このようにタイプすると、`form`が自動的に送信されます！
 
-[`submit`][use-submit] への引数に注意してください。`submit` 関数は、渡されたフォームをシリアル化して送信します。ここでは、`event.currentTarget` を渡しています。`currentTarget` は、イベントがアタッチされている DOM ノード（`form`）です。 
+[`submit`][use-submit]への引数に注目してください。`submit`関数は、渡されたフォームをシリアライズして送信します。ここでは`event.currentTarget`を渡しています。`currentTarget`は、イベントがアタッチされているDOMノード（`form`）です。 
 
 ## 検索スピナーの追加
 
-本番環境のアプリでは、検索はデータベース内のレコードを検索することになり、データベースが大きすぎて一度にすべてを送信してクライアント側でフィルターすることはできません。そのため、このデモでは、疑似的なネットワーク遅延を導入しています。
+本番環境のアプリでは、検索は通常、一度にすべてを送信してクライアント側でフィルター処理するには大きすぎるデータベース内のレコードを検索するため、このデモではネットワーク遅延を模倣しています。
 
-ローディングインジケーターがない場合、検索は少し遅く感じられます。データベースを高速化できたとしても、ユーザーのネットワーク遅延は常に発生し、制御できません。
+ローディングインジケーターがないと、検索は少し遅く感じられます。データベースを高速化できたとしても、ユーザーのネットワーク遅延は常に発生し、コントロールできません。
 
-より良いユーザーエクスペリエンスのために、検索にすぐにUIフィードバックを追加しましょう。[`useNavigation`][use-navigation] を再び使用します。
+より良いユーザーエクスペリエンスのために、検索の直感的なUIフィードバックを追加しましょう。[`useNavigation`][use-navigation]を再び使用します。
 
 👉 **検索中かどうかを知るための変数を追加する**
 
@@ -1369,9 +1367,9 @@ export default function App() {
 }
 ```
 
-何も起こっていない場合、`navigation.location` は `undefined` になります。しかし、ユーザーがナビゲートすると、データがロードされている間、次の場所に情報が入ります。その後、`location.search` を使用して、ユーザーが検索しているかどうかを確認します。
+何も起こっていない場合、`navigation.location`は`undefined`になりますが、ユーザーがナビゲートすると、データが読み込まれる間、次の場所に設定されます。その後、`location.search`を使用して検索しているかどうかを確認します。
 
-👉 **新しい `searching` ステートを使用して、検索フォーム要素にクラスを追加する**
+👉 **新しい`searching`状態を使用して、検索フォーム要素にクラスを追加する**
 
 ```tsx filename=app/root.tsx lines=[22,31]
 // 既存のインポートとエクスポート
@@ -1419,7 +1417,7 @@ export default function App() {
 }
 ```
 
-さらに、検索中にメイン画面がフェードアウトしないようにしましょう。
+ボーナス：検索中はメイン画面がフェードアウトしないようにする:
 
 ```tsx filename=app/root.tsx lines=[13]
 // 既存のインポートとエクスポート
@@ -1449,19 +1447,19 @@ export default function App() {
 }
 ```
 
-これで、検索入力の左側にある素敵なスピナーが表示されるはずです。
+これで、検索入力の左側には素敵なスピナーが表示されます。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/20.webp" />
 
-## ヒストリースタックの管理
+## 履歴スタックの管理
 
-フォームはキーストロークごとに送信されるため、"alex"と入力してからバックスペースで削除すると、巨大なヒストリースタックが作成されます😂。 これは明らかに望ましくありません。
+フォームはキーストロークごとに送信されるため、「alex」と入力してからバックスペースで削除すると、膨大な履歴スタックが生成されます 😂。これは明らかに避けたいことです。
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/21.webp" />
 
-これを回避するために、ヒストリースタックにプッシュするのではなく、現在のエントリを次のページで*置き換える*ことができます。
+これを回避するには、履歴スタックにプッシュするのではなく、現在のエントリを次のページに *置き換える* ことができます。
 
-👉 **`submit`で`replace`を使用する**
+👉 **`submit` で `replace` を使用**
 
 ```tsx filename=app/root.tsx lines=[16-19]
 // 既存のインポートとエクスポート
@@ -1499,15 +1497,15 @@ export default function App() {
 }
 ```
 
-これは最初の検索かどうかをすばやく確認した後、置き換えるかどうかを決定します。 最初の検索では新しいエントリが追加されますが、それ以降のキーストロークでは現在のエントリが置き換えられます。 検索を削除するために7回戻る代わりに、ユーザーは1回戻るだけで済みます。 
+これが最初の検索かどうかを簡単に確認した後、置き換えを実行します。これで、最初の検索は新しいエントリを追加しますが、それ以降のキーストロークは現在のエントリを置き換えます。検索を削除するために7回戻る代わりに、ユーザーは1回戻るだけで済みます。 
 
-## ナビゲーションを行わない `Form`
+## ナビゲーションなしの `Form`
 
-これまでのフォームはすべて URL を変更していました。これらのユーザーフローは一般的ですが、ナビゲーションを起こさずにフォームを送信したい場合も同様に一般的です。
+これまで、フォームはすべてURLを変更していました。これらのユーザーフローは一般的ですが、*ナビゲーションなしで*フォームを送信したい場合も同様に一般的です。
 
-このような場合、[`useFetcher`][use-fetcher] を使用できます。これにより、ナビゲーションを起こすことなく `action` と `loader` と通信することができます。
+このような場合、[`useFetcher`][use-fetcher] が役立ちます。これにより、ナビゲーションなしで `action` と `loader` と通信できます。
 
-連絡先ページの ★ ボタンは、この場合に適しています。新しいレコードを作成したり削除したりするわけではなく、ページを変更する必要もありません。単に見ているページのデータを変更するだけです。
+連絡先ページの ★ ボタンは、これに対して理にかなっています。新しいレコードを作成したり削除したりするのではなく、見ているページのデータを変更したいだけです。
 
 👉 **`<Favorite>` フォームをフェッチャーフォームに変更する**
 
@@ -1534,7 +1532,7 @@ const Favorite: FunctionComponent<{
         aria-label={
           favorite
             ? "お気に入りに追加"
-            : "お気に入りから削除"
+            : "お気に入りから削除する"
         }
         name="favorite"
         value={favorite ? "false" : "true"}
@@ -1546,7 +1544,7 @@ const Favorite: FunctionComponent<{
 };
 ```
 
-このフォームは、ナビゲーションを起こすことはなく、単に `action` にフェッチします。ところで… `action` を作成するまでこれは動作しません。
+このフォームは、ナビゲーションを引き起こすことはなく、単に `action` にフェッチします。さて... `action` を作成するまでは機能しません。
 
 👉 **`action` を作成する**
 
@@ -1564,7 +1562,7 @@ export const action = async ({
   params,
   request,
 }: ActionFunctionArgs) => {
-  invariant(params.contactId, "contactId パラメータがありません");
+  invariant(params.contactId, "Missing contactId param");
   const formData = await request.formData();
   return updateContact(params.contactId, {
     favorite: formData.get("favorite") === "true",
@@ -1574,23 +1572,22 @@ export const action = async ({
 // 既存のコード
 ```
 
-これで、ユーザー名の横の星をクリックする準備ができました！
+さて、ユーザー名の横にある星をクリックする準備ができました！
 
 <img class="tutorial" loading="lazy" src="/docs-images/contacts/22.webp" />
 
-見てください、両方の星が自動的に更新されます。新しい `<fetcher.Form method="post">` は、これまで使ってきた `<Form>` とほぼ同じように動作します。 `action` を呼び出し、すべてのデータが自動的に再検証されます — エラーも同様にキャッチされます。
+確認してみてください。両方の星が自動的に更新されます。新しい `<fetcher.Form method="post">` は、これまで使ってきた `<Form>` とほぼ同じように機能します。アクションを呼び出し、すべてのデータが自動的に再検証されます。エラーも同様にキャッチされます。
 
-ただし、1 つの重要な違いがあります。これはナビゲーションではないため、URL は変更されず、履歴スタックも影響を受けません。
+ただし、重要な違いが1つあります。ナビゲーションではないため、URLは変更されず、履歴スタックも影響を受けません。
+## 楽観的UI
 
-## 楽観的 UI
+前回のセクションで「お気に入り」ボタンをクリックしたときに、アプリが少し反応しにくかったことに気づいたかもしれません。再び、ネットワークレイテンシを追加しました。なぜなら、それは現実世界では必ず発生するからです。
 
-前のセクションで「お気に入り」ボタンをクリックしたとき、アプリが少し反応が鈍かったことに気づいたかもしれません。もう一度、ネットワークの遅延を追加しました。なぜなら、それは現実世界では必ず発生するからです。
+ユーザーにフィードバックを与えるために、[`fetcher.state`][fetcher-state]（以前の `navigation.state` とよく似ています）を使用して、星をローディング状態にすることができますが、今回はさらに良い方法があります。「楽観的UI」と呼ばれる戦略を使用できます。
 
-ユーザーにフィードバックを与えるために、[`fetcher.state`][fetcher-state]（前の`navigation.state`とよく似ています）を使用して、星をロード状態にすることもできますが、今回はもっと良い方法があります。「楽観的 UI」と呼ばれる戦略を使用できます。
+フェッチャーは `action` に送信される [`FormData`][form-data] を認識しているので、`fetcher.formData` で利用できます。これを使用して、ネットワークが完了していない場合でも、すぐに星の状態を更新します。更新が最終的に失敗した場合、UIは実際データに戻ります。
 
-fetcherは、`action`に送信される[`FormData`][form-data]を知っているので、`fetcher.formData`で利用できます。これを利用して、ネットワークが完了する前に、星の状態をすぐに更新します。更新が最終的に失敗した場合、UIは実際のデータに戻ります。
-
-👉 **`fetcher.formData`から楽観的な値を読み取る**
+👉 **`fetcher.formData` から楽観的値を読み取る**
 
 ```tsx filename=app/routes/contacts.$contactId.tsx lines=[7-9]
 // 既存のコード
@@ -1621,11 +1618,11 @@ const Favorite: FunctionComponent<{
 };
 ```
 
-これで、星はクリックするとすぐに新しい状態に*すぐに*変わります。
+これで、星はクリックすると*すぐに*新しい状態に変わります。
 
 ***
 
-以上です！Remixを試してくれてありがとうございます。このチュートリアルが、素晴らしいユーザーエクスペリエンスを構築するための堅実なスタートとなることを願っています。もっと多くのことができるので、すべてのAPIを必ず確認してください 😀
+以上です！Remix を試していただきありがとうございます。このチュートリアルが、優れたユーザーエクスペリエンスを構築するための堅実なスタートになることを願っています。さらに多くのことができますので、すべての API を必ずチェックしてください 😀
 
 [jim]: https://blog.jim-nielsen.com
 

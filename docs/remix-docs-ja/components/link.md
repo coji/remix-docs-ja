@@ -4,7 +4,7 @@ title: Link
 
 # `<Link>`
 
-クライアントサイドルーティングでナビゲーションを有効にするために、`<a href>` ラッパーを使用します。
+`<Link>`は、クライアントサイドルーティングを使用したナビゲーションを可能にする `<a href>` のラッパーです。
 
 ```tsx
 import { Link } from "@remix-run/react";
@@ -12,15 +12,13 @@ import { Link } from "@remix-run/react";
 <Link to="/dashboard">ダッシュボード</Link>;
 ```
 
-<docs-info>
-`useResolvedPath` ドキュメントの [スプラットパス][relativesplatpath] セクションを参照して、スプラットルート内での相対的な `<Link to>` の動作に関する `future.v3_relativeSplatPath` の将来のフラグの動作に関する注意を確認してください。
-</docs-info>
+<docs-info>相対的な `<Link to>` の動作に関する `future.v3_relativeSplatPath` フラグの将来的な動作については、`useResolvedPath` ドキュメントの [スプラットパス][relativesplatpath] セクションを参照してください。</docs-info>
 
 ## プロパティ
 
 ### `to: string`
 
-最も基本的な使用法は、href 文字列を取ります。
+最も基本的な使用方法は、href 文字列を受け取ります。
 
 ```tsx
 <Link to="/some/path" />
@@ -42,7 +40,7 @@ import { Link } from "@remix-run/react";
 
 ### `discover`
 
-[`future.unstable_lazyRouteDiscovery`][lazy-route-discovery] を使用する場合、ルート検出の動作を定義します。
+[`future.v3_lazyRouteDiscovery`][lazy-route-discovery] を使用する場合に、ルーティングの検出動作を定義します。
 
 ```tsx
 <>
@@ -51,12 +49,12 @@ import { Link } from "@remix-run/react";
 </>
 ```
 
-- **render** - デフォルト、リンクがレンダリングされるときにルートを検出します。
-- **none** - 積極的に検出せず、リンクがクリックされた場合にのみ検出します。
+- **render** - デフォルト、リンクがレンダリングされたときにルートを検出します
+- **none** - 熱心な検出は行わず、リンクがクリックされた場合にのみ検出します
 
 ### `prefetch`
 
-リンクのデータとモジュールプレフェッチの動作を定義します。
+リンクのデータとモジュールのプリフェッチ動作を定義します。
 
 ```tsx
 <>
@@ -68,12 +66,12 @@ import { Link } from "@remix-run/react";
 </>
 ```
 
-- **none** - デフォルト、プレフェッチなし
-- **intent** - ユーザーがリンクにホバーまたはフォーカスするとプレフェッチします。
-- **render** - リンクがレンダリングされるとプレフェッチします。
-- **viewport** - リンクがビューポート内にあるときにプレフェッチします。モバイルに非常に便利です。
+- **none** - デフォルト、プリフェッチなし
+- **intent** - ユーザーがリンクにホバーまたはフォーカスしたときにプリフェッチします
+- **render** - リンクがレンダリングされたときにプリフェッチします
+- **viewport** - リンクがビューポート内にあるときにプリフェッチします。モバイルに非常に役立ちます
 
-プレフェッチは、HTML `<link rel="prefetch">` タグを使用して行われます。リンクの後に挿入されます。
+プリフェッチは、HTML `<link rel="prefetch">` タグを使用して行われます。これらはリンクの後に挿入されます。
 
 ```tsx
 <nav>
@@ -83,30 +81,30 @@ import { Link } from "@remix-run/react";
 </nav>
 ```
 
-そのため、`nav :last-child` を使用している場合は、スタイルが最後のリンク（およびその他の同様のセレクター）から条件付きで外れないように、`nav :last-of-type` を使用する必要があります。
+このため、`nav :last-child` を使用している場合は、`nav :last-of-type` を使用して、スタイルが最後のリンク（および同様のセレクター）から条件付きで外れないようにする必要があります。
 
 ### `preventScrollReset`
 
-[`<ScrollRestoration>`][scroll-restoration-component] を使用している場合、このプロパティを使用すると、リンクをクリックしたときにスクロール位置がウィンドウの上部にリセットされるのを防ぐことができます。
+[`<ScrollRestoration>`][scroll-restoration-component] を使用している場合、これにより、リンクがクリックされたときにスクロール位置がウィンドウの上部にリセットされるのを防ぐことができます。
 
 ```tsx
 <Link to="?tab=one" preventScrollReset />
 ```
 
-これは、ユーザーが戻る/進むボタンを使用して位置に戻ったときにスクロール位置が復元されるのを防ぐものではなく、ユーザーがリンクをクリックしたときにリセットされるのを防ぐだけです。
+これは、ユーザーが戻る/進むボタンで場所に戻ったときにスクロール位置が復元されるのを防ぎません。これは、ユーザーがリンクをクリックしたときにリセットされるのを防ぐだけです。
 
 <details>
 
 <summary>ディスカッション</summary>
 
-ページの上部にない URL 検索パラメーターを操作するタブのリストの場合に、この動作が必要になる可能性があります。切り替えられたコンテンツがビューポートからスクロールアウトされる可能性があるため、スクロール位置が上にジャンプするのを避けたいでしょう！
+この動作が必要になる場合の例として、ページの上部にない URL 検索パラメータを操作するタブのリストがあります。トグルされたコンテンツがビューポートからスクロールされる可能性があるため、スクロール位置が上部にジャンプすることを望まないでしょう！
 
 ```text
       ┌─────────────────────────┐
       │                         ├──┐
       │                         │  │
-      │                         │  │ スクロールアウト
-      │                         │  │ ビューから
+      │                         │  │ スクロール
+      │                         │  │ ビューから外れる
       │                         │  │
       │                         │ ◄┘
     ┌─┴─────────────────────────┴─┐
@@ -130,7 +128,7 @@ import { Link } from "@remix-run/react";
 
 ### `relative`
 
-リンクの相対パスの動作を定義します。
+リンクの相対パス動作を定義します。
 
 ```tsx
 <Link to=".." />; // デフォルト: "route"
@@ -138,12 +136,12 @@ import { Link } from "@remix-run/react";
 <Link relative="path" />;
 ```
 
-- **route** - デフォルト、ルート階層に対する相対パスなので、`..` は現在のルートパターンのすべての URL セグメントを削除します。
-- **path** - パスに対する相対パスなので、`..` は 1 つの URL セグメントを削除します。
+- **route** - デフォルト、ルート階層に対して相対的なので、`..` は現在のルートパターンのすべての URL セグメントを削除します
+- **path** - パスに対して相対的なので、`..` は 1 つの URL セグメントを削除します
 
 ### `reloadDocument`
 
-リンクがクリックされると、クライアントサイドルーティングではなくドキュメントナビゲーションを使用し、ブラウザは通常どおり（`<a href>` の場合と同じように）遷移を処理します。
+リンクがクリックされたときに、クライアントサイドルーティングではなくドキュメントナビゲーションを使用します。ブラウザは通常どおり遷移を処理します（`<a href>` の場合と同じです）。
 
 ```tsx
 <Link to="/logout" reloadDocument />
@@ -151,32 +149,32 @@ import { Link } from "@remix-run/react";
 
 ### `replace`
 
-`replace` プロパティは、新しいエントリを履歴スタックにプッシュするのではなく、現在のエントリを置き換えます。
+`replace` プロパティは、新しいエントリを履歴スタックにプッシュするのではなく、現在のエントリを履歴スタックから置き換えます。
 
 ```tsx
 <Link replace />
 ```
 
 ```
-# 履歴スタックは次のようになります
+# このような履歴スタックの場合
 A -> B
 
 # 通常のリンククリックは新しいエントリをプッシュします
 A -> B -> C
 
-# しかし、`replace` を使用すると、B は C に置き換えられます
+# しかし、`replace` を使用すると、B は C で置き換えられます
 A -> C
 ```
 
 ### `state`
 
-次のロケーションに永続的なクライアントサイドルーティング状態を追加します。
+次の場所に永続的なクライアントサイドルーティング状態を追加します。
 
 ```tsx
 <Link to="/somewhere/else" state={{ some: "value" }} />
 ```
 
-ロケーション状態は、`location` からアクセスされます。
+ロケーション状態は、`location` からアクセスできます。
 
 ```tsx
 function SomeComp() {
@@ -187,24 +185,23 @@ function SomeComp() {
 
 この状態は、[`history.state`][history-state] の上に実装されているため、サーバーではアクセスできません。
 
-## `unstable_viewTransition`
+## `viewTransition`
 
-`unstable_viewTransition` プロパティは、最終的な状態の更新を [`document.startViewTransition()`][document-start-view-transition] でラップすることで、このナビゲーションの [ビュー遷移][view-transitions] を有効にします。
+`viewTransition` プロパティは、最終的な状態の更新を [`document.startViewTransition()`][document-start-view-transition] でラップすることにより、このナビゲーションの [ビュー遷移][view-transitions] を有効にします。
 
 ```jsx
-<Link to={to} unstable_viewTransition>
-  私をクリックしてください
+<Link to={to} viewTransition>
+  クリックしてください
 </Link>
 ```
 
-このビュー遷移に特定のスタイルを適用する必要がある場合は、[`unstable_useViewTransitionState()`][use-view-transition-state] も活用する必要があります。
+このビュー遷移に特定のスタイルを適用する必要がある場合は、[`useViewTransitionState()`][use-view-transition-state] も活用する必要があります。
 
 ```jsx
 function ImageLink(to) {
-  const isTransitioning =
-    unstable_useViewTransitionState(to);
+  const isTransitioning = useViewTransitionState(to);
   return (
-    <Link to={to} unstable_viewTransition>
+    <Link to={to} viewTransition>
       <p
         style={{
           viewTransitionName: isTransitioning
@@ -228,10 +225,6 @@ function ImageLink(to) {
 }
 ```
 
-<docs-warning>
-この API は不安定とマークされており、メジャーリリースなしに破壊的な変更が発生する可能性があります。
-</docs-warning>
-
 [scroll-restoration-component]: ./scroll-restoration
 [history-state]: https://developer.mozilla.org/en-US/docs/Web/API/History/state
 [view-transitions]: https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API
@@ -239,3 +232,6 @@ function ImageLink(to) {
 [use-view-transition-state]: ../hooks/use-view-transition-state
 [relativesplatpath]: ../hooks/use-resolved-path#splat-paths
 [lazy-route-discovery]: ../guides/lazy-route-discovery
+
+
+
