@@ -1,17 +1,18 @@
-import type { HeadersFunction, LoaderFunctionArgs } from '@remix-run/node'
-import { Link, useFetcher, useLocation } from '@remix-run/react'
 import { ChevronsRightIcon } from 'lucide-react'
 import { useEffect } from 'react'
+import type { HeadersFunction } from 'react-router'
+import { Link, useFetcher, useLocation } from 'react-router'
 import jobs from '~/assets/jobs.json'
 import { Badge, HStack, Stack } from '~/components/ui'
 import { cn } from '~/libs/utils'
+import type * as Route from './+types.index'
 
 // キャッシュ完全無効
 export const headers: HeadersFunction = () => {
   return { 'Cache-Control': 'no-store' }
 }
 
-export const loader = ({ request }: LoaderFunctionArgs) => {
+export const loader = ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url)
   const currentId = url.searchParams.get('current')
   const openJobs = jobs.filter((job) => {
@@ -33,7 +34,7 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
 
 interface JobBoardProps extends React.HTMLAttributes<HTMLDivElement> {}
 export const JobBoard = ({ className }: JobBoardProps) => {
-  const fetcher = useFetcher<typeof loader>()
+  const fetcher = useFetcher<Route.LoaderData>()
   const { pathname } = useLocation()
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>

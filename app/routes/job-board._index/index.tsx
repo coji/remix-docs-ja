@@ -1,6 +1,6 @@
-import { Link, useLoaderData } from '@remix-run/react'
 import { ExternalLinkIcon } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
+import { Link } from 'react-router'
 import jobs from '~/assets/jobs.json'
 import {
   Badge,
@@ -19,13 +19,14 @@ import {
   HStack,
   Stack,
 } from '~/components/ui'
+import type * as Route from './+types.index'
 import { shuffleArray } from './utils'
 
 export const meta = [
   { title: 'Remix のお仕事あります - Remix ドキュメント日本語版' },
 ]
 
-export const loader = () => {
+export const loader = ({ request }: Route.LoaderArgs) => {
   // 表示期間中の求人情報を取得し、シャッフルする
   const filteredJobs = jobs.filter((job) => {
     return (
@@ -39,9 +40,9 @@ export const loader = () => {
   }
 }
 
-export default function JobBoardIndex() {
-  const { jobs } = useLoaderData<typeof loader>()
-
+export default function JobBoardIndex({
+  loaderData: { jobs },
+}: Route.ComponentProps) {
   return (
     <Stack className="gap-2">
       <Breadcrumb>

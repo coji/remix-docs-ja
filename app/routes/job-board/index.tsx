@@ -1,4 +1,8 @@
-import { Link, Outlet } from '@remix-run/react'
+import { Link, Outlet } from 'react-router'
+
+export const loader = () => {
+  return {}
+}
 
 export default function JobBoardLayout() {
   return (
