@@ -4,7 +4,7 @@ title: useFetcher
 
 # `useFetcher`
 
-ナビゲーション以外のサーバーとのやり取りのためのフックです。
+ナビゲーション以外でサーバーとやり取りするためのフックです。
 
 ```tsx
 import { useFetcher } from "@remix-run/react";
@@ -19,7 +19,7 @@ export function SomeComponent() {
 
 ### `key`
 
-デフォルトでは、`useFetcher` はそのコンポーネントにスコープされた一意のフェッチャーを生成します（ただし、インフライト中は [`useFetchers()`][use_fetchers] で見つけることができます）。アプリの他の場所からフェッチャーを独自のキーで識別できるようにしたい場合は、`key` オプションを使用できます。
+デフォルトでは、`useFetcher` はそのコンポーネントにスコープされた一意のフェッチャーを生成します（ただし、インフライト中は [`useFetchers()`][use_fetchers] で検索される場合があります）。アプリ内の他の場所からフェッチャーを自分のキーで識別したい場合は、`key` オプションを使用できます。
 
 ```tsx lines=[2,8]
 function AddToBagButton() {
@@ -27,7 +27,7 @@ function AddToBagButton() {
   return <fetcher.Form method="post">...</fetcher.Form>;
 }
 
-// ヘッダーの上で...
+// Then, up in the header...
 function CartCount({ count }) {
   const fetcher = useFetcher({ key: "add-to-bag" });
   const inFlightCount = Number(
@@ -47,7 +47,7 @@ function CartCount({ count }) {
 
 ### `fetcher.Form`
 
-[`<Form>`][form_component] と同じですが、ナビゲーションが発生しません。
+[`<Form>`][form_component] と同じですが、ナビゲーションを引き起こしません。
 
 ```tsx
 function SomeComponent() {
@@ -64,15 +64,15 @@ function SomeComponent() {
 
 ### `fetcher.submit(formData, options)`
 
-フォームデータをルートに送信します。複数のネストされたルートが URL に一致する場合、リーフルートのみが呼び出されます。
+フォームデータをルートに送信します。複数のネストされたルートが URL に一致する可能性がありますが、リーフルートのみが呼び出されます。
 
-`formData` は複数のタイプになります。
+`formData` は、複数のタイプになる可能性があります。
 
 - [`FormData`][form_data] - `FormData` インスタンス。
 - [`HTMLFormElement`][html_form_element] - [`<form>`][form_element] DOM 要素。
-- `Object` - デフォルトで `FormData` インスタンスに変換される、キー/値のペアのオブジェクト。より複雑なオブジェクトを渡して、`encType: "application/json"` を指定することで JSON としてシリアル化できます。詳細については、[`useSubmit`][use-submit] を参照してください。
+- `Object` - キーと値のペアのオブジェクトで、デフォルトで `FormData` インスタンスに変換されます。より複雑なオブジェクトを渡して、`encType: "application/json"` を指定して JSON としてシリアル化することができます。詳細については、[`useSubmit`][use-submit] を参照してください。
 
-メソッドが `GET` の場合、ルートの [`loader`][loader] が呼び出され、`formData` が [`URLSearchParams`][url_search_params] として URL にシリアル化されます。`DELETE`、`PATCH`、`POST`、または `PUT` の場合、ルートの [`action`][action] が呼び出され、`formData` がボディとして渡されます。
+メソッドが `GET` の場合、ルートの [`loader`][loader] が呼び出され、`formData` は [`URLSearchParams`][url_search_params] として URL にシリアル化されます。 `DELETE`、`PATCH`、`POST`、または `PUT` の場合、ルートの [`action`][action] が呼び出され、`formData` は本文として使用されます。
 
 ```tsx
 // FormData インスタンスを送信する（GET リクエスト）
@@ -84,7 +84,7 @@ fetcher.submit(event.currentTarget.form, {
   method: "POST",
 });
 
-// キー/値 JSON を FormData インスタンスとして送信する
+// キーと値の JSON を FormData インスタンスとして送信する
 fetcher.submit(
   { serialized: "values" },
   { method: "POST" }
@@ -106,38 +106,38 @@ fetcher.submit(
 );
 ```
 
-`fetcher.submit` はフェッチャーインスタンスに対する [`useSubmit`][use-submit] 呼び出しのラッパーであるため、`useSubmit` と同じオプションを受け取ります。
+`fetcher.submit` は、フェッチャーインスタンスに対する [`useSubmit`][use-submit] コールのラッパーなので、`useSubmit` と同じオプションを受け取ります。
 
 ### `fetcher.load(href, options)`
 
-ルートローダーからデータを読み込みます。複数のネストされたルートが URL に一致する場合、リーフルートのみが呼び出されます。
+ルートローダーからデータを読み込みます。複数のネストされたルートが URL に一致する可能性がありますが、リーフルートのみが呼び出されます。
 
 ```ts
 fetcher.load("/some/route");
 fetcher.load("/some/route?foo=bar");
 ```
 
-`fetcher.load` は、アクション送信後と [`useRevalidator`][userevalidator] を介した明示的な再検証要求の後に、デフォルトで再検証されます。`fetcher.load` は特定の URL を読み込むため、ルートパラメーターまたは URL 検索パラメーターの変更では再検証されません。どのデータを再読み込みする必要があるかを最適化するために、[`shouldRevalidate`][shouldrevalidate] を使用できます。
+`fetcher.load` は、アクションの送信後、および [`useRevalidator`][userevalidator] を通じて明示的な再検証要求が行われた後に、デフォルトで再検証します。`fetcher.load` は特定の URL を読み込むため、ルートパラメーターまたは URL 検索パラメーターの変更時に再検証されません。[`shouldRevalidate`][shouldrevalidate] を使用して、どのデータをリロードするかを最適化できます。
 
-#### `options.unstable_flushSync`
+#### `options.flushSync`
 
-`unstable_flushSync` オプションは、React Router DOM に、この `fetcher.load` の初期状態の更新を、デフォルトの [`React.startTransition`][start-transition] ではなく、[`ReactDOM.flushSync`][flush-sync] 呼び出しでラップするように指示します。これにより、更新が DOM にフラッシュされた直後に、同期的に DOM アクションを実行できます。
+`flushSync` オプションは、この `fetcher.load` に対する最初の状態の更新を、デフォルトの [`React.startTransition`][start-transition] ではなく、[`ReactDOM.flushSync`][flush-sync] コールでラップするように React Router DOM に指示します。これにより、更新が DOM にフラッシュされた直後に同期的な DOM アクションを実行できます。
 
-<docs-warning>`ReactDOM.flushSync` は React を最適化解除し、アプリのパフォーマンスを低下させる可能性があります。</docs-warning>
+<docs-warning>`ReactDOM.flushSync` は React を最適化し、アプリのパフォーマンスに悪影響を与える可能性があります。</docs-warning>
 
 ## プロパティ
 
 ### `fetcher.state`
 
-`fetcher.state` を使用して、フェッチャーの状態を知ることができます。次のいずれかになります。
+`fetcher.state` でフェッチャーの状態を確認できます。状態は次のいずれかになります。
 
-- **idle** - 読み込みは行われていません。
-- **submitting** - フォームが送信されました。メソッドが `GET` の場合、ルートの `loader` が呼び出されます。`DELETE`、`PATCH`、`POST`、または `PUT` の場合、ルートの `action` が呼び出されます。
-- **loading** - `action` 送信後に、ルートのローダーが再読み込みされています。
+- **idle** - フェッチされていません。
+- **submitting** - フォームが送信されました。メソッドが `GET` の場合、ルートの `loader` が呼び出されます。 `DELETE`、`PATCH`、`POST`、または `PUT` の場合、ルートの `action` が呼び出されます。
+- **loading** - `action` の送信後に、ルートのローダーがリロードされています。
 
 ### `fetcher.data`
 
-`action` または `loader` から返された応答データがここに格納されます。データが設定されると、リロードや再送信（`fetcher.load()` をすでにデータを読んだ後に再度呼び出すなど）によってもフェッチャーに保持されます。
+`action` または `loader` から返されたレスポンスデータがここに格納されます。データが設定されると、リロードや再送信（`fetcher.load()` を既にデータを読み込んだ後に再び呼び出すなど）を通じてフェッチャーに保持されます。
 
 ### `fetcher.formData`
 
@@ -145,22 +145,22 @@ fetcher.load("/some/route?foo=bar");
 
 ### `fetcher.formAction`
 
-送信の URL です。
+送信の URL。
 
 ### `fetcher.formMethod`
 
-送信のフォームメソッドです。
+送信のフォームメソッド。
 
 ## 追加のリソース
 
 **ディスカッション**
 
 - [フォーム vs. フェッチャー][form_vs_fetcher]
-- [ネットワークの同時実行管理][network_concurrency_management]
+- [ネットワークコンカレンシー管理][network_concurrency_management]
 
-**ビデオ**
+**動画**
 
-- [useFetcher による同時変更][concurrent_mutations_with_use_fetcher]
+- [`useFetcher` を使った同時変更][concurrent_mutations_with_use_fetcher]
 - [楽観的な UI][optimistic_ui]
 
 [form_component]: ../components/form

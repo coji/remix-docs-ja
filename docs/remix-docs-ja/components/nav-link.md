@@ -4,7 +4,7 @@ title: NavLink
 
 # `<NavLink>`
 
-`<Link>`[link-component] にアクティブ状態と保留状態のスタイリング用の追加プロパティをラップします。
+[`<Link>`][link-component] に、アクティブ状態と保留状態のスタイリング用の追加のプロパティをラップしたものです。
 
 ```tsx
 import { NavLink } from "@remix-run/react";
@@ -15,7 +15,7 @@ import { NavLink } from "@remix-run/react";
     isPending ? "pending" : isActive ? "active" : ""
   }
 >
-  メッセージ
+  Messages
 </NavLink>;
 ```
 
@@ -23,7 +23,7 @@ import { NavLink } from "@remix-run/react";
 
 ### `.active`
 
-`<NavLink>`コンポーネントがアクティブな場合、`active`クラスが追加されるため、CSSを使用してスタイリングできます。
+`<NavLink>` コンポーネントがアクティブな場合、`active` クラスが追加されるため、CSS を使用してスタイルを設定できます。
 
 ```tsx
 <NavLink to="/messages" />
@@ -37,11 +37,11 @@ a.active {
 
 ### `aria-current`
 
-`<NavLink>`がアクティブな場合、基になるアンカータグに`<a aria-current="page">`が自動的に適用されます。 MDNの[`aria-current`][aria-current]を参照してください。
+`<NavLink>` がアクティブな場合、基になるアンカータグに `<a aria-current="page">` が自動的に適用されます。MDN の [`aria-current`][aria-current] を参照してください。
 
 ### `.pending`
 
-ナビゲーション中に保留されている場合、`<NavLink>`コンポーネントに`pending`クラスが追加されるため、CSSを使用してスタイリングできます。
+`<NavLink>` コンポーネントがナビゲーション中に保留状態の場合、`pending` クラスが追加されるため、CSS を使用してスタイルを設定できます。
 
 ```tsx
 <NavLink to="/messages" />
@@ -55,10 +55,10 @@ a.pending {
 
 ### `.transitioning`
 
-ナビゲーション中に移行している場合、[`<NavLink unstable_viewTransition>`][view-transition-prop]コンポーネントに`transitioning`クラスが追加されるため、CSSを使用してスタイリングできます。
+ナビゲーション中に移行している場合、[`<NavLink viewTransition>`][view-transition-prop] コンポーネントには `transitioning` クラスが追加されます。これにより、CSS を使用してスタイルを設定できます。
 
 ```tsx
-<NavLink to="/messages" unstable_viewTransition />
+<NavLink to="/messages" viewTransition />
 ```
 
 ```css
@@ -71,7 +71,7 @@ a.transitioning {
 
 ### `className` コールバック
 
-適用されるクラス名をカスタマイズできるように、アクティブ状態と保留状態をコールバックします。
+アクティブ状態と保留状態を使用して、適用されるクラス名をカスタマイズできます。
 
 ```tsx
 <NavLink
@@ -80,13 +80,13 @@ a.transitioning {
     isPending ? "pending" : isActive ? "active" : ""
   }
 >
-  メッセージ
+  Messages
 </NavLink>
 ```
 
 ### `style` コールバック
 
-適用されるスタイルをカスタマイズできるように、アクティブ状態と保留状態をコールバックします。
+アクティブ状態と保留状態を使用して、適用されるスタイルをカスタマイズできます。
 
 ```tsx
 <NavLink
@@ -98,25 +98,25 @@ a.transitioning {
     };
   }}
 >
-  メッセージ
+  Messages
 </NavLink>
 ```
 
 ### `children` コールバック
 
-`<NavLink>`の内容をカスタマイズできるように、アクティブ状態と保留状態をコールバックします。
+アクティブ状態と保留状態を使用して、`<NavLink>` のコンテンツをカスタマイズできます。
 
 ```tsx
 <NavLink to="/tasks">
   {({ isActive, isPending }) => (
-    <span className={isActive ? "active" : ""}>タスク</span>
+    <span className={isActive ? "active" : ""}>Tasks</span>
   )}
 </NavLink>
 ```
 
 ### `end`
 
-`end`プロパティは、`active`と`pending`の状態のマッチングロジックを変更して、`NavLinks`の`to`パスの「終わり」にのみ一致するようにします。 URLが`to`よりも長い場合、アクティブとは見なされなくなります。
+`end` プロパティは、`active` 状態と `pending` 状態の照合ロジックを変更し、`NavLinks` の `to` パス末尾のみに照合されるようにします。URL が `to` より長い場合、アクティブとはみなされません。
 
 | リンク                          | URL          | isActive |
 | ----------------------------- | ------------ | -------- |
@@ -125,20 +125,20 @@ a.transitioning {
 | `<NavLink to="/tasks" end />` | `/tasks`     | true     |
 | `<NavLink to="/tasks" end />` | `/tasks/123` | false    |
 
-`<NavLink to="/">`は、_すべての_URLが`/`と一致するため、例外的なケースです。デフォルトですべてのルートに一致しないように、`end`プロパティを無視し、ルートルートにいる場合にのみ一致するようにします。
+`<NavLink to="/">` は例外的なケースです。これは、すべての URL が `/` に一致するためです。デフォルトで、すべてのルートに一致しないようにするために、`end` プロパティは事実上無視され、ルートルートにいる場合にのみ一致されます。
 
 ### `caseSensitive`
 
-`caseSensitive`プロパティを追加すると、マッチングロジックがケースセンシティブになります。
+`caseSensitive` プロパティを追加すると、照合ロジックが変更され、大文字と小文字が区別されるようになります。
 
 | リンク                                         | URL           | isActive |
 | -------------------------------------------- | ------------- | -------- |
 | `<NavLink to="/SpOnGe-bOB" />`               | `/sponge-bob` | true     |
 | `<NavLink to="/SpOnGe-bOB" caseSensitive />` | `/sponge-bob` | false    |
 
-## `unstable_viewTransition`
+## `viewTransition`
 
-`unstable_viewTransition`プロパティは、最終的な状態の更新を[`document.startViewTransition()`][document-start-view-transition]でラップすることにより、このナビゲーションの[ビュー遷移][view-transitions]を有効にします。デフォルトでは、遷移中は[`transitioning`クラス][transitioning-class]が[`<a>`要素][a-element]に追加されるため、ビュー遷移をカスタマイズできます。
+`viewTransition` プロパティは、最終状態の更新を [`document.startViewTransition()`][document-start-view-transition] でラップすることで、このナビゲーションの [ビュー遷移][view-transitions] を有効にします。デフォルトでは、遷移中に [`transitioning` クラス][transitioning-class] が [`<a>` 要素][a-element] に追加され、ビュー遷移をカスタマイズするために使用できます。
 
 ```css
 a.transitioning p {
@@ -151,16 +151,16 @@ a.transitioning img {
 ```
 
 ```tsx
-<NavLink to={to} unstable_viewTransition>
-  <p>画像番号 {idx}</p>
+<NavLink to={to} viewTransition>
+  <p>Image Number {idx}</p>
   <img src={src} alt={`Img ${idx}`} />
 </NavLink>
 ```
 
-[`className`][class-name-prop]/[`style`][style-prop]プロパティや[`children`][children-prop]に渡されるレンダリングプロパティを使用して、`isTransitioning`値に基づいてさらにカスタマイズすることもできます。
+[`className`][class-name-prop]/[`style`][style-prop] プロパティまたは [`children`][children-prop] に渡されるレンダープロパティを使用して、`isTransitioning` 値に基づいてさらにカスタマイズすることもできます。
 
 ```tsx
-<NavLink to={to} unstable_viewTransition>
+<NavLink to={to} viewTransition>
   {({ isTransitioning }) => (
     <>
       <p
@@ -170,7 +170,7 @@ a.transitioning img {
             : "",
         }}
       >
-        画像番号 {idx}
+        Image Number {idx}
       </p>
       <img
         src={src}
@@ -186,13 +186,9 @@ a.transitioning img {
 </NavLink>
 ```
 
-<docs-warning>
-このAPIは不安定としてマークされており、メジャーリリースなしで破壊的な変更が発生する可能性があります。
-</docs-warning>
+### `<Link>` プロパティ
 
-### `<Link>`プロパティ
-
-[`<Link>`][link-component]の他のすべてのプロパティがサポートされています。
+[`<Link>`][link-component] の他のすべてプロパティがサポートされています。
 
 [link-component]: ./link
 [aria-current]: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current
