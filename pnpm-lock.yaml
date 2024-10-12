@@ -14,22 +14,22 @@ importers:
   .:
     dependencies:
       '@radix-ui/react-accordion':
-        specifier: ^1.2.0
+        specifier: 1.2.0
         version: 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-avatar':
-        specifier: ^1.1.0
+        specifier: 1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dialog':
-        specifier: ^1.1.1
+        specifier: 1.1.1
         version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dropdown-menu':
-        specifier: ^2.1.1
+        specifier: 2.1.1
         version: 2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-label':
-        specifier: ^2.1.0
+        specifier: 2.1.0
         version: 2.1.0(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slot':
-        specifier: ^1.1.0
+        specifier: 1.1.0
         version: 1.1.0(@types/react@18.3.8)(react@18.3.1)
       '@react-router/fs-routes':
         specifier: 7.0.0-pre.1
@@ -41,176 +41,176 @@ importers:
         specifier: 7.0.0-pre.1
         version: 7.0.0-pre.1(react-router@7.0.0-pre.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.2)
       class-variance-authority:
-        specifier: ^0.7.0
+        specifier: 0.7.0
         version: 0.7.0
       clsx:
-        specifier: ^2.1.1
+        specifier: 2.1.1
         version: 2.1.1
       isbot:
-        specifier: ^5.1.17
+        specifier: 5.1.17
         version: 5.1.17
       lucide-react:
-        specifier: ^0.445.0
+        specifier: 0.445.0
         version: 0.445.0(react@18.3.1)
       next-themes:
-        specifier: ^0.3.0
+        specifier: 0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       nprogress:
-        specifier: ^0.2.0
+        specifier: 0.2.0
         version: 0.2.0
       react:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1
       react-dom:
-        specifier: ^18.3.1
+        specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
       react-markdown:
-        specifier: ^9.0.1
+        specifier: 9.0.1
         version: 9.0.1(@types/react@18.3.8)(react@18.3.1)
       react-router:
         specifier: 7.0.0-pre.1
         version: 7.0.0-pre.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-twc:
-        specifier: ^1.4.2
+        specifier: 1.4.2
         version: 1.4.2(@types/react@18.3.8)(react@18.3.1)
       tailwind-merge:
-        specifier: ^2.5.2
+        specifier: 2.5.2
         version: 2.5.2
       ts-pattern:
-        specifier: ^5.3.1
+        specifier: 5.3.1
         version: 5.3.1
     devDependencies:
       '@biomejs/biome':
-        specifier: ^1.9.2
+        specifier: 1.9.2
         version: 1.9.2
       '@flydotio/dockerfile':
-        specifier: ^0.5.8
+        specifier: 0.5.8
         version: 0.5.8
       '@mdx-js/rollup':
-        specifier: ^3.0.1
+        specifier: 3.0.1
         version: 3.0.1(rollup@4.22.4)
       '@react-router/dev':
         specifier: 7.0.0-pre.1
         version: 7.0.0-pre.1(@react-router/serve@7.0.0-pre.1(react-router@7.0.0-pre.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.2))(@types/node@22.5.5)(react-router@7.0.0-pre.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5))
       '@rehype-pretty/transformers':
-        specifier: ^0.13.2
+        specifier: 0.13.2
         version: 0.13.2
       '@shikijs/transformers':
-        specifier: ^1.18.0
+        specifier: 1.18.0
         version: 1.18.0
       '@tailwindcss/typography':
-        specifier: ^0.5.15
+        specifier: 0.5.15
         version: 0.5.15(tailwindcss@3.4.12)
       '@types/nprogress':
-        specifier: ^0.2.3
+        specifier: 0.2.3
         version: 0.2.3
       '@types/react':
-        specifier: ^18.3.8
+        specifier: 18.3.8
         version: 18.3.8
       '@types/react-dom':
-        specifier: ^18.3.0
+        specifier: 18.3.0
         version: 18.3.0
       '@types/unist':
-        specifier: ^3.0.3
+        specifier: 3.0.3
         version: 3.0.3
       '@vercel/og':
-        specifier: ^0.6.3
+        specifier: 0.6.3
         version: 0.6.3
       autoprefixer:
-        specifier: ^10.4.20
+        specifier: 10.4.20
         version: 10.4.20(postcss@8.4.47)
       cheerio:
         specifier: 1.0.0
         version: 1.0.0
       fast-glob:
-        specifier: ^3.3.2
+        specifier: 3.3.2
         version: 3.3.2
       front-matter:
-        specifier: ^4.0.2
+        specifier: 4.0.2
         version: 4.0.2
       gray-matter:
-        specifier: ^4.0.3
+        specifier: 4.0.3
         version: 4.0.3
       npm-run-all:
-        specifier: ^4.1.5
+        specifier: 4.1.5
         version: 4.1.5
       pagefind:
-        specifier: ^1.1.1
+        specifier: 1.1.1
         version: 1.1.1
       postcss:
-        specifier: ^8.4.47
+        specifier: 8.4.47
         version: 8.4.47
       prettier:
-        specifier: ^3.3.3
+        specifier: 3.3.3
         version: 3.3.3
       prettier-plugin-organize-imports:
-        specifier: ^4.1.0
+        specifier: 4.1.0
         version: 4.1.0(prettier@3.3.3)(typescript@5.6.2)
       prettier-plugin-tailwindcss:
-        specifier: ^0.6.6
+        specifier: 0.6.6
         version: 0.6.6(prettier-plugin-organize-imports@4.1.0(prettier@3.3.3)(typescript@5.6.2))(prettier@3.3.3)
       rehype:
-        specifier: ^13.0.1
+        specifier: 13.0.1
         version: 13.0.1
       rehype-autolink-headings:
-        specifier: ^7.1.0
+        specifier: 7.1.0
         version: 7.1.0
       rehype-pretty-code:
-        specifier: ^0.14.0
+        specifier: 0.14.0
         version: 0.14.0(patch_hash=mxgmv5fs75o2zpzq6vnwybdxye)(shiki@1.18.0)
       rehype-raw:
-        specifier: ^7.0.0
+        specifier: 7.0.0
         version: 7.0.0
       rehype-slug:
-        specifier: ^6.0.0
+        specifier: 6.0.0
         version: 6.0.0
       rehype-stringify:
-        specifier: ^10.0.0
+        specifier: 10.0.0
         version: 10.0.0
       remark-frontmatter:
-        specifier: ^5.0.0
+        specifier: 5.0.0
         version: 5.0.0
       remark-gfm:
-        specifier: ^4.0.0
+        specifier: 4.0.0
         version: 4.0.0
       remark-mdx-frontmatter:
-        specifier: ^5.0.0
+        specifier: 5.0.0
         version: 5.0.0
       remark-parse:
-        specifier: ^11.0.0
+        specifier: 11.0.0
         version: 11.0.0
       remark-rehype:
-        specifier: ^11.1.1
+        specifier: 11.1.1
         version: 11.1.1
       shiki:
-        specifier: ^1.18.0
+        specifier: 1.18.0
         version: 1.18.0
       tailwindcss:
-        specifier: ^3.4.12
+        specifier: 3.4.12
         version: 3.4.12
       tailwindcss-animate:
-        specifier: ^1.0.7
+        specifier: 1.0.7
         version: 1.0.7(tailwindcss@3.4.12)
       tsx:
-        specifier: ^4.19.1
+        specifier: 4.19.1
         version: 4.19.1
       typescript:
-        specifier: ^5.6.2
+        specifier: 5.6.2
         version: 5.6.2
       unified:
-        specifier: ^11.0.5
+        specifier: 11.0.5
         version: 11.0.5
       unist-util-visit:
-        specifier: ^5.0.0
+        specifier: 5.0.0
         version: 5.0.0
       vite:
-        specifier: ^5.4.7
+        specifier: 5.4.7
         version: 5.4.7(@types/node@22.5.5)
       vite-tsconfig-paths:
-        specifier: ^5.0.1
+        specifier: 5.0.1
         version: 5.0.1(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5))
       vitest:
-        specifier: ^2.1.1
+        specifier: 2.1.1
         version: 2.1.1(@types/node@22.5.5)
 
 packages:
