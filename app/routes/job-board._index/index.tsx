@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
-import { Link } from 'react-router'
+import { Link, type MetaFunction } from 'react-router'
 import jobs from '~/assets/jobs.json'
 import {
   Badge,
@@ -22,7 +22,7 @@ import {
 import type * as Route from './+types.index'
 import { shuffleArray } from './utils'
 
-export const meta = [
+export const meta: MetaFunction = () => [
   { title: 'Remix のお仕事あります - Remix ドキュメント日本語版' },
 ]
 
