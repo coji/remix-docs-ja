@@ -4,7 +4,7 @@ title: 事前レンダリング
 
 # 事前レンダリング
 
-事前レンダリングにより、ページをサーバーではなくビルド時にレンダリングして、静的コンテンツのページ読み込み速度を向上させることができます。
+事前レンダリングを使用すると、サーバーではなくビルド時にページをレンダリングできるため、静的コンテンツのページロード速度が向上します。
 
 ## 設定
 
@@ -18,19 +18,19 @@ export default defineConfig({
   plugins: [
     reactRouter({
       // すべての静的ルートパス
-      // ( "/post/:slug" などの動的セグメントはありません)
+      // （"/post/:slug" などの動的セグメントは含まれません）
       prerender: true,
 
       // 任意の URL
       prerender: ["/", "/blog", "/blog/popular-post"],
 
-      // CMS などの非同期 URL 依存関係を使用
+      // CMS などの非同期 URL 依存関係を含む場合
       async prerender() {
         let posts = await getPosts();
         return posts.map((post) => post.href);
       },
 
-      // 非同期パスと静的パスの両方を使用
+      // 非同期パスと静的パスを含む場合
       async prerender({ getStaticPaths }) {
         let posts = await getPosts();
         let static = getStaticPaths();
@@ -58,13 +58,13 @@ export function Post({ loaderData }) {
 }
 ```
 
-デプロイされたサーバーにリクエストが来る代わりに、ビルドは `new Request()` を作成し、サーバーと同じようにアプリケーションを実行します。
+サーバーにデプロイされたルートに要求が送信されるのではなく、ビルドによって `new Request()` が作成され、サーバーと同様にアプリケーションで実行されます。
 
 ## 静的結果
 
-レンダリングされた結果は `build/client` ディレクトリに出力されます。各パスに 2 つのファイルがあることに気付くでしょう。1 つはユーザーからの最初のドキュメントリクエスト用の HTML ファイル、もう 1 つは React Router がクライアント側のルーティングのためにフェッチするデータ用の `[name].data` ファイルです。
+レンダリングされた結果は `build/client` ディレクトリに出力されます。各パスに 2 つのファイルがあることに気付くでしょう。1 つはユーザーからの最初のドキュメント要求用の HTML ファイル、もう 1 つは React Router がクライアントサイドルーティングのために取得するデータ用の `[name].data` ファイルです。
 
-ビルドの出力は、事前レンダリングされたファイルを示します。
+ビルドの出力には、事前レンダリングされたファイルが表示されます。
 
 ```sh
 > react-router build
@@ -80,28 +80,28 @@ Prerender: Generated build/client/blog/my-first-post/index.html
 ...
 ```
 
-`react-router dev` を使用した開発中は、事前レンダリングはレンダリング結果をパブリックディレクトリに保存しません。これは、`react-router build` の場合にのみ発生します。
+`react-router dev` を使用して開発している間は、事前レンダリングの結果は公開ディレクトリに保存されません。これは、`react-router build` の場合にのみ発生します。
 
-## デプロイ/提供
+## デプロイ/配信
 
 事前レンダリングを有効にしたサイトをデプロイするには、複数のオプションがあります。
 
-### 静的デプロイ
+### 静的デプロイメント
 
-アプリケーションのすべてのパスを事前レンダリングする場合、`build/client/` ディレクトリを任意の CDN にデプロイすると、SPA にハイドレートされる完全に静的なサイトが得られます。SPA にハイドレートされ、ナビゲーション時に事前レンダリングされたサーバーデータが読み込まれ、`clientLoader` と `clientAction` を介して動的なデータの読み込みと変更を実行できます。
+アプリケーション内のすべてのパスを事前レンダリングする場合は、`build/client/` ディレクトリを任意の CDN にデプロイできます。これにより、完全に静的なサイトが作成され、SPA にハイドレートされ、ナビゲーション時に事前レンダリングされたサーバーデータが読み込まれ、`clientLoader` と `clientAction` を介して動的なデータの読み込みと変更を実行できます。
 
-### react-router-serve を介して提供
+### `react-router-serve` を介して配信
 
-デフォルトでは、`react-router-serve` は [`express.static`][express-static] を介してこれらのファイルを提供し、静的ファイルに一致しないパスは Remix ハンドラーにフォールバックします。
+デフォルトでは、`react-router-serve` はこれらのファイルを [`express.static`][express-static] を介して配信し、静的ファイルと一致しないパスは React Router ハンドラーにフォールバックします。
 
-これにより、一部のルートを事前レンダリングし、他のルートをランタイムに動的にレンダリングするハイブリッド設定を実行することもできます。たとえば、`/blog/*` 内のものを事前レンダリングし、`/auth/*` 内のものをサーバーレンダリングできます。
+これにより、一部のルートを事前レンダリングし、他のルートをランタイムで動的にレンダリングするハイブリッド設定を実行することもできます。たとえば、`/blog/*` 内のものは事前レンダリングし、`/auth/*` 内のものはサーバーレンダリングできます。
 
-### 手動サーバー設定
+### 手動サーバー構成
 
-サーバーをより細かく制御したい場合は、これらの静的ファイルを独自のサーバーの資産と同じように提供できます。ただし、ハッシュされた静的資産と静的な `.html`/`.data` ファイルのキャッシュヘッダーを区別したほうがよいでしょう。
+サーバーをさらに細かく制御する場合は、独自のサーバーで、アセットと同様にこれらの静的ファイルを配信できます。ただし、ハッシュ化された静的アセットと静的 `.html`/`.data` ファイルのキャッシュヘッダーを区別することをお勧めします。
 
 ```js
-// ハッシュされた静的資産（JS/CSS ファイルなど）を、長期間有効な Cache-Control ヘッダーで提供
+// 長寿命の Cache-Control ヘッダーを使用して、JS/CSS ファイルなどのハッシュ化された静的アセットを配信
 app.use(
   "/assets",
   express.static("build/client/assets", {
@@ -110,22 +110,10 @@ app.use(
   })
 );
 
-// 静的 HTML と .data リクエストを Cache-Control なしで提供
-app.use(
-  "/",
-  express.static("build/client", {
-    // ディレクトリインデックスの .html リクエストを、末尾にスラッシュを含むようにリダイレクトしない
-    redirect: false,
-    setHeaders: function (res, path) {
-      // ターボストリームデータレスポンスの適切な Content-Type を追加
-      if (path.endsWith(".data")) {
-        res.set("Content-Type", "text/x-turbo");
-      }
-    },
-  })
-);
+// Cache-Control なしで静的 HTML と .data 要求を配信
+app.use("/", express.static("build/client"));
 
-// 未処理のリクエストを React Router ハンドラーで提供
+// 残りの未処理の要求を React Router ハンドラーを介して配信
 app.all(
   "*",
   createRequestHandler({
