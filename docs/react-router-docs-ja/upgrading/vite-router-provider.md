@@ -5,24 +5,24 @@ hidden: true
 
 # Vite (RouterProvider) の採用
 
-`<RouterProvider>` を使用していない場合は、代わりに [コンポーネントルートからのルートモジュールの採用](./vite-component-routes) を参照してください。
+`<RouterProvider>` を使用していない場合は、代わりに[コンポーネントルートからのルートモジュール採用](./vite-component-routes)を参照してください。
 
-React Router vite プラグインは、React Router にフレームワーク機能を追加します。このドキュメントは、プラグインをアプリに採用する際に役立ちます。
+React Router vite プラグインは、React Router にフレームワーク機能を追加します。このドキュメントは、このプラグインをアプリに採用する場合に役立ちます。
 
 ## 機能
 
-Vite プラグインは以下を追加します。
+Vite プラグインは、以下を追加します。
 
 - ルートローダー、アクション、自動データ再検証
 - タイプセーフなルートモジュール
-- アプリ全体のタイプセーフなルートパス
+- アプリ全体でタイプセーフなルートパス
 - 自動ルートコード分割
-- ナビゲーション間の自動スクロール復元
-- オプションの静的プリレンダリング
+- ナビゲーション全体での自動スクロール復元
+- オプションの静的事前レンダリング
 - オプションのサーバーレンダリング
-- オプションの React Server Components
+- オプションの React サーバーコンポーネント
 
-初期設定は少し面倒かもしれませんが、完了すれば、新しい機能の採用は段階的に行うことができ、一度に 1 つのルートずつ行うことができます。
+最初のセットアップは少し面倒ですが、完了すれば、新しい機能の採用は段階的になり、一度に 1 つのルートずつ実行できます。
 
 ## 1. Vite のインストール
 
@@ -32,7 +32,7 @@ Vite プラグインは以下を追加します。
 npm install -D @react-router/dev
 ```
 
-次に、React プラグインを React Router に置き換えます。
+次に、React プラグインを React Router に交換します。
 
 ```diff filename=vite.config.ts
 -import react from '@vitejs/plugin-react'
@@ -48,11 +48,11 @@ export default defineConfig({
 });
 ```
 
-## 2. ルートエントリーポイントの追加
+## 2. ルートエントリポイントの追加
 
-一般的な Vite アプリでは、`index.html` ファイルはバンドルのためのエントリーポイントです。React Router Vite プラグインは `root.tsx` を使用します。これにより、静的な HTML ではなく React を使用してシェルをレンダリングすることができます。
+典型的な Vite アプリでは、`index.html` ファイルはバンドルのエントリポイントです。React Router Vite プラグインは `root.tsx` を使用します。これにより、静的な HTML の代わりに React を使用してシェルをレンダリングできます。
 
-現在の `index.html` が以下のようになっている場合:
+現在の `index.html` が以下のようになっている場合。
 
 ```html filename=index.html
 <!DOCTYPE html>
@@ -102,11 +102,11 @@ export default function Root() {
 }
 ```
 
-## 3. クライアントエントリーモジュールの追加
+## 3. クライアントエントリモジュールの追加
 
-一般的な Vite アプリのセットアップでは、`index.html` ファイルは `src/main.tsx` をクライアントエントリーポイントとして指し示します。React Router は `src/entry.client.tsx` という名前のファイルを使用します。
+典型的な Vite アプリのセットアップでは、`index.html` ファイルは `src/main.tsx` をクライアントエントリポイントとして指定します。React Router は `src/entry.client.tsx` という名前のファイルを使用します。
 
-現在の `src/main.tsx` が以下のようになっている場合:
+現在の `src/main.tsx` が以下のようになっている場合。
 
 ```tsx filename=src/main.tsx
 import * as React from "react";
@@ -123,7 +123,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 );
 ```
 
-`entry.client.tsx` に名前を変更し、以下のように変更します。
+これを `entry.client.tsx` に名前を変更し、以下のように変更します。
 
 ```tsx filename=src/entry.client.tsx
 import * as React from "react";
@@ -138,20 +138,20 @@ ReactDOM.hydrateRoot(
 );
 ```
 
-- `createRoot` の代わりに `hydrateRoot` を使用します。
-- `<RouterProvider>` の代わりに `<HydratedRouter>` を使用します。
-- ルートを `<HydratedRouter>` に渡します。
+- `createRoot` の代わりに `hydrateRoot` を使用する
+- `<RouterProvider>` の代わりに `<HydratedRouter>` を使用する
+- `<HydratedRouter>` にルートを渡す
 
-## 4. ファイルの整理
+## 4. シャッフル
 
-`root.tsx` と `entry.client.tsx` の間では、いくつかのファイルを整理する必要があるかもしれません。
+`root.tsx` と `entry.client.tsx` の間で、いくつかのものをシャッフルする必要があるかもしれません。
 
-一般的には:
+一般的に、
 
-- `root.tsx` には、コンテキストプロバイダー、レイアウト、スタイルなど、レンダリングに関するものが含まれています。
-- `entry.client.tsx` はできるだけシンプルにする必要があります。
+- `root.tsx` には、コンテキストプロバイダー、レイアウト、スタイルなどのレンダリング関連のものが含まれます。
+- `entry.client.tsx` は、可能な限り最小限にする必要があります。
 
-`root.tsx` ファイルは静的に生成され、アプリのエントリーポイントとして配信されるため、そのモジュールだけがサーバーレンダリングと互換性がある必要があります。これが、ほとんどの問題が発生する場所です。
+`root.tsx` ファイルは静的に生成され、アプリのエントリポイントとして配信されるため、そのモジュールだけがサーバーレンダリングと互換性がある必要があります。これが、ほとんどのトラブルが発生する場所です。
 
 ## 5. アプリの起動
 
@@ -161,19 +161,19 @@ ReactDOM.hydrateRoot(
 npm react-router vite:dev
 ```
 
-問題が発生した場合:
+問題が発生した場合
 
-- `<HydratedRouter>` の `routes` プロパティをコメントアウトして、新しいエントリーポイントを分離します。
-- [アップグレードに関するディスカッション](#TODO) カテゴリを検索します。
-- [Twitter](https://x.com/remix_run) または [Discord](https://rmx.as/discord) で助けを求めてください。
+- `<HydratedRouter>` への `routes` プロパティをコメントアウトして、新しいエントリポイントに問題を限定する
+- [アップグレードに関する議論](#TODO) カテゴリを検索する
+- [Twitter](https://x.com/remix_run) または [Discord](https://rmx.as/discord) で助けを求める
 
-先に進む前に、アプリが起動することを確認してください。
+この時点でアプリを起動できることを確認してから、先に進みます。
 
 ## 6. ルートをルートモジュールに移行する
 
-これで、ルートをルートモジュールに段階的に移行することができます。最初に、ルートをエクスポートする `routes.ts` ファイルを作成します。
+これで、ルートをルートモジュールに段階的に移行できます。最初に、ルートをエクスポートする `routes.ts` ファイルを作成します。
 
-既存のルートが以下のようになっているとします。
+以下のような既存のルートがあるとします。
 
 ```tsx filename=src/entry.client.tsx
 // ...
@@ -195,7 +195,7 @@ ReactDOM.hydrateRoot(
 );
 ```
 
-`routes.ts` ファイルに定義を移動することができます。
+この定義を `routes.ts` ファイルに移動できます。
 
 ```tsx filename=src/routes.ts
 import { type RouteConfig } from "@react-router/dev/routes";
@@ -208,7 +208,7 @@ export const routes: RouteConfig = [
 ];
 ```
 
-次に、ルートモジュールを編集してルートモジュールAPIを使用します。
+そして、ルートモジュールを編集して、ルートモジュールAPIを使用します。
 
 ```tsx filename=src/pages/about.tsx
 import { useLoaderData } from "react-router";
@@ -224,13 +224,13 @@ export default function Component() {
 }
 ```
 
-これで、パラメータ、ローダーデータなどを含む型推論による型安全性を実現できます。
+これで、パラメータ、ローダーデータなどについて、型推論による型安全性を得られます。
 
-最初に移行するルートは、多くの場合、以前とは少し異なる方法で同じ抽象化にアクセスする必要があるため、最も困難です（フックやコンテキストからではなく、ローダー内のように）。しかし、最も難しい部分を乗り越えれば、段階的に進むことができます。
+最初に移行するルートは、フックやコンテキストとは少し異なる方法で同じ抽象化にアクセスする必要があるため、最も難しい部分になります。しかし、最も厄介な部分が処理されれば、段階的に進めることができます。
 
-## SSR やプリレンダリングを有効にする
+## SSR または事前レンダリングを有効にする
 
-サーバーレンダリングと静的プリレンダリングを有効にするには、バンドラープラグインの `ssr` オプションと `prerender` オプションを使用できます。SSR を使用するには、サーバービルドもサーバーにデプロイする必要があります。詳細については、[デプロイ](./deploying) を参照してください。
+サーバーレンダリングと静的事前レンダリングを有効にするには、バンドラープラグインの `ssr` オプションと `prerender` オプションを使用します。SSR を使用するには、サーバービルドもサーバーにデプロイする必要があります。詳細については、[デプロイ](../start/deploying)を参照してください。
 
 ```ts filename=vite.config.ts
 import { reactRouter } from "@react-router/dev/vite";
@@ -247,3 +247,6 @@ export default defineConfig({
   ],
 });
 ```
+
+
+

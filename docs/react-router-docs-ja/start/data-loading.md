@@ -5,11 +5,11 @@ order: 5
 
 # データの読み込み
 
-データは`loader`と`clientLoader`からルートコンポーネントに提供されます。
+データは、`loader` と `clientLoader` からルートコンポーネントに提供されます。
 
 ## クライアントデータの読み込み
 
-`clientLoader`は、クライアント上でデータを取得するために使用されます。これは、ブラウザからのみデータを取得することを好むページやプロジェクト全体に役立ちます。
+`clientLoader` は、クライアント上でデータをフェッチするために使用されます。これは、ブラウザからのみデータをフェッチすることを好むページまたはフルプロジェクトに役立ちます。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
@@ -24,9 +24,9 @@ export async function clientLoader({
 }
 
 export default function Product({
-  clientLoaderData,
+  loaderData,
 }: Route.ComponentProps) {
-  const { name, description } = clientLoaderData;
+  const { name, description } = loaderData;
   return (
     <div>
       <h1>{name}</h1>
@@ -38,7 +38,7 @@ export default function Product({
 
 ## サーバーデータの読み込み
 
-サーバーレンダリング時、`loader`は最初のページ読み込みとクライアントナビゲーションの両方で使用されます。クライアントナビゲーションは、ブラウザからサーバーへの自動`fetch`を介してReact Routerによってローダーを呼び出します。
+サーバーレンダリングの場合、`loader` は初期ページロードとクライアントナビゲーションの両方で使用されます。クライアントナビゲーションは、ブラウザからサーバーへのReact Routerによる自動的な`fetch`を通じて、`loader`を呼び出します。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
@@ -63,11 +63,40 @@ export default function Product({
 }
 ```
 
-`loader`関数はクライアントバンドルから削除されるため、サーバーのみのAPIを使用しても、ブラウザに含まれていることを心配する必要はありません。
+`loader`関数はクライアントバンドルから削除されるため、ブラウザに含まれることを心配せずにサーバー専用のAPIを使用できます。
+
+### カスタムステータスコードとヘッダー
+
+`loader`からカスタムHTTPステータスコードまたはカスタムヘッダーを返す必要がある場合は、[`data`][data]ユーティリティを使用してこれを行うことができます。
+
+```tsx filename=app/product.tsx lines=[3,6-8,14,17-21]
+// route("products/:pid", "./product.tsx");
+import type * as Route from "./+types.product";
+import { data } from "react-router";
+import { fakeDb } from "../db";
+
+export function headers({ loaderHeaders }: HeadersArgs) {
+  return loaderHeaders;
+}
+
+export async function loader({ params }: Route.LoaderArgs) {
+  const product = await fakeDb.getProduct(params.pid);
+
+  if (!product) {
+    throw data(null, { status: 404 });
+  }
+
+  return data(product, {
+    headers: {
+      "Cache-Control": "public; max-age=300",
+    },
+  });
+}
+```
 
 ## 静的データの読み込み
 
-事前レンダリング時、ローダーは本番ビルド中にデータを取得するために使用されます。
+事前レンダリングの場合、ローダーは本番ビルド中にデータをフェッチするために使用されます。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
@@ -111,11 +140,11 @@ export default defineConfig({
 });
 ```
 
-サーバーレンダリング時、事前レンダリングされていないURLは、通常どおりサーバーレンダリングされます。
+サーバーレンダリングの場合、事前レンダリングされていないURLは通常どおりサーバーレンダリングされます。
 
 ## 両方のローダーを使用する
 
-`loader`と`clientLoader`は一緒に使用できます。`loader`は、最初のSSR（または事前レンダリング）でサーバーで使用され、`clientLoader`は後続のクライアントサイドナビゲーションで使用されます。
+`loader` と `clientLoader` は一緒に使用できます。`loader` は、サーバーでの初期SSR（または事前レンダリング）に使用され、`clientLoader` は後続のクライアント側ナビゲーションに使用されます。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
@@ -135,10 +164,8 @@ export async function clientLoader({
 
 export default function Product({
   loaderData,
-  clientLoaderData,
 }: Route.ComponentProps) {
-  const { name, description } =
-    clientLoaderData || loaderData;
+  const { name, description } = loaderData;
 
   return (
     <div>
@@ -149,13 +176,13 @@ export default function Product({
 }
 ```
 
-`clientLoader`を使用したキャッシュなどのより高度なユースケースについては、[高度なデータ取得][advanced_data_fetching]を参照してください。
+キャッシュなどの`clientLoader`のより高度なユースケースについては、[高度なデータフェッチ][advanced_data_fetching]を参照してください。
 
-## React Server Componentsを使用した非同期コンポーネント
+## Reactサーバーコンポーネントを使用した非同期コンポーネント
 
-<docs-warning>RSCはまだサポートされていません</docs-warning>
+<docs-warning>RSCは現時点ではサポートされていません</docs-warning>
 
-将来的には、ローダーでレンダリングされた非同期コンポーネントは、他の値と同じように`loaderData`で利用できます。
+将来、ローダーでレンダリングされた非同期コンポーネントは、他の値と同様に`loaderData`で利用できます。
 
 ```tsx filename=app/product-page.tsx
 // route("products/:pid", "./product-page.tsx");
@@ -197,5 +224,7 @@ export async function Product({ id }: { id: string }) {
 ```
 
 [advanced_data_fetching]: ../tutorials/advanced-data-fetching
+[data]: ../../api/react-router/data
+
 
 

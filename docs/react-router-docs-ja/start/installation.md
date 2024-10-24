@@ -5,21 +5,21 @@ order: 1
 
 # インストール
 
-React Router は、独自のバンドルとデータ読み込み（以前のバージョンと同じ）を使用して最小限に、または組み込みの Vite プラグイン（Remix から来たフレームワーク機能を追加する）を使用して最大限に使用できます。
+React Routerは、以前のバージョンと同様に独自のバンドルとデータローディングで最小限に使用する、または組み込みのViteプラグイン（Remixから来たフレームワーク機能を追加する）で最大限に使用する事ができます。
 
-すべての機能セットは Vite プラグインで最も簡単に使用できるため、入門ガイドではそこに焦点を当てます。
+Viteプラグインを使用すると、すべての機能を最も簡単に使用できるため、スタートアップガイドではそちらに焦点を当てます。
 
-独自のバンドル、サーバーサイドレンダリングなどで React Router を最小限に使用する場合は、[マニュアル使用][manual_usage] ガイドを参照してください。
+React Routerを独自のバンドル、サーバーレンダリングなどで最小限に使用する場合は、[手動での使用方法][manual_usage]ガイドを参照してください。
 
 ## スターターテンプレート
 
-ほとんどのプロジェクトはテンプレートから始まります。 `degit` を使用して React Router によって維持されている基本テンプレートを使用してみましょう。
+ほとんどのプロジェクトはテンプレートから始まります。 `degit` を使用して、React Routerによって保守されている基本的なテンプレートを使用してみましょう。
 
 ```shellscript nonumber
 npx degit remix-run/react-router/templates/basic#dev my-app
 ```
 
-次に、新しいディレクトリに移動してアプリを起動します。
+次に、新しいディレクトリに移動してアプリを起動します
 
 ```shellscript nonumber
 cd my-app
@@ -27,17 +27,17 @@ npm i
 npm run dev
 ```
 
-これで、ブラウザで `http://localhost:5173` を開くことができます。
+これで、ブラウザで `http://localhost:5173` にアクセスできるようになりました。
 
-TODO: コミュニティテンプレートの検索と使用方法を示す
+TODO: コミュニティテンプレートの探し方と使い方を示す
 
-## Vite プラグインなし
+## Viteプラグインなし
 
-## Vite による手動インストール
+## Viteによる手動インストール
 
-スターターテンプレートの代わりに、最初からプロジェクトをセットアップできます。
+スターターテンプレートの代わりに、プロジェクトを最初から設定できます。
 
-最初に、新しいディレクトリを作成して依存関係をインストールします。
+まず、新しいディレクトリを作成して依存関係をインストールします。
 
 ```shellscript nonumber
 mkdir my-new-app
@@ -100,7 +100,7 @@ export default function Home() {
 ```ts filename=app/routes.js
 import { index } from "@react-router/dev/routes";
 
-export const routes = [index("./home.tsx")];
+export const routes = [index("./home.jsx")];
 ```
 
 ```tsx filename=vite.config.js
@@ -114,7 +114,7 @@ export default defineConfig({
 
 ```json filename=package.json
 {
-  // package.json にこれらの 2 つのキーを追加します。
+  // add these two keys to your package.json
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
