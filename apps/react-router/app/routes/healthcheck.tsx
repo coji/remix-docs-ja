@@ -1,2 +1,1 @@
-import { loader } from '@remix-docs-ja/base/routes/healthcheck'
-export { loader }
+export { loader } from '@remix-docs-ja/base/routes/healthcheck'

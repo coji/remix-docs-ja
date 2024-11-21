@@ -1,7 +1,10 @@
 import { useEffect, useRef } from 'react'
+import type { LinksFunction } from 'react-router'
 import { useLocation } from 'react-router'
 import { Stack } from '~/components/ui'
+import { buildPageMeta } from '~/libs/seo'
 import { cn } from '~/libs/utils'
+import markdownStyles from '~/styles/md.css?url'
 import { JobBoard } from '../resources.job-board'
 import type { Route } from './+types'
 import { MobileToc } from './components/mobile-toc'
@@ -10,6 +13,22 @@ import {
   TableOfContentsItem,
   TableOfContentsTitle,
 } from './components/toc'
+
+export const meta = ({ location, data }: Route.MetaArgs) => {
+  if (!data) {
+    return []
+  }
+  const { doc } = data
+  return buildPageMeta({
+    title: String(doc.attributes.title),
+    pathname: location.pathname,
+    productId: data.product.id,
+  })
+}
+
+export const links: LinksFunction = () => [
+  { rel: 'stylesheet', href: markdownStyles },
+]
 
 export default function Docs({ loaderData: { doc } }: Route.ComponentProps) {
   const { hash, pathname } = useLocation()

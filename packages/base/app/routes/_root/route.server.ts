@@ -2,8 +2,6 @@ import { getProduct } from '~/features/product'
 import { getCurrentMenuItem, getMenu } from '~/services/menu.server'
 import type { Route } from './+types'
 
-export const shouldRevalidate = () => true
-
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { product } = getProduct(request)
   const url = new URL(request.url)
