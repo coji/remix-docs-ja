@@ -1,1 +1,1 @@
-export * from '../_root/route.server'
+export * from '../_root.$/route.server'

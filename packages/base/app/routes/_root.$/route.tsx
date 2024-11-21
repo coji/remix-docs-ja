@@ -5,7 +5,6 @@ import { Stack } from '~/components/ui'
 import { buildPageMeta } from '~/libs/seo'
 import { cn } from '~/libs/utils'
 import markdownStyles from '~/styles/md.css?url'
-import { JobBoard } from '../resources.job-board'
 import type { Route } from './+types'
 import { MobileToc } from './components/mobile-toc'
 import {
@@ -63,7 +62,7 @@ export default function Docs({ loaderData: { doc } }: Route.ComponentProps) {
       />
 
       <Stack className="order-1 gap-0 overflow-auto md:order-2 md:mr-2 md:gap-4">
-        <JobBoard className="hidden md:block" />
+        {/* <JobBoard className="hidden md:block" /> */}
 
         {doc.headings.length > 0 && (
           <>
