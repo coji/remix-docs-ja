@@ -1,9 +1,5 @@
 import { Link, Outlet } from 'react-router'
 
-export const loader = () => {
-  return {}
-}
-
 export default function JobBoardLayout() {
   return (
     <div className="grid min-h-dvh grid-cols-1 grid-rows-[auto_1fr_auto] gap-2 bg-slate-100 dark:bg-slate-900">

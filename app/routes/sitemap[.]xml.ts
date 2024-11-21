@@ -1,6 +1,6 @@
 import { getProduct } from '~/features/product'
 import { getMenu } from '~/services/menu.server'
-import type * as Route from './+types.sitemap[.]xml'
+import type { Route } from './+types/sitemap[.]xml'
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { product } = getProduct(request)

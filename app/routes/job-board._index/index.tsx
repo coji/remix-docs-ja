@@ -19,7 +19,7 @@ import {
   HStack,
   Stack,
 } from '~/components/ui'
-import type * as Route from './+types.index'
+import type { Route } from './+types'
 import { shuffleArray } from './utils'
 
 export const meta: MetaFunction = () => [

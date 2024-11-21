@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import type { LinksFunction, LoaderFunctionArgs } from 'react-router'
+import type { LinksFunction } from 'react-router'
 import { useLocation } from 'react-router'
 import { Stack } from '~/components/ui'
 import { getProduct } from '~/features/product'
@@ -8,7 +8,7 @@ import { cn } from '~/libs/utils'
 import { JobBoard } from '~/routes/resources.job-board'
 import { getDocJson } from '~/services/document.server'
 import markdownStyles from '~/styles/md.css?url'
-import type * as Route from './+types.index'
+import type { Route } from './+types'
 import { MobileToc } from './components/mobile-toc'
 import {
   TableOfContents,
@@ -16,13 +16,7 @@ import {
   TableOfContentsTitle,
 } from './components/toc'
 
-export const meta = ({
-  location,
-  data,
-}: {
-  location: Location
-  data: Route.LoaderData
-}) => {
+export const meta = ({ location, data }: Route.MetaArgs) => {
   if (!data) {
     return []
   }
@@ -38,7 +32,7 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: markdownStyles },
 ]
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
   const filename = params['*'] ?? 'index'
   const { product } = getProduct(request)
   const doc = await getDocJson(product.id, filename)

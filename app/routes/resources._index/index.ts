@@ -1,5 +1,5 @@
 import { redirect } from 'react-router'
-import type * as Route from './+types.index'
+import type { Route } from './+types'
 
 export const loader = ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url)

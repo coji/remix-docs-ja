@@ -5,7 +5,7 @@ import { Link, useFetcher, useLocation } from 'react-router'
 import jobs from '~/assets/jobs.json'
 import { Badge, HStack, Stack } from '~/components/ui'
 import { cn } from '~/libs/utils'
-import type * as Route from './+types.index'
+import type { Route } from './+types'
 
 // キャッシュ完全無効
 export const headers: HeadersFunction = () => {
@@ -34,7 +34,7 @@ export const loader = ({ request }: Route.LoaderArgs) => {
 
 interface JobBoardProps extends React.HTMLAttributes<HTMLDivElement> {}
 export const JobBoard = ({ className }: JobBoardProps) => {
-  const fetcher = useFetcher<Route.LoaderData>()
+  const fetcher = useFetcher<typeof loader>()
   const { pathname } = useLocation()
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>

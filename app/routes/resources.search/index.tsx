@@ -12,7 +12,7 @@ import {
 } from '~/components/ui'
 import { getProduct } from '~/features/product'
 import type { Pagefind } from '~/services/pagefind.types'
-import type * as Route from './+types.index'
+import type { Route } from './+types'
 import {
   SearchLoading,
   SearchResult,
@@ -40,7 +40,7 @@ export const clientLoader = async ({ request }: Route.ClientLoaderArgs) => {
 }
 
 export const SearchPanel = () => {
-  const fetcher = useFetcher<Route.LoaderData>()
+  const fetcher = useFetcher<typeof clientLoader>()
   const [isOpen, setIsOpen] = React.useState(false)
   const query = String(fetcher.formData?.get('q'))
 

@@ -5,7 +5,7 @@ import { getProduct } from '~/features/product'
 import type { loader as rootLoader } from '~/root'
 import { SearchPanel } from '~/routes/resources.search'
 import { getCurrentMenuItem, getMenu } from '~/services/menu.server'
-import type * as Route from './+types.index'
+import type { Route } from './+types'
 import { MobileMenu, SideMenu } from './components'
 
 export const shouldRevalidate = () => true
