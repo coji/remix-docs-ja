@@ -12,6 +12,112 @@ patchedDependencies:
 importers:
 
   .:
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.9.4
+        version: 1.9.4
+      npm-run-all:
+        specifier: 4.1.5
+        version: 4.1.5
+      tsx:
+        specifier: 4.19.2
+        version: 4.19.2
+      turbo:
+        specifier: 2.3.0
+        version: 2.3.0
+
+  apps/react-router:
+    dependencies:
+      '@react-router/fs-routes':
+        specifier: 7.0.0-pre.6
+        version: 7.0.0-pre.6(@react-router/dev@7.0.0-pre.6(@react-router/serve@7.0.0-pre.6(react-router@7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.3))(@types/node@22.8.1)(react-router@7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.3)(vite@5.4.11(@types/node@22.8.1)))(typescript@5.6.3)
+      '@react-router/node':
+        specifier: 7.0.0-pre.6
+        version: 7.0.0-pre.6(react-router@7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.3)
+      '@react-router/serve':
+        specifier: 7.0.0-pre.6
+        version: 7.0.0-pre.6(react-router@7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.3)
+      '@remix-docs-ja/base':
+        specifier: workspace:*
+        version: link:../../packages/base
+      '@remix-docs-ja/scripts':
+        specifier: workspace:*
+        version: link:../../packages/scripts
+      isbot:
+        specifier: 5.1.17
+        version: 5.1.17
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router:
+        specifier: 7.0.0-pre.6
+        version: 7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.9.4
+        version: 1.9.4
+      '@mdx-js/rollup':
+        specifier: 3.1.0
+        version: 3.1.0(acorn@8.13.0)(rollup@4.27.3)
+      '@react-router/dev':
+        specifier: 7.0.0-pre.6
+        version: 7.0.0-pre.6(@react-router/serve@7.0.0-pre.6(react-router@7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.3))(@types/node@22.8.1)(react-router@7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.3)(vite@5.4.11(@types/node@22.8.1))
+      '@tailwindcss/typography':
+        specifier: 0.5.15
+        version: 0.5.15(tailwindcss@3.4.15)
+      '@types/react':
+        specifier: 18.3.12
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: 18.3.1
+        version: 18.3.1
+      autoprefixer:
+        specifier: 10.4.20
+        version: 10.4.20(postcss@8.4.49)
+      npm-run-all:
+        specifier: 4.1.5
+        version: 4.1.5
+      postcss:
+        specifier: 8.4.49
+        version: 8.4.49
+      prettier:
+        specifier: 3.3.3
+        version: 3.3.3
+      prettier-plugin-organize-imports:
+        specifier: 4.1.0
+        version: 4.1.0(prettier@3.3.3)(typescript@5.6.3)
+      prettier-plugin-tailwindcss:
+        specifier: 0.6.9
+        version: 0.6.9(prettier-plugin-organize-imports@4.1.0(prettier@3.3.3)(typescript@5.6.3))(prettier@3.3.3)
+      remark-frontmatter:
+        specifier: 5.0.0
+        version: 5.0.0
+      remark-mdx-frontmatter:
+        specifier: 5.0.0
+        version: 5.0.0
+      tailwindcss:
+        specifier: 3.4.15
+        version: 3.4.15
+      tailwindcss-animate:
+        specifier: 1.0.7
+        version: 1.0.7(tailwindcss@3.4.15)
+      typescript:
+        specifier: 5.6.3
+        version: 5.6.3
+      vite:
+        specifier: 5.4.11
+        version: 5.4.11(@types/node@22.8.1)
+      vite-tsconfig-paths:
+        specifier: 5.1.3
+        version: 5.1.3(typescript@5.6.3)(vite@5.4.11(@types/node@22.8.1))
+      vitest:
+        specifier: 2.1.5
+        version: 2.1.5(@types/node@22.8.1)
+
+  packages/base:
     dependencies:
       '@radix-ui/react-accordion':
         specifier: 1.2.1
@@ -40,6 +146,9 @@ importers:
       '@react-router/serve':
         specifier: 7.0.0-pre.6
         version: 7.0.0-pre.6(react-router@7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.6.3)
+      '@remix-docs-ja/base':
+        specifier: workspace:*
+        version: 'link:'
       class-variance-authority:
         specifier: 0.7.0
         version: 0.7.0
@@ -209,6 +318,82 @@ importers:
       vitest:
         specifier: 2.1.5
         version: 2.1.5(@types/node@22.8.1)
+
+  packages/scripts:
+    dependencies:
+      '@rehype-pretty/transformers':
+        specifier: 0.13.2
+        version: 0.13.2
+      '@shikijs/transformers':
+        specifier: 1.22.1
+        version: 1.22.1
+      cheerio:
+        specifier: 1.0.0
+        version: 1.0.0
+      front-matter:
+        specifier: 4.0.2
+        version: 4.0.2
+      gray-matter:
+        specifier: 4.0.3
+        version: 4.0.3
+      rehype-autolink-headings:
+        specifier: 7.1.0
+        version: 7.1.0
+      rehype-pretty-code:
+        specifier: 0.14.0
+        version: 0.14.0(patch_hash=mxgmv5fs75o2zpzq6vnwybdxye)(shiki@1.23.1)
+      rehype-raw:
+        specifier: 7.0.0
+        version: 7.0.0
+      rehype-slug:
+        specifier: 6.0.0
+        version: 6.0.0
+      rehype-stringify:
+        specifier: 10.0.1
+        version: 10.0.1
+      remark-gfm:
+        specifier: 4.0.0
+        version: 4.0.0
+      remark-parse:
+        specifier: 11.0.0
+        version: 11.0.0
+      remark-rehype:
+        specifier: 11.1.1
+        version: 11.1.1
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.9.4
+        version: 1.9.4
+      '@types/unist':
+        specifier: 3.0.3
+        version: 3.0.3
+      fast-glob:
+        specifier: 3.3.2
+        version: 3.3.2
+      pagefind:
+        specifier: 1.2.0
+        version: 1.2.0
+      prettier:
+        specifier: 3.3.3
+        version: 3.3.3
+      prettier-plugin-organize-imports:
+        specifier: 4.1.0
+        version: 4.1.0(prettier@3.3.3)(typescript@5.6.3)
+      tsx:
+        specifier: 4.19.2
+        version: 4.19.2
+      typescript:
+        specifier: 5.6.3
+        version: 5.6.3
+      unified:
+        specifier: 11.0.5
+        version: 11.0.5
+      unist:
+        specifier: 0.0.1
+        version: 0.0.1
+      unist-util-visit:
+        specifier: 5.0.0
+        version: 5.0.0
 
 packages:
 
@@ -3505,8 +3690,42 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  turbo-darwin-64@2.3.0:
+    resolution: {integrity: sha512-pji+D49PhFItyQjf2QVoLZw2d3oRGo8gJgKyOiRzvip78Rzie74quA8XNwSg/DuzM7xx6gJ3p2/LylTTlgZXxQ==}
+    cpu: [x64]
+    os: [darwin]
+
+  turbo-darwin-arm64@2.3.0:
+    resolution: {integrity: sha512-AJrGIL9BO41mwDF/IBHsNGwvtdyB911vp8f5mbNo1wG66gWTvOBg7WCtYQBvCo11XTenTfXPRSsAb7w3WAZb6w==}
+    cpu: [arm64]
+    os: [darwin]
+
+  turbo-linux-64@2.3.0:
+    resolution: {integrity: sha512-jZqW6vc2sPJT3M/3ZmV1Cg4ecQVPqsbHncG/RnogHpBu783KCSXIndgxvUQNm9qfgBYbZDBnP1md63O4UTElhw==}
+    cpu: [x64]
+    os: [linux]
+
+  turbo-linux-arm64@2.3.0:
+    resolution: {integrity: sha512-HUbDLJlvd/hxuyCNO0BmEWYQj0TugRMvSQeG8vHJH+Lq8qOgDAe7J0K73bFNbZejZQxW3C3XEiZFB3pnpO78+A==}
+    cpu: [arm64]
+    os: [linux]
+
   turbo-stream@2.4.0:
     resolution: {integrity: sha512-FHncC10WpBd2eOmGwpmQsWLDoK4cqsA/UT/GqNoaKOQnT8uzhtCbg3EoUDMvqpOSAI0S26mr0rkjzbOO6S3v1g==}
+
+  turbo-windows-64@2.3.0:
+    resolution: {integrity: sha512-c5rxrGNTYDWX9QeMzWLFE9frOXnKjHGEvQMp1SfldDlbZYsloX9UKs31TzUThzfTgTiz8NYuShaXJ2UvTMnV/g==}
+    cpu: [x64]
+    os: [win32]
+
+  turbo-windows-arm64@2.3.0:
+    resolution: {integrity: sha512-7qfUuYhfIVb1AZgs89DxhXK+zZez6O2ocmixEQ4hXZK7ytnBt5vaz2zGNJJKFNYIL5HX1C3tuHolnpNgDNCUIg==}
+    cpu: [arm64]
+    os: [win32]
+
+  turbo@2.3.0:
+    resolution: {integrity: sha512-/uOq5o2jwRPyaUDnwBpOR5k9mQq4c3wziBgWNWttiYQPmbhDtrKYPRBxTvA2WpgQwRIbt8UM612RMN8n/TvmHA==}
+    hasBin: true
 
   type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
@@ -3566,6 +3785,10 @@ packages:
 
   unist-util-visit@5.0.0:
     resolution: {integrity: sha512-MR04uvD+07cwl/yhVuVWAtw+3GOR/knlL55Nd/wAdblk27GCVt3lqpTivy/tkJcZoNPzTwS1Y+KMojlLDhoTzg==}
+
+  unist@0.0.1:
+    resolution: {integrity: sha512-bnzuF8b6d47WubA4a5yLqFbuZz/v/NS6eRwUIdOaDmsqzwTlyv8yS1g3M7ISdtBQrigPD3qKK87Cu7zhEfCF3A==}
+    deprecated: Use @types/unist instead
 
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
@@ -3764,11 +3987,6 @@ packages:
 
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
-
-  yaml@2.6.0:
-    resolution: {integrity: sha512-a6ae//JvKDEra2kdi1qzCyrJW/WZCgFi8ydDV+eXExl95t+5R+ijnqHJbz9tmMh8FUjx3iv2fCQ4dclAQlO2UQ==}
-    engines: {node: '>= 14'}
-    hasBin: true
 
   yaml@2.6.1:
     resolution: {integrity: sha512-7r0XPzioN/Q9kXBro/XPnA6kznR73DHq+GXh5ON7ZozRO6aMjbmiBuKste2wslTFkC5d1dw0GooOCepZXJ2SAg==}
@@ -7209,7 +7427,7 @@ snapshots:
       estree-util-value-to-estree: 3.1.2
       toml: 3.0.0
       unified: 11.0.5
-      yaml: 2.6.0
+      yaml: 2.6.1
 
   remark-mdx@3.1.0:
     dependencies:
@@ -7629,7 +7847,34 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
+  turbo-darwin-64@2.3.0:
+    optional: true
+
+  turbo-darwin-arm64@2.3.0:
+    optional: true
+
+  turbo-linux-64@2.3.0:
+    optional: true
+
+  turbo-linux-arm64@2.3.0:
+    optional: true
+
   turbo-stream@2.4.0: {}
+
+  turbo-windows-64@2.3.0:
+    optional: true
+
+  turbo-windows-arm64@2.3.0:
+    optional: true
+
+  turbo@2.3.0:
+    optionalDependencies:
+      turbo-darwin-64: 2.3.0
+      turbo-darwin-arm64: 2.3.0
+      turbo-linux-64: 2.3.0
+      turbo-linux-arm64: 2.3.0
+      turbo-windows-64: 2.3.0
+      turbo-windows-arm64: 2.3.0
 
   type-is@1.6.18:
     dependencies:
@@ -7723,6 +7968,8 @@ snapshots:
       '@types/unist': 3.0.3
       unist-util-is: 6.0.0
       unist-util-visit-parents: 6.0.1
+
+  unist@0.0.1: {}
 
   universalify@2.0.1: {}
 
@@ -7930,8 +8177,6 @@ snapshots:
   xtend@4.0.2: {}
 
   yallist@3.1.1: {}
-
-  yaml@2.6.0: {}
 
   yaml@2.6.1: {}
 

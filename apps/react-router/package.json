@@ -1,0 +1,54 @@
+{
+  "name": "@remix-docs-ja/react-router",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "build": "run-s build:*",
+    "build:index": "tsx scripts/build-index.ts",
+    "build:app": "react-router build",
+    "dev": "react-router dev",
+    "start": "react-router-serve ./build/server/index.js",
+    "lint": "biome lint .",
+    "format": "prettier --cache -c .",
+    "test": "vitest run",
+    "typecheck": "react-router typegen && tsc",
+    "validate": "run-s lint format typecheck build"
+  },
+  "dependencies": {
+    "@react-router/fs-routes": "7.0.0-pre.6",
+    "@react-router/node": "7.0.0-pre.6",
+    "@react-router/serve": "7.0.0-pre.6",
+    "@remix-docs-ja/base": "workspace:*",
+    "@remix-docs-ja/scripts": "workspace:*",
+    "isbot": "5.1.17",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router": "7.0.0-pre.6"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@mdx-js/rollup": "3.1.0",
+    "@react-router/dev": "7.0.0-pre.6",
+    "@tailwindcss/typography": "0.5.15",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "autoprefixer": "10.4.20",
+    "npm-run-all": "4.1.5",
+    "postcss": "8.4.49",
+    "prettier": "3.3.3",
+    "prettier-plugin-organize-imports": "4.1.0",
+    "prettier-plugin-tailwindcss": "0.6.9",
+    "remark-frontmatter": "5.0.0",
+    "remark-mdx-frontmatter": "5.0.0",
+    "tailwindcss": "3.4.15",
+    "tailwindcss-animate": "1.0.7",
+    "typescript": "5.6.3",
+    "vite": "5.4.11",
+    "vite-tsconfig-paths": "5.1.3",
+    "vitest": "2.1.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
