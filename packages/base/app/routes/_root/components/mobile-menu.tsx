@@ -66,6 +66,7 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
                         <SideMenuNavLink
                           className="block pl-4 text-base"
                           to={`${menuItem.slug}`}
+                          prefetch="viewport"
                           onClick={() => setIsOpen(false)}
                         >
                           {menuItem.attrs.title}

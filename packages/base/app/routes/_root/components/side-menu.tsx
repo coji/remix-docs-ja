@@ -18,7 +18,7 @@ export const SideMenu = ({ menu }: SideMenuProps) => {
             {category.children.map((menuItem) => {
               return (
                 <SideMenuItem key={menuItem.slug}>
-                  <SideMenuNavLink to={`${menuItem.slug}`}>
+                  <SideMenuNavLink to={`${menuItem.slug}`} prefetch="viewport">
                     {menuItem.attrs.title}
                   </SideMenuNavLink>
                 </SideMenuItem>
