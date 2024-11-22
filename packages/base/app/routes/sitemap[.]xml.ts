@@ -1,14 +1,16 @@
-import { getProduct } from '../features/product'
-import { getMenu } from '../services/menu.server'
+import { data } from 'react-router'
+import { getProductById } from '~/features/product'
+import { getMenu } from '~/services/menu.server'
 import type { Route } from './+types/sitemap[.]xml'
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const { product } = getProduct(request)
-  const host =
-    request.headers.get('x-forwarded-host') ?? request.headers.get('host')
-  const proto = request.headers.get('x-forwarded-proto') ?? 'https'
-  const siteRoot = `${proto}://${host}/`
-  const menu = (await getMenu(product.id))
+  const product = getProductById(__PRODUCT_ID__)
+  if (!product) {
+    throw data('Product not found', { status: 404 })
+  }
+
+  const siteRoot = product.url
+  const menu = (await getMenu())
     .flatMap((doc) => doc.children)
     .filter((doc) => doc.hasContent && doc.children.length === 0)
 
