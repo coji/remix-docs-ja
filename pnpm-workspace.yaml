@@ -11,10 +11,10 @@ catalog:
   '@radix-ui/react-dropdown-menu': 2.1.2
   '@radix-ui/react-label': 2.1.0
   '@radix-ui/react-slot': 1.1.0
-  '@react-router/dev': 7.0.0-pre.6
-  '@react-router/fs-routes': 7.0.0-pre.6
-  '@react-router/node': 7.0.0-pre.6
-  '@react-router/serve': 7.0.0-pre.6
+  '@react-router/dev': 7.0.0
+  '@react-router/fs-routes': 7.0.0
+  '@react-router/node': 7.0.0
+  '@react-router/serve': 7.0.0
   '@rehype-pretty/transformers': 0.13.2
   '@shikijs/transformers': 1.23.1
   '@tailwindcss/typography': 0.5.15
@@ -43,7 +43,7 @@ catalog:
   react: 18.3.1
   react-dom: 18.3.1
   react-markdown: 9.0.1
-  react-router: 7.0.0-pre.6
+  react-router: 7.0.0
   react-twc: 1.4.2
   rehype: 13.0.2
   rehype-autolink-headings: 7.1.0
