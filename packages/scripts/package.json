@@ -1,0 +1,53 @@
+{
+  "name": "@remix-docs-ja/scripts",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    "./*": "./src/*"
+  },
+  "scripts": {
+    "lint": "biome lint .",
+    "format": "prettier --cache -c .",
+    "test": "vitest run",
+    "typecheck": "tsc",
+    "validate": "run-s lint format typecheck"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@types/unist": "catalog:",
+    "fast-glob": "catalog:",
+    "pagefind": "catalog:",
+    "prettier": "catalog:",
+    "prettier-plugin-organize-imports": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "unified": "catalog:",
+    "unist": "catalog:",
+    "unist-util-visit": "catalog:"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@rehype-pretty/transformers": "catalog:",
+    "@remix-docs-ja/base": "workspace:*",
+    "@shikijs/transformers": "catalog:",
+    "@vercel/og": "catalog:",
+    "cheerio": "catalog:",
+    "front-matter": "catalog:",
+    "gray-matter": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "rehype-autolink-headings": "catalog:",
+    "rehype-pretty-code": "catalog:",
+    "rehype-raw": "catalog:",
+    "rehype-slug": "catalog:",
+    "rehype-stringify": "catalog:",
+    "remark-gfm": "catalog:",
+    "remark-parse": "catalog:",
+    "remark-rehype": "catalog:"
+  }
+}

@@ -1,0 +1,7 @@
+pnpm-lock.yaml
+docs
+prebuild
+public
+.react-router
+.wrangler
+worker-configuration.d.ts

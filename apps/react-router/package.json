@@ -1,0 +1,57 @@
+{
+  "name": "@remix-docs-ja/react-router",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "build": "run-s build:*",
+    "build:index": "tsx scripts/build-index.ts",
+    "build:app": "react-router build",
+    "dev": "react-router dev",
+    "start": "react-router-serve ./build/server/index.js",
+    "lint": "biome lint .",
+    "format": "prettier --cache -c .",
+    "test": "vitest run",
+    "typecheck": "react-router typegen && tsc",
+    "validate": "run-s lint format typecheck build",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@react-router/fs-routes": "catalog:",
+    "@react-router/node": "catalog:",
+    "@react-router/serve": "catalog:",
+    "@remix-docs-ja/base": "workspace:*",
+    "@remix-docs-ja/scripts": "workspace:*",
+    "isbot": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@cloudflare/workers-types": "catalog:",
+    "@mdx-js/rollup": "catalog:",
+    "@react-router/dev": "catalog:",
+    "@tailwindcss/typography": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "autoprefixer": "catalog:",
+    "npm-run-all": "catalog:",
+    "postcss": "catalog:",
+    "prettier": "catalog:",
+    "prettier-plugin-organize-imports": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:",
+    "remark-frontmatter": "catalog:",
+    "remark-mdx-frontmatter": "catalog:",
+    "tailwindcss": "catalog:",
+    "tailwindcss-animate": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-tsconfig-paths": "catalog:",
+    "vitest": "catalog:",
+    "wrangler": "catalog:"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
