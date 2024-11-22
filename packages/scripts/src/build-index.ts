@@ -14,7 +14,10 @@ export const buildIndex = async (productId: string) => {
     const regexp = /^docs\//
     const pathname = filename.replace(regexp, '').replace(/\.md$/, '')
     const doc = await getDoc(pathname)
-    if (!doc) continue
+    if (!doc) {
+      console.log('doc not found:\n\n', pathname)
+      continue
+    }
 
     const jsonFilename = path.join('prebuild/docs', `${pathname}.json`)
     const jsonDir = path.dirname(jsonFilename)
@@ -40,7 +43,7 @@ export const buildIndex = async (productId: string) => {
     if (!doc.attributes.hidden) {
       await index.addCustomRecord({
         content: doc.html,
-        meta: { title: doc.attributes.title.toString() },
+        meta: { title: doc.attributes.title?.toString() },
         language: 'ja',
         url: pathname,
       })
