@@ -31,7 +31,7 @@ const parseAttrs = (
   }
 }
 
-const buildMenu = async () => {
+export const buildMenu = async () => {
   const docs: MenuDoc[] = []
   const files = await fg('docs/**/*.md', { onlyFiles: true })
   for (const filepath of files) {
@@ -86,13 +86,4 @@ const buildMenu = async () => {
     category.children.sort(sortDocs)
   }
   return tree
-}
-
-export const buildMenus = async () => {
-  const menus = await buildMenu()
-  const filename = 'public/menu.json'
-  const dir = path.dirname(filename)
-  console.log(filename)
-  await fs.mkdir(dir, { recursive: true })
-  await fs.writeFile(filename, JSON.stringify(menus, null, 2))
 }

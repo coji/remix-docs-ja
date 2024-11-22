@@ -17,7 +17,7 @@ export interface MenuDoc {
 }
 
 export const getMenu = async () => {
-  const menu = await fs.readFile('public/menus/menu.json', 'utf-8')
+  const menu = await fs.readFile('public/menu.json', 'utf-8')
   return JSON.parse(menu) as MenuDoc[]
 }
 
