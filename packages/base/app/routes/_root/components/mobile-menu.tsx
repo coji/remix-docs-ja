@@ -65,7 +65,7 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
                       >
                         <SideMenuNavLink
                           className="block pl-4 text-base"
-                          to={`/${menuItem.slug}`}
+                          to={`${menuItem.slug}`}
                           onClick={() => setIsOpen(false)}
                         >
                           {menuItem.attrs.title}

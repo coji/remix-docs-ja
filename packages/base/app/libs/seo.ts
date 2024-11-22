@@ -30,7 +30,7 @@ export const buildPageMeta = ({
     {
       property: 'og:image',
       content: pathname
-        ? `${product.url}/ogp/${product.id}${ogpImage}`
+        ? `${product.url}/ogp${ogpImage}`
         : 'https://remix.run/img/og.1.jpg',
     },
     {
@@ -44,7 +44,7 @@ export const buildPageMeta = ({
     {
       property: 'twitter:image',
       content: pathname
-        ? `${product.url}/ogp/${product.id}${ogpImage}`
+        ? `${product.url}/ogp${ogpImage}`
         : 'https://remix.run/img/og.1.jpg',
     },
     {
