@@ -9,9 +9,9 @@ import {
   DialogTitle,
   HStack,
   Input,
-} from '../../components/ui'
-import { getProduct } from '../../features/product'
-import type { Pagefind } from '../../services/pagefind.types'
+} from '~/components/ui'
+import { getProduct } from '~/features/product'
+import type { Pagefind } from '~/services/pagefind.types'
 import type { Route } from './+types'
 import {
   SearchLoading,

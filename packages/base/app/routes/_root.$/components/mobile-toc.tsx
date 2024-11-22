@@ -1,8 +1,8 @@
 import { ChevronDown } from 'lucide-react'
 import React from 'react'
 import { twc } from 'react-twc'
-import { Button } from '../../../components/ui/button'
-import { cn } from '../../../libs/utils'
+import { Button } from '~/components/ui/button'
+import { cn } from '~/libs/utils'
 
 export const SideMenuCategory = twc.div`group`
 export const SideMenuCategoryTitle = twc.div`px-2 py-1`

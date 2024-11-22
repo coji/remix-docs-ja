@@ -1,5 +1,4 @@
 import { Link } from 'react-router'
-import AboutDoc from '~/assets/job-board.about.mdx'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,8 +11,9 @@ import {
   CardHeader,
   CardTitle,
   Stack,
-} from '../../components/ui'
-import { cn } from '../../libs/utils'
+} from '~/components/ui'
+import { cn } from '~/libs/utils'
+import AboutDoc from './job-board.about.mdx'
 
 export default function job() {
   return (

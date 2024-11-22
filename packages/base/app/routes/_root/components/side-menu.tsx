@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router'
 import { twc } from 'react-twc'
-import type { MenuDoc } from '../../../services/menu.server'
+import type { MenuDoc } from '~/services/menu.server'
 
 interface SideMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   menu: MenuDoc[]

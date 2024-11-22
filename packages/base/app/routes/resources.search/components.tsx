@@ -1,7 +1,7 @@
 import { CommandIcon, LoaderIcon, SearchIcon } from 'lucide-react'
 import { twc } from 'react-twc'
-import { Button, HStack, type ButtonProps } from '../../components/ui'
-import { cn } from '../../libs/utils'
+import { Button, HStack, type ButtonProps } from '~/components/ui'
+import { cn } from '~/libs/utils'
 
 export const SearchTrigger = twc(({ className, ...rest }: ButtonProps) => {
   return (

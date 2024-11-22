@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 import type { HeadersFunction } from 'react-router'
 import { Link, useFetcher, useLocation } from 'react-router'
 import jobs from '~/assets/jobs.json'
-import { Badge, HStack, Stack } from '../../components/ui'
-import { cn } from '../../libs/utils'
+import { Badge, HStack, Stack } from '~/components/ui'
+import { cn } from '~/libs/utils'
 import type { Route } from './+types'
 
 // キャッシュ完全無効

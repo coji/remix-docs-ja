@@ -1,4 +1,4 @@
-import { products } from '../features/product/products'
+import { products } from '~/features/product/products'
 
 interface buildPageMetaProps {
   title?: string
