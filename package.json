@@ -4,14 +4,21 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "turbo build"
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "deploy": "turbo deploy",
+    "format": "turbo format",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck",
+    "validate": "turbo validate"
   },
   "dependencies": {},
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "npm-run-all": "4.1.5",
-    "tsx": "4.19.2",
-    "turbo": "2.3.0"
+    "@biomejs/biome": "catalog:",
+    "npm-run-all": "catalog:",
+    "tsx": "catalog:",
+    "turbo": "catalog:"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -20,5 +27,6 @@
     "patchedDependencies": {
       "rehype-pretty-code": "patches/rehype-pretty-code.patch"
     }
-  }
+  },
+  "packageManager": "pnpm@9.14.1"
 }

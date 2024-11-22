@@ -1,3 +1,4 @@
 import RouteComponent from './route.component'
-export * from './route.server'
+export { links, meta } from './route.component'
+export { loader } from './route.server'
 export default RouteComponent

@@ -1,13 +1,9 @@
 node_modules
 
-/.cache
-/build
+.cache
 .env
 .DS_Store
 vite.config.ts.timestamp*
-public/pagefind
-public/docs
-public/menus
-public/ogp
 
 .react-router
+.turbo
