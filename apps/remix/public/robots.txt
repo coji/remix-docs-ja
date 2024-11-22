@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://react-router-docs-ja.techtalk.jp
+
+# Sitemaps
+Sitemap: https://react-router-docs-ja.techtalk.jp/sitemap.xml
