@@ -6,3 +6,4 @@ public/menu.json
 build
 docs/
 .wrangler
+prebuild

@@ -1,9 +1,8 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import type { ProductId } from '~/features/product/products'
 
-export const getDocJson = async (productId: ProductId, file: string) => {
-  const filepath = path.join('./public/docs', `${file}.json`)
+export const getDocJson = async (file: string) => {
+  const filepath = path.join('./prebuild/docs', `${file}.json`)
   try {
     const content = await fs.readFile(filepath, 'utf-8')
     return JSON.parse(content) as {

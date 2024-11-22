@@ -16,7 +16,7 @@ export const buildIndex = async (productId: string) => {
     const doc = await getDoc(pathname)
     if (!doc) continue
 
-    const jsonFilename = path.join('public/docs', `${pathname}.json`)
+    const jsonFilename = path.join('prebuild/docs', `${pathname}.json`)
     const jsonDir = path.dirname(jsonFilename)
     await fs.mkdir(jsonDir, { recursive: true })
     await fs.writeFile(jsonFilename, JSON.stringify(doc, null, 2), {

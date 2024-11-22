@@ -9,7 +9,7 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
   if (!product) {
     throw data('Product not found: __PRODUCT_ID__', { status: 404 })
   }
-  const doc = await getDocJson(product.id, filename)
+  const doc = await getDocJson(filename)
   if (!doc) {
     throw data(`File not found: ${filename}`, { status: 404 })
   }
