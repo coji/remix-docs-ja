@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Link, useFetcher } from 'react-router'
+import { data, Link, useFetcher } from 'react-router'
 import {
   Button,
   Dialog,
@@ -10,7 +10,7 @@ import {
   HStack,
   Input,
 } from '~/components/ui'
-import { getProduct } from '~/features/product'
+import { getProductById } from '~/features/product'
 import type { Pagefind } from '~/services/pagefind.types'
 import type { Route } from './+types'
 import {
@@ -24,8 +24,15 @@ import {
 } from './components'
 import { useHotkey } from './hooks'
 
+export const loader = () => {
+  return {}
+}
+
 export const clientLoader = async ({ request }: Route.ClientLoaderArgs) => {
-  const { product } = getProduct(request)
+  const product = getProductById(__PRODUCT_ID__)
+  if (!product) {
+    throw data('Product not found', { status: 404 })
+  }
   const url = new URL(request.url)
   const query = url.searchParams.get('q')
   if (!query) return { results: [] }
