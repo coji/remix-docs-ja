@@ -11,7 +11,6 @@
       "cache": false
     },
     "dev": {
-      "dependsOn": ["^dev"],
       "outputs": ["dist/**", "build/**"],
       "cache": false,
       "persistent": true

@@ -19,4 +19,7 @@ export default defineConfig({
       external: '/pagefind/pagefind.js?url',
     },
   },
+  server: {
+    port: 5175,
+  },
 })
