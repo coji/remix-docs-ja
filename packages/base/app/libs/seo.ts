@@ -17,7 +17,7 @@ export const buildPageMeta = ({
 
   return [
     {
-      title: title ? `${title} - ${product.title}` : product.title,
+      title: pathname !== '/' ? `${title} - ${product.title}` : product.title,
     },
     {
       property: 'og:url',
@@ -25,7 +25,7 @@ export const buildPageMeta = ({
     },
     {
       property: 'og:title',
-      content: title ? `${title} - ${product.title}` : product.title,
+      content: pathname !== '/' ? `${title} - ${product.title}` : product.title,
     },
     {
       property: 'og:image',
@@ -39,7 +39,7 @@ export const buildPageMeta = ({
     },
     {
       property: 'twitter:title',
-      content: title ? `${title} - ${product.title}` : product.title,
+      content: pathname !== '/' ? `${title} - ${product.title}` : product.title,
     },
     {
       property: 'twitter:image',
