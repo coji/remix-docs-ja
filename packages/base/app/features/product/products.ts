@@ -1,13 +1,13 @@
 export const products = [
   {
-    id: 'remix-docs-ja',
+    id: 'remix',
     name: 'Remix',
     title: 'Remixドキュメント日本語版',
     url: 'https://remix-docs-ja.techtalk.jp',
     pagefind: '/pagefind/remix-docs-ja/pagefind.js?url',
   },
   {
-    id: 'react-router-docs-ja',
+    id: 'react-router-v7',
     name: 'React Router',
     title: 'React Router v7 ドキュメント日本語版',
     url: 'https://react-router-docs-ja.techtalk.jp',
@@ -15,7 +15,7 @@ export const products = [
   },
 ] satisfies Product[]
 
-export type ProductId = 'remix-docs-ja' | 'react-router-docs-ja'
+export type ProductId = 'remix' | 'react-router-v7'
 export type Product = {
   id: ProductId
   name: string

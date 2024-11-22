@@ -7,11 +7,6 @@
     "./*": "./src/*"
   },
   "scripts": {
-    "build": "run-s build:*",
-    "build:index": "tsx scripts/build-index.ts",
-    "build:app": "react-router build",
-    "dev": "react-router dev",
-    "start": "react-router-serve ./build/server/index.js",
     "lint": "biome lint .",
     "format": "prettier --cache -c .",
     "test": "vitest run",
@@ -20,6 +15,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
     "@types/unist": "3.0.3",
     "fast-glob": "3.3.2",
     "pagefind": "1.2.0",
@@ -36,10 +33,14 @@
   },
   "dependencies": {
     "@rehype-pretty/transformers": "0.13.2",
+    "@remix-docs-ja/base": "workspace:*",
     "@shikijs/transformers": "1.22.1",
+    "@vercel/og": "0.6.3",
     "cheerio": "1.0.0",
     "front-matter": "4.0.2",
     "gray-matter": "4.0.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "rehype-autolink-headings": "7.1.0",
     "rehype-pretty-code": "0.14.0",
     "rehype-raw": "7.0.0",

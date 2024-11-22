@@ -12,3 +12,7 @@ export const getProduct = (request: Request) => {
   const product = products.find((prd) => prd.id === subdomain) ?? products[0]
   return { product }
 }
+
+export const getProductById = (id: string) => {
+  return products.find((prd) => prd.id === id)
+}

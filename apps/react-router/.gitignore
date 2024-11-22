@@ -2,4 +2,6 @@ public/pagefind
 public/docs
 public/menus
 public/ogp
+public/menu.json
 build
+docs/

@@ -1,9 +1,16 @@
 import type { LinksFunction } from 'react-router'
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
+import {
+  data,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from 'react-router'
 import type { Route } from './+types/root'
 import { PageLoadingProgress } from './components/page-loading-progress'
 import { ThemeProvider } from './components/theme-provider'
-import { getProduct } from './features/product'
+import { getProductById } from './features/product'
 import { buildPageMeta } from './libs/seo'
 import globalStyles from './styles/globals.css?url'
 
@@ -16,7 +23,10 @@ export const meta = ({ data }: Route.MetaArgs) => {
 }
 
 export const loader = ({ request }: Route.LoaderArgs) => {
-  const { product } = getProduct(request)
+  const product = getProductById(__PRODUCT_ID__)
+  if (!product) {
+    throw data('Product not found: __PRODUCT_ID__', { status: 404 })
+  }
   return { product }
 }
 

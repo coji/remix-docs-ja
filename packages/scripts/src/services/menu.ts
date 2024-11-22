@@ -1,12 +1,11 @@
-import type { ProductId } from '@remix-docs-ja/base/features/product/products'
 import type { MenuDoc } from '@remix-docs-ja/base/services/menu.server'
 import fg from 'fast-glob'
 import parseYamlHeader from 'gray-matter'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-const makeSlug = (filepath: string, productId: ProductId) => {
-  const regexp = new RegExp(`^(.+\/)?docs/${productId}/`)
+const makeSlug = (filepath: string) => {
+  const regexp = /^(.+\/)?docs/
   return filepath
     .replace(regexp, '')
     .replace(/\.md$/, '')
@@ -32,13 +31,13 @@ const parseAttrs = (
   }
 }
 
-const buildMenu = async (productId: ProductId) => {
+const buildMenu = async () => {
   const docs: MenuDoc[] = []
-  const files = await fg(`docs/${productId}/**/*.md`, { onlyFiles: true })
+  const files = await fg('docs/**/*.md', { onlyFiles: true })
   for (const filepath of files) {
     const content = await fs.readFile(filepath, 'utf-8')
     const { attrs, content: md } = parseAttrs(filepath, content)
-    const slug = makeSlug(filepath, productId)
+    const slug = makeSlug(filepath)
 
     // don't need docs/index.md in the menu
     if (slug === '') continue
@@ -89,9 +88,9 @@ const buildMenu = async (productId: ProductId) => {
   return tree
 }
 
-export const buildMenus = async (productId: ProductId) => {
-  const menus = await buildMenu(productId)
-  const filename = `public/menus/${productId}/menu.json`
+export const buildMenus = async () => {
+  const menus = await buildMenu()
+  const filename = 'public/menu.json'
   const dir = path.dirname(filename)
   console.log(filename)
   await fs.mkdir(dir, { recursive: true })

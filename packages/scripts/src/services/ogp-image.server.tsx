@@ -1,10 +1,18 @@
+import { getProduct } from '@remix-docs-ja/base/features/product'
 import { ImageResponse } from '@vercel/og'
 import fs from 'node:fs/promises'
-import { getProduct } from '../features/product'
-import { getDocJson } from './document.server'
+import path from 'node:path'
+import React from 'react'
+import { getDocJson } from './document'
+
+const __filename = new URL(import.meta.url).pathname
+const __dirname = __filename.substring(0, __filename.lastIndexOf('/'))
 
 const getFontData = async () => {
-  const data = await fs.readFile('./app/assets/fonts/NotoSansJP-Bold.ttf')
+  React.version
+  const data = await fs.readFile(
+    path.join(__dirname, './fonts/NotoSansJP-Bold.ttf'),
+  )
   const fontData = data.buffer.slice(
     data.byteOffset,
     data.byteOffset + data.byteLength,

@@ -1,5 +1,4 @@
 import fs from 'node:fs/promises'
-import type { ProductId } from '../features/product/products'
 
 export interface MenuDocAttributes {
   title: string
@@ -17,8 +16,8 @@ export interface MenuDoc {
   slug: string
 }
 
-export const getMenu = async (productId: ProductId) => {
-  const menu = await fs.readFile(`public/menus/${productId}/menu.json`, 'utf-8')
+export const getMenu = async () => {
+  const menu = await fs.readFile('public/menus/menu.json', 'utf-8')
   return JSON.parse(menu) as MenuDoc[]
 }
 

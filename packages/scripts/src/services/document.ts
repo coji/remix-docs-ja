@@ -4,8 +4,8 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { processMarkdown } from './md.server'
 
-export const getDoc = async (productId: ProductId, file: string) => {
-  const filepath = path.join('./docs', productId, `${file}.md`)
+export const getDoc = async (file: string) => {
+  const filepath = path.join('./docs', `${file}.md`)
   try {
     const content = await fs.readFile(filepath, 'utf-8')
     const doc = await processMarkdown(content)

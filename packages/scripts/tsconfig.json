@@ -1,13 +1,11 @@
 {
-  "include": [
-    "**/*.ts",
-  ],
+  "include": ["**/*.ts"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": [],
+    "types": ["@types/react", "@types/react-dom"],
     "isolatedModules": true,
     "esModuleInterop": true,
-    "jsx": "react-jsx",
+    "jsx": "react",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
@@ -18,10 +16,10 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "~/*": ["./src/*"],
-      "@remix-docs-ja/base/*": ["../base/app/*"],
+      "@remix-docs-ja/base/*": ["../base/app/*"]
     },
 
     // Vite takes care of building everything, not tsc.
-    "noEmit": true,
+    "noEmit": true
   }
 }

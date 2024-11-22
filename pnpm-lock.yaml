@@ -324,9 +324,15 @@ importers:
       '@rehype-pretty/transformers':
         specifier: 0.13.2
         version: 0.13.2
+      '@remix-docs-ja/base':
+        specifier: workspace:*
+        version: link:../base
       '@shikijs/transformers':
         specifier: 1.22.1
         version: 1.22.1
+      '@vercel/og':
+        specifier: 0.6.3
+        version: 0.6.3
       cheerio:
         specifier: 1.0.0
         version: 1.0.0
@@ -336,6 +342,12 @@ importers:
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
       rehype-autolink-headings:
         specifier: 7.1.0
         version: 7.1.0
@@ -364,6 +376,12 @@ importers:
       '@biomejs/biome':
         specifier: 1.9.4
         version: 1.9.4
+      '@types/react':
+        specifier: 18.3.12
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: 18.3.1
+        version: 18.3.1
       '@types/unist':
         specifier: 3.0.3
         version: 3.0.3

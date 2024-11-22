@@ -6,6 +6,9 @@ import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
+  define: {
+    __PRODUCT_ID__: JSON.stringify('react-router-v7'),
+  },
   plugins: [
     mdx({ remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter] }),
     reactRouter(),
