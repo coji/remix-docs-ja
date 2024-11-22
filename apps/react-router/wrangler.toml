@@ -13,5 +13,5 @@ assets = { directory = "./build/client", binding = 'ASSETS'}
 [observability]
 enabled = true
 
-# [build]
-# command = "pnpm run build"
+[build]
+command = "pnpm run build"
