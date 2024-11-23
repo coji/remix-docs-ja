@@ -1,5 +1,5 @@
 ---
-title: 図書館 (Toshokan)
+title: ライブラリ
 order: 2
 ---
 

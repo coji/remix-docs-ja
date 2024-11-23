@@ -6,9 +6,14 @@ export default {
   prerender: async () => {
     const paths = ['/', '/sitemap.xml']
     const categories = await buildMenu()
-    const docPaths = categories
-      .flatMap((category) => category.children)
-      .map((doc) => doc.slug)
-    return [...paths, ...docPaths]
+    for (const category of categories) {
+      for (const doc of category.children) {
+        if (doc.children.length === 0) paths.push(`/${doc.slug}`)
+        for (const subDoc of doc.children) {
+          paths.push(`/${subDoc.slug}`)
+        }
+      }
+    }
+    return paths
   },
 } satisfies Config
