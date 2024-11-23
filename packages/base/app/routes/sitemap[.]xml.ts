@@ -23,9 +23,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       }
     }
   }
-  const menu = (await getMenu())
-    .flatMap((doc) => doc.children)
-    .filter((doc) => doc.hasContent && doc.children.length === 0)
 
   const content = `
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
