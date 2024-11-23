@@ -18,9 +18,29 @@ export const SideMenu = ({ menu }: SideMenuProps) => {
             {category.children.map((menuItem) => {
               return (
                 <SideMenuItem key={menuItem.slug}>
-                  <SideMenuNavLink to={`${menuItem.slug}`} prefetch="viewport">
-                    {menuItem.attrs.title}
-                  </SideMenuNavLink>
+                  {menuItem.children.length > 0 ? (
+                    <div>{menuItem.attrs.title}</div>
+                  ) : (
+                    <SideMenuNavLink
+                      to={`${menuItem.slug}`}
+                      prefetch="viewport"
+                    >
+                      {menuItem.attrs.title}
+                    </SideMenuNavLink>
+                  )}
+
+                  {menuItem.children.map((subMenuItem) => {
+                    return (
+                      <SideMenuItem key={subMenuItem.slug}>
+                        <SideMenuNavLink
+                          to={`${subMenuItem.slug}`}
+                          prefetch="viewport"
+                        >
+                          {subMenuItem.attrs.title}
+                        </SideMenuNavLink>
+                      </SideMenuItem>
+                    )
+                  })}
                 </SideMenuItem>
               )
             })}
@@ -32,7 +52,7 @@ export const SideMenu = ({ menu }: SideMenuProps) => {
 }
 export const SideMenuCategory = twc.div`group`
 export const SideMenuCategoryTitle = twc.div`px-2 py-1`
-export const SideMenuItem = twc.div`pl-4 leading-6`
+export const SideMenuItem = twc.div`pl-4 leading-loose`
 export const SideMenuNavLink = twc(NavLink).attrs({
   prefetch: 'intent',
 })`hover:underline aria-[current]:font-bold aria-[current]:text-foreground`

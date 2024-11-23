@@ -34,10 +34,10 @@ const parseAttrs = (
 export const buildMenu = async () => {
   const docs: MenuDoc[] = []
   const files = await fg('docs/**/*.md', { onlyFiles: true })
-  for (const filepath of files) {
-    const content = await fs.readFile(filepath, 'utf-8')
-    const { attrs, content: md } = parseAttrs(filepath, content)
-    const slug = makeSlug(filepath)
+  for (const filename of files) {
+    const content = await fs.readFile(filename, 'utf-8')
+    const { attrs, content: md } = parseAttrs(filename, content)
+    const slug = makeSlug(filename)
 
     // don't need docs/index.md in the menu
     if (slug === '') continue
@@ -47,8 +47,8 @@ export const buildMenu = async () => {
 
     docs.push({
       attrs,
-      filename: filepath,
-      slug,
+      filename,
+      slug: makeSlug(filename),
       hasContent: md.length > 0,
       children: [],
     })
