@@ -10,6 +10,19 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   }
 
   const siteRoot = product.url
+  const slugs: string[] = []
+  for (const category of await getMenu()) {
+    if (category.children) {
+      for (const item of category.children) {
+        if (item.children.length === 0) {
+          slugs.push(item.slug)
+        }
+        for (const subitem of item.children) {
+          slugs.push(subitem.slug)
+        }
+      }
+    }
+  }
   const menu = (await getMenu())
     .flatMap((doc) => doc.children)
     .filter((doc) => doc.hasContent && doc.children.length === 0)
@@ -20,9 +33,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
         <loc>${siteRoot}</loc>
         <priority>1.0</priority>
       </url>
-      ${menu
-        .map((doc) => {
-          return `<url><loc>${siteRoot}${doc.slug}</loc></url>`
+      ${slugs
+        .map((slug) => {
+          return `<url><loc>${siteRoot}${slug}</loc></url>`
         })
         .join('\n')}
     </urlset>
