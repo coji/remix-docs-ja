@@ -2,7 +2,7 @@ export const products = [
   {
     id: 'remix',
     name: 'Remix',
-    title: 'Remixドキュメント日本語版',
+    title: 'Remix ドキュメント 日本語版',
     url: 'https://remix-docs-ja.techtalk.jp',
     englishUrl: 'https://remix.run/docs',
     pagefind: '/pagefind/pagefind.js?url',
@@ -10,7 +10,7 @@ export const products = [
   {
     id: 'react-router-v7',
     name: 'React Router',
-    title: 'React Router v7 ドキュメント日本語版',
+    title: 'React Router v7 ドキュメント 日本語版',
     url: 'https://react-router-docs-ja.techtalk.jp',
     englishUrl: 'https://reactrouter.com',
     pagefind: '/pagefind/pagefind.js?url',
