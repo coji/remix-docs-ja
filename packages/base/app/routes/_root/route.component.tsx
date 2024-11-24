@@ -14,7 +14,7 @@ export default function Layout({
     ReturnType<typeof rootLoader>
   >
 
-  const title = rootLoaderData?.product.title ?? 'Remixドキュメント日本語版'
+  const title = rootLoaderData.product.title
 
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr_auto] overflow-hidden lg:container">
@@ -22,7 +22,7 @@ export default function Layout({
       <header className="w-full bg-background text-foreground">
         <div className="flex items-center px-4 py-2">
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold">
+            <h1 className="break-keep text-xl font-bold">
               <Link to="/" prefetch="intent">
                 {title}
               </Link>
