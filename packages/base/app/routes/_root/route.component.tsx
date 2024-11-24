@@ -14,7 +14,7 @@ export default function Layout({
     ReturnType<typeof rootLoader>
   >
 
-  const title = rootLoaderData.product.title
+  const product = rootLoaderData.product
 
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr_auto] overflow-hidden lg:container">
@@ -24,7 +24,7 @@ export default function Layout({
           <div className="flex items-center gap-2">
             <h1 className="break-keep text-xl font-bold">
               <Link to="/" prefetch="intent">
-                {title}
+                {product.title}
               </Link>
             </h1>
 
@@ -38,7 +38,7 @@ export default function Layout({
 
           <a
             className="hover ml-2 text-sm hover:underline"
-            href={`https://remix.run/docs${pathname}`}
+            href={`${product.englishUrl}${pathname}`}
           >
             English
           </a>

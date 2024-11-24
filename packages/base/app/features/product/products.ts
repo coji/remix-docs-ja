@@ -4,6 +4,7 @@ export const products = [
     name: 'Remix',
     title: 'Remixドキュメント日本語版',
     url: 'https://remix-docs-ja.techtalk.jp',
+    englishUrl: 'https://remix.run/docs',
     pagefind: '/pagefind/pagefind.js?url',
   },
   {
@@ -11,6 +12,7 @@ export const products = [
     name: 'React Router',
     title: 'React Router v7 ドキュメント日本語版',
     url: 'https://react-router-docs-ja.techtalk.jp',
+    englishUrl: 'https://reactrouter.com',
     pagefind: '/pagefind/pagefind.js?url',
   },
 ] satisfies Product[]
@@ -21,6 +23,7 @@ export type Product = {
   name: string
   title: string
   url: string
+  englishUrl: string
   pagefind: string
 }
 
