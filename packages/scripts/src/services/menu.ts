@@ -84,6 +84,9 @@ export const buildMenu = async () => {
   tree.sort(sortDocs)
   for (const category of tree) {
     category.children.sort(sortDocs)
+    for (const subItems of category.children) {
+      subItems.children.sort(sortDocs)
+    }
   }
   return tree
 }
