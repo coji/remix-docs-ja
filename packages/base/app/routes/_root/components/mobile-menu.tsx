@@ -1,12 +1,11 @@
 import { ChevronDown } from 'lucide-react'
 import React from 'react'
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '~/components/ui/accordion'
-import { Button } from '~/components/ui/button'
+  Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '~/components/ui'
 import { cn } from '~/libs/utils'
 import type { MenuDoc } from '~/services/menu.server'
 
@@ -33,28 +32,22 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
       </Button>
 
       {isOpen && (
-        <Accordion
-          type="multiple"
-          defaultValue={
-            currentMenuItem?.parentSlug ? [currentMenuItem.parentSlug] : []
-          }
-        >
+        <div>
           {menu.map((category) => {
             return (
-              <AccordionItem
+              <Collapsible
                 key={category.slug}
-                value={category.slug}
+                defaultOpen
                 className="group border-none"
               >
-                <AccordionTrigger
+                <CollapsibleTrigger
                   className={cn(
-                    'px-4 py-1 text-base text-muted-foreground',
-                    'group-has-[.active]:bg-muted group-has-[.active]:font-bold',
+                    'w-full px-4 py-1 text-left text-base text-muted-foreground',
                   )}
                 >
                   {category.attrs.title}
-                </AccordionTrigger>
-                <AccordionContent className="flex flex-col gap-1">
+                </CollapsibleTrigger>
+                <CollapsibleContent className="flex flex-col gap-1">
                   {category.children.map((menuItem) => {
                     return (
                       <SideMenuItem
@@ -63,22 +56,43 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
                           'text-muted-foreground aria-[current]:font-bold',
                         )}
                       >
-                        <SideMenuNavLink
-                          className="block pl-4 text-base"
-                          to={`${menuItem.slug}`}
-                          prefetch="viewport"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          {menuItem.attrs.title}
-                        </SideMenuNavLink>
+                        {menuItem.children.length > 0 ? (
+                          <div className="pl-4">{menuItem.attrs.title}</div>
+                        ) : (
+                          <SideMenuNavLink
+                            className="block pl-4 text-base aria-[current]:text-white"
+                            to={`${menuItem.slug}`}
+                            prefetch="viewport"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            {menuItem.attrs.title}
+                          </SideMenuNavLink>
+                        )}
+
+                        {menuItem.children.map((subMenuItem) => {
+                          return (
+                            <SideMenuItem
+                              key={subMenuItem.slug}
+                              className="pl-8"
+                            >
+                              <SideMenuNavLink
+                                to={`${subMenuItem.slug}`}
+                                prefetch="viewport"
+                                onClick={() => setIsOpen(false)}
+                              >
+                                {subMenuItem.attrs.title}
+                              </SideMenuNavLink>
+                            </SideMenuItem>
+                          )
+                        })}
                       </SideMenuItem>
                     )
                   })}
-                </AccordionContent>
-              </AccordionItem>
+                </CollapsibleContent>
+              </Collapsible>
             )
           })}
-        </Accordion>
+        </div>
       )}
     </div>
   )
