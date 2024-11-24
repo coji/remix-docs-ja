@@ -28,10 +28,7 @@ export const buildIndex = async (productId: string) => {
     console.log('doc:', jsonFilename)
 
     // OGP画像生成
-    const ogpImage = await getOgpImageResponse(
-      new Request(`https://${productId}.techtalk.jp/${pathname}`),
-      pathname,
-    )
+    const ogpImage = await getOgpImageResponse(productId, pathname)
     await fs.mkdir(path.dirname(`public/ogp/${pathname}`), {
       recursive: true,
     })

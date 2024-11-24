@@ -1,4 +1,4 @@
-import { getProduct } from '@remix-docs-ja/base/features/product'
+import { getProductById } from '@remix-docs-ja/base/features/product'
 import { ImageResponse } from '@vercel/og'
 import fs from 'node:fs/promises'
 import path from 'node:path'
@@ -21,14 +21,17 @@ const getFontData = async () => {
 }
 
 export const getOgpImageResponse = async (
-  request: Request,
+  productId: string,
   filename: string,
 ) => {
-  const { product } = getProduct(request)
+  const product = getProductById(productId)
+  if (!product) {
+    return new Response('Not Found', { status: 404 })
+  }
   const doc =
     filename === 'index'
       ? { attributes: { title: product.title } }
-      : await getDocJson(product.id, filename)
+      : await getDocJson(filename)
   if (!doc) {
     return new Response('Not Found', { status: 404 })
   }
@@ -60,7 +63,7 @@ export const getOgpImageResponse = async (
         >
           <div
             style={{
-              fontSize: '80px',
+              fontSize: '76px',
               flexDirection: 'column',
               justifyContent: 'center',
               wordBreak: 'break-word',
