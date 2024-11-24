@@ -13,7 +13,7 @@ export const buildPageMeta = ({
 }: buildPageMetaProps) => {
   const product =
     products.find((product) => product.id === productId) ?? products[0]
-  const ogpImage = `${pathname === '/' ? '/index' : pathname}.png`
+  const ogpImage = `${pathname === '/' || pathname === undefined ? '/index' : pathname.replace(/\/$/, '')}.png`
 
   return [
     {
