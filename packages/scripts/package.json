@@ -25,7 +25,6 @@
     "tsx": "catalog:",
     "typescript": "catalog:",
     "unified": "catalog:",
-    "unist": "catalog:",
     "unist-util-visit": "catalog:"
   },
   "engines": {
