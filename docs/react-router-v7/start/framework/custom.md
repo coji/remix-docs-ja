@@ -1,20 +1,18 @@
 ---
-title: 独自のバンドラを使用する
+title: カスタムフレームワーク
 ---
 
-<docs-warning>このドキュメントは未完成であり、エラーが含まれている可能性があります</docs-warning>
+# カスタムフレームワーク
 
-# 独自のバンドラを使用する
-
-フレームワークの機能は、React React のランタイム機能によって有効になります。React Router の Vite プラグインを使用する代わりに、独自のバンドラとサーバー抽象化を使用できます。
+`@react-router/dev` を使用する代わりに、React Router のフレームワーク機能（ローダー、アクション、フェッチャーなど）を独自のバンドラーとサーバー抽象化に統合できます。
 
 ## クライアントサイドレンダリング
 
-### 1. ルーターを作成する
+### 1. ルーターの作成
 
 ルートモジュールAPI（ローダー、アクションなど）を有効にするブラウザーランタイムAPIは`createBrowserRouter`です。
 
-ローダー、アクション、エラーバウンダリなどをサポートするルートオブジェクトの配列を取ります。React Router Viteプラグインは`routes.ts`からこのうち1つを作成しますが、手動で（または抽象化を使用して）作成し、独自のバンドラを使用できます。
+ローダー、アクション、エラーバウンダリなどをサポートするルートオブジェクトの配列を取ります。React Router Viteプラグインは`routes.ts`からこれらを生成しますが、手動で（または抽象化を使用して）作成し、独自のバンドラーを使用できます。
 
 ```tsx
 import { createBrowserRouter } from "react-router";
@@ -37,7 +35,7 @@ let router = createBrowserRouter([
 ]);
 ```
 
-### 2. ルーターをレンダリングする
+### 2. ルーターのレンダリング
 
 ブラウザでルーターをレンダリングするには、`<RouterProvider>`を使用します。
 
@@ -55,7 +53,7 @@ createRoot(document.getElementById("root")).render(
 
 ### 3. 遅延読み込み
 
-`lazy`プロパティを使用して、ルートの大部分を遅延して定義できます。
+ルートは、`lazy`プロパティを使用して定義の大部分を遅延させることができます。
 
 ```tsx
 createBrowserRouter([
@@ -77,9 +75,11 @@ createBrowserRouter([
 
 カスタム設定をサーバーサイドレンダリングするには、データの読み込みとレンダリングに使用できるいくつかのサーバーAPIがあります。
 
-### 1. ルートを定義する
+このガイドは、それがどのように機能するかについてのいくつかのアイデアを提供するだけです。より深い理解のために、[カスタムフレームワークの例のリポジトリ](https://github.com/remix-run/custom-react-router-framework-example)を参照してください。
 
-ルートは、サーバー上でのオブジェクトの種類がクライアントと同じです。
+### 1. ルートの定義
+
+ルートは、クライアント側と同様に、サーバー上でも同じ種類のオブジェクトです。
 
 ```tsx
 export default [
@@ -99,9 +99,9 @@ export default [
 ];
 ```
 
-### 2. 静的ハンドラを作成する
+### 2. 静的ハンドラーの作成
 
-`createStaticHandler`を使用して、ルートをリクエストハンドラに変換します。
+`createStaticHandler`を使用して、ルートをリクエストハンドラーに変換します。
 
 ```tsx
 import { createStaticHandler } from "react-router";
@@ -110,11 +110,11 @@ import routes from "./some-routes";
 let { query, dataRoutes } = createStaticHandler(routes);
 ```
 
-### 3. ルーティングコンテキストを取得してレンダリングする
+### 3. ルーティングコンテキストの取得とレンダリング
 
-React Router は Web Fetch の [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) と連携するため、サーバーが対応していない場合は、使用するオブジェクトを Web Fetch の `Request` オブジェクトに適応する必要があります。
+React Router は web fetch の [リクエスト](https://developer.mozilla.org/en-US/docs/Web/API/Request) で動作するため、サーバーがそれを使用していない場合は、使用するオブジェクトを web fetch の `Request` オブジェクトに適応させる必要があります。
 
-この手順では、サーバーが `Request` オブジェクトを受け取ると想定しています。
+この手順では、サーバーが `Request` オブジェクトを受け取ることを前提としています。
 
 ```tsx
 import { renderToString } from "react-dom/server";
@@ -129,10 +129,10 @@ import routes from "./some-routes.js";
 let { query, dataRoutes } = createStaticHandler(routes);
 
 export async function handler(request: Request) {
-  // 1. `query` を使用してルーティングコンテキストを取得するためにアクション/ローダーを実行します
+  // 1. `query` を使用してルーティングコンテキストを取得するためにアクション/ローダーを実行します。
   let context = await query(request);
 
-  // `query` が Response を返す場合、生のまま送信します（ルートはおそらくリダイレクトされた）
+  // `query` が Response を返す場合、生のまま送信します（ルートはおそらくリダイレクトされています）
   if (context instanceof Response) {
     return context;
   }
@@ -140,7 +140,7 @@ export async function handler(request: Request) {
   // 2. SSR 用の静的ルーターを作成します
   let router = createStaticRouter(dataRoutes, context);
 
-  // 3. StaticRouterProvider を使用してすべてをレンダリングします
+  // 3. StaticRouterProvider ですべてをレンダリングします
   let html = renderToString(
     <StaticRouterProvider
       router={router}
@@ -169,9 +169,26 @@ export async function handler(request: Request) {
 }
 ```
 
-### 4. ブラウザでハイドレートする
+### 4. ブラウザでのハイドレーション
 
-このセクションは未完成であり、更新されます。React Router が React Router Vite プラグインでこれを行う方法については、`HydratedRouter` のソースを参照してください。
+ハイドレーションデータは `window.__staticRouterHydrationData` に埋め込まれています。それを使用してクライアント側のルーターを初期化し、`<RouterProvider>`をレンダリングします。
 
+```tsx
+import { StrictMode } from "react";
+import { hydrateRoot } from "react-dom/client";
+import { RouterProvider } from "react-router/dom";
+import routes from "./app/routes.js";
+import { createBrowserRouter } from "react-router";
 
+let router = createBrowserRouter(routes, {
+  hydrationData: window.__staticRouterHydrationData,
+});
+
+hydrateRoot(
+  document,
+  <StrictMode>
+    <RouterProvider router={router} />
+  </StrictMode>
+);
+```
 

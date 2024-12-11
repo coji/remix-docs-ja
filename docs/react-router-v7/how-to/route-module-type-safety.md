@@ -4,12 +4,12 @@ title: ルートモジュールの型安全
 
 # ルートモジュールの型安全
 
-React Routerは、URLパラメータ、ローダーデータなどに対する型推論を強化するために、ルート固有の型を生成します。
-このガイドは、テンプレートから開始しなかった場合に、設定方法を支援します。
+React Routerは、URLパラメータ、ローダーデータなどを型推論するために、ルート固有の型を生成します。
+このガイドは、テンプレートから開始しなかった場合の設定方法を説明します。
 
-React Routerでの型安全性の詳細については、[型安全性の説明](../explanation/type-safety)をご覧ください。
+React Routerでの型安全の仕組みの詳細については、[型安全の説明](../explanation/type-safety)を参照してください。
 
-## 1. `.gitignore`に`.react-router/`を追加
+## 1. `.gitignore`に`.react-router/`を追加する
 
 React Routerは、アプリのルートに`.react-router/`ディレクトリに型を生成します。このディレクトリはReact Routerによって完全に管理されており、`.gitignore`に追加する必要があります。
 
@@ -19,7 +19,7 @@ React Routerは、アプリのルートに`.react-router/`ディレクトリに�
 
 ## 2. `tsconfig`に生成された型を含める
 
-TypeScriptが生成された型を使用するように`tsconfig`を編集します。さらに、ルートモジュールに対して相対的な兄弟として型をインポートできるように、`rootDirs`を設定する必要があります。
+TypeScriptが生成された型を使用するように`tsconfig`を編集します。さらに、ルートモジュールを相対的な兄弟としてインポートできるように、`rootDirs`を設定する必要があります。
 
 ```json filename=tsconfig.json
 {
@@ -30,9 +30,13 @@ TypeScriptが生成された型を使用するように`tsconfig`を編集しま
 }
 ```
 
-## 3. 型チェックの前に型を生成
+アプリに複数の`tsconfig`ファイルを使用している場合、アプリディレクトリを`include`するファイルでこれらの変更を行う必要があります。
+たとえば、[`node-custom-server`テンプレート](https://github.com/remix-run/react-router-templates/tree/390fcec476dd336c810280479688fe893da38713/node-custom-server)には、`tsconfig.json`、`tsconfig.node.json`、`tsconfig.vite.json`が含まれています。`tsconfig.vite.json`は[アプリディレクトリを含んでいる](https://github.com/remix-run/react-router-templates/blob/390fcec476dd336c810280479688fe893da38713/node-custom-server/tsconfig.vite.json#L4-L6)ため、ルートモジュールの型安全のために`.react-router/types`を設定するのはこのファイルです。
 
-型チェックを独自の命令として実行する場合（たとえば、継続的インテグレーションパイプラインの一部として）、型チェックを実行する_前に_型を生成する必要があります。
+
+## 3. 型チェックの前に型を生成する
+
+型チェックを独自のcommandとして実行する場合（例：CIパイプラインの一部として）、型チェックを実行する_前に_型を生成する必要があります。
 
 ```json
 {
@@ -50,42 +54,29 @@ TypeScriptが生成された型を使用するように`tsconfig`を編集しま
 import { Route } from "./+types/my-route";
 ```
 
-これは機能しますが、`type`修飾子をインポートにも自動的に追加したい場合があります。
+しかし、[verbatimModuleSyntax](https://www.typescriptlang.org/tsconfig/#verbatimModuleSyntax)を有効にすると：
+
+```json filename=tsconfig.json
+{
+  "compilerOptions": {
+    "verbatimModuleSyntax": true
+  }
+}
+```
+
+`type`修飾子がインポートにも自動的に追加されます。
 
 ```ts filename=app/routes/my-route.tsx
 import type { Route } from "./+types/my-route";
 //     ^^^^
 ```
 
-たとえば、これはバンドラーなどのツールが、バンドルから安全に除外できる型専用のモジュールを検出するのに役立ちます。
-
-### VSCode
-
-VSCodeでは、コマンドパレットから「TypeScript › 環境設定：型専用の自動インポートを優先」を選択するか、`preferTypeOnlyAutoImports`を手動で設定することで、この動作を自動的に取得できます。
-
-```json filename=.vscode/settings.json
-{
-  "typescript.preferences.preferTypeOnlyAutoImports": true
-}
-```
-
-### eslint
-
-eslintでは、`consistent-type-imports`ルールに対して`prefer: "type-imports"`を設定することで、この動作を取得できます。
-
-```json
-{
-  "@typescript-eslint/consistent-type-imports": [
-    "warn",
-    { "prefer": "type-imports" }
-  ]
-}
-```
+これは、バンドラーなどのツールが、バンドルから安全に除外できる型専用のモジュールを検出するのに役立ちます。
 
 ## まとめ
 
 React RouterのViteプラグインは、ルート設定（`routes.ts`）を編集するたびに、`.react-router/types/`に型を自動的に生成する必要があります。
-つまり、最新の型をルートに取得するには、`react-router dev`（またはカスタム開発サーバー）を実行するだけで済みます。
+つまり、最新の状態のルートの型を取得するには、`react-router dev`（またはカスタム開発サーバー）を実行するだけです。
 
-ルートにこれらの型を取り込む方法の例については、[型安全性の説明](../explanation/type-safety)をご覧ください。
+ルートにこれらの型を取り込む方法の例については、[型安全の説明](../explanation/type-safety)を参照してください。
 

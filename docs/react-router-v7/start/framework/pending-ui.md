@@ -5,11 +5,12 @@ order: 7
 
 # 処理中のUI
 
-ユーザーが新しいルートに移動したり、アクションにデータを送信したりすると、UIはユーザーのアクションにすぐに処理中または楽観的な状態を反映して応答する必要があります。アプリケーションコードがこれの責任を負います。
+ユーザーが新しいルートに移動したり、アクションにデータを送信したりすると、UIはユーザーのアクションに、処理中または楽観的な状態ですぐに反応する必要があります。アプリケーションコードがこの処理を担当します。
 
-## グローバルな処理中ナビゲーション
 
-ユーザーが新しいURLに移動すると、次のページのローダーは次のページがレンダリングされる前に待機されます。`useNavigation`から処理中の状態を取得できます。
+## グローバルなナビゲーション処理中
+
+ユーザーが新しいURLに移動すると、次のページのローダーは、次のページがレンダリングされる前に待機されます。`useNavigation`から処理中の状態を取得できます。
 
 ```tsx
 import { useNavigation } from "react-router";
@@ -29,7 +30,7 @@ export default function Root() {
 }
 ```
 
-## ローカルな処理中ナビゲーション
+## ローカルなナビゲーション処理中
 
 処理中のインジケーターは、リンクにローカライズすることもできます。NavLinkの子、className、およびstyleプロパティは、処理中の状態を受け取る関数にすることができます。
 
@@ -57,9 +58,9 @@ function Navbar() {
 }
 ```
 
-## 処理中のフォーム送信
+## フォーム送信処理中
 
-フォームが送信されると、UIはユーザーのアクションにすぐに処理中の状態を反映して応答する必要があります。これは、独自の独立した状態を持つ[フェッチャー][use_fetcher]フォームを使用するのが最も簡単です（通常のフォームはグローバルなナビゲーションを引き起こすため）。
+フォームが送信されると、UIはユーザーのアクションに、処理中の状態で直ちに反応する必要があります。これは、[フェッチャー][use_fetcher]フォームを使用すると最も簡単です。フェッチャーフォームは独自の独立した状態を持つためです（通常のフォームはグローバルなナビゲーションを引き起こします）。
 
 ```tsx filename=app/project.tsx lines=[10-12]
 import { useFetcher } from "react-router";
@@ -101,9 +102,9 @@ function NewProjectForm() {
 }
 ```
 
-## 楽観的UI
+## 楽観的なUI
 
-フォーム送信データによってUIの将来の状態がわかっている場合、インスタントUXを実現するために楽観的UIを実装できます。
+フォーム送信データによってUIの将来の状態がわかっている場合、インスタントUXのための楽観的なUIを実装できます。
 
 ```tsx filename=app/project.tsx lines=[4-7]
 function Task({ task }) {
@@ -122,7 +123,7 @@ function Task({ task }) {
           name="status"
           value={isComplete ? "incomplete" : "complete"}
         >
-          {isComplete ? "完了マークを外す" : "完了マークをつける"}
+          {isComplete ? "完了解除" : "完了"}
         </button>
       </fetcher.Form>
     </div>
@@ -132,7 +133,9 @@ function Task({ task }) {
 
 ---
 
-次：[テスト](./testing)
+次へ: [テスト](./testing)
 
-[use_fetcher]: ../hooks/use-fetcher
+[use_fetcher]: https://api.reactrouter.com/v7/functions/react_router.useFetcher.html
+
+
 

@@ -1,16 +1,16 @@
 ---
-title: スペシャルファイル
+title: 特殊ファイル
 ---
 
-# スペシャルファイル
+# 特殊ファイル
 
-React Routerは、プロジェクト内でいくつかの特別なファイルを探します。これらのファイルのすべてが必須というわけではありません。
+React Routerは、プロジェクト内でいくつかの特殊ファイルを探します。これらのファイルはすべて必須ではありません。
 
 ## react-router.config.ts
 
 **このファイルはオプションです**
 
-この設定ファイルは、サーバーサイドレンダリングを使用しているかどうか、特定のディレクトリがどこに配置されているかなど、アプリの特定の側面を設定するために使用されます。
+設定ファイルは、サーバーサイドレンダリングを使用しているかどうか、特定のディレクトリの場所など、アプリの特定の側面を設定するために使用されます。
 
 ```tsx filename=react-router.config.ts
 import type { Config } from "@react-router/dev/config";
@@ -20,15 +20,15 @@ export default {
 } satisfies Config;
 ```
 
-詳細は、[設定API](https://api.reactrouter.com/v7/types/_react_router_dev.config.Config.html)を参照してください。
+詳細は、[react-router設定API][react-router-config]を参照してください。
 
 ## root.tsx
 
 **このファイルは必須です**
 
-"ルート"ルート(`app/root.tsx`)は、React Routerアプリケーションで唯一_必須_のルートです。これは、`routes/`ディレクトリ内のすべてのルートの親であり、ルート`<html>`ドキュメントのレンダリングを担当するためです。
+"ルート"ルート (`app/root.tsx`) は、React Routerアプリケーションで唯一の_必須_ルートです。これは、`routes/`ディレクトリ内のすべてのルートの親であり、ルートの`<html>`ドキュメントのレンダリングを担当します。
 
-ルートルートはドキュメントを管理するため、React Routerが提供するいくつかの「ドキュメントレベル」コンポーネントをレンダリングするのに適した場所です。これらのコンポーネントは、ルートルート内で一度使用され、ページが正しくレンダリングされるためにReact Routerが認識または構築したすべてのものを含みます。
+ルートルートはドキュメントを管理するため、React Routerが提供するいくつかの「ドキュメントレベル」コンポーネントをレンダリングする適切な場所です。これらのコンポーネントは、ルートルート内で一度使用され、ページが正しくレンダリングされるためにReact Routerが把握または構築したすべてのものを含みます。
 
 ```tsx filename=app/root.tsx
 import type { LinksFunction } from "react-router";
@@ -63,11 +63,11 @@ export default function App() {
         <Outlet />
 
         {/* クライアント側のトランジションのスクロール位置を管理します */}
-        {/* スクリプトにnonceベースのコンテンツセキュリティポリシーを使用する場合は、`nonce`プロップを指定する必要があります。それ以外の場合は、ここに示すようにnonceプロップを省略してください。 */}
+        {/* スクリプトにnonceベースのコンテンツセキュリティポリシーを使用する場合は、`nonce`プロップを指定する必要があります。そうでない場合は、ここに示すようにnonceプロップを省略します。 */}
         <ScrollRestoration />
 
         {/* スクリプトタグはここにあります */}
-        {/* スクリプトにnonceベースのコンテンツセキュリティポリシーを使用する場合は、`nonce`プロップを指定する必要があります。それ以外の場合は、ここに示すようにnonceプロップを省略してください。 */}
+        {/* スクリプトにnonceベースのコンテンツセキュリティポリシーを使用する場合は、`nonce`プロップを指定する必要があります。そうでない場合は、ここに示すようにnonceプロップを省略します。 */}
         <Scripts />
       </body>
     </html>
@@ -75,15 +75,14 @@ export default function App() {
 }
 ```
 
-### Layoutエクスポート
+### レイアウトエクスポート
 
 ルートルートは、すべての[ルートモジュールエクスポート][route-module]をサポートしています。
 
 ルートルートは、追加のオプションの`Layout`エクスポートもサポートしています。`Layout`コンポーネントは2つの目的を果たします。
 
-1. ルートコンポーネント、`HydrateFallback`、`ErrorBoundary`全体でドキュメントの「アプリシェル」を複製するのを避ける
-2. Reactが`<Links>`コンポーネントから`<link rel="stylesheet">`タグを削除して再追加する場合に、Reactがアプリシェルの要素を再マウントするのを防ぎ、FOUCが発生するのを防ぎます。
-
+1. ルートコンポーネント、`HydrateFallback`、`ErrorBoundary`全体でドキュメントの「アプリシェル」を複製することを避けます。
+2. ルートコンポーネント/`HydrateFallback`/`ErrorBoundary`を切り替えるときに、Reactがアプリシェルの要素を再マウントするのを防ぎます。これにより、Reactが`<Links>`コンポーネントから`<link rel="stylesheet">`タグを削除して追加し直すと、FOUCが発生する可能性があります。
 
 ```tsx filename=app/root.tsx lines=[10-31]
 export function Layout({ children }) {
@@ -99,7 +98,7 @@ export function Layout({ children }) {
         <Links />
       </head>
       <body>
-        {/* childrenはルートコンポーネント、ErrorBoundary、またはHydrateFallbackになります */}
+        {/* childrenは、ルートコンポーネント、ErrorBoundary、またはHydrateFallbackになります */}
         {children}
         <Scripts />
         <ScrollRestoration />
@@ -115,14 +114,13 @@ export default function App() {
 export function ErrorBoundary() {}
 ```
 
-**`Layout`コンポーネントでの`useLoaderData`に関する注意事項**
+**`Layout`コンポーネントでの`useLoaderData`に関するメモ**
 
-`useLoaderData`は`ErrorBoundary`コンポーネントで使用することは許可されていません。これは、ハッピーパスルートレンダリングを目的としており、その型定義には、`loader`が正常に実行され、何かを返したという組み込みの仮定があるためです。`loader`がスローして境界をトリガーした可能性があるため、`ErrorBoundary`ではこの仮定は成り立ちません！`ErrorBoundary`でローダーデータにアクセスするには、`useRouteLoaderData`を使用できます。これは、ローダーデータが`undefined`である可能性を考慮します。
+`useLoaderData`は、`ErrorBoundary`コンポーネントでは使用できません。これは、ハッピーパスルートレンダリングを目的としており、その型定義には、`loader`が正常に実行され、何かを返したという組み込みの仮定があるためです。`loader`がスローして境界をトリガーした可能性があるため、`ErrorBoundary`ではこの仮定が成立しません！`ErrorBoundary`でローダーデータにアクセスするには、`useRouteLoaderData`を使用できます。これは、ローダーデータが`undefined`である可能性を考慮に入れています。
 
-`Layout`コンポーネントは成功とエラーの両方のフローで使用されるため、同じ制限が適用されます。成功したリクエストだったかどうかによって`Layout`のロジックを分岐させる必要がある場合は、`useRouteLoaderData("root")`と`useRouteError()`を使用できます。
+`Layout`コンポーネントは成功とエラーの両方でフローで使用されるため、この同じ制限が適用されます。成功したリクエストかどうかによって`Layout`のロジックを分岐する必要がある場合は、`useRouteLoaderData("root")`と`useRouteError()`を使用できます。
 
-
-<docs-warn>`<Layout>`コンポーネントは`ErrorBoundary`のレンダリングに使用されるため、`ErrorBoundary`をレンダリングエラーに遭遇することなくレンダリングできることを確認するために、_非常に防御的に_する必要があります。`Layout`が境界をレンダリングしようとして別のエラーをスローした場合、それは使用できなくなり、UIは非常に最小限の組み込みデフォルト`ErrorBoundary`にフォールバックします。</docs-warn>
+<docs-warn>`<Layout>`コンポーネントは`ErrorBoundary`のレンダリングに使用されるため、`ErrorBoundary`をレンダリング中にレンダリングエラーが発生しないように、_非常に防御的に_する必要があります。`Layout`が境界をレンダリングしようとして別のエラーをスローすると、使用できなくなり、UIは非常に最小限の組み込みデフォルト`ErrorBoundary`にフォールバックします。</docs-warn>
 
 ```tsx filename=app/root.tsx lines=[6-7,19-29,32-34]
 export function Layout({
@@ -172,7 +170,7 @@ export function Layout({
 
 **このファイルは必須です**
 
-`routes.ts`ファイルは、どのURLパターンがどのルートモジュールに一致するかを設定するために使用されます。
+`routes.ts`ファイルは、どのURLパターンがどのルートモジュールにマッチングされるかを設定するために使用されます。
 
 ```tsx filename=app/routes.ts
 import {
@@ -192,7 +190,7 @@ export default [
 
 **このファイルはオプションです**
 
-デフォルトでは、React Routerはクライアントでのアプリのハイドレーションを処理します。次のコマンドでデフォルトのエントリクライアントファイルを公開できます。
+デフォルトでは、React Routerはクライアントでのアプリのハイドレーションを処理します。次のコマンドでデフォルトのエントリクライアントファイルを表示できます。
 
 ```shellscript nonumber
 react-router reveal
@@ -215,14 +213,13 @@ startTransition(() => {
 });
 ```
 
-これはブラウザで最初に実行されるコードです。クライアント側のライブラリを初期化したり、クライアント専用のプロバイダーを追加したりできます。
-
+これはブラウザで最初に実行されるコードです。クライアントサイドライブラリを初期化したり、クライアント専用のプロバイダーを追加したりできます。
 
 ## entry.server.tsx
 
 **このファイルはオプションです**
 
-デフォルトでは、React RouterはHTTPレスポンスの生成を処理します。次のコマンドでデフォルトのエントリサーバーファイルを公開できます。
+デフォルトでは、React RouterはHTTPレスポンスの生成を処理します。次のコマンドでデフォルトのエントリサーバーファイルを表示できます。
 
 ```shellscript nonumber
 react-router reveal
@@ -234,7 +231,7 @@ react-router reveal
 
 ### `handleDataRequest`
 
-データリクエストのレスポンスを変更できるオプションの`handleDataRequest`関数をエクスポートできます。これらは、HTMLをレンダリングするのではなく、クライアント側のハイドレーションが発生した後にローダーとアクションデータをブラウザに返すリクエストです。
+データリクエストのレスポンスを変更できるオプションの`handleDataRequest`関数をエクスポートできます。これらは、HTMLをレンダリングしないリクエストですが、クライアント側のハイドレーションが行われた後にローダーデータとアクションデータをブラウザに返します。
 
 ```tsx
 export function handleDataRequest(
@@ -252,7 +249,7 @@ export function handleDataRequest(
 
 ### `handleError`
 
-デフォルトでは、React Routerは発生したサーバーサイドエラーをコンソールに出力します。ロギングをより詳細に制御したい場合、またはこれらのエラーを外部サービスにも報告したい場合は、オプションの`handleError`関数をエクスポートできます。これにより、制御が可能になり（組み込みのエラーロギングは無効になります）。
+デフォルトでは、React Routerは発生したサーバー側のエラーをコンソールに出力します。ログをより詳細に制御したい場合、またはこれらのエラーを外部サービスにも報告したい場合は、オプションの`handleError`関数をエクスポートできます。これにより制御が可能になり（そして組み込みのエラーログは無効になります）。
 
 ```tsx
 export function handleError(
@@ -270,20 +267,57 @@ export function handleError(
 }
 ```
 
-_リクエストが中断された場合にロギングを避けるのが一般的です。React Routerのキャンセルと競合状態の処理により、多くのリクエストが中断される可能性があるためです。_
+_リクエストが中断された場合は一般的にログを避けることをお勧めします。React Routerの中止と競合状態の処理により、多くのリクエストが中断される可能性があるためです。_
 
 ### ストリーミングレンダリングエラー
 
-[`renderToPipeableStream`][rendertopipeablestream]または[`renderToReadableStream`][rendertoreadablestream]を使用してHTMLレスポンスをストリーミングしている場合、独自の`handleError`実装は、最初のシェルレンダリング中に発生したエラーのみを処理します。後続のストリーミングレンダリング中にレンダリングエラーが発生した場合、React Routerサーバーはすでにレスポンスを送信しているため、これらのエラーを手動で処理する必要があります。
+[`renderToPipeableStream`][rendertopipeablestream]または[`renderToReadableStream`][rendertoreadablestream]を介してHTMLレスポンスをストリーミングしている場合、独自の`handleError`実装は、最初のシェルレンダリング中に発生したエラーのみを処理します。後続のストリーミングレンダリング中にレンダリングエラーが発生した場合、React Routerサーバーはその時点で既にレスポンスを送信しているため、これらのエラーを手動で処理する必要があります。
 
-`renderToPipeableStream`の場合、`onError`コールバック関数でこれらのエラーを処理できます。エラーがシェルレンダリングエラー（無視できる）か非同期エラーかを判断するために、`onShellReady`でブール値を切り替える必要があります。
+`renderToPipeableStream`では、`onError`コールバック関数でこれらのエラーを処理できます。`onShellReady`でブール値を切り替える必要があります。これにより、エラーがシェルレンダリングエラーであるか（無視できます）、非同期エラーであるかがわかります。
 
-例については、ノードのデフォルトの[`entry.server.tsx`][node-streaming-entry-server]を参照してください。
+例については、Nodeのデフォルトの[`entry.server.tsx`][node-streaming-entry-server]を参照してください。
 
 **スローされたレスポンス**
 
-これは、`loader`/`action`関数からスローされた`Response`インスタンスを処理しません。このハンドラの目的は、予期しないスローされたエラーを引き起こすコードのバグを見つけることです。シナリオを検出して`loader`/`action`で401/404などの`Response`をスローしている場合は、コードによって処理される予期されたフローです。これらのエラーをログに記録したり、外部サービスに送信したりする必要がある場合も、レスポンスをスローした時点で実行する必要があります。
+これは、`loader`/`action`関数からのスローされた`Response`インスタンスは処理しません。このハンドラの目的は、予期しないスローされたエラーにつながるコードのバグを見つけることです。シナリオを検出して`loader`/`action`で401/404などの`Response`をスローしている場合、それはコードによって処理される予期されるフローです。それらをログに記録したり、外部サービスに送信したりする場合も、レスポンスをスローした時点で実行する必要があります。
 
+## `.server` モジュール
+
+厳密には必須ではありませんが、`.server`モジュールは、モジュール全体をサーバー専用として明示的にマークする良い方法です。`.server`ファイルまたは`.server`ディレクトリ内のコードが誤ってクライアントモジュールグラフに含まれると、ビルドは失敗します。
+
+```txt
+app
+├── .server 👈 このディレクトリ内のすべてのファイルをサーバー専用としてマークします
+│   ├── auth.ts
+│   └── db.ts
+├── cms.server.ts 👈 このファイルをサーバー専用としてマークします
+├── root.tsx
+└── routes.ts
+```
+
+`.server`モジュールは、アプリディレクトリ内にある必要があります。
+
+詳細については、サイドバーのルートモジュールセクションを参照してください。
+
+## `.client` モジュール
+
+一般的ではありませんが、ブラウザでモジュールサイドエフェクトを使用するファイルや依存関係がある場合があります。ファイル名に`*.client.ts`を使用するか、`.client`ディレクトリ内にファイルをネストして、サーバーバンドルから強制的に除外できます。
+
+```ts filename=feature-check.client.ts
+// これはサーバーを壊します
+export const supportsVibrationAPI =
+  "vibrate" in window.navigator;
+```
+
+このモジュールからエクスポートされた値はサーバー上ではすべて`undefined`であるため、それらを使用できる場所は[`useEffect`][use_effect]とクリックハンドラなどのユーザーイベントだけです。
+
+```ts
+import { supportsVibrationAPI } from "./feature-check.client.ts";
+
+console.log(supportsVibrationAPI);
+// サーバー: undefined
+// クライアント: true | false
+```
 
 [react-router-config]: https://api.reactrouter.com/v7/types/_react_router_dev.config.Config.html
 [route-module]: ../start/framework/route-module
@@ -293,5 +327,6 @@ _リクエストが中断された場合にロギングを避けるのが一般�
 [rendertopipeablestream]: https://react.dev/reference/react-dom/server/renderToPipeableStream
 [rendertoreadablestream]: https://react.dev/reference/react-dom/server/renderToReadableStream
 [node-streaming-entry-server]: https://github.com/remix-run/react-router/blob/dev/packages/react-router-dev/config/defaults/entry.server.node.tsx
+[use_effect]: https://react.dev/reference/react/useEffect
 
 

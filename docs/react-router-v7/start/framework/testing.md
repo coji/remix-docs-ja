@@ -5,7 +5,7 @@ order: 9
 
 # テスト
 
-`useLoaderData`、`<Link>`などを使用するコンポーネントは、React Router アプリのコンテキストでレンダリングする必要があります。`createRoutesStub`関数は、コンポーネントを分離してテストするためのコンテキストを作成します。
+`useLoaderData`、`<Link>`などを使用するコンポーネントは、React Router アプリのコンテキストでレンダリングする必要があります。`createRoutesStub`関数は、コンポーネントを独立してテストするためのコンテキストを作成します。
 
 `useActionData`に依存するログインフォームコンポーネントを考えてみましょう。
 
@@ -32,11 +32,16 @@ export function LoginForm() {
 }
 ```
 
-`createRoutesStub`を使用してこのコンポーネントをテストできます。これは、ローダー、アクション、コンポーネントを持つルートモジュールに似たオブジェクトの配列を取ります。
+`createRoutesStub`を使用してこのコンポーネントをテストできます。これは、ローダー、アクション、コンポーネントを持つルートモジュールに似たオブジェクトの配列を受け取ります。
 
 ```tsx
 import { createRoutesStub } from "react-router";
-import * as Test from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { LoginForm } from "./LoginForm";
 
 test("LoginForm renders error messages", async () => {
@@ -55,18 +60,16 @@ test("LoginForm renders error messages", async () => {
           },
         };
       },
-    }),
+    },
   ]);
 
-  // "/login"でアプリスタブをレンダリングします
-  Test.render(<Stub initialEntries={["/login"]} />);
+  // "/login"でアプリスタブをレンダリングする
+  render(<Stub initialEntries={["/login"]} />);
 
-  // インタラクションをシミュレートします
-  Test.user.click(screen.getByText("Login"));
-  await Test.waitFor(() => screen.findByText(USER_MESSAGE));
-  await Test.waitFor(() =>
-    screen.findByText(PASSWORD_MESSAGE)
-  );
+  // ユーザーインタラクションをシミュレートする
+  userEvent.click(screen.getByText("Login"));
+  await waitFor(() => screen.findByText(USER_MESSAGE));
+  await waitFor(() => screen.findByText(PASSWORD_MESSAGE));
 });
 ```
 

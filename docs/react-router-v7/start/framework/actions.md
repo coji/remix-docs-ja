@@ -5,9 +5,9 @@ order: 6
 
 # アクション
 
-データの変更は、ルートアクションを通して行われます。アクションが完了すると、ページ上のすべてのローダーデータが再検証され、UIをデータと同期した状態に保ちます。コードを記述する必要はありません。
+データの変更は、ルートアクションを通して行われます。アクションが完了すると、ページ上のすべてのローダーデータが再検証され、UIをデータと同期した状態に保ちます。コードを書く必要はありません。
 
-`action`で定義されたルートアクションはサーバーでのみ呼び出され、`clientAction`で定義されたアクションはブラウザで実行されます。
+`action` で定義されたルートアクションはサーバーでのみ呼び出され、`clientAction`で定義されたアクションはブラウザで実行されます。
 
 ## クライアントアクション
 
@@ -48,7 +48,7 @@ export default function Project({
 
 ## サーバーアクション
 
-サーバーアクションはサーバーでのみ実行され、クライアントバンドルから削除されます。
+サーバーアクションはサーバーでのみ実行され、クライアントバンドルからは削除されます。
 
 ```tsx filename=app/project.tsx
 // route('/projects/:projectId', './project.tsx')
@@ -85,7 +85,7 @@ export default function Project({
 
 ## アクションの呼び出し
 
-アクションは、`<Form>` を通じて宣言的に、そして `useSubmit` （または `<fetcher.Form>` と `fetcher.submit`）を通じて命令的に、ルートのパスと "post" メソッドを参照して呼び出されます。
+アクションは、`<Form>` を通じて宣言的に、`useSubmit` （または `<fetcher.Form>` と `fetcher.submit`）を通じて命令的に、ルートのパスと "post" メソッドを参照することで呼び出されます。
 
 ### `<Form>` を使用したアクションの呼び出し
 
@@ -106,7 +106,7 @@ function SomeComponent() {
 
 ### `useSubmit` を使用したアクションの呼び出し
 
-`useSubmit` を使用して、アクションにフォームデータを命令的に送信できます。
+`useSubmit` を使用して、アクションにフォームデータを送信することができます。
 
 ```tsx
 import { useCallback } from "react";
@@ -132,7 +132,7 @@ function useQuizTimer() {
 
 ### fetcher を使用したアクションの呼び出し
 
-フェッチャを使用すると、ナビゲーションを行わずに（ブラウザの履歴に新しいエントリが追加されません）、アクション（およびローダー）にデータを送信できます。
+フェッチャーを使用すると、ナビゲーションを起こすことなく（ブラウザの履歴に新しいエントリは追加されません）、アクション（とローダー）にデータを送信できます。
 
 ```tsx
 import { useFetcher } from "react-router";
@@ -161,12 +161,12 @@ fetcher.submit(
 );
 ```
 
-詳細については、[フェッチャの使用][fetchers]ガイドを参照してください。
+詳細については、[フェッチャーの使用][fetchers]ガイドを参照してください。
 
 ---
 
-次：[ナビゲーション](./navigating)
+次へ: [ナビゲーション](./navigating)
 
-[fetchers]: ../how-to/fetchers
+[fetchers]: ../../how-to/fetchers
 [data]: ../../api/react-router/data
 

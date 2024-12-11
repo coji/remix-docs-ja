@@ -17,13 +17,13 @@ route("teams/:teamId", "./team.tsx"),
 - 自動コード分割
 - データ読み込み
 - アクション
-- 検証のやり直し
-- エラー境界
+- 再検証
+- エラーバウンダリ
 - その他多数
 
-このガイドは、すべてのルートモジュール機能の概要です。入門ガイドの残りの部分では、これらの機能についてより詳細に説明します。
+このガイドは、すべてのルートモジュール機能の概要です。残りの入門ガイドでは、これらの機能をより詳細に説明します。
 
-## コンポーネント(`default`)
+## コンポーネント (`default`)
 
 ルートが一致したときにレンダリングされるコンポーネントを定義します。
 
@@ -42,7 +42,7 @@ export default function MyRouteComponent() {
 
 ## `loader`
 
-ルートローダーは、ルートコンポーネントがレンダリングされる前に、ルートコンポーネントにデータを提供します。サーバーサイドレンダリング時、またはプリレンダリングによるビルド時にのみサーバー上で呼び出されます。
+ルートローダーは、ルートコンポーネントがレンダリングされる前に、ルートコンポーネントにデータを提供します。サーバーサイドレンダリング時、またはプリレンダリングによるビルド時にのみサーバーで呼び出されます。
 
 ```tsx
 export async function loader() {
@@ -54,13 +54,13 @@ export default function MyRoute({ loaderData }) {
 }
 ```
 
-こちらも参照してください。
+参照:
 
 - [`loader` パラメータ][loader-params]
 
 ## `clientLoader`
 
-ブラウザでのみ呼び出され、ルートクライアントローダーは、ルートローダーに加えて、またはルートローダーの代わりに、ルートコンポーネントにデータを提供します。
+ブラウザでのみ呼び出され、ルートクライアントローダーは、ルートローダーに追加して、またはルートローダーの代わりに、ルートコンポーネントにデータを提供します。
 
 ```tsx
 export async function clientLoader({ serverLoader }) {
@@ -68,12 +68,12 @@ export async function clientLoader({ serverLoader }) {
   const serverData = await serverLoader();
   // クライアントでデータを取得する
   const data = getDataFromClient();
-  // `useLoaderData()` を通じて公開するデータの返却
+  // `useLoaderData()` を介して公開するデータを返す
   return data;
 }
 ```
 
-クライアントローダーは、関数に`hydrate`プロパティを設定することで、サーバーレンダリングされたページの初期ページロードハイドレーションに参加できます。
+クライアントローダーは、関数の`hydrate`プロパティを設定することで、サーバーレンダリングされたページの初期ページロードハイドレーションに参加できます。
 
 ```tsx
 export async function clientLoader() {
@@ -85,11 +85,11 @@ clientLoader.hydrate = true as const;
 <docs-info>
 
 `as const`を使用することで、TypeScriptは`clientLoader.hydrate`の型を`boolean`ではなく`true`として推論します。
-これにより、React Routerは`clientLoader.hydrate`の値に基づいて`loaderData`の型を導出できます。
+これにより、React Routerは`clientLoader.hydrate`の値に基づいて`loaderData`の型を導き出すことができます。
 
 </docs-info>
 
-こちらも参照してください。
+参照:
 
 - [`clientLoader` パラメータ][client-loader-params]
 
@@ -102,13 +102,13 @@ clientLoader.hydrate = true as const;
 import { Form } from "react-router";
 import { TodoList } from "~/components/TodoList";
 
-// このデータはアクションの完了後に読み込まれます...
+// このデータはアクションが完了した後にロードされます...
 export async function loader() {
   const items = await fakeDb.getItems();
   return { items };
 }
 
-// ...そのため、ここにあるリストは自動的に更新されます
+// ...そのため、ここのリストは自動的に更新されます
 export default function Items({ loaderData }) {
   return (
     <div>
@@ -137,19 +137,19 @@ export async function action({ request }) {
 ```tsx
 export async function clientAction({ serverAction }) {
   fakeInvalidateClientSideCache();
-  // 必要に応じてサーバーアクションを呼び出すことができます
+  // 必要に応じてサーバーアクションを呼び出すこともできます
   const data = await serverAction();
   return data;
 }
 ```
 
-こちらも参照してください。
+参照:
 
 - [`clientAction` パラメータ][client-action-params]
 
 ## `ErrorBoundary`
 
-他のルートモジュールAPIがスローした場合、ルートコンポーネントの代わりにルートモジュールの`ErrorBoundary`がレンダリングされます。
+他のルートモジュールAPIが例外をスローした場合、ルートコンポーネントの代わりにルートモジュールの`ErrorBoundary`がレンダリングされます。
 
 ```tsx
 import {
@@ -186,7 +186,7 @@ export function ErrorBoundary() {
 
 ## `HydrateFallback`
 
-最初のページ読み込み時、ルートコンポーネントはクライアントローダーが終了した後にのみレンダリングされます。エクスポートされた場合、`HydrateFallback`はルートコンポーネントの代わりにすぐにレンダリングできます。
+初期ページロード時に、ルートコンポーネントはクライアントローダーが完了した後にのみレンダリングされます。エクスポートされている場合、`HydrateFallback`はルートコンポーネントの代わりにすぐにレンダリングできます。
 
 ```tsx filename=routes/client-only-route.tsx
 export async function clientLoader() {
@@ -218,7 +218,7 @@ export function headers() {
 
 ## `handle`
 
-ルートハンドルを使用すると、アプリは`useMatches`でルートマッチに何かを追加して、（パンくずリストなど）抽象化を作成できます。
+ルートハンドルにより、アプリは`useMatches`でルートマッチに任意のものを追加して、抽象化（パンくずリストなど）を作成できます。
 
 ```tsx
 export const handle = {
@@ -228,7 +228,7 @@ export const handle = {
 
 ## `links`
 
-ルートリンクは、ドキュメントの`<head>`でレンダリングされる[`<link>` 要素][link-element]を定義します。
+ルートリンクは、ドキュメントの`<head>`にレンダリングされる[`<link>` 要素][link-element]を定義します。
 
 ```tsx
 export function links() {
@@ -271,7 +271,7 @@ export default function Root() {
 
 ## `meta`
 
-ルートメタは、ドキュメントの`<head>`でレンダリングされるメタタグを定義します。
+ルートメタは、ドキュメントの`<head>`にレンダリングされるメタタグを定義します。
 
 ```tsx
 export function meta() {
@@ -307,19 +307,19 @@ export default function Root() {
 }
 ```
 
-**こちらも参照**
+**参照**
 
 - [`meta` パラメータ][meta-params]
 
 ## `shouldRevalidate`
 
-デフォルトでは、すべてルートはアクション後に再検証されます。この関数は、データに影響を与えないアクションに対して、ルートが再検証をオプトアウトできるようにします。
+デフォルトでは、すべてルートはアクション後に再検証されます。この関数は、データに影響を与えないアクションについて、ルートが再検証をオプトアウトすることを許可します。
 
 ```tsx
-import type { Route } from "./+types/my-route";
+import type { ShouldRevalidateFunctionArgs } from "react-router";
 
 export function shouldRevalidate(
-  arg: Route.ShouldRevalidateArg
+  arg: ShouldRevalidateFunctionArgs
 ) {
   return true;
 }
@@ -344,6 +344,5 @@ export function shouldRevalidate(
 [meta-element]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
 [meta-params]: https://api.reactrouter.com/v7/interfaces/react_router.MetaArgs
 [use-revalidator]: https://api.reactrouter.com/v7/functions/react_router.useRevalidator.html
-
 
 
