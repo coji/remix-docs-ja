@@ -7,7 +7,7 @@ order: 1
 
 連絡先を管理できる、小さくても機能豊富なアドレス帳アプリを作成します。データベースやその他の「本番環境対応」の要素は使用しないため、React Routerが提供する機能に集中できます。手順に従って進めれば約30分かかりますが、そうでなければ簡単に読めます。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/01.webp" />
+<img class="tutorial" src="/v7_address_book_tutorial/01.webp" />
 
 👉 **これが表示されたら、アプリで何か操作する必要があります！**
 
