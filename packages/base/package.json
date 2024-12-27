@@ -18,7 +18,7 @@
   "dependencies": {
     "@radix-ui/react-accordion": "catalog:",
     "@radix-ui/react-avatar": "catalog:",
-    "@radix-ui/react-collapsible": "1.1.1",
+    "@radix-ui/react-collapsible": "1.1.2",
     "@radix-ui/react-dialog": "catalog:",
     "@radix-ui/react-dropdown-menu": "catalog:",
     "@radix-ui/react-label": "catalog:",
