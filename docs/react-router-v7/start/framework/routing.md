@@ -5,9 +5,9 @@ order: 2
 
 # ルーティング
 
-## ルートの構成
+## ルートの設定
 
-ルートは`app/routes.ts`で構成されます。各ルートには、URLと一致させるURLパターンと、その動作を定義するルートモジュールのファイルパスの2つの必須部分があります。
+ルートは `app/routes.ts` で設定します。各ルートには、URL にマッチする URL パターンと、その動作を定義するルートモジュールへのファイルパスという、2 つの必須部分があります。
 
 ```ts filename=app/routes.ts
 import {
@@ -17,11 +17,11 @@ import {
 
 export default [
   route("some/path", "./some/file.tsx"),
-  // パターン ^           ^ モジュールファイル
+  // pattern ^           ^ module file
 ] satisfies RouteConfig;
 ```
 
-より大規模なルート構成の例を以下に示します。
+以下は、より大きなサンプルルート設定です。
 
 ```ts filename=app/routes.ts
 import {
@@ -49,31 +49,30 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-構成ではなくファイル命名規則でルートを定義する方が良い場合は、`@react-router/fs-routes`パッケージが[ファイルシステムルーティング規則を提供します。][file-route-conventions]
-
+設定ではなくファイル命名規則でルートを定義したい場合は、`@react-router/fs-routes` パッケージが [ファイルシステムルーティング規則][file-route-conventions] を提供します。
 
 ## ルートモジュール
 
-`routes.ts`で参照されるファイルは、各ルートの動作を定義します。
+`routes.ts` で参照されるファイルは、各ルートの動作を定義します。
 
 ```tsx filename=app/routes.ts
 route("teams/:teamId", "./team.tsx"),
 //           ルートモジュール ^^^^^^^^
 ```
 
-ルートモジュールの例を以下に示します。
+以下は、ルートモジュールのサンプルです。
 
 ```tsx filename=app/team.tsx
-// 型の安全性/推論を提供します
+// 型安全性/推論を提供
 import type { Route } from "./+types/team";
 
-// コンポーネントに`loaderData`を提供します
+// コンポーネントに `loaderData` を提供
 export async function loader({ params }: Route.LoaderArgs) {
   let team = await fetchTeam(params.teamId);
   return { name: team.name };
 }
 
-// ローダーが完了した後にレンダリングされます
+// ローダーが完了した後にレンダリング
 export default function Component({
   loaderData,
 }: Route.ComponentProps) {
@@ -81,12 +80,11 @@ export default function Component({
 }
 ```
 
-ルートモジュールには、アクション、ヘッダー、エラーバウンダリなどの機能が他にもありますが、それらは次のガイドで説明します。[ルートモジュール](./route-module)
-
+ルートモジュールには、アクション、ヘッダー、エラー境界などの機能がさらにありますが、これらについては次のガイド [ルートモジュール](./route-module) で説明します。
 
 ## ネストされたルート
 
-ルートは親ルート内にネストできます。
+ルートは、親ルートの中にネストできます。
 
 ```ts filename=app/routes.ts
 import {
@@ -105,9 +103,9 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-親のパスは子に自動的に含まれるため、この構成では`"/dashboard"`と`"/dashboard/settings"`の両方のURLが作成されます。
+親のパスは自動的に子に含まれるため、この設定では `"/dashboard"` と `"/dashboard/settings"` の両方の URL が作成されます。
 
-子ルートは、親ルートの`<Outlet/>`を通じてレンダリングされます。
+子ルートは、親ルートの `<Outlet/>` を介してレンダリングされます。
 
 ```tsx filename=app/dashboard.tsx
 import { Outlet } from "react-router";
@@ -115,8 +113,8 @@ import { Outlet } from "react-router";
 export default function Dashboard() {
   return (
     <div>
-      <h1>Dashboard</h1>
-      {/* home.tsxまたはsettings.tsxのいずれかになります */}
+      <h1>ダッシュボード</h1>
+      {/* home.tsx または settings.tsx のいずれか */}
       <Outlet />
     </div>
   );
@@ -125,12 +123,11 @@ export default function Dashboard() {
 
 ## ルートルート
 
-`routes.ts`内のすべてのルートは、特別な`app/root.tsx`モジュール内にネストされています。
-
+`routes.ts` のすべてのルートは、特別な `app/root.tsx` モジュールの中にネストされます。
 
 ## レイアウトルート
 
-`layout`を使用すると、レイアウトルートは子に対して新しいネストを作成しますが、URLにセグメントを追加しません。ルートルートに似ていますが、任意のレベルに追加できます。
+`layout` を使用すると、レイアウトルートは子に対して新しいネストを作成しますが、URL にセグメントを追加しません。これはルートルートのようなものですが、任意のレベルで追加できます。
 
 ```tsx filename=app/routes.ts lines=[10,16]
 import {
@@ -156,13 +153,30 @@ export default [
 ] satisfies RouteConfig;
 ```
 
+`projects/home.tsx` がレイアウトに表示されるようにするには、アウトレットが必要です。
+
+```tsx filename=./projects/project-layout.tsx lines=[8]
+import { Outlet } from "react-router";
+
+export default function ProjectLayout() {
+  return (
+    <div>
+      <aside>例のサイドバー</aside>
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  );
+}
+```
+
 ## インデックスルート
 
 ```ts
 index(componentFile),
 ```
 
-インデックスルートは、親のURLで親の[Outlet][outlet]にレンダリングされます（デフォルトの子ルートのようなもの）。
+インデックスルートは、親の URL で親の [Outlet][outlet] にレンダリングされます（デフォルトの子ルートのように）。
 
 ```ts filename=app/routes.ts
 import {
@@ -172,22 +186,21 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-  // /でroot.tsx Outletにレンダリングされます
+  // / の root.tsx Outlet にレンダリング
   index("./home.tsx"),
   route("dashboard", "./dashboard.tsx", [
-    // /dashboardでdashboard.tsx Outletにレンダリングされます
+    // /dashboard の dashboard.tsx Outlet にレンダリング
     index("./dashboard-home.tsx"),
     route("settings", "./dashboard-settings.tsx"),
   ]),
 ] satisfies RouteConfig;
 ```
 
-インデックスルートには子を含めることができないことに注意してください。
-
+インデックスルートには子を含めることはできません。
 
 ## ルートプレフィックス
 
-`prefix`を使用すると、親ルートファイルを追加する必要なく、一連のルートにパスのプレフィックスを追加できます。
+`prefix` を使用すると、親ルートファイルを追加することなく、ルートのセットにパスプレフィックスを追加できます。
 
 ```tsx filename=app/routes.ts lines=[14]
 import {
@@ -213,10 +226,9 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-
 ## 動的セグメント
 
-パスセグメントが`:`で始まる場合、それは「動的セグメント」になります。ルートがURLと一致すると、動的セグメントはURLから解析され、他のルーターAPIに`params`として提供されます。
+パスセグメントが `:` で始まる場合、それは「動的セグメント」になります。ルートが URL と一致すると、動的セグメントは URL から解析され、他のルーター API に `params` として提供されます。
 
 ```ts filename=app/routes.ts
 route("teams/:teamId", "./team.tsx"),
@@ -237,7 +249,7 @@ export default function Component({
 }
 ```
 
-1つのルートパスに複数の動的セグメントを含めることができます。
+1 つのルートパスに複数の動的セグメントを含めることができます。
 
 ```ts filename=app/routes.ts
 route("c/:categoryId/p/:productId", "./product.tsx"),
@@ -253,22 +265,21 @@ async function loader({ params }: LoaderArgs) {
 
 ## オプションセグメント
 
-セグメントの最後に`?`を追加することで、ルートセグメントをオプションにすることができます。
+セグメントの最後に `?` を追加すると、ルートセグメントをオプションにすることができます。
 
 ```ts filename=app/routes.ts
 route(":lang?/categories", "./categories.tsx"),
 ```
 
-オプションの静的セグメントも使用できます。
+オプションの静的セグメントを持つこともできます。
 
 ```ts filename=app/routes.ts
 route("users/:userId/edit?", "./user.tsx");
 ```
 
-
 ## スプラット
 
-「キャッチオール」や「スター」セグメントとも呼ばれます。ルートパスパターンが`/*`で終わる場合、`/`を含む`/`以降の文字と一致します。
+「キャッチオール」や「スター」セグメントとしても知られています。ルートパスパターンが `/*` で終わる場合、他の `/` 文字を含む、`/` に続く任意の文字に一致します。
 
 ```ts filename=app/routes.ts
 route("files/*", "./files.tsx"),
@@ -276,20 +287,19 @@ route("files/*", "./files.tsx"),
 
 ```tsx filename=app/files.tsx
 export async function loader({ params }: Route.LoaderArgs) {
-  // params["*"]には、files/の後の残りのURLが含まれます
+  // params["*"] には、files/ の後の残りの URL が含まれます
 }
 ```
 
-`*`を分解できますが、新しい名前を割り当てる必要があります。一般的な名前は`splat`です。
+`*` を分割構造化できますが、新しい名前を割り当てる必要があります。一般的な名前は `splat` です。
 
 ```tsx
 const { "*": splat } = params;
 ```
 
-
 ## コンポーネントルート
 
-URLと一致するコンポーネントをコンポーネントツリー内の任意の要素に使用することもできます。
+コンポーネントツリー内の任意の要素に URL と一致するコンポーネントを使用することもできます。
 
 ```tsx
 import { Routes, Route } from "react-router";
@@ -297,23 +307,23 @@ import { Routes, Route } from "react-router";
 function Wizard() {
   return (
     <div>
-      <h1>Some Wizard with Steps</h1>
+      <h1>ステップを含むウィザード</h1>
       <Routes>
         <Route index element={<StepOne />} />
         <Route path="step-2" element={<StepTwo />} />
-        <Route path="step-3" element={<StepThree />}>
+        <Route path="step-3" element={<StepThree />} />
       </Routes>
     </div>
   );
 }
 ```
 
-これらのルートは、データの読み込み、アクション、コード分割、その他のルートモジュールの機能には参加しないため、使用例はルートモジュールのものよりも制限されます。
+これらのルートは、データローディング、アクション、コード分割、またはその他のルートモジュール機能に参加しないため、そのユースケースはルートモジュールのユースケースよりも制限されることに注意してください。
 
 ---
 
-次へ：[ルートモジュール](./route-module)
+次へ: [ルートモジュール](./route-module)
 
 [file-route-conventions]: ../../how-to/file-route-conventions
-[outlet]: ../../api/react-router/Outlet
+[outlet]: https://api.reactrouter.com/v7/functions/react_router.Outlet.html
 

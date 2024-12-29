@@ -1,37 +1,37 @@
 ---
-title: サスペンスを使ったストリーミング
+title: Suspenseを使ったストリーミング
 ---
 
-# サスペンスを使ったストリーミング
+# Suspenseを使ったストリーミング
 
-React Suspense を使用したストリーミングにより、重要でないデータを遅延させることでアプリの初期レンダリングを高速化し、UI レンダリングのブロックを解除できます。
+React Suspenseを使ったストリーミングにより、重要でないデータを後回しにし、UIレンダリングをブロックしないようにすることで、アプリの初期レンダリングを高速化できます。
 
-React Router は、ローダーとアクションから Promise を返すことで React Suspense をサポートしています。
+React Routerは、ローダーとアクションからPromiseを返すことで、React Suspenseをサポートしています。
 
-## 1. ローダーから Promise を返す
+## 1. ローダーからPromiseを返す
 
-React Router は、ルートコンポーネントをレンダリングする前にルートローダーを待機します。重要でないデータのローダーのブロックを解除するには、ローダー内で await を行う代わりに Promise を返します。
+React Routerは、ルートコンポーネントをレンダリングする前にルートローダーを待ちます。重要でないデータのためにローダーをブロックしないようにするには、ローダーで`await`する代わりにPromiseを返します。
 
 ```tsx
 import type { Route } from "./+types/my-route";
 
 export async function loader({}: Route.LoaderArgs) {
-  // これは await されません
+  // これはawaitされないことに注意
   let nonCriticalData = new Promise((res) =>
-    setTimeout(() => "non-critical", 5000)
+    setTimeout(() => res("non-critical"), 5000)
   );
 
   let criticalData = await new Promise((res) =>
-    setTimeout(() => "critical", 300)
+    setTimeout(() => res("critical"), 300)
   );
 
   return { nonCriticalData, criticalData };
 }
 ```
 
-## 2. フォールバックと解決済みのUIをレンダリングする
+## 2. フォールバックと解決されたUIをレンダリングする
 
-Promise は `loaderData` で利用可能になり、`<Await>` は Promise を待機し、`<Suspense>` にフォールバック UI をレンダリングするようにトリガーします。
+Promiseは`loaderData`で利用可能になり、`<Await>`はPromiseを待ち、`<Suspense>`をトリガーしてフォールバックUIをレンダリングします。
 
 ```tsx
 import * as React from "react";
@@ -46,12 +46,12 @@ export default function MyComponent({
 
   return (
     <div>
-      <h1>ストリーミング例</h1>
-      <h2>重要なデータ値: {criticalData}</h2>
+      <h1>ストリーミングの例</h1>
+      <h2>クリティカルなデータの値: {criticalData}</h2>
 
       <React.Suspense fallback={<div>読み込み中...</div>}>
         <Await resolve={nonCriticalData}>
-          {(value) => <h3>重要なデータではない値: {value}</h3>}
+          {(value) => <h3>重要でない値: {value}</h3>}
         </Await>
         <NonCriticalUI p={nonCriticalData} />
       </React.Suspense>
@@ -62,7 +62,7 @@ export default function MyComponent({
 
 ## React 19の場合
 
-React 19 を試している場合は、`Await` の代わりに `React.use` を使用できますが、新しいコンポーネントを作成し、サスペンスのフォールバックをトリガーするために Promise を渡す必要があります。
+React 19を試している場合、`Await`の代わりに`React.use`を使用できますが、Suspenseフォールバックをトリガーするには、新しいコンポーネントを作成してPromiseを渡す必要があります。
 
 ```tsx
 <React.Suspense fallback={<div>読み込み中...</div>}>
@@ -73,7 +73,7 @@ React 19 を試している場合は、`Await` の代わりに `React.use` を�
 ```tsx
 function NonCriticalUI({ p }: { p: Promise<string> }) {
   let value = React.use(p);
-  return <h3>重要なデータではない値 {value}</h3>;
+  return <h3>重要でない値 {value}</h3>;
 }
 ```
 
