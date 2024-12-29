@@ -5,13 +5,23 @@ order: 1
 
 # インストール
 
-ほとんどのプロジェクトはテンプレートから始まります。React Routerによってメンテナンスされている基本的なテンプレートを使用しましょう。
+<docs-info>
+
+React Router v7 は、以下の最小バージョンが必要です。
+
+- `node@20`
+- `react@18`
+- `react-dom@18`
+
+</docs-info>
+
+ほとんどのプロジェクトはテンプレートから開始します。React Router がメンテナンスしている基本的なテンプレートを使用してみましょう。
 
 ```shellscript nonumber
 npx create-react-router@latest my-react-router-app
 ```
 
-新しいディレクトリに移動し、アプリを起動します。
+次に、新しいディレクトリに移動してアプリを起動します。
 
 ```shellscript nonumber
 cd my-react-router-app
@@ -19,16 +29,21 @@ npm i
 npm run dev
 ```
 
-これで、ブラウザで`http://localhost:5173`を開くことができます。
+ブラウザで `http://localhost:5173` を開けるようになります。
 
-プロジェクトを手動で設定する方法については、[GitHub上のテンプレートを参照してください][default-template]。
+プロジェクトを手動でセットアップする方法については、[GitHub でテンプレートを表示する][default-template]ことができます。
 
-お好みのホストにデプロイするテンプレートを使用するには、[すべてのテンプレートをご覧ください](https://github.com/remix-run/react-router-templates)。
+また、すぐにデプロイできる[多数のテンプレート][react-router-templates]も用意していますので、ぜひご利用ください。
+
+```shellscript nonumber
+npx create-react-router@latest --template remix-run/react-router-templates/<template-name>
+```
 
 ---
 
-次へ: [ルーティング](./routing)
+次: [ルーティング](./routing)
 
 [manual_usage]: ../how-to/manual-usage
 [default-template]: https://github.com/remix-run/react-router-templates/tree/main/default
+[react-router-templates]: https://github.com/remix-run/react-router-templates
 

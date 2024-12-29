@@ -7,7 +7,7 @@ order: 1
 
 連絡先を管理できる、小さくても機能豊富なアドレス帳アプリを作成します。データベースやその他の「本番環境対応」の要素は使用しないため、React Routerが提供する機能に集中できます。手順に従って進めれば約30分かかりますが、そうでなければ簡単に読めます。
 
-<img class="tutorial" src="/v7_address_book_tutorial/01.webp" />
+<img class="tutorial" src="/_docs/v7_address_book_tutorial/01.webp" />
 
 👉 **これが表示されたら、アプリで何か操作する必要があります！**
 
@@ -37,6 +37,7 @@ npm run dev
 ```
 
 [http://localhost:5173][http-localhost-5173] を開くと、スタイルのない次の様な画面が表示されます。
+
 
 [http-localhost-5173]: http://localhost:5173
 
@@ -456,9 +457,11 @@ export default function App({ loaderData }) {
 
 サーバーサイドレンダリング（SSR）を行うためにサーバーでデータを読み込むのではなく、「クライアント」でデータを読み込んでいる理由について疑問に思われるかもしれません。現時点では、連絡先サイトは[シングルページアプリケーション][spa]なので、サーバーサイドレンダリングはありません。これにより、任意の静的ホスティングプロバイダーへの展開が非常に簡単になります。ただし、React Routerが提供するさまざまな[レンダリング戦略][rendering-strategies]について学習できるように、SSRを有効にする方法については、後で詳しく説明します。
 
+
 [client-loader]: #client-loader
 [spa]: #spa
 [rendering-strategies]: #rendering-strategies
+
 
 ## 型安全
 
@@ -485,6 +488,7 @@ export default function App({
 定義していませんが、`clientLoader`から返した`contacts`プロパティについて、既に知っているようです。
 
 これは、React Routerが[アプリ内の各ルートに対して型を生成する][type-safety]ため、自動的な型安全性を提供しているためです。
+
 
 [type-safety]: (React Routerの型安全に関するドキュメントへのリンクをここに挿入してください。)
 
@@ -523,6 +527,8 @@ export function HydrateFallback() {
 
 <img class="tutorial" src="/_docs/v7_address_book_tutorial/05.webp" />
 
+
+[spa]:  (シングルページアプリケーションへのリンク)
 [react-router-config]: (react-router.config.tsファイルへのリンク)
 [hydrate-fallback]: (HydrateFallbackの説明へのリンク)
 
@@ -573,6 +579,7 @@ export default function Home() {
 <img class="tutorial" src="/_docs/v7_address_book_tutorial/07.webp" />
 
 できました！空白はもうありません。インデックスルートには、ダッシュボード、統計情報、フィードなどを配置することが一般的です。データの読み込みにも参加できます。
+
 
 [index-route]:  (インデックスルートへのリンクをここに挿入 -  原文にはリンクの定義がないため、適宜修正してください。)
 
@@ -669,6 +676,7 @@ export default function App() {
 これで、[Aboutページ][about-page] に移動すると、次のようになります。
 
 <img class="tutorial" src="/_docs/v7_address_book_tutorial/08.webp" />
+
 
 [about-page]: # (Aboutページへのリンク -  実際にはこのMarkdown内で定義されていません。文脈からAboutページへのリンクを示しています。)
 
@@ -828,7 +836,9 @@ export default {
 
 これで、[Aboutページ][about-page]にアクセスして更新しても、ローディングスピナーが表示されなくなります！
 
+
 [pre-rendering]: <プレレンダリングの説明へのリンクをここに挿入>
+[about-page]: <Aboutページへのリンクをここに挿入>
 
 ## サーバーサイドレンダリング
 
@@ -863,6 +873,7 @@ export async function loader() {
 ```
 
 `ssr`を`true`または`false`に設定するかどうかは、ユーザーのニーズによって異なります。どちらの戦略も完全に有効です。このチュートリアルの残りの部分ではサーバーサイドレンダリングを使用しますが、すべてのレンダリング戦略がReact Routerでファーストクラスシチズンであることを知っておいてください。
+
 
 [spa]: <a href="ここにSPAの説明へのリンクを挿入">シングルページアプリケーション</a>
 [loader]: <a href="ここにloaderの説明へのリンクを挿入">loader</a>
@@ -983,6 +994,7 @@ export async function action() {
 実際、すべてがHTMLとHTTPであるため、JavaScriptを無効にしても、すべて動作します。React Routerがフォームをシリアル化してサーバーに[`fetch`][fetch]リクエストを行う代わりに、ブラウザがフォームをシリアル化してドキュメントリクエストを行います。そこからReact Routerはサーバーサイドでページをレンダリングして送信します。最終的には同じUIです。
 
 しかし、ファビコンの回転や静的なドキュメントよりも優れたユーザーエクスペリエンスを作成するため、JavaScriptを使い続けます。
+
 
 [form-component]: #
 [fetch]: #
@@ -1191,12 +1203,15 @@ export async function action({
 
 最後にもう一つ。JavaScriptがない場合、[`redirect`][redirect]は通常のredirectになります。しかし、JavaScriptを使用すると、クライアントサイドのリダイレクトになるため、スクロール位置やコンポーネントの状態などのクライアントの状態が失われることはありません。
 
+
 [form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
+[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/fetch
 [object-from-entries]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
 [request]: https://remix.run/docs/en/v1/api/remix#request
 [request-form-data]: https://remix.run/docs/en/v1/api/remix#request-formdata
 [redirect]: https://remix.run/docs/en/v1/api/remix#redirect
 [response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
+
 
 ## 新規レコードを編集ページへリダイレクト
 
@@ -1475,8 +1490,10 @@ export async function loader({
 
 これはまた、通常のページナビゲーションであることを意味します。戻るボタンをクリックして、以前の位置に戻ることができます。
 
+
 [url-search-params]: <URL_SEARCH_PARAMS_LINK>  // URLSearchParamsへのリンクをここに挿入してください
 [form-data]: <FORM_DATA_LINK>  // FormDataへのリンクをここに挿入してください
+
 
 ## URLとフォーム状態の同期化
 
@@ -1680,6 +1697,7 @@ export default function SidebarLayout({
 
 [`submit`][use-submit]への引数に注目してください。`submit`関数は、渡されたフォームをシリアライズして送信します。ここでは`event.currentTarget`を渡しています。`currentTarget`は、イベントがアタッチされたDOMノード（`form`）です。
 
+
 [use-submit]: <リンクをここに挿入>
 
 ## 検索スピナーの追加
@@ -1712,6 +1730,7 @@ export default function SidebarLayout({
 ```
 
 何も起こっていない場合、`navigation.location`は`undefined`になりますが、ユーザーが移動すると、データの読み込み中に次の場所が設定されます。その後、`location.search`を使用して検索中かどうかを確認します。
+
 
 👉 **新しい`searching`状態を使用して検索フォーム要素にクラスを追加**
 
@@ -1911,6 +1930,8 @@ export async function action({
 
 ただし、重要な違いが1つあります。ナビゲーションではないため、URLは変更されず、履歴スタックは影響を受けません。
 
+
+
 ## 楽観的UI
 
 前のセクションのお気に入りボタンをクリックしたときに、アプリが反応しにくいと感じたかもしれません。もう一度、現実世界でも発生するネットワーク遅延を追加しました。
@@ -1958,9 +1979,13 @@ function Favorite({
 
 以上です！React Routerを試していただきありがとうございます。このチュートリアルが、優れたユーザーエクスペリエンスを構築するための堅実なスタートになることを願っています。できることは他にもたくさんあるので、すべての[API][react-router-apis]を確認してください 😀
 
+[http-localhost-5173]: http://localhost:5173
+
 [root-route]: ../explanation/special-files#roottsx
 
 [error-boundaries]: ../how-to/error-boundary
+
+[links]: ../start/framework/route-module#links
 
 [outlet-component]: https://api.reactrouter.com/v7/functions/react_router.Outlet
 
@@ -1970,11 +1995,47 @@ function Favorite({
 
 [link-component]: https://api.reactrouter.com/v7/functions/react_router.Link
 
+[client-loader]: ../start/framework/route-module#clientloader
+
+[spa]: ../how-to/spa
+
 [type-safety]: ../explanation/type-safety
+
+[react-router-config]: ../explanation/special-files#react-routerconfigts
+
+[rendering-strategies]: ../start/framework/rendering
 
 [index-route]: ../start/framework/routing#index-routes
 
+[layout-route]: ../start/framework/routing#layout-routes
+
+[hydrate-fallback]: ../start/framework/route-module#hydratefallback
+
+[about-page]: http://localhost:5173/about
+
+[pre-rendering]: ../how-to/pre-rendering
+
+[url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+
 [loader]: ../start/framework/route-module#loader
+
+[action]: ../start/framework/route-module#action
+
+[form-component]: https://api.reactrouter.com/v7/functions/react_router.Form
+
+[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/fetch
+
+[form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
+
+[object-from-entries]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
+
+[request-form-data]: https://developer.mozilla.org/en-US/docs/Web/API/Request/formData
+
+[request]: https://developer.mozilla.org/en-US/docs/Web/API/Request
+
+[redirect]: https://api.reactrouter.com/v7/functions/react_router.redirect
+
+[response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
 
 [nav-link]: https://api.reactrouter.com/v7/functions/react_router.NavLink
 
@@ -1982,6 +2043,9 @@ function Favorite({
 
 [use-navigate]: https://api.reactrouter.com/v7/functions/react_router.useNavigate
 
+[use-submit]: https://api.reactrouter.com/v7/functions/react_router.useSubmit
+
 [use-fetcher]: https://api.reactrouter.com/v7/functions/react_router.useFetcher
 
 [react-router-apis]: https://api.reactrouter.com/v7/modules/react_router
+

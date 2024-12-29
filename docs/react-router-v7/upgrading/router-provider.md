@@ -4,43 +4,43 @@ title: RouterProviderからのフレームワーク採用
 
 # RouterProviderからのフレームワーク採用
 
-`<RouterProvider>`を使用していない場合は、代わりに[コンポーネントルートからのフレームワーク採用][upgrade-component-routes]を参照してください。
+`<RouterProvider>` を使用していない場合は、代わりに [コンポーネントルートからのフレームワーク採用][upgrade-component-routes] を参照してください。
 
-React Router Viteプラグインは、React Routerにフレームワーク機能を追加します。このガイドは、アプリでプラグインを採用するのに役立ちます。問題が発生した場合は、[Twitter](https://x.com/remix_run)または[Discord](https://rmx.as/discord)でお問い合わせください。
+React Router Vite プラグインは、React Router にフレームワーク機能を追加します。このガイドは、アプリでこのプラグインを採用するのに役立ちます。問題が発生した場合は、[Twitter](https://x.com/remix_run) または [Discord](https://rmx.as/discord) でお気軽にご連絡ください。
 
 ## 機能
 
-Viteプラグインは以下を追加します。
+Vite プラグインは以下を追加します。
 
-- ルートローダー、アクション、および自動データ再検証
-- 型安全なルートモジュール
+- ルートローダー、アクション、自動データ再検証
+- タイプセーフなルートモジュール
 - 自動ルートコード分割
 - ナビゲーション間の自動スクロール復元
 - オプションの静的プリレンダリング
 - オプションのサーバーレンダリング
 
-初期設定には最も多くの作業が必要ですが、完了したら、新しい機能を段階的に採用できます。
+初期設定には最も手間がかかります。ただし、完了すると、新しい機能を段階的に採用できます。
 
 ## 前提条件
 
-Viteプラグインを使用するには、プロジェクトに以下が必要です。
+Vite プラグインを使用するには、プロジェクトに以下が必要です。
 
-- Node.js 20+（Nodeをランタイムとして使用する場合）
+- Node.js 20+ (Node をランタイムとして使用する場合)
 - Vite 5+
 
 ## 1. ルート定義をルートモジュールに移動する
 
-React Router Viteプラグインは独自の`RouterProvider`をレンダリングするため、既存の`RouterProvider`をその中にレンダリングすることはできません。代わりに、すべてのルート定義を[ルートモジュールAPI][route-modules]に一致するようにフォーマットする必要があります。
+React Router Vite プラグインは独自の `RouterProvider` をレンダリングするため、既存の `RouterProvider` をその内部でレンダリングすることはできません。代わりに、すべてのルート定義を [ルートモジュール API][route-modules] に一致するようにフォーマットする必要があります。
 
-この手順には最も時間がかかりますが、React Router Viteプラグインを採用するかどうかとは関係なく、これを行うことでいくつかの利点があります。
+この手順には最も時間がかかりますが、React Router Vite プラグインを採用するかどうかにかかわらず、これを行うことにはいくつかのメリットがあります。
 
-- ルートモジュールは遅延読み込みされるため、アプリの初期バンドルサイズが小さくなります
-- ルート定義が統一されるため、アプリのアーキテクチャが簡素化されます
-- ルートモジュールへの移行は段階的であり、一度に1つのルートを移行できます
+- ルートモジュールは遅延読み込みされるため、アプリの初期バンドルサイズが縮小されます
+- ルート定義は均一になり、アプリのアーキテクチャが簡素化されます
+- ルートモジュールへの移行は段階的であり、一度に 1 つのルートを移行できます
 
-**👉 ルート定義をルートモジュールに移動する**
+**👉 ルート定義をルートモジュールに移動します**
 
-[ルートモジュールAPI][route-modules]に従って、ルート定義の各部分を個別の名前付きエクスポートとしてエクスポートします。
+[ルートモジュール API][route-modules] に従って、ルート定義の各部分を別々の名前付きエクスポートとしてエクスポートします。
 
 ```tsx filename=src/routes/about.tsx
 export async function clientLoader() {
@@ -54,12 +54,12 @@ export default function About() {
   return <div>{data.title}</div>;
 }
 
-// clientAction, ErrorBoundaryなど
+// clientAction、ErrorBoundary など
 ```
 
 **👉 変換関数を作成する**
 
-ルートモジュール定義をデータルーターで期待される形式に変換するヘルパー関数を作成します。
+ルートモジュールの定義を、データルーターが予期する形式に変換するヘルパー関数を作成します。
 
 ```tsx filename=src/main.tsx
 function convert(m: any) {
@@ -80,30 +80,30 @@ function convert(m: any) {
 
 **👉 ルートモジュールを遅延読み込みして変換する**
 
-ルートモジュールを直接インポートする代わりに、遅延読み込みしてデータルーターで期待される形式に変換します。
+ルートモジュールを直接インポートする代わりに、遅延読み込みして、データルーターが予期する形式に変換します。
 
-ルート定義はルートモジュールAPIに準拠するだけでなく、ルートのコード分割の利点も得られます。
+ルート定義がルートモジュール API に準拠するようになっただけでなく、ルートをコード分割するメリットも得られます。
 
 ```diff filename=src/main.tsx
 let router = createBrowserRouter([
-  // ... その他のルート
+  // ... 他のルート
   {
     path: "about",
 -   loader: aboutLoader,
 -   Component: About,
 +   lazy: () => import("./routes/about").then(convert),
   },
-  // ... その他のルート
+  // ... 他のルート
 ]);
 ```
 
-アプリの各ルートについてこの手順を繰り返します。
+アプリ内の各ルートに対してこのプロセスを繰り返します。
 
-## 2. Viteプラグインをインストールする
+## 2. Vite プラグインをインストールする
 
-すべてのルート定義をルートモジュールに変換したら、React Router Viteプラグインを採用できます。
+すべてのルート定義がルートモジュールに変換されたら、React Router Vite プラグインを採用できます。
 
-**👉 React Router Viteプラグインをインストールする**
+**👉 React Router Vite プラグインをインストールする**
 
 ```shellscript nonumber
 npm install -D @react-router/dev
@@ -111,13 +111,13 @@ npm install -D @react-router/dev
 
 **👉 ランタイムアダプターをインストールする**
 
-Nodeをランタイムとして使用していると仮定します。
+ここでは、Node をランタイムとして使用していると仮定します。
 
 ```shellscript nonumber
 npm install @react-router/node
 ```
 
-**👉 ReactプラグインをReact Routerと交換する**
+**👉 React プラグインを React Router に置き換える**
 
 ```diff filename=vite.config.ts
 -import react from '@vitejs/plugin-react'
@@ -133,11 +133,11 @@ export default defineConfig({
 });
 ```
 
-## 3. React Router設定を追加する
+## 3. React Router 設定を追加する
 
-**👉 `react-router.config.ts`ファイルを作成する**
+**👉 `react-router.config.ts` ファイルを作成する**
 
-プロジェクトのルートに追加します。この設定では、アプリディレクトリの場所や、現時点ではSSR（サーバーサイドレンダリング）を使用しないことなど、プロジェクトに関する情報をReact Routerに伝えることができます。
+プロジェクトのルートに以下を追加します。この設定では、React Router にアプリディレクトリの場所や、現時点では SSR (サーバーサイドレンダリング) を使用しないなど、プロジェクトに関する情報を伝えることができます。
 
 ```shellscript nonumber
 touch react-router.config.ts
@@ -154,11 +154,11 @@ export default {
 
 ## 4. ルートエントリポイントを追加する
 
-一般的なViteアプリでは、`index.html`ファイルがバンドルのエントリポイントです。React Router Viteプラグインは、エントリポイントを`root.tsx`ファイルに移動するため、静的HTMLではなくReactを使用してアプリのシェルをレンダリングし、必要に応じてサーバーレンダリングにアップグレードできます。
+一般的な Vite アプリでは、`index.html` ファイルがバンドルのエントリポイントになります。React Router Vite プラグインは、エントリポイントを `root.tsx` ファイルに移動するため、静的な HTML の代わりに React を使用してアプリのシェルをレンダリングし、必要に応じて最終的にサーバーレンダリングにアップグレードできます。
 
-**👉 既存の`index.html`を`root.tsx`に移動する**
+**👉 既存の `index.html` を `root.tsx` に移動する**
 
-たとえば、現在の`index.html`が次のようになっている場合。
+たとえば、現在の `index.html` が次のようになっているとします。
 
 ```html filename=index.html
 <!DOCTYPE html>
@@ -178,7 +178,7 @@ export default {
 </html>
 ```
 
-そのマークアップを`src/root.tsx`に移動し、`index.html`を削除します。
+そのマークアップを `src/root.tsx` に移動し、`index.html` を削除します。
 
 ```shellscript nonumber
 touch src/root.tsx
@@ -224,11 +224,11 @@ export default function Root() {
 }
 ```
 
-**👉 `RouterProvider`より上のすべてを`root.tsx`に移動する**
+**👉 `RouterProvider` より上のすべてを `root.tsx` に移動する**
 
-グローバルスタイル、コンテキストプロバイダーなどは、すべてのルートで共有できるように`root.tsx`に移動する必要があります。
+グローバルスタイル、コンテキストプロバイダーなどはすべて `root.tsx` に移動して、すべてのルートで共有できるようにする必要があります。
 
-たとえば、`App.tsx`が次のようになっている場合。
+たとえば、`App.tsx` が次のようになっているとします。
 
 ```tsx filename=src/App.tsx
 import "./index.css";
@@ -244,12 +244,12 @@ export default function App() {
 }
 ```
 
-`RouterProvider`より上のすべてを`root.tsx`に移動します。
+`RouterProvider` より上のすべてを `root.tsx` に移動します。
 
 ```diff filename=src/root.tsx
 +import "./index.css";
 
-// ... その他のインポートとレイアウト
+// ... 他のインポートと Layout
 
 export default function Root() {
   return (
@@ -262,15 +262,15 @@ export default function Root() {
 }
 ```
 
-## 5. クライアントエントリモジュールを追加する（オプション）
+## 5. クライアントエントリモジュールを追加する (オプション)
 
-一般的なViteアプリでは、`index.html`ファイルはクライアントエントリポイントとして`src/main.tsx`を指しています。React Routerは代わりに`src/entry.client.tsx`という名前のファイルを使用します。
+一般的な Vite アプリでは、`index.html` ファイルはクライアントエントリポイントとして `src/main.tsx` を指します。React Router は代わりに `src/entry.client.tsx` というファイルを使用します。
 
-`entry.client.tsx`が存在しない場合、React Router Viteプラグインはデフォルトの非表示のものを使用します。
+`entry.client.tsx` が存在しない場合、React Router Vite プラグインは非表示のデフォルトのプラグインを使用します。
 
-**👉 `src/entry.client.tsx`をエントリポイントにする**
+**👉 `src/entry.client.tsx` をエントリポイントにする**
 
-現在の`src/main.tsx`が次のようになっている場合。
+現在の `src/main.tsx` が次のようになっているとします。
 
 ```tsx filename=src/main.tsx
 import React from "react";
@@ -291,7 +291,7 @@ ReactDOM.createRoot(
 );
 ```
 
-`entry.client.tsx`に名前を変更し、次のように変更します。
+名前を `entry.client.tsx` に変更し、次のように変更します。
 
 ```tsx filename=src/entry.client.tsx
 import React from "react";
@@ -306,21 +306,21 @@ ReactDOM.hydrateRoot(
 );
 ```
 
-- `createRoot`の代わりに`hydrateRoot`を使用する
-- `<App/>`コンポーネントの代わりに`<HydratedRouter>`をレンダリングする
-- 注：ルートを作成して`<RouterProvider />`に手動で渡すことはなくなりました。次の手順でルート定義を移行します。
+- `createRoot` の代わりに `hydrateRoot` を使用する
+- `<App/>` コンポーネントの代わりに `<HydratedRouter>` をレンダリングする
+- 注意: ルートを作成して `<RouterProvider />` に手動で渡すことはなくなりました。次のステップでルート定義を移行します。
 
 ## 6. ルートを移行する
 
-React Router Viteプラグインは、`routes.ts`ファイルを使用してルートを構成します。形式はデータルーターの定義と非常によく似ています。
+React Router Vite プラグインは、ルートを構成するために `routes.ts` ファイルを使用します。形式は、データルーターの定義と非常に似ています。
 
-**👉 定義を`routes.ts`ファイルに移動する**
+**👉 定義を `routes.ts` ファイルに移動する**
 
 ```shellscript nonumber
 touch src/routes.ts src/catchall.tsx
 ```
 
-ルート定義を`routes.ts`に移動します。スキーマは完全に一致しないため、型エラーが発生します。これは次に修正します。
+ルート定義を `routes.ts` に移動します。スキーマは完全に一致しないため、型エラーが発生します。これは次のステップで修正します。
 
 ```diff filename=src/routes.ts
 +import type { RouteConfig } from "@react-router/dev/routes";
@@ -356,7 +356,7 @@ touch src/routes.ts src/catchall.tsx
 +] satisfies RouteConfig;
 ```
 
-**👉 `lazy`ローダーを`file`ローダーに置き換える**
+**👉 `lazy` ローダーを `file` ローダーに置き換える**
 
 ```diff filename=src/routes.ts
 export default [
@@ -392,13 +392,13 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-[ルートの構成に関するガイド][configuring-routes]を参照して、`routes.ts`ファイルと、ルート定義をさらに簡素化するヘルパー関数について詳細を確認してください。
+`routes.ts` ファイルと、ルート定義をさらに簡素化するためのヘルパー関数の詳細については、[ルートの構成に関するガイド][configuring-routes] をご覧ください。
 
 ## 7. アプリを起動する
 
-この時点で、React Router Viteプラグインに完全に移行する必要があります。`dev`スクリプトを更新してアプリを実行し、すべてが機能していることを確認してください。
+この時点で、React Router Vite プラグインに完全に移行されているはずです。`dev` スクリプトを更新してアプリを実行し、すべてが機能していることを確認してください。
 
-**👉 `dev`スクリプトを追加してアプリを実行する**
+**👉 `dev` スクリプトを追加してアプリを実行する**
 
 ```json filename=package.json
 "scripts": {
@@ -406,15 +406,23 @@ export default [
 }
 ```
 
-次に、先に進む前に、この時点でアプリを起動できることを確認します。
+次に進む前に、この時点でアプリを起動できることを確認してください。
 
 ```shellscript
 npm run dev
 ```
 
-## SSRとプリレンダリングを有効にする
+リポジトリで不要なファイルを追跡しないように、`.react-router/` を `.gitignore` ファイルに追加することをお勧めします。
 
-サーバーレンダリングと静的プリレンダリングを有効にするには、バンドラープラグインの`ssr`オプションと`prerender`オプションを使用できます。SSRの場合、サーバービルドをサーバーにデプロイする必要もあります。詳細については、[デプロイ][deploying]を参照してください。
+```txt
+.react-router/
+```
+
+[型の安全性][type-safety] を確認して、パラメーター、ローダーデータなどの自動生成された型の安全性を完全に設定して使用する方法を学ぶことができます。
+
+## SSR および/またはプリレンダリングを有効にする
+
+サーバーレンダリングと静的プリレンダリングを有効にする場合は、バンドラープラグインの `ssr` オプションと `prerender` オプションを使用して有効にすることができます。SSR の場合は、サーバービルドをサーバーにデプロイする必要もあります。詳細については、[デプロイ][deploying] を参照してください。
 
 ```ts filename=react-router.config.ts
 import type { Config } from "@react-router/dev/config";
@@ -432,5 +440,4 @@ export default {
 [configuring-routes]: ../start/framework/routing
 [route-modules]: ../start/framework/route-module
 [type-safety]: ../how-to/route-module-type-safety
-
 

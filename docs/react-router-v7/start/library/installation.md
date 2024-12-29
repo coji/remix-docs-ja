@@ -5,19 +5,29 @@ order: 1
 
 # インストール
 
-ViteのReactテンプレートから始めることができ、「React」を選択するか、または好きな方法でアプリケーションをブートストラップしてください。
+<docs-info>
+
+React Router v7 は以下の最小バージョンを必要とします。
+
+- `node@20`
+- `react@18`
+- `react-dom@18`
+
+</docs-info>
+
+Vite の React テンプレートから始めるか、お好みの方法でアプリケーションをブートストラップしてください。
 
 ```shellscript nonumber
 npx create-vite@latest
 ```
 
-次に、npmからReact Routerをインストールします。
+次に、npm から React Router をインストールします。
 
 ```shellscript nonumber
 npm i react-router
 ```
 
-最後に、アプリケーションの周囲に`<BrowserRouter>`をレンダリングします。
+最後に、アプリケーションを `<BrowserRouter>` で囲んでレンダリングします。
 
 ```tsx lines=[3,9-11]
 import React from "react";
@@ -36,7 +46,5 @@ ReactDOM.createRoot(root).render(
 
 ---
 
-次へ: [ルーティング](./routing)
-
-
+次: [ルーティング](./routing)
 
