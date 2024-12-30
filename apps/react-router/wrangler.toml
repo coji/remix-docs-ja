@@ -3,6 +3,7 @@ name = "react-router-docs-ja"
 
 main = "./server.ts"
 workers_dev = true
+account_id = "91ff95bcb91fbfa1b1c5c356262b1fe4"
 # https://developers.cloudflare.com/workers/platform/compatibility-dates
 compatibility_flags = [ "nodejs_compat" ]
 compatibility_date = "2024-09-26"

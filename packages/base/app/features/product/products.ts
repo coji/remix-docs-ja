@@ -5,7 +5,6 @@ export const products = [
     title: 'Remix ドキュメント 日本語版',
     url: 'https://remix-docs-ja.techtalk.jp',
     englishUrl: 'https://remix.run/docs',
-    pagefind: '/pagefind/pagefind.js?url',
   },
   {
     id: 'react-router-v7',
@@ -13,7 +12,6 @@ export const products = [
     title: 'React Router v7 ドキュメント 日本語版',
     url: 'https://react-router-docs-ja.techtalk.jp',
     englishUrl: 'https://reactrouter.com',
-    pagefind: '/pagefind/pagefind.js?url',
   },
 ] satisfies Product[]
 
@@ -24,7 +22,6 @@ export type Product = {
   title: string
   url: string
   englishUrl: string
-  pagefind: string
 }
 
 export const isProductId = (productId: string): productId is ProductId =>

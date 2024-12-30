@@ -25,7 +25,7 @@ import {
 import { useHotkey } from './hooks'
 
 export const loader = () => {
-  return {}
+  return Response.json({})
 }
 
 export const clientLoader = async ({ request }: Route.ClientLoaderArgs) => {
@@ -38,13 +38,14 @@ export const clientLoader = async ({ request }: Route.ClientLoaderArgs) => {
   if (!query) return { results: [] }
 
   const pagefind = (await import(
-    /* @vite-ignore */ product.pagefind
+    /* @vite-ignore */ '/pagefind/pagefind.js?url'
   )) as unknown as Pagefind
   await pagefind.init()
   const ret = await pagefind.search(query)
   const results = await Promise.all(ret.results.map((result) => result.data()))
   return { results }
 }
+clientLoader.hydrate = true
 
 export const SearchPanel = () => {
   const fetcher = useFetcher<typeof clientLoader>()

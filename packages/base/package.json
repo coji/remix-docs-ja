@@ -7,8 +7,6 @@
     "./*": "./app/*"
   },
   "scripts": {
-    "build": "react-router build",
-    "start": "react-router-serve ./build/server/index.js",
     "lint": "biome lint .",
     "format": "prettier --cache -c .",
     "test": "vitest run",
