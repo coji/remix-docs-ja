@@ -1,5 +1,7 @@
 import {
-  SearchPanel,
   clientLoader,
+  loader,
+  SearchPanel,
 } from '@remix-docs-ja/base/routes/resources.search'
-export { SearchPanel, clientLoader }
+
+export { clientLoader, loader, SearchPanel }
