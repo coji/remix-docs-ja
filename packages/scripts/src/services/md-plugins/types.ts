@@ -2,6 +2,7 @@ import type * as Unified from 'unified'
 import type * as Unist from 'unist'
 
 export interface ProcessorOptions {
+  productId?: string
   resolveHref?(href: string): string
 }
 

@@ -3,11 +3,15 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { processMarkdown } from './md.server'
 
-export const getDoc = async (file: string) => {
+interface GetDocOptions {
+  productId: string
+}
+
+export const getDoc = async (file: string, options: GetDocOptions) => {
   const filepath = path.join('./docs', `${file}.md`)
   try {
     const content = await fs.readFile(filepath, 'utf-8')
-    const doc = await processMarkdown(content)
+    const doc = await processMarkdown(content, { productId: options.productId })
     const headings = createTableOfContentsFromHeadings(doc.html)
     return { ...doc, headings }
   } catch (e) {

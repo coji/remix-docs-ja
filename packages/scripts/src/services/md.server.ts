@@ -12,7 +12,7 @@ import { unified } from 'unified'
 
 import parseFrontMatter from 'front-matter'
 
-import { addBaseUrl } from './md-plugins/add-base-url'
+import { addBaseUrlFn } from './md-plugins/add-base-url'
 import { stripLinkExtPlugin } from './md-plugins/strip-link-ext'
 import type { ProcessorOptions } from './md-plugins/types'
 
@@ -47,6 +47,6 @@ export function getProcessor(options?: ProcessorOptions) {
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings)
     .use(rehypeRaw)
-    .use(addBaseUrl)
+    .use(addBaseUrlFn(options?.productId))
     .use(rehypeStringify, { allowDangerousHtml: true })
 }

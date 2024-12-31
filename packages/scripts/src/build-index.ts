@@ -13,7 +13,7 @@ export const buildIndex = async (productId: string) => {
   for (const filename of docs) {
     const regexp = /^docs\//
     const pathname = filename.replace(regexp, '').replace(/\.md$/, '')
-    const doc = await getDoc(pathname)
+    const doc = await getDoc(pathname, { productId })
     if (!doc) {
       console.log('doc not found:\n\n', pathname)
       continue
