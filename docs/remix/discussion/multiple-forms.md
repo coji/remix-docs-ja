@@ -1,8 +1,7 @@
 ---
-title: 複数のフォームをページに配置する
+title: Multiple Forms on a Page
 hidden: true
 ---
 
-# 複数のフォームをページに配置する
-
+# ページに複数のフォームを配置する
 

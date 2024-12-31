@@ -1,53 +1,53 @@
 ---
 title: MDX
-description: Remix によって、組み込みのルートと「import」サポートにより、プロジェクトへの MDX の統合が容易になります。
+description: Remix は、組み込みのルートと "import" サポートにより、MDX をプロジェクトに簡単に統合できます。
 ---
 
 # MDX
 
-<docs-warning>このドキュメントは、[クラシック Remix コンパイラ][classic-remix-compiler] を使用する場合にのみ関連します。 MDX を使用したい Vite ユーザーは、[MDX Rollup (および Vite) プラグイン][mdx-plugin] を使用してください。</docs-warning>
+<docs-warning>このドキュメントは、[Classic Remix Compiler][classic-remix-compiler] を使用している場合にのみ関連します。Vite を使用して MDX を使用したい場合は、[MDX Rollup (および Vite) プラグイン][mdx-plugin] を使用する必要があります。</docs-warning>
 
-データと表示の明確な分離は重要であると考えていますが、[MDX][mdx] (埋め込み JSX コンポーネントを含む Markdown) のように、データを組み合わせる形式が、開発者にとって人気のある強力なオーサリング形式になっていることを理解しています。
+データと表示を明確に分離することが重要だと考えていますが、[MDX][mdx] (JSX コンポーネントが埋め込まれた Markdown) のように、両者を混在させる形式が、開発者にとって一般的で強力なオーサリング形式になっていることも理解しています。
 
-<docs-info>このドキュメントで示されているように、コンテンツをビルド時にコンパイルするのではなく、<a href="https://github.com/kentcdodds/mdx-bundler">mdx-bundler</a> のようなものを使用してランタイムでこれを行う方が、通常は UX と DX が優れています。また、はるかにカスタマイズ可能で強力です。ただし、ビルド時にコンパイルすることを好む場合は、読み続けてください。</docs-info>
+<docs-info>このドキュメントで説明するように、ビルド時にコンテンツをコンパイルするのではなく、<a href="https://github.com/kentcdodds/mdx-bundler">mdx-bundler</a> のようなものを使用して、実行時にこれを行う方が、通常は UX と DX が向上します。また、カスタマイズ性と機能も大幅に向上します。ただし、このコンパイルをビルド時に実行したい場合は、読み進めてください。</docs-info>
 
-Remix は、ビルド時に MDX を 2 つの方法で使用するための組み込みサポートを提供しています。
+Remix には、ビルド時に MDX を使用するための組み込みサポートが 2 つの方法で用意されています。
 
-- `.mdx` ファイルをルートモジュールの 1 つとして使用できます。
-- `app/routes` 内のルートモジュールに `.mdx` ファイルを `import` できます。
+- `.mdx` ファイルをルートモジュールの 1 つとして使用できます
+- `.mdx` ファイルをルートモジュールの 1 つ ( `app/routes` 内) に `import` できます
 
 ## ルート
 
-Remix で MDX を始める最も簡単な方法は、ルートモジュールを作成することです。 `app/routes` ディレクトリ内の `.tsx`、`.js`、`.jsx` ファイルと同様に、`.mdx` (および `.md`) ファイルは、自動ファイルシステムベースのルーティングに参加します。
+Remix で MDX を使い始める最も簡単な方法は、ルートモジュールを作成することです。`app/routes` ディレクトリ内の `.tsx`、`.js`、`.jsx` ファイルと同様に、`.mdx` (および `.md`) ファイルは、自動ファイルシステムベースのルーティングに参加します。
 
-MDX ルートを使用すると、コードベースのルートと同じように、メタデータとヘッダーを定義できます。
+MDX ルートを使用すると、コードベースのルートであるかのように、メタとヘッダーの両方を定義できます。
 
 ```md
 ---
 meta:
-  - title: My First Post
+  - title: 私の最初の投稿
   - name: description
-    content: Isn't this awesome?
+    content: これは素晴らしいと思いませんか？
 headers:
   Cache-Control: no-cache
 ---
 
-# Hello Content!
+# こんにちはコンテンツ！
 ```
 
-上記のドキュメントの `---` 間の行は、"フロントマター" と呼ばれます。[YAML][yaml] としてフォーマットされたドキュメントのメタデータと考えることができます。
+上記のドキュメントの `---` の間の行は「フロントマター」と呼ばれます。これらは、[YAML][yaml] としてフォーマットされたドキュメントのメタデータのようなものと考えることができます。
 
-MDX でグローバルな `attributes` 変数を使用して、フロントマターのフィールドを参照できます。
+MDX のグローバル `attributes` 変数を通じて、フロントマターフィールドを参照できます。
 
 ```mdx
 ---
 componentData:
-  label: Hello, World!
+  label: こんにちは、世界！
 ---
 
 import SomeComponent from "~/components/some-component";
 
-# Hello MDX!
+# こんにちは MDX！
 
 <SomeComponent {...attributes.componentData} />
 ```
@@ -59,26 +59,26 @@ import SomeComponent from "~/components/some-component";
 ```mdx
 ---
 meta:
-  - title: My First Post
+  - title: 私の最初の投稿
   - name: description
-    content: Isn't this just awesome?
+    content: これは素晴らしいと思いませんか？
 ---
 
-# Example Markdown Post
+# Markdown 投稿の例
 
-"attributes" を使用してフロントマターデータを参照できます。この投稿のタイトルは {attributes.meta.title} です!
+"attributes" を通じてフロントマターデータを参照できます。この投稿のタイトルは {attributes.meta.title} です！
 ```
 
-### 詳細例
+### 高度な例
 
-通常のルートモジュールで可能なすべてのものを、`loader`、`action`、`handle` などの mdx ファイルにエクスポートすることもできます。
+`loader`、`action`、`handle` のように、通常のルートモジュールでできる他のすべてのものを、mdx ファイルのこのモジュールでエクスポートすることもできます。
 
 ```mdx
 ---
 meta:
-  - title: My First Post
+  - title: 私の最初の投稿
   - name: description
-    content: Isn't this awesome?
+    content: これは素晴らしいと思いませんか？
 
 headers:
   Cache-Control: no-cache
@@ -102,22 +102,22 @@ export const loader = async () => {
 
 export function ComponentUsingData() {
   const { mamboNumber } = useLoaderData<typeof loader>();
-  return <div id="loader">Mambo Number: {mamboNumber}</div>;
+  return <div id="loader">マンボナンバー: {mamboNumber}</div>;
 }
 
-# This is some markdown!
+# これは Markdown です！
 
 <ComponentUsingData />
 ```
 
 ## モジュール
 
-ルートレベルの MDX だけでなく、通常の JavaScript モジュールのように、これらのファイルをどこでも自分でインポートできます。
+ルートレベルの MDX に加えて、これらのファイルを通常の JavaScript モジュールであるかのように、どこにでも自分でインポートすることもできます。
 
 `.mdx` ファイルを `import` すると、モジュールのエクスポートは次のようになります。
 
-- **default**: 消費のための React コンポーネント
-- **attributes**: フロントマターデータのオブジェクト
+- **default**: 消費用の React コンポーネント
+- **attributes**: オブジェクトとしてのフロントマターデータ
 - **filename**: ソースファイルのベース名 (例: "first-post.mdx")
 
 ```tsx
@@ -129,14 +129,14 @@ import Component, {
 
 ## ブログの使用例
 
-次の例は、MDX を使用して簡単なブログを構築する方法を示しています。これには、投稿自体の個別ページと、すべての投稿を表示するインデックスページが含まれています。
+次の例は、投稿自体の個々のページと、すべての投稿を表示するインデックスページを含む、MDX を使用してシンプルなブログを構築する方法を示しています。
 
 ```tsx filename=app/routes/_index.tsx
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 import { Link, useLoaderData } from "@remix-run/react";
 
 // app/routes/posts ディレクトリからすべての投稿をインポートします。これらは
-// 通常のルートモジュールなので、たとえば /posts/a で個別に表示できます。
+// 通常のルートモジュールであるため、たとえば /posts/a で個別に表示できます。
 import * as postA from "./posts/a.mdx";
 import * as postB from "./posts/b.md";
 import * as postC from "./posts/c.md";
@@ -150,8 +150,8 @@ function postFromModule(mod) {
 
 export async function loader() {
   // インデックスページに表示するための各投稿に関するメタデータを返します。
-  // 以下にある Index コンポーネントではなく、ここで投稿を参照することで、
-  // インデックスページのバンドルに実際の投稿自体をバンドルすることを避けられます。
+  // 下の Index コンポーネントではなく、ここで投稿を参照すると、
+  // インデックスページのバンドルに実際の投稿自体をバンドルすることを回避できます。
   return json([
     postFromModule(postA),
     postFromModule(postB),
@@ -177,11 +177,11 @@ export default function Index() {
 }
 ```
 
-明らかに、これは何千もの投稿があるブログに対してはスケーラブルなソリューションではありません。現実的には、書くことは難しいので、ブログがコンテンツ過多で苦しむようになった場合は、素晴らしい問題です。投稿が 100 件に達したら（おめでとうございます！）、戦略を見直し、投稿をデータベースに格納されたデータに変換して、タイプミスを修正するたびにブログを再構築して再展開する必要がなくなります。[MDX Bundler][mdx-bundler] を使用して、MDX を使い続けることもできます。
+明らかに、これは数千の投稿があるブログのスケーラブルなソリューションではありません。現実的に言えば、書くことは難しいので、ブログがコンテンツ過多で苦しみ始めたら、それは素晴らしい問題です。100 件の投稿に到達したら (おめでとうございます!)、戦略を再考し、投稿をデータベースに保存されたデータに変換して、タイプミスを修正するたびにブログを再構築して再デプロイする必要がないようにすることをお勧めします。[MDX Bundler][mdx-bundler] を使用して MDX を使い続けることもできます。
 
-## 詳細設定
+## 高度な構成
 
-独自の remark プラグインを構成する場合は、`remix.config.js` の `mdx` エクスポートを使用して行うことができます。
+独自の remark プラグインを構成したい場合は、`remix.config.js` の `mdx` エクスポートを通じて行うことができます。
 
 ```js filename=remix.config.js
 const {
@@ -207,5 +207,4 @@ exports.mdx = async (filename) => {
 [yaml]: https://yaml.org
 [mdx-bundler]: https://github.com/kentcdodds/mdx-bundler
 [classic-remix-compiler]: ./vite#classic-remix-compiler-vs-remix-vite
-
 

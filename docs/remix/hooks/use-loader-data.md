@@ -4,7 +4,7 @@ title: useLoaderData
 
 # `useLoaderData`
 
-最も近いルートの [`loader`][loader] からシリアライズされたデータを取得します。
+最も近いルートの[`loader`][loader]からシリアライズされたデータを返します。
 
 ```tsx lines=[2,9]
 import { json } from "@remix-run/node"; // または cloudflare/deno
@@ -20,12 +20,12 @@ export default function Invoices() {
 }
 ```
 
-## 関連記事
+## 追加リソース
 
 **ディスカッション**
 
 - [フルスタックデータフロー][fullstack_data_flow]
-- [ステート管理][state_management]
+- [状態管理][state_management]
 
 **API**
 
@@ -36,3 +36,4 @@ export default function Invoices() {
 [fullstack_data_flow]: ../discussion/data-flow
 [state_management]: ../discussion/state-management
 [use_fetcher]: ./use-fetcher
+

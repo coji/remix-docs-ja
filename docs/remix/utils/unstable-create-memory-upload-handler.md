@@ -21,9 +21,10 @@ export const action = async ({
 
   const file = formData.get("avatar");
 
-  // file は "File" (https://mdn.io/File) であり、node 用にポリフィルされています
-  // ... 等
+  // file は node 用にポリフィルされた "File" (https://mdn.io/File) です
+  // ... など
 };
 ```
 
-**オプション:** サポートされる唯一のオプションは `maxPartSize` と `filter` であり、上記の `unstable_createFileUploadHandler` と同じように機能します。この API は、大規模な用途にはお勧めできませんが、単純なユースケースや他のハンドラのフォールバックとして便利なユーティリティです。 
+**オプション:** サポートされているオプションは `maxPartSize` と `filter` のみで、これらは上記の `unstable_createFileUploadHandler` と同じように動作します。この API は大規模な用途には推奨されませんが、簡単なユースケースや別のハンドラーのフォールバックとして便利なユーティリティです。
+

@@ -1,52 +1,52 @@
 ---
-title: 手動開発サーバー
+title: Manual Dev Server
 ---
 
-# 手動モード
+# マニュアルモード
 
-<docs-warning>このガイドは、[従来の Remix コンパイラ][classic-remix-compiler] を使用する場合にのみ関連します。</docs-warning>
+<docs-warning>このガイドは、[Classic Remix Compiler][classic-remix-compiler] を使用している場合にのみ関連します。</docs-warning>
 
-デフォルトでは、`remix dev` は自動運転のように動作します。
-アプリコード内のファイルの変更が検出されるたびにアプリサーバーを自動的に再起動することで、アプリサーバーを最新のコード変更と同期状態に保ちます。
-これは、邪魔にならず、ほとんどのアプリでうまく機能すると考えられるシンプルなアプローチです。
+デフォルトでは、`remix dev` はオートマチック車のように動作します。
+アプリのコードでファイルの変更が検出されるたびに、アプリサーバーを自動的に再起動することで、アプリサーバーを最新のコード変更に追従させます。
+これは、邪魔にならないシンプルなアプローチであり、ほとんどのアプリでうまく機能すると考えています。
 
-しかし、アプリサーバーの再起動が遅くなっている場合は、ハンドルを握って `remix dev` を手動で運転することができます。
+しかし、アプリサーバーの再起動が遅く感じられる場合は、ハンドルを握って `remix dev` をマニュアル車のように操作できます。
 
 ```shellscript nonumber
 remix dev --manual -c "node ./server.js"
 ```
 
-つまり、クラッチを使ってギアを変える方法を学ぶ必要があるということです。
-また、方向感覚を失うとエンストすることもあります。
-学習には少し時間がかかり、維持するコードも増えます。
+つまり、ギアチェンジのためにクラッチの使い方を学ぶ必要があります。
+また、慣れるまではエンストするかもしれません。
+習得には少し時間がかかり、メンテナンスするコードも増えます。
 
-> 偉大な力には偉大な責任が伴う。
+> 大いなる力には、大いなる責任が伴います。
 
-デフォルトの自動モードで何かしらの問題が発生していない限り、これを行う価値はないと考えています。
-しかし、問題が発生している場合は、Remix が対応します。
+デフォルトのオートマチックモードで何らかの不便さを感じない限り、それだけの価値はないと考えています。
+しかし、もしそうであれば、Remix が対応します。
 
 ## `remix dev` のメンタルモデル
 
-ドラッグレースを始める前に、Remix がどのように動作するかを理解しておくと役立ちます。
-特に重要なのは、`remix dev` が _1 つではなく 2 つのプロセス_、つまり Remix コンパイラとアプリサーバーを起動することです。
+ドラッグレースを始める前に、Remix が内部でどのように動作するかを理解しておくと役立ちます。
+特に、`remix dev` が *1つではなく、2つのプロセス* を起動することを理解することが重要です。それは、Remix コンパイラとあなたのアプリサーバーです。
 
-詳細については、動画「新しい開発フローのメンタルモデル 🧠」[mental_model] をご覧ください。
+詳細については、私たちのビデオ ["新しい開発フローのメンタルモデル 🧠"][mental_model] をご覧ください。
 
 <docs-info>
 
 以前は、Remix コンパイラを「新しい開発サーバー」または「v2 開発サーバー」と呼んでいました。
-技術的には、`remix dev` は Remix コンパイラの薄いレイヤーであり、ホットアップデートを調整するための単一のエンドポイント (`/ping`) を持つ小さなサーバーが含まれています。
-しかし、`remix dev` を「開発サーバー」と考えるのは役に立たず、開発中のアプリサーバーを置き換えていると誤解される可能性があります。
-`remix dev` はアプリサーバーを置き換えるのではなく、_Remix コンパイラと共に_ アプリサーバーを実行するため、両方の長所を兼ね備えています。
+技術的には、`remix dev` は、ホットアップデートを調整するための単一のエンドポイント (`/ping`) を持つ小さなサーバーを含む Remix コンパイラの薄いレイヤーです。
+しかし、`remix dev` を「開発サーバー」と考えるのは役に立たず、開発時にアプリサーバーを置き換えているという誤った印象を与えます。
+`remix dev` はアプリサーバーを置き換えるのではなく、Remix コンパイラ *と並行して* アプリサーバーを実行するため、両方の長所が得られます。
 
-- Remix コンパイラによって管理されるホットアップデート
-- アプリサーバー内で開発中に実行される実際の運用コードパス
+* Remix コンパイラによって管理されるホットアップデート
+* アプリサーバー内で開発中に実行される実際のプロダクションコードパス
 
 </docs-info>
 
 ## `remix-serve`
 
-Remix App Server (`remix-serve`) には、手動モードが標準でサポートされています。
+Remixアプリサーバー (`remix-serve`) は、マニュアルモードをすぐにサポートしています。
 
 ```sh
 remix dev --manual
@@ -54,25 +54,25 @@ remix dev --manual
 
 <docs-info>
 
-`-c` フラグなしで `remix dev` を実行している場合は、暗黙的に `remix-serve` をアプリサーバーとして使用しています。
+`-c` フラグなしで `remix dev` を実行している場合、暗黙的に `remix-serve` をアプリサーバーとして使用しています。
 
 </docs-info>
 
-`remix-serve` には、より高い RPM でより積極的に自動的にギアをシフトする、組み込みのスポーツモードがあるため、マニュアルの運転を学ぶ必要はありません。
-ええ、この車のメタファーを伸ばしすぎていると思います。😅
+`remix-serve` には、高回転時に自動的にギアをよりアグレッシブにシフトするスポーツモードが組み込まれているため、マニュアル運転を学ぶ必要はありません。
+さて、この車の比喩は少し無理があるかもしれません。😅
 
-言い換えれば、`remix-serve` は、サーバーコードの変更を再インポートする方法を知っており、_自身を再起動する必要はありません_。
-しかし、`-c` を使用して独自のアプリサーバーを実行している場合は、読み進めてください。
+言い換えれば、`remix-serve` は、自身を再起動することなく、サーバーコードの変更を再インポートする方法を知っています。
+ただし、`-c` を使用して独自のアプリサーバーを実行している場合は、読み進めてください。
 
-## マニュアルの運転を学ぶ
+## マニュアル運転を学ぶ
 
-`--manual` で手動モードに切り替えると、新しい責任を負うことになります。
+`--manual` でマニュアルモードをオンにすると、いくつかの新しい責任を負うことになります。
 
-1. サーバーコードの変更が利用可能になったときに検出する
-2. アプリサーバーを稼働させたままコード変更を再インポートする
-3. それらの変更が反映された _後_ に Remix コンパイラに「準備完了」メッセージを送信する
+1. サーバーコードの変更が利用可能になったことを検出する
+2. アプリケーションサーバーを稼働させたままコードの変更を再インポートする
+3. これらの変更が取り込まれた*後*に、Remixコンパイラーに「準備完了」メッセージを送信する
 
-再インポートするコードの変更は、JS インポートがキャッシュされるため、実際には難しいことが判明しました。
+コードの変更を再インポートすることは、JSのインポートがキャッシュされるため、難しいことがわかります。
 
 ```js
 import fs from "node:fs";
@@ -80,27 +80,26 @@ import fs from "node:fs";
 const original = await import("./build/index.js");
 fs.writeFileSync("./build/index.js", someCode);
 const changed = await import("./build/index.js");
-//    ^^^^^^^ これにより、コードの変更が反映されていない、インポートキャッシュからの元のモジュールが返されます
+//    ^^^^^^^ これは、コードの変更なしにインポートキャッシュから元のモジュールを返します
 ```
 
-コードの変更を伴うモジュールを再インポートする際には、インポートキャッシュをクリアする必要があります。
-また、モジュールのインポートは、CommonJS (`require`) と ESM (`import`) で異なるため、さらに複雑になります。
+コードの変更でモジュールを再インポートしたい場合は、インポートキャッシュを破棄する方法が必要です。
+また、モジュールのインポートはCommonJS (`require`) とESM (`import`) で異なるため、さらに複雑になります。
 
 <docs-warning>
 
-`tsx` または `ts-node` を使用して `server.ts` を実行している場合は、これらのツールが ESM タイプスクリプトコードを CJS JavaScript コードに変換している可能性があります。
-この場合、サーバーコードの残りの部分が `import` を使用していても、`server.ts` で CJS キャッシュクリアを使用する必要があります。
+`server.ts` を実行するために `tsx` または `ts-node` を使用している場合、これらのツールはESM TypescriptコードをCJS Javascriptコードにトランスパイルしている可能性があります。
+この場合、サーバーコードの残りの部分が `import` を使用していても、`server.ts` でCJSキャッシュの破棄を使用する必要があります。
 
-ここでは、サーバーコードが _どのように実行されるか_ が重要であり、_どのように記述されるか_ は重要ではありません。
+ここで重要なのは、サーバーコードがどのように*実行されるか*であり、どのように*記述されるか*ではありません。
 
 </docs-warning>
 
-### 1.a CJS: `require` キャッシュクリア
+### 1.a CJS: `require` キャッシュの破棄
 
-CommonJS はインポートに `require` を使用しており、`require` キャッシュに直接アクセスできます。
-これにより、再構築時にサーバーコードのキャッシュのみをクリアできます。
+CommonJS はインポートに `require` を使用し、`require` キャッシュへの直接アクセスを提供します。これにより、リビルドが発生したときに *サーバーコードのみ* のキャッシュを破棄できます。
 
-たとえば、Remix サーバービルドの `require` キャッシュをクリアする方法は次のとおりです。
+たとえば、Remix サーバービルドの `require` キャッシュを破棄する方法は次のとおりです。
 
 ```js
 const path = require("node:path");
@@ -115,28 +114,28 @@ const initialBuild = reimportServer();
  * @returns {ServerBuild}
  */
 function reimportServer() {
-  // 1. 手動でサーバービルドを `require` キャッシュから削除する
+  // 1. require キャッシュからサーバービルドを手動で削除します
   Object.keys(require.cache).forEach((key) => {
     if (key.startsWith(BUILD_PATH)) {
       delete require.cache[key];
     }
   });
 
-  // 2. サーバービルドを再インポートする
+  // 2. サーバービルドを再インポートします
   return require(BUILD_PATH);
 }
 ```
 
 <docs-info>
 
-`require` キャッシュキーは _絶対パス_ なので、サーバービルドパスを絶対パスに解決してください！
+`require` キャッシュのキーは *絶対パス* であるため、サーバービルドのパスを絶対パスに解決するようにしてください！
 
 </docs-info>
 
-### 1.b ESM: `import` キャッシュクリア
+### 1.b ESM: `import` キャッシュの破棄
 
-CJS とは異なり、ESM はインポートキャッシュへの直接アクセスを提供しません。
-この問題を回避するために、タイムスタンプクエリパラメーターを使用して、ESM にインポートを新しいモジュールとして扱うように指示することができます。
+CJS とは異なり、ESM ではインポートキャッシュに直接アクセスすることはできません。
+この問題を回避するために、タイムスタンプのクエリパラメータを使用して、ESM にインポートを新しいモジュールとして扱うように強制することができます。
 
 ```js
 import * as fs from "node:fs";
@@ -155,10 +154,10 @@ const initialBuild = await reimportServer();
 async function reimportServer() {
   const stat = fs.statSync(BUILD_PATH);
 
-  // Windows での動的 `import` との互換性のために、ビルドパスを URL に変換する
+  // Windows での動的な `import` との互換性のために、ビルドパスを URL に変換します
   const BUILD_URL = url.pathToFileURL(BUILD_PATH).href;
 
-  // タイムスタンプクエリパラメーターを使用して、インポートキャッシュをクリアする
+  // タイムスタンプのクエリパラメータを使用して、インポートキャッシュを破棄します
   return import(BUILD_URL + "?t=" + stat.mtimeMs);
 }
 ```
@@ -166,17 +165,17 @@ async function reimportServer() {
 <docs-warning>
 
 ESM では、`import` キャッシュからエントリを削除する方法はありません。
-タイムスタンプの回避策は有効ですが、`import` キャッシュが時間の経過とともに大きくなり、最終的にメモリ不足エラーが発生する可能性があります。
+タイムスタンプによる回避策は有効ですが、`import` キャッシュが時間とともに増大し、最終的にメモリ不足エラーを引き起こす可能性があります。
 
-この問題が発生した場合は、`remix dev` を再起動して、インポートキャッシュをリフレッシュすることができます。
-将来的には、Remix で依存関係を事前にバンドルして、インポートキャッシュを小さくすることができるようになるかもしれません。
+この問題が発生した場合は、`remix dev` を再起動して、新しいインポートキャッシュで再開できます。
+将来的には、Remix はインポートキャッシュを小さく保つために、依存関係を事前にバンドルする可能性があります。
 
 </docs-warning>
 
 ### 2. サーバーコードの変更を検出する
 
-CJS または ESM のインポートキャッシュをクリアする方法がわかったところで、アプリサーバー内でサーバービルドを動的に更新してみましょう。
-サーバーコードの変更を検出するには、[chokidar][chokidar] などのファイルウォッチャーを使用することができます。
+CJSまたはESMのインポートキャッシュを破棄する方法ができたので、それを利用してアプリサーバー内でサーバービルドを動的に更新する時が来ました。
+サーバーコードの変更を検出するには、[chokidar][chokidar]のようなファイルウォッチャーを使用できます。
 
 ```js
 import chokidar from "chokidar";
@@ -191,9 +190,9 @@ chokidar
   .on("change", handleServerUpdate);
 ```
 
-### 3. 「準備完了」メッセージを送信する
+### 3. "ready" メッセージの送信
 
-アプリサーバーが最初に起動したときに、Remix コンパイラに「準備完了」メッセージを送信しているかどうかを確認する必要があります。
+ここで、アプリサーバーが最初に起動したときに、Remixコンパイラに "ready" メッセージを送信していることを再確認する良い機会です。
 
 ```js filename=server.js lines=[5-7]
 const port = 3000;
@@ -206,20 +205,20 @@ app.listen(port, async () => {
 });
 ```
 
-手動モードでは、サーバービルドを再インポートするたびに、「準備完了」メッセージを送信する必要があります。
+手動モードでは、サーバービルドを再インポートするたびに "ready" メッセージを送信する必要もあります。
 
 ```js lines=[4-5]
 async function handleServerUpdate() {
   // 1. サーバービルドを再インポートする
   build = await reimportServer();
-  // 2. Remix に、このアプリサーバーが最新の状態であり、準備が整っていることを伝える
+  // 2. このアプリサーバーが最新の状態になり、準備ができたことをRemixに伝える
   broadcastDevReady(build);
 }
 ```
 
-### 4. 開発対応の要求ハンドラー
+### 4. 開発対応リクエストハンドラー
 
-最後に、これらをすべて開発モードの要求ハンドラーにまとめます。
+最後のステップは、これらすべてを開発モードのリクエストハンドラーにまとめることです。
 
 ```js
 /**
@@ -230,7 +229,7 @@ function createDevRequestHandler(initialBuild) {
   async function handleServerUpdate() {
     // 1. サーバービルドを再インポートする
     build = await reimportServer();
-    // 2. Remix に、このアプリサーバーが最新の状態であり、準備が整っていることを伝える
+    // 2. このアプリサーバーが最新であり、準備ができたことをRemixに伝える
     broadcastDevReady(build);
   }
 
@@ -239,7 +238,7 @@ function createDevRequestHandler(initialBuild) {
     .on("add", handleServerUpdate)
     .on("change", handleServerUpdate);
 
-  // すべての要求に対して、最新のビルドを使用して再作成されるように、要求ハンドラーをラップする
+  // リクエストごとに最新のビルドで再作成されるようにリクエストハンドラーをラップする
   return async (req, res, next) => {
     try {
       return createRequestHandler({
@@ -254,7 +253,7 @@ function createDevRequestHandler(initialBuild) {
 ```
 
 素晴らしい！
-これで、開発モードで実行するときに、新しいマニュアルトランスミッションを接続できます。
+開発モードで実行するときに、新しいマニュアルトランスミッションをプラグインしましょう。
 
 ```js filename=server.js
 app.all(
@@ -265,18 +264,18 @@ app.all(
 );
 ```
 
-アプリサーバーコードの完全な例については、[テンプレート][templates] または [コミュニティの例][community_examples] をご覧ください。
+完全なアプリサーバーコードの例については、[テンプレート][templates]または[コミュニティの例][community_examples]を確認してください。
 
-## 再構築間でメモリ内のサーバー状態を保持する
+## リビルドをまたいでインメモリのサーバー状態を保持する
 
-サーバーコードを再インポートすると、サーバー側のメモリ内状態がすべて失われます。
-これには、データベース接続、キャッシュ、メモリ内データ構造などが含まれます。
+サーバーコードが再インポートされると、サーバー側のインメモリ状態はすべて失われます。
+これには、データベース接続、キャッシュ、インメモリデータ構造などが含まれます。
 
-再構築間で保持する必要があるメモリ内値を記憶するためのユーティリティを以下に示します。
+リビルドをまたいで保持したいインメモリの値を記憶するユーティリティを以下に示します。
 
 ```ts filename=app/utils/singleton.server.ts
-// https://github.com/jenseng/abuse-the-platform/blob/main/app/utils/singleton.ts から借りて修正しました
-// @jenseng ありがとうございます！
+// https://github.com/jenseng/abuse-the-platform/blob/main/app/utils/singleton.ts から借用・修正
+// @jenseng に感謝！
 
 export const singleton = <Value>(
   name: string,
@@ -289,27 +288,31 @@ export const singleton = <Value>(
 };
 ```
 
-たとえば、再構築間で Prisma クライアントを再利用するには、次のようにします。
+たとえば、リビルドをまたいで Prisma クライアントを再利用するには、次のようにします。
 
 ```ts filename=app/db.server.ts
 import { PrismaClient } from "@prisma/client";
 
 import { singleton } from "~/utils/singleton.server";
 
-// このモジュールが再インポートされたときにクライアントを検索できるように、一意のキーをハードコードする
+// このモジュールが再インポートされたときにクライアントを検索できるように、一意のキーをハードコードします
 export const db = singleton(
   "prisma",
   () => new PrismaClient()
 );
 ```
 
-[`remember` ユーティリティ][remember] を使用したい場合は、これにも役立ちます。
+また、[`remember` ユーティリティ][remember] も便利で、こちらを使用することもできます。
 
 [mental_model]: https://www.youtube.com/watch?v=zTrjaUt9hLo
-[chokidar]: https://github.com/paulmillr/chokidar
-[templates]: https://github.com/remix-run/remix/blob/main/templates
-[community_examples]: https://github.com/xHomu/remix-v2-server
-[remember]: https://npm.im/@epic-web/remember
-[classic-remix-compiler]: ./vite#classic-remix-compiler-vs-remix-vite
 
+[chokidar]: https://github.com/paulmillr/chokidar
+
+[templates]: https://github.com/remix-run/remix/blob/main/templates
+
+[community_examples]: https://github.com/xHomu/remix-v2-server
+
+[remember]: https://npm.im/@epic-web/remember
+
+[classic-remix-compiler]: ./vite#classic-remix-compiler-vs-remix-vite
 

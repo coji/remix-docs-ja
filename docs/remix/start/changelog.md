@@ -1,9 +1,10 @@
 ---
-title: 変更ログ
+title: Changelog
 ---
 
-# 変更ログ
+# 変更履歴
 
-各リリースの詳細な変更ログは、[GitHub][changelog] をご覧ください。
+各リリースの詳細な変更履歴は[GitHub][changelog]で確認してください。
 
-[changelog]: https://github.com/remix-run/remix/blob/main/CHANGELOG.md 
+[changelog]: https://github.com/remix-run/remix/blob/main/CHANGELOG.md
+

@@ -4,7 +4,7 @@ title: NavLink
 
 # `<NavLink>`
 
-[`<Link>`][link-component] に、アクティブ状態と保留状態のスタイリング用の追加のプロパティをラップしたものです。
+アクティブおよび保留中の状態をスタイルするための追加の props を持つ [`<Link>`][link-component] をラップします。
 
 ```tsx
 import { NavLink } from "@remix-run/react";
@@ -37,11 +37,11 @@ a.active {
 
 ### `aria-current`
 
-`<NavLink>` がアクティブな場合、基になるアンカータグに `<a aria-current="page">` が自動的に適用されます。MDN の [`aria-current`][aria-current] を参照してください。
+`NavLink` がアクティブな場合、基になるアンカータグに `<a aria-current="page">` が自動的に適用されます。MDN の [`aria-current`][aria-current] を参照してください。
 
 ### `.pending`
 
-`<NavLink>` コンポーネントがナビゲーション中に保留状態の場合、`pending` クラスが追加されるため、CSS を使用してスタイルを設定できます。
+ナビゲーション中に `<NavLink>` コンポーネントが保留中の場合、`pending` クラスが追加されるため、CSS を使用してスタイルを設定できます。
 
 ```tsx
 <NavLink to="/messages" />
@@ -55,7 +55,7 @@ a.pending {
 
 ### `.transitioning`
 
-ナビゲーション中に移行している場合、[`<NavLink viewTransition>`][view-transition-prop] コンポーネントには `transitioning` クラスが追加されます。これにより、CSS を使用してスタイルを設定できます。
+ナビゲーション中に [`<NavLink viewTransition>`][view-transition-prop] コンポーネントがトランジション中の場合、`transitioning` クラスが追加されるため、CSS を使用してスタイルを設定できます。
 
 ```tsx
 <NavLink to="/messages" viewTransition />
@@ -67,11 +67,11 @@ a.transitioning {
 }
 ```
 
-## プロパティ
+## Props
 
 ### `className` コールバック
 
-アクティブ状態と保留状態を使用して、適用されるクラス名をカスタマイズできます。
+適用されるクラス名をカスタマイズできるように、アクティブおよび保留中の状態をコールバックします。
 
 ```tsx
 <NavLink
@@ -86,7 +86,7 @@ a.transitioning {
 
 ### `style` コールバック
 
-アクティブ状態と保留状態を使用して、適用されるスタイルをカスタマイズできます。
+適用されるスタイルをカスタマイズできるように、アクティブおよび保留中の状態をコールバックします。
 
 ```tsx
 <NavLink
@@ -104,7 +104,7 @@ a.transitioning {
 
 ### `children` コールバック
 
-アクティブ状態と保留状態を使用して、`<NavLink>` のコンテンツをカスタマイズできます。
+`<NavLink>` のコンテンツをカスタマイズできるように、アクティブおよび保留中の状態をコールバックします。
 
 ```tsx
 <NavLink to="/tasks">
@@ -116,7 +116,7 @@ a.transitioning {
 
 ### `end`
 
-`end` プロパティは、`active` 状態と `pending` 状態の照合ロジックを変更し、`NavLinks` の `to` パス末尾のみに照合されるようにします。URL が `to` より長い場合、アクティブとはみなされません。
+`end` prop は、`active` および `pending` 状態のマッチングロジックを、`NavLinks` の `to` パスの「末尾」のみに一致するように変更します。URL が `to` より長い場合、アクティブとは見なされなくなります。
 
 | リンク                          | URL          | isActive |
 | ----------------------------- | ------------ | -------- |
@@ -125,11 +125,11 @@ a.transitioning {
 | `<NavLink to="/tasks" end />` | `/tasks`     | true     |
 | `<NavLink to="/tasks" end />` | `/tasks/123` | false    |
 
-`<NavLink to="/">` は例外的なケースです。これは、すべての URL が `/` に一致するためです。デフォルトで、すべてのルートに一致しないようにするために、`end` プロパティは事実上無視され、ルートルートにいる場合にのみ一致されます。
+`<NavLink to="/">` は、_すべての_ URL が `/` に一致するため、例外的なケースです。デフォルトでこのすべてのルートに一致するのを避けるために、事実上 `end` prop を無視し、ルートルートにいる場合にのみ一致します。
 
 ### `caseSensitive`
 
-`caseSensitive` プロパティを追加すると、照合ロジックが変更され、大文字と小文字が区別されるようになります。
+`caseSensitive` prop を追加すると、マッチングロジックが変更され、大文字と小文字が区別されるようになります。
 
 | リンク                                         | URL           | isActive |
 | -------------------------------------------- | ------------- | -------- |
@@ -138,7 +138,7 @@ a.transitioning {
 
 ## `viewTransition`
 
-`viewTransition` プロパティは、最終状態の更新を [`document.startViewTransition()`][document-start-view-transition] でラップすることで、このナビゲーションの [ビュー遷移][view-transitions] を有効にします。デフォルトでは、遷移中に [`transitioning` クラス][transitioning-class] が [`<a>` 要素][a-element] に追加され、ビュー遷移をカスタマイズするために使用できます。
+`viewTransition` prop は、最終的な状態の更新を [`document.startViewTransition()`][document-start-view-transition] でラップすることにより、このナビゲーションの [View Transition][view-transitions] を有効にします。デフォルトでは、トランジション中に、[`<a>` 要素][a-element] に [`transitioning` クラス][transitioning-class] が追加され、これを使用してビューのトランジションをカスタマイズできます。
 
 ```css
 a.transitioning p {
@@ -157,7 +157,7 @@ a.transitioning img {
 </NavLink>
 ```
 
-[`className`][class-name-prop]/[`style`][style-prop] プロパティまたは [`children`][children-prop] に渡されるレンダープロパティを使用して、`isTransitioning` 値に基づいてさらにカスタマイズすることもできます。
+[`className`][class-name-prop]/[`style`][style-prop] props または [`children`][children-prop] に渡されるレンダー props を使用して、`isTransitioning` 値に基づいてさらにカスタマイズすることもできます。
 
 ```tsx
 <NavLink to={to} viewTransition>
@@ -186,9 +186,9 @@ a.transitioning img {
 </NavLink>
 ```
 
-### `<Link>` プロパティ
+### `<Link>` props
 
-[`<Link>`][link-component] の他のすべてプロパティがサポートされています。
+[`<Link>`][link-component] の他のすべての props がサポートされています。
 
 [link-component]: ./link
 [aria-current]: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current

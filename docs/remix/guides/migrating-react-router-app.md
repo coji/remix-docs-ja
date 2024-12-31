@@ -1,41 +1,40 @@
 ---
-title: React Router からの移行
-description: React Router アプリを Remix に移行する方法は、一度に行うか、段階的に行うかのいずれかです。このガイドでは、アプリケーションをすばやく実行するための反復的なアプローチを紹介します。
+title: React Routerからの移行
+description: React RouterアプリをRemixに移行するには、一度に行うことも、段階的に行うこともできます。このガイドでは、アプリを迅速に実行するための反復的なアプローチについて説明します。
 ---
 
-<docs-info>要約版と、単純な移行の例を示したリポジトリについては、<a href="https://github.com/kentcdodds/incremental-react-router-to-remix-upgrade-path">React Router から Remix への移行例のリポジトリ</a>をご覧ください。</docs-info> 
+<docs-info>要約版と、簡素化された移行を示すリポジトリをご覧になりたい場合は、<a href="https://github.com/kentcdodds/incremental-react-router-to-remix-upgrade-path">React RouterからRemixへの移行例のリポジトリ</a>をご覧ください。</docs-info>
 
 # React Router アプリケーションを Remix に移行する
 
-<docs-warning>このガイドは、[Remix Vite][remix-vite] ではなく [クラシック Remix コンパイラ][classic-remix-compiler] を使用していることを前提としています。</docs-warning>
+<docs-warning>このガイドは現在、[Remix Vite][remix-vite]ではなく、[Classic Remix Compiler][classic-remix-compiler]を使用していることを前提としています。</docs-warning>
 
-世界中の何百万人もの React アプリケーションが [React Router][react-router] によって支えられています。あなたはいくつかをすでに展開しているかもしれません！ Remix は React Router をベースに構築されているため、移行を容易にするための作業を行ってきました。これは、大規模なリファクタリングを避けるために段階的に作業を進めることができます。
+世界中で展開されている何百万もの React アプリケーションが [React Router][react-router] によって支えられています。おそらく、あなたもいくつかリリースしていることでしょう！Remix は React Router を基盤として構築されているため、大規模なリファクタリングを避けるために段階的に作業できる簡単な移行プロセスになるよう努めてきました。
 
-まだ React Router を使用していない場合は、再考する価値のある理由がいくつかあります！ 履歴管理、動的なパスマッチング、ネストされたルーティングなど。[React Router ドキュメント][react-router-docs] を見て、提供している機能を確認してください。
+まだ React Router を使用していない場合でも、再考する価値のあるいくつかの説得力のある理由があると考えています！履歴管理、動的なパスマッチング、ネストされたルーティングなど、多くの機能があります。[React Router のドキュメント][react-router-docs] を見て、私たちが提供するすべての機能を確認してください。
 
 
-[classic-remix-compiler]: https://remix.run/docs/en/v1/guides/remix-compiler
-[remix-vite]: https://remix.run/docs/en/v1/guides/remix-vite
-[react-router]: https://reactrouter.com/
-[react-router-docs]: https://reactrouter.com/docs/en/v6
-## React Router v6 を使用するようにしてください
+[classic-remix-compiler]: (Replace with actual link)
+[remix-vite]: (Replace with actual link)
+[react-router]: (Replace with actual link)
+[react-router-docs]: (Replace with actual link)
 
-古いバージョンの React Router を使用している場合は、最初に v6 にアップグレードする必要があります。アプリを v6 に迅速かつ反復的にアップグレードするには、[v5 から v6 への移行ガイド][migration-guide-from-v5-to-v6] と[下位互換性パッケージ][backwards-compatibility-package] をご覧ください。
+## React Router v6 の使用を保証する
 
-[migration-guide-from-v5-to-v6]: [移行ガイドの URL をここに挿入]
-[backwards-compatibility-package]: [下位互換性パッケージの URL をここに挿入] 
+古いバージョンの React Router を使用している場合、最初のステップは v6 にアップグレードすることです。アプリを迅速かつ段階的に v6 にアップグレードするには、[v5 から v6 への移行ガイド][migration-guide-from-v5-to-v6] と [後方互換性パッケージ][backwards-compatibility-package] を参照してください。
 
-## Remix のインストール
+## Remixのインストール
 
-まず、Remix でビルドするために必要なパッケージをいくつかインストールする必要があります。以下の手順に従って、すべてのコマンドをプロジェクトのルートから実行してください。
+最初に、Remixで開発するためにいくつかのパッケージをインストールする必要があります。以下の手順に従って、プロジェクトのルートディレクトリからすべてのコマンドを実行してください。
 
 ```shell
 npm install @remix-run/react @remix-run/node @remix-run/serve
 npm install -D @remix-run/dev
 ```
-## サーバーおよびブラウザのエントリポイントの作成
 
-ほとんどの React Router アプリは、主にブラウザで実行されます。サーバーの唯一の仕事は、単一の静的 HTML ページを送信することです。React Router は、クライアント側でルートベースのビューを管理します。これらのアプリは一般的に、ルート `index.js` のようなブラウザエントリポイントファイルを持ち、次のようになります。
+## サーバーとブラウザのエントリポイントの作成
+
+ほとんどのReact Routerアプリは主にブラウザで動作します。サーバーの唯一の仕事は、単一の静的HTMLページを送信することであり、React Routerはクライアント側でルートベースのビューを管理します。これらのアプリは一般的に、次のようなルート`index.js`のようなブラウザのエントリポイントファイルを持っています。
 
 ```tsx filename=index.tsx
 import { render } from "react-dom";
@@ -45,14 +44,14 @@ import App from "./App";
 render(<App />, document.getElementById("app"));
 ```
 
-サーバーレンダリングされた React アプリは少し異なります。ブラウザスクリプトはアプリをレンダリングしていませんが、サーバーが提供する DOM を「ハイドレート」しています。ハイドレーションとは、DOM 内の要素を React コンポーネントの対応物にマッピングし、イベントリスナーを設定してアプリをインタラクティブにするプロセスです。
+サーバーレンダリングされたReactアプリは少し異なります。ブラウザスクリプトはアプリをレンダリングするのではなく、サーバーが提供したDOMを「ハイドレート」します。ハイドレーションとは、DOM内の要素を対応するReactコンポーネントにマッピングし、イベントリスナーを設定してアプリをインタラクティブにするプロセスです。
 
-2 つの新しいファイルを作成してみましょう。
+2つの新しいファイルを作成しましょう。
 
-* `app/entry.server.tsx` （または `entry.server.jsx`）
-* `app/entry.client.tsx` （または `entry.client.jsx`）
+* `app/entry.server.tsx` (または `entry.server.jsx`)
+* `app/entry.client.tsx` (または `entry.client.jsx`)
 
-<docs-info>Remix のすべてのアプリコードは、慣習により `app` ディレクトリに配置されます。既存のアプリで同じ名前のディレクトリを使用している場合は、Remix への移行時に区別するために `src` や `old-app` などの名前に変更してください。</docs-info>
+<docs-info>Remixのすべてのアプリコードは、慣例により`app`ディレクトリに配置されます。既存のアプリが同じ名前のディレクトリを使用している場合は、Remixに移行する際に区別するために、`src`や`old-app`のような名前に変更してください。</docs-info>
 
 ```tsx filename=app/entry.server.tsx
 import { PassThrough } from "node:stream";
@@ -181,7 +180,7 @@ function handleBrowserRequest(
 }
 ```
 
-クライアントエントリポイントは次のようになります。
+クライアントのエントリポイントは次のようになります。
 
 ```tsx filename=app/entry.client.tsx
 import { RemixBrowser } from "@remix-run/react";
@@ -197,15 +196,16 @@ startTransition(() => {
   );
 });
 ```
+
 ## `root` ルートの作成
 
-Remix は React Router を基盤としていることを説明しました。アプリは、JSX の `Route` コンポーネントで定義されたルートを使って `BrowserRouter` をレンダリングする可能性があります。Remix ではこれを行う必要はありませんが、その説明は後回しにしておきます。現時点では、Remix アプリが動作するために必要な最低レベルのルートを提供する必要があります。
+RemixはReact Routerの上に構築されていることを述べました。あなたのアプリは、JSXの`Route`コンポーネントで定義されたルートを持つ`BrowserRouter`をレンダリングする可能性があります。Remixではそれを行う必要はありませんが、それについては後で詳しく説明します。今のところ、Remixアプリが動作するために必要な最低レベルのルートを提供する必要があります。
 
-ルートルート（Wes Bos 風に言えば「ルートルート」）は、アプリケーションの構造を提供する役割を担います。そのデフォルトのエクスポートは、他のすべてのルートがロードして依存する、完全な HTML ツリーをレンダリングするコンポーネントです。アプリの足場やシェルと考えてください。
+ルートルート（Wes Bos風に言えば「ルートルート」）は、アプリケーションの構造を提供する役割を担います。そのデフォルトエクスポートは、他のすべてのルートがロードして依存する完全なHTMLツリーをレンダリングするコンポーネントです。アプリの足場またはシェルと考えてください。
 
-クライアント側でレンダリングされたアプリでは、React アプリをマウントするための DOM ノードを含む index HTML ファイルがあります。ルートルートは、このファイルの構造を反映するマークアップをレンダリングします。
+クライアント側でレンダリングされるアプリでは、ReactアプリをマウントするためのDOMノードを含むindex HTMLファイルがあります。ルートルートは、このファイルの構造を反映したマークアップをレンダリングします。
 
-`app` ディレクトリに `root.tsx` （または `root.jsx`）という新しいファイルを作成します。このファイルの内容は異なりますが、`index.html` が次のようになっていると仮定しましょう。
+`app`ディレクトリに`root.tsx`（または`root.jsx`）という新しいファイルを作成します。そのファイルの内容は異なりますが、`index.html`が次のようになっていると仮定しましょう。
 
 ```html filename=index.html
 <!DOCTYPE html>
@@ -236,7 +236,7 @@ Remix は React Router を基盤としていることを説明しました。ア
 </html>
 ```
 
-`root.tsx` で、その構造を反映するコンポーネントをエクスポートします。
+`root.tsx`で、その構造を反映するコンポーネントをエクスポートします。
 
 ```tsx filename=app/root.tsx
 import { Outlet } from "@remix-run/react";
@@ -270,29 +270,30 @@ export default function Root() {
 }
 ```
 
-ここで注目すべき点がいくつかあります。
+いくつかの点に注意してください。
 
-* `noscript` タグを削除しました。サーバーでレンダリングするため、JavaScript を無効にしても、ユーザーはアプリを見ることができます（そして、時間の経過とともに [プログレッシブエンハンスメントを向上させるためのいくつかの調整][a-few-tweaks-to-improve-progressive-enhancement] を加えることで、アプリの多くは引き続き機能するはずです）。
-* ルート要素内では、`@remix-run/react` から `Outlet` コンポーネントをレンダリングします。これは、React Router アプリで通常、一致したルートをレンダリングするために使用されるコンポーネントと同じです。ここでは同じ機能を果たしますが、Remix のルーターに合わせて調整されています。
+* `noscript`タグを削除しました。サーバーサイドレンダリングを行うため、JavaScriptを無効にしたユーザーでもアプリを表示できます（そして、時間とともに[漸進的エンハンスメントを改善するためのいくつかの調整][a-few-tweaks-to-improve-progressive-enhancement]を行うと、アプリの大部分が機能するようになります）。
+* ルート要素内では、`@remix-run/react`から`Outlet`コンポーネントをレンダリングします。これは、通常React Routerアプリで一致したルートをレンダリングするために使用するコンポーネントと同じです。ここでは同じ機能を果たしますが、Remixのルーターに合わせて調整されています。
 
-<docs-warning>**重要:** ルートルートを作成したら、`public` ディレクトリから `index.html` を削除してください。このファイルが残っていると、サーバーは ``/` ルートにアクセスした際に Remix アプリではなくこの HTML を送信してしまう可能性があります。</docs-warning>
+<docs-warning><strong>重要：</strong>ルートルートを作成したら、`public`ディレクトリから`index.html`を削除してください。ファイルを保持すると、`/`ルートにアクセスしたときに、RemixアプリではなくそのHTMLがサーバーから送信される可能性があります。</docs-warning>
 
+[a-few-tweaks-to-improve-progressive-enhancement]:  (この部分は原文にリンクが存在しますが、具体的なリンク先が不明なため、そのまま残しました。必要に応じて適切なリンクに置き換えてください。)
 
 ## 既存のアプリコードの適応
 
-まず、既存の React コードのルートを `app` ディレクトリに移動します。プロジェクトルートの `src` ディレクトリにルートアプリコードがある場合、`app/src` に移動する必要があります。
+まず、既存のReactコードのルートを`app`ディレクトリに移動します。プロジェクトルートの`src`ディレクトリにルートアプリコードが存在する場合は、`app/src`に移動する必要があります。
 
-このディレクトリの名前を変更して、これが古いコードであることを明確にすることをお勧めします。そうすれば、最終的にすべてのコンテンツを移行した後、削除できます。このアプローチの素晴らしい点は、アプリが通常どおりに動作するために、一度にすべてを行う必要がないことです。デモプロジェクトでは、このディレクトリの名前を `old-app` にしています。
+このディレクトリの名前を変更して、これが古いコードであることを明確にすることをお勧めします。これにより、最終的にすべてのコンテンツを移行した後、削除することができます。このアプローチの利点は、アプリが通常どおりに動作するために、一度にすべてを行う必要がないことです。デモプロジェクトでは、このディレクトリを`old-app`と名付けています。
 
-最後に、ルート `App` コンポーネント（`root` 要素にマウントされたコンポーネント）で、React Router の `<BrowserRouter>` を削除します。Remix は、プロバイダーを直接レンダリングせずに、これを行います。 
+最後に、ルート`App`コンポーネント（`root`要素にマウントされていたコンポーネント）で、React Routerの`<BrowserRouter>`を削除します。Remixは、プロバイダーを直接レンダリングする必要なく、これを処理します。
 
 ## インデックスルートとキャッチオールルートの作成
 
-Remixでは、`<Outlet />`内でレンダリングするものを知るために、ルートルート以外のルートが必要です。幸いなことに、アプリ内ですでに`<Route>`コンポーネントをレンダリングしており、Remixは[ルーティング規則][routing-conventions]を使用するように移行する際にそれらを使用できます。
+Remixはルートルート以外に`<Outlet />`で何をレンダリングするかを知るためのルートを必要とします。幸いなことに、既にアプリ内で`<Route>`コンポーネントをレンダリングしており、Remixは[ルーティング規則][routing-conventions]を使用するように移行する際にそれらを使用できます。
 
-まず、`app`に`routes`という名前の新しいディレクトリを作成します。そのディレクトリ内に、`_index.tsx`と`$.tsx`という名前の2つのファイルを作成します。`$.tsx`は[**キャッチオールルートまたは「スラッシュ」ルート**][a-catch-all-route]と呼ばれ、まだ`routes`ディレクトリに移行していないルートを古いアプリで処理するために役立ちます。
+まず、`app`内に`routes`という新しいディレクトリを作成します。そのディレクトリ内に`_index.tsx`と`$.tsx`という2つのファイルを作成します。`$.tsx`は[**キャッチオールルートまたは「スプラット」ルート**][a-catch-all-route]と呼ばれ、まだ`routes`ディレクトリに移動していないルートを古いアプリで処理するために役立ちます。
 
-`_index.tsx`と`$.tsx`ファイル内では、古いルート`App`からのコードをエクスポートするだけです。
+`_index.tsx`と`$.tsx`ファイル内では、古いルート`App`からコードをエクスポートするだけです。
 
 ```tsx filename=app/routes/_index.tsx
 export { default } from "~/old-app/app";
@@ -302,13 +303,15 @@ export { default } from "~/old-app/app";
 export { default } from "~/old-app/app";
 ```
 
-[routing-conventions]: https://remix.run/docs/en/v1/guides/routing
-[a-catch-all-route]: https://remix.run/docs/en/v1/guides/routing#catch-all-routes
-## Remix でバンドラを置き換える
 
-Remix は、アプリの開発とビルドのために独自のバンドラと CLI ツールを提供します。おそらく、あなたのアプリは Create React App のようなものでブートストラップされているか、Webpack でカスタムビルドが設定されているでしょう。
+[routing-conventions]:  (ルーティング規則へのリンクをここに挿入)
+[a-catch-all-route]: (キャッチオールルートの説明へのリンクをここに挿入)
 
-`package.json` ファイルで、現在のビルドと開発スクリプトの代わりに `remix` コマンドを使用するようにスクリプトを更新します。
+## バンドラーをRemixに置き換える
+
+Remixは、アプリの開発とビルドのために独自のバンドラーとCLIツールを提供します。おそらく、あなたのアプリはCreate React Appのようなものを使ってブートストラップされたか、あるいはWebpackを使ったカスタムビルド設定を持っているでしょう。
+
+`package.json`ファイルで、現在のビルドと開発スクリプトの代わりに`remix`コマンドを使用するようにスクリプトを更新します。
 
 ```json filename=package.json
 {
@@ -321,12 +324,13 @@ Remix は、アプリの開発とビルドのために独自のバンドラと C
 }
 ```
 
-そして、パッと！あなたのアプリはサーバーサイドレンダリングされ、ビルド時間は 90 秒から 0.5 秒に短縮されます⚡
+そして、あっという間に！あなたのアプリはサーバーサイドレンダリングされ、ビルド時間は90秒から0.5秒に短縮されました⚡
+
 ## ルートの作成
 
-時間が経つにつれて、React Routerの`<Route>`コンポーネントによってレンダリングされるルートを、独自のルートファイルに移行したくなるでしょう。当社の[ルーティング規則][routing-conventions]に記載されているファイル名とディレクトリ構造が、この移行をガイドします。
+時間が経つにつれて、React Routerの`<Route>`コンポーネントによってレンダリングされるルートを、独自のルートファイルに移行したいと思うでしょう。[ルーティング規則][routing-conventions]で概説されているファイル名とディレクトリ構造がこの移行をガイドします。
 
-ルートファイルのデフォルトエクスポートは、`<Outlet />`でレンダリングされるコンポーネントです。そのため、`App`内に次のようなルートがある場合:
+ルートファイルのデフォルトエクスポートは、`<Outlet />`でレンダリングされるコンポーネントです。そのため、`App`に次のようなルートがある場合：
 
 ```tsx filename=app/old-app/app.tsx
 function About() {
@@ -360,15 +364,18 @@ export default function About() {
 }
 ```
 
-このファイルを作成したら、`App`から`<Route>`コンポーネントを削除できます。すべてのルートの移行が完了したら、`<Routes>`を削除し、最終的に`old-app`のすべてのコードを削除できます。
+このファイルを作成したら、`App`から`<Route>`コンポーネントを削除できます。すべてのルートの移行が完了したら、`<Routes>`、そして最終的に`old-app`内のすべてのコードを削除できます。
+
+
+[routing-conventions]: routing-conventions
 
 ## 落とし穴と次のステップ
 
-ここまで来たら、最初の移行は完了したと言えるかもしれません。おめでとうございます！ しかし、Remix は一般的な React アプリとは少し異なる方法で動作します。もしそうじゃなければ、なぜわざわざ Remix を作ったのでしょうか？ 😅 
+この時点で、最初の移行が完了したと言えるかもしれません。おめでとうございます！しかし、Remixは一般的なReactアプリとは少し異なる方法で動作します。そうでなければ、そもそもなぜそれを構築する手間をかけたのでしょうか？😅
 
 ### 安全でないブラウザ参照
 
-クライアントレンダリングされたコードベースをサーバーレンダリングされたコードベースに移行する際に頻繁に発生する問題の1つは、サーバーで実行されるコードにブラウザAPIへの参照が含まれている可能性があることです。一般的な例は、状態を初期化する際に発生します。
+クライアントレンダリングコードベースをサーバーレンダリングコードベースに移行する際のよくある問題点は、サーバー上で実行されるコードにブラウザAPIへの参照が含まれている可能性があることです。状態の初期化時に見られる一般的な例を以下に示します。
 
 ```tsx
 function Count() {
@@ -391,24 +398,22 @@ function Count() {
 }
 ```
 
-この例では、`localStorage`はページのリロード間でデータを永続化するためのグローバルストアとして使用されています。`useEffect`内で`count`の現在の値で`localStorage`を更新していますが、これは`useEffect`がブラウザ内でのみ呼び出されるため、完全に安全です！しかし、`localStorage`に基づいて状態を初期化することは問題です。なぜなら、このコールバックはサーバーとブラウザの両方で実行されるからです。
+この例では、`localStorage`がグローバルストアとして使用され、ページのリロードを跨いでデータを保持しています。`useEffect`内で`count`の現在の値で`localStorage`を更新していますが、`useEffect`はブラウザでのみ呼び出されるため、これは完全に安全です！しかし、`localStorage`に基づいて状態を初期化することは問題です。このコールバックはサーバーとブラウザの両方で実行されるためです。
 
-あなたの定番の解決策は、`window`オブジェクトを確認し、コールバックをブラウザ内でのみ実行することかもしれません。しかし、これは別の問題につながる可能性があり、それは恐ろしい[ハイドレーションの不一致][hydration-mismatch]です。Reactは、サーバーでレンダリングされたマークアップがクライアントのハイドレーション中にレンダリングされるものと同一であることに依存しています。これは、`react-dom`がDOM要素を対応するReactコンポーネントに一致させ、イベントリスナーをアタッチし、状態が変更されるにつれて更新を実行する方法を知っていることを保証します。そのため、ローカルストレージからサーバーで初期化したものとは異なる値が得られた場合、新たな問題に対処する必要があります。
+解決策として、`window`オブジェクトをチェックし、ブラウザでのみコールバックを実行することを考えるかもしれません。しかし、これは別の問題、恐ろしい[ハイドレーションの不一致][hydration-mismatch]につながる可能性があります。Reactは、サーバーでレンダリングされたマークアップがクライアントのハイドレーション中にレンダリングされるものと同一であることに依存しています。これにより、`react-dom`はDOM要素とその対応するReactコンポーネントを一致させる方法を知り、イベントリスナーをアタッチし、状態の変化に合わせて更新を実行できます。そのため、ローカルストレージがサーバーで初期化したものとは異なる値を返す場合、新たな問題に対処する必要があります。
 
-[hydration-mismatch]: https://reactjs.org/docs/react-dom.html#hydration-mismatch
+
+[hydration-mismatch]:  (ハイドレーションの不一致へのリンクをここに挿入)
+
 #### クライアントのみのコンポーネント
 
-1つの可能な解決策は、サーバーで使用でき、ルートの[ローダーデータ][loader-data]からプロップとしてコンポーネントに渡される別のキャッシュメカニズムを使用することです。しかし、アプリでコンポーネントをサーバーでレンダリングすることが不可欠でない場合は、サーバーでのレンダリングを完全にスキップし、ハイドレーションが完了するまでブラウザでのレンダリングを待つ方が簡単な解決策となる場合があります。
+ここで考えられる解決策の1つは、サーバーで使用でき、ルートの[ローダーデータ][loader-data]からプロップとしてコンポーネントに渡される、異なるキャッシングメカニズムを使用することです。しかし、サーバー上でコンポーネントをレンダリングすることがアプリケーションにとって重要ではない場合は、サーバーでのレンダリングを完全にスキップし、ハイドレーションが完了するまでブラウザでのレンダリングを待つという、より簡単な解決策があります。
 
 ```tsx
-// ハイドレーションは、コンポーネント外でメモリ状態を
-// 追跡できます。これは、`SomeComponent`のバージョン
-// インスタンスがハイドレートされた後にのみ更新されるためです。
-// その後、ブラウザはルーティング変更にわたって
-// レンダリングの処理を引き継ぎ、ページが
-// 再読み込みされ`isHydrating`がtrueに
-// リセットされるまで、ハイドレーションの不一致を
-// 心配する必要はなくなります。
+// コンポーネントの外側のメモリ内状態では、ハイドレーションを安全に追跡できます。
+// これは、`SomeComponent`のバージョンインスタンスがハイドレートされた後、一度だけ更新されるためです。そこから、
+// ブラウザはルートの変更にわたってレンダリングの処理を引き継ぎ、ページが
+// 再読み込みされ`isHydrating`がtrueにリセットされるまで、ハイドレーションの不一致について心配する必要がなくなります。
 let isHydrating = true;
 
 function SomeComponent() {
@@ -429,37 +434,40 @@ function SomeComponent() {
 }
 ```
 
-この解決策を簡素化するために、[`remix-utils`][remix-utils] コミュニティパッケージの[`ClientOnly`コンポーネント][client-only-component]を使用することをお勧めします。使用方法の例は、[`examples`リポジトリ][examples-repository]にあります。
+この解決策を簡素化するために、[`remix-utils`][remix-utils]コミュニティパッケージの[`ClientOnly`コンポーネント][client-only-component]の使用をお勧めします。その使用方法の例は、[`examples`リポジトリ][examples-repository]にあります。
 
-[loader-data]: https://remix.run/docs/en/v1/api/conventions#loader-data
-[client-only-component]: https://github.com/remix-run/remix/tree/main/packages/remix-utils
-[remix-utils]: https://github.com/remix-run/remix/tree/main/packages/remix-utils
-[examples-repository]: https://github.com/remix-run/remix/tree/main/examples
+
+[loader-data]: <loader-dataへのリンク>
+[client-only-component]: <ClientOnlyコンポーネントへのリンク>
+[remix-utils]: <remix-utilsへのリンク>
+[examples-repository]: <examplesリポジトリへのリンク>
+
 ### `React.lazy` と `React.Suspense`
 
-[`React.lazy`][react-lazy] と [`React.Suspense`][react-suspense] を使ってコンポーネントを遅延ロードする場合、使用している React のバージョンによっては問題が発生する可能性があります。React 18 以前では、`React.Suspense` はもともとブラウザ専用の機能として実装されていたため、サーバーでは動作しません。
+[`React.lazy`][react-lazy] と [`React.Suspense`][react-suspense] を使用してコンポーネントを遅延読み込みしている場合、使用しているReactのバージョンによっては問題が発生する可能性があります。React 18までは、`React.Suspense`は当初ブラウザのみの機能として実装されていたため、サーバーでは動作しませんでした。
 
-React 17 を使用している場合は、次のいずれかのオプションがあります。
+React 17を使用している場合、いくつかの選択肢があります。
 
-* React 18 にアップグレードする
-* 上記の [クライアント専用のアプローチ][client-only-approach] を使用する
-* [Loadable Components][loadable-components] などの代替の遅延ロードソリューションを使用する
-* `React.lazy` と `React.Suspense` を完全に削除する
+* React 18にアップグレードする
+* 上記で説明されている[クライアント側のみのアプローチ][client-only-approach]を使用する
+* [Loadable Components][loadable-components]などの代替の遅延読み込みソリューションを使用する
+* `React.lazy`と`React.Suspense`を完全に削除する
 
-Remix は、管理するすべてのルートのコード分割を自動的に処理するため、`routes` ディレクトリにものを移動する場合、`React.lazy` を手動で使用する必要はほとんどありません。
+Remixは管理するすべてのルートのコード分割を自動的に処理するため、`routes`ディレクトリに要素を移動する際には、`React.lazy`を手動で使用することはほとんど（もしあれば）必要ありません。
 
-[react-lazy]: https://reactjs.org/docs/code-splitting.html#reactlazy
-[react-suspense]: https://reactjs.org/docs/concurrent-mode-suspense.html
-[client-only-approach]: https://remix.run/docs/en/v1/guides/rendering#client-only-components
-[loadable-components]: https://github.com/jamiebuilds/loadable-components
+
+[react-lazy]: (link to React.lazy documentation)
+[react-suspense]: (link to React.Suspense documentation)
+[client-only-approach]: (link to client-only approach documentation)
+[loadable-components]: (link to Loadable Components documentation)
 
 ### 設定
 
-さらなる設定はオプションですが、以下の設定は開発ワークフローの最適化に役立ちます。 
+さらなる設定は任意ですが、開発ワークフローの最適化に役立つ可能性のあるものが以下に示されています。
 
 #### `remix.config.js`
 
-すべての Remix アプリは、プロジェクトルートに `remix.config.js` ファイルを受け入れます。設定はオプションですが、明確にするためにいくつか含めることをお勧めします。利用可能なすべてのオプションの詳細については、[構成に関するドキュメント][docs-on-configuration] を参照してください。
+すべてのRemixアプリは、プロジェクトルートに`remix.config.js`ファイルを受け入れます。設定はオプションですが、明確にするためにいくつか含めることをお勧めします。利用可能なすべてのオプションの詳細については、[設定に関するドキュメント][docs-on-configuration]を参照してください。
 
 ```js filename=remix.config.js
 /** @type {import('@remix-run/dev').AppConfig} */
@@ -470,12 +478,14 @@ module.exports = {
 };
 ```
 
-[docs-on-configuration]: https://remix.run/docs/en/v1/guides/configuration
+
+[docs-on-configuration]:  (This needs to be replaced with the actual link to the documentation)
+
 #### `jsconfig.json` または `tsconfig.json`
 
-TypeScript を使用している場合は、プロジェクトに `tsconfig.json` が既に存在する可能性があります。`jsconfig.json` はオプションですが、多くのエディターに役立つコンテキストを提供します。これは、言語設定に含めることをお勧めする最小限の設定です。
+TypeScriptを使用している場合、プロジェクトに`tsconfig.json`が既に存在する可能性があります。`jsconfig.json`はオプションですが、多くのエディターにとって役立つコンテキストを提供します。 以下は、言語設定に含めることをお勧めする最小限の設定です。
 
-<docs-info>Remix は、`~~/\_` パスエイリアスを使用して、ファイルがプロジェクト内のどこにあってもルートからモジュールを簡単にインポートします。`remix.config.js` の `appDirectory` を変更する場合は、`~~/\_` のパスエイリアスも更新する必要があります。</docs-info>
+<docs-info>Remixは、ファイルがプロジェクト内のどこに存在してもルートからモジュールを簡単にインポートするために、<code>~~/\_</code>パスエイリアスを使用します。`remix.config.js`の`appDirectory`を変更する場合は、<code>~~/\_</code>のパスエイリアスも更新する必要があります。</docs-info>
 
 ```json filename=jsconfig.json
 {
@@ -509,42 +519,22 @@ TypeScript を使用している場合は、プロジェクトに `tsconfig.json
 }
 ```
 
-TypeScript を使用している場合は、プロジェクトのルートに適切なグローバル型参照を含む `remix.env.d.ts` ファイルを作成する必要もあります。
+TypeScriptを使用している場合は、適切なグローバル型参照を使用して、プロジェクトのルートに`remix.env.d.ts`ファイルを作成する必要もあります。
 
 ```ts filename=remix.env.d.ts
 /// <reference types="@remix-run/dev" />
 /// <reference types="@remix-run/node" />
 ```
+
 ### 非標準インポートに関する注意
 
-現時点では、アプリを何も変更せずに実行できるかもしれません。Create React App または高度に構成されたバンドラー設定を使用している場合、`import` を使用してスタイルシートや画像などの非 JavaScript モジュールを含めている可能性があります。
+現時点では、変更を加えずにアプリを実行できる*可能性*があります。Create React Appや高度に設定されたバンドラーを使用している場合、スタイルシートや画像などのJavaScript以外のモジュールを含めるために`import`を使用している可能性があります。
 
-Remix は、ほとんどの非標準インポートをサポートしていません。これは、良い理由があると考えています。以下は、Remix で遭遇する可能性のあるいくつかの違いと、移行時にリファクタリングする方法をまとめたものです。 
+Remixはほとんどの非標準インポートをサポートしておらず、それは正当な理由によるものだと考えています。以下は、Remixで遭遇する可能性のあるいくつかの違いとその移行時のリファクタリング方法の非網羅的なリストです。
 
-**非網羅的なリスト:**
-
-* **CSS:**
-    * **Remix:** CSS は、`styles.css` などのファイルにインポートします。`import styles from "./styles.css";`
-    * **その他:** `import "./styles.css"`
-* **画像:**
-    * **Remix:** 画像は、`import image from "./image.png";` のようにインポートします。
-    * **その他:** `<img src="./image.png" />`
-* **フォント:**
-    * **Remix:** フォントは、`import "./fonts/font.woff2";` のようにインポートします。
-    * **その他:** `<link rel="stylesheet" href="./fonts/font.css" />`
-
-上記以外にも、Remix では、`import` を使用してインポートする他のモジュールやファイルの種類もサポートしていません。
-
-**移行時のリファクタリング方法:**
-
-* **CSS:** CSS ファイルを `styles.css` などのファイルにインポートします。`import styles from "./styles.css";`
-* **画像:** 画像を `import image from "./image.png";` のようにインポートします。
-* **フォント:** フォントを `import "./fonts/font.woff2";` のようにインポートします。
-
-これらの変更を行うことで、Remix でのアプリケーションの動作を安定させることができます。
 #### アセットのインポート
 
-多くのバンドラーは、画像やフォントなどの様々なアセットをインポートできるように、プラグインを使用しています。これらは通常、アセットのファイルパスを表す文字列としてコンポーネントに渡されます。
+多くのバンドラーは、画像やフォントなどの様々なアセットのインポートを可能にするプラグインを使用しています。これらは通常、アセットのファイルパスを表す文字列としてコンポーネントに取り込まれます。
 
 ```tsx
 import logo from "./logo.png";
@@ -554,15 +544,14 @@ export function Logo() {
 }
 ```
 
-Remixでは、基本的に同じように動作します。 `<link>`要素によってロードされるフォントなどのアセットの場合、通常はルートモジュールにインポートし、`links`関数が返すオブジェクトにファイル名を指定します。 [ルートの`links`に関するドキュメントを参照してください。][see-our-docs-on-route-links-for-more-information]
+Remixでは、基本的に同じように動作します。`<link>`要素によって読み込まれるフォントなどのアセットについては、一般的にルートモジュールでインポートし、`links`関数が返すオブジェクトにファイル名を含めます。[ルート`links`に関するドキュメントを参照してください。][see-our-docs-on-route-links-for-more-information]
 
-[see-our-docs-on-route-links-for-more-information]: [ルートの`links`に関するドキュメントへのリンク]
-#### SVG インポート
+#### SVG のインポート
 
 Create React App やその他のビルドツールでは、SVG ファイルを React コンポーネントとしてインポートできます。これは SVG ファイルの一般的なユースケースですが、Remix ではデフォルトでサポートされていません。
 
 ```tsx bad nocopy
-// Remix では動作しません！
+// これは Remix では動作しません！
 import MyLogo from "./logo.svg";
 
 export function Logo() {
@@ -570,7 +559,7 @@ export function Logo() {
 }
 ```
 
-SVG ファイルを React コンポーネントとして使用したい場合は、まずコンポーネントを作成して直接インポートする必要があります。[React SVGR][react-svgr] は、これらのコンポーネントを [コマンドライン][command-line] から生成したり、コピー＆ペーストする場合は [オンラインプレイグラウンド][online-playground] で生成したりするのに役立つ優れたツールセットです。
+SVG ファイルを React コンポーネントとして使用したい場合は、最初にコンポーネントを作成し、直接インポートする必要があります。[React SVGR][react-svgr] は、[コマンドライン][command-line] から、または[オンラインプレイグラウンド][online-playground]で（コピー＆ペーストする場合）これらのコンポーネントを生成するのに役立つ優れたツールセットです。
 
 ```svg filename=icon.svg
 <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 20 20" fill="currentColor">
@@ -597,29 +586,30 @@ export default function Icon() {
 }
 ```
 
-[react-svgr]: https://react-svgr.com/
-[command-line]: https://react-svgr.com/docs/cli/
-[online-playground]: https://react-svgr.com/playground/
-#### CSS インポート
 
-Create React App や他の多くのビルドツールでは、コンポーネントに CSS をインポートする様々な方法がサポートされています。Remix は、以下の説明するような一般的な CSS バンドルソリューションに加えて、通常の CSS ファイルのインポートもサポートしています。 
+[react-svgr]:  (React SVGRへのリンクをここに挿入)
+[command-line]: (コマンドラインへのリンクをここに挿入)
+[online-playground]: (オンラインプレイグラウンドへのリンクをここに挿入)
 
-### `links` エクスポートのルート
+#### CSS のインポート
 
-Remix では、通常のスタイルシートをルートコンポーネントファイルからロードできます。それらをインポートしても、スタイルに対して魔法のようなことは起こりません。代わりに、スタイルシートを必要に応じてロードするために使用できる URL が返されます。コンポーネントにスタイルシートを直接レンダリングするか、[`links` エクスポート][see-our-docs-on-route-links-for-more-information] を使用できます。
+Create React App や多くのビルドツールは、様々な方法でコンポーネントに CSS をインポートすることをサポートしています。Remix は、下記で説明するいくつかの一般的な CSS バンドルソリューションに加えて、通常の CSS ファイルのインポートもサポートしています。
 
-アプリのスタイルシートとその他のいくつかのアセットをルートルートの `links` 関数に移動してみましょう。
+### Route `links` エクスポート
+
+Remixでは、通常のスタイルシートをルートコンポーネントファイルから読み込むことができます。スタイルシートをインポートしても、スタイルに対して特別な処理が行われるわけではなく、スタイルシートを読み込むために使用できるURLが返されます。コンポーネント内でスタイルシートを直接レンダリングするか、[`links` エクスポート][see-our-docs-on-route-links-for-more-information]を使用できます。
+
+アプリのスタイルシートとその他のいくつかのアセットをルートルートの`links`関数に移動してみましょう。
 
 ```tsx filename=app/root.tsx lines=[2,5,7-16,32]
-import type { LinksFunction } from "@remix-run/node"; // または cloudflare/deno
+import type { LinksFunction } from "@remix-run/node"; // or cloudflare/deno
 import { Links } from "@remix-run/react";
 
 import App from "./app";
 import stylesheetUrl from "./styles.css";
 
 export const links: LinksFunction = () => {
-  // `links` は、
-  // プロパティが `<link />` コンポーネントのプロパティにマッピングされるオブジェクトの配列を返します
+  // `links` は、プロパティが `<link />` コンポーネントのプロップにマップされるオブジェクトの配列を返します。
   return [
     { rel: "icon", href: "/favicon.ico" },
     { rel: "apple-touch-icon", href: "/logo192.png" },
@@ -653,28 +643,30 @@ export default function Root() {
 }
 ```
 
-32 行目で、個別の `<link />` コンポーネントをすべて置き換えた `<Links />` コンポーネントをレンダリングしたことに注意してください。これは、ルートルートでのみリンクを使用する場合には関係ありませんが、すべての子ルートは独自のリンクをエクスポートする可能性があり、ここでもレンダリングされます。`links` 関数は、ユーザーが移動する可能性のあるページのリソースを事前に取得できるように、[`PageLinkDescriptor` オブジェクト][page-link-descriptor-object] を返すこともできます。
+32行目では、個々の`<link />`コンポーネントをすべて置き換えた`<Links />`コンポーネントをレンダリングしていることに気付くでしょう。ルートルートでのみリンクを使用する場合、これは重要ではありませんが、すべての子ルートは、ここでレンダリングされる独自のリンクをエクスポートする場合があります。`links`関数は、ユーザーが移動する可能性のあるページのリソースをプリフェッチできる[`PageLinkDescriptor`オブジェクト][page-link-descriptor-object]を返すこともできます。
 
-現在、既存のルートコンポーネントでページクライアント側で `<link />` タグを挿入している場合、直接または [`react-helmet`][react-helmet] などの抽象化を介して、それを行うのをやめて、代わりに `links` エクスポートを使用できます。多くのコードと、場合によっては 1 つまたは 2 つの依存関係を削除できます！
+現在、既存のルートコンポーネントで、直接または[`react-helmet`][react-helmet]のような抽象化を介して、`<link />`タグをクライアントサイドでページに挿入している場合は、それを行うのをやめ、代わりに`links`エクスポートを使用できます。多くのコードと、場合によっては1つまたは2つの依存関係を削除できます！
 
-[see-our-docs-on-route-links-for-more-information]: https://remix.run/docs/en/v1/guides/routing#links-function
-[page-link-descriptor-object]: https://remix.run/docs/en/v1/api/remix#pagelinkdescriptor
-[react-helmet]: https://www.npmjs.com/package/react-helmet
-### CSSバンドル
 
-Remixは、[CSS Modules][css-modules]、[Vanilla Extract][vanilla-extract]、[CSS副作用インポート][css-side-effect-imports]を組み込みでサポートしています。これらの機能を利用するには、アプリケーションにCSSバンドルを設定する必要があります。
+[see-our-docs-on-route-links-for-more-information]: (ドキュメントへのリンクをここに挿入してください)
+[page-link-descriptor-object]: (ドキュメントへのリンクをここに挿入してください)
+[react-helmet]: (ドキュメントへのリンクをここに挿入してください)
 
-まず、生成されたCSSバンドルにアクセスするために、`@remix-run/css-bundle`パッケージをインストールします。
+### CSS バンドリング
+
+Remix は、[CSS Modules][css-modules]、[Vanilla Extract][vanilla-extract]、および[CSS サイドエフェクトインポート][css-side-effect-imports] を組み込みでサポートしています。これらの機能を使用するには、アプリケーションで CSS バンドリングを設定する必要があります。
+
+まず、生成された CSS バンドルにアクセスするには、`@remix-run/css-bundle` パッケージをインストールします。
 
 ```sh
 npm install @remix-run/css-bundle
 ```
 
-次に、`cssBundleHref`をインポートし、リンク記述子に追加します。ほとんどの場合、`root.tsx`に追加すると、アプリケーション全体に適用されます。
+次に、`cssBundleHref` をインポートし、リンク記述子に追加します。これは、アプリケーション全体に適用されるように、ほとんどの場合 `root.tsx` にあるでしょう。
 
 ```tsx filename=root.tsx lines=[2,6-8]
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction } from "@remix-run/node"; // または cloudflare/deno
+import type { LinksFunction } from "@remix-run/node"; // or cloudflare/deno
 
 export const links: LinksFunction = () => {
   return [
@@ -686,35 +678,39 @@ export const links: LinksFunction = () => {
 };
 ```
 
-[CSSバンドルに関する詳細については、ドキュメントをご覧ください。][css-bundling]
+[CSS バンドリングの詳細については、ドキュメントを参照してください。][css-bundling]
 
 <docs-info>
 
-**注意:** Remixは現在、Sass/Less処理を直接サポートしていません。ただし、これらを別々のプロセスとして実行してCSSファイルを生成し、その後Remixアプリケーションにインポートすることは可能です。
+**注記:** Remix は現在、Sass/Less の処理を直接サポートしていませんが、それらを別個のプロセスとして実行して CSS ファイルを生成し、それを Remix アプリにインポートすることは可能です。
 
 </docs-info>
 
-[css-modules]: https://www.npmjs.com/package/css-modules
-[vanilla-extract]: https://vanilla-extract.style/
-[css-side-effect-imports]: https://remix.run/docs/en/v1/guides/css#css-side-effect-imports
-[css-bundling]: https://remix.run/docs/en/v1/guides/css#bundling-css
 
-### `<head>` 内でのコンポーネントレンダリング
+[css-modules]: <a href="ここにCSS Modulesのリンクを挿入">CSS Modulesのリンク</a>
+[vanilla-extract]: <a href="ここにVanilla Extractのリンクを挿入">Vanilla Extractのリンク</a>
+[css-side-effect-imports]: <a href="ここにCSSサイドエフェクトインポートのリンクを挿入">CSSサイドエフェクトインポートのリンク</a>
+[css-bundling]: <a href="ここにCSSバンドリングのドキュメントへのリンクを挿入">CSSバンドリングのドキュメントへのリンク</a>
 
-`<link>` がルートコンポーネント内でレンダリングされ、最終的にルート `<Links />` コンポーネント内でレンダリングされるのと同様に、アプリでは、ドキュメントの `<head>` に追加のコンポーネントをレンダリングするためのインジェクショントリックを使用する場合があります。多くの場合、これはドキュメントの `<title>` や `<meta>` タグを変更するために行われます。
 
-`links` と同様に、各ルートは `meta` 関数をエクスポートすることもできます。この関数は、そのルートの `<meta>` タグをレンダリングするための値を返します（`<title>`、`<link rel="canonical">`、`<script type="application/ld+json">` など、メタデータに関連する他のいくつかのタグも含まれます）。
+### `<head>` 内でのコンポーネントのレンダリング
 
-`meta` の動作は `links` と少し異なります。ルート階層内の他の `meta` 関数の値をマージする代わりに、**各リーフルートは独自のタグをレンダリングする責任があります**。これは次のような理由によるものです。
+`<link>` がルートコンポーネント内でレンダリングされ、最終的にルート `<Links />` コンポーネントでレンダリングされるのと同様に、アプリはドキュメントの `<head>` に追加のコンポーネントをレンダリングするために、いくつかのインジェクションのトリックを使用する場合があります。これは多くの場合、ドキュメントの `<title>` や `<meta>` タグを変更するために実行されます。
 
-* 最適な SEO のために、メタデータに対してより詳細な制御をしたいことが多い
-* [Open Graph プロトコル][open-graph-protocol] に従う一部のタグの場合、一部のタグの順序が、クローラーやソーシャルメディアサイトによる解釈に影響を与えます。Remix で、複雑なメタデータの結合方法をどのように想定すべきかを予測することは困難です
-* 一部のタグは複数の値を許可しますが、他のタグは許可しません。Remix は、これらのすべてのケースをどのように処理すべきかを想定すべきではありません
+`links` と同様に、各ルートは `meta` 関数をエクスポートすることもできます。この関数は、そのルートの `<meta>` タグ（`<title>`、`<link rel="canonical">`、`<script type="application/ld+json">` など、メタデータに関連する他のいくつかのタグも含む）をレンダリングするために必要な値を返します。
 
-[open-graph-protocol]: https://ogp.me/
+`meta` の動作は `links` とわずかに異なります。ルート階層内の他の `meta` 関数の値をマージする代わりに、**各リーフルートは独自のタグのレンダリングを担当します**。これは以下の理由からです。
+
+* 最適なSEOのために、メタデータに対するより細かい制御が必要になることが多い
+* [Open Graph プロトコル][open-graph-protocol] に従う一部のタグの場合、タグの順序によって、クローラーやソーシャルメディアサイトによる解釈に影響を与え、Remix が複雑なメタデータの結合方法を想定するのは予測が難しくなる
+* 一部のタグは複数の値を許可しますが、一部のタグは許可しません。Remix は、これらのすべてのケースをどのように処理したいかを想定すべきではありません
+
+
+[open-graph-protocol]: [Open Graph protocolのURLをここに挿入]
+
 ### インポートの更新
 
-Remix は `react-router-dom` から取得できるすべてを再エクスポートしており、`@remix-run/react` からこれらのモジュールを取得するようにインポートを更新することをお勧めします。多くの場合、これらのコンポーネントは Remix に最適化された追加の機能と機能でラップされています。
+Remix は `react-router-dom` から取得できるすべてを再エクスポートしますが、これらのモジュールを `@remix-run/react` から取得するようにインポートを更新することをお勧めします。多くの場合、これらのコンポーネントには、Remix向けに最適化された追加の機能がラップされています。
 
 **変更前:**
 
@@ -727,11 +723,12 @@ import { Link, Outlet } from "react-router-dom";
 ```tsx good
 import { Link, Outlet } from "@remix-run/react";
 ```
+
 ## 最後に
 
-この包括的な移行ガイドで可能な限り網羅したつもりですが、Remix は従来の React アプリの構築方法とは大きく異なるいくつかの重要な原則に基づいてゼロから構築されたことを覚えておくことが重要です。現時点ではアプリが動作する可能性がありますが、ドキュメントを精査し、API を探求するにつれて、コードの複雑さを大幅に削減し、アプリのエンドユーザーエクスペリエンスを向上させることができると思います。そこへたどり着くまでには少し時間がかかるかもしれませんが、一口ずつそのゾウを食べていけばいいのです。
+包括的な移行ガイドを提供するために最善を尽くしましたが、Remixは多くの既存のReactアプリとは大きく異なるいくつかの重要な原則に基づいてゼロから構築されていることに注意することが重要です。現時点ではアプリが動作する可能性がありますが、ドキュメントを精査し、APIを探索するにつれて、コードの複雑さを大幅に削減し、エンドユーザーエクスペリエンスを向上させることができると思います。そこに到達するには少し時間がかかるかもしれませんが、「大きな仕事も少しずつやればできる」ということです。
 
-さあ、あなたのアプリを *Remix* してみましょう！ 💿 途中で作るもの気に入ると思いますよ！ 
+さあ、あなたのアプリを*Remix*しましょう！その過程で生まれるもの気に入っていただけると思います！💿
 
 ### さらに読む
 

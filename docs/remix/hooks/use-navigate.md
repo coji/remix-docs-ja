@@ -4,7 +4,7 @@ title: useNavigate
 
 # `useNavigate`
 
-`useNavigate`フックは、ユーザーの操作や効果に応じてブラウザでプログラム的にナビゲートできる関数を返します。
+`useNavigate` フックは、ユーザーの操作やエフェクトに応じて、ブラウザでプログラム的にナビゲートできる関数を返します。
 
 ```tsx
 import { useNavigate } from "@remix-run/react";
@@ -21,30 +21,30 @@ function SomeComponent() {
 }
 ```
 
-このフックよりも、[`action`][action]や[`loader`][loader]で[`redirect`][redirect]を使用する方が良いことが多いですが、それでも使用できるケースがあります。
+このフックよりも、[`action`][action] や [`loader`][loader] で [`redirect`][redirect] を使用する方が良い場合が多いですが、それでもユースケースはあります。
 
 ## 引数
 
 ### `to: string`
 
-最も基本的な使い方は、href文字列を指定することです。
+最も基本的な使い方は、href 文字列を受け取ることです。
 
 ```tsx
 navigate("/some/path");
 ```
 
-パスは相対的にも指定できます。
+パスは相対パスにできます。
 
 ```tsx
 navigate("..");
 navigate("../other/path");
 ```
 
-<docs-info>スプラットルート内の相対的な `useNavigate()` の動作については、`future.v3_relativeSplatPath` 未来フラグに関する注記を、`useResolvedPath` ドキュメントの[スプラットパス][relativesplatpath]セクションを参照してください。</docs-info>
+<docs-info>`future.v3_relativeSplatPath` future フラグの、スプラットルート内での相対 `useNavigate()` の動作に関する注意については、`useResolvedPath` ドキュメントの [スプラットパス][relativesplatpath] セクションを参照してください。</docs-info>
 
 ### `to: Partial<Path>`
 
-`Partial<Path>`値を渡すこともできます。
+`Partial<Path>` 値を渡すこともできます。
 
 ```tsx
 navigate({
@@ -56,7 +56,7 @@ navigate({
 
 ### `to: Number`
 
-数値を渡すと、ブラウザは履歴スタックを前後に移動します。
+数値を渡すと、ブラウザに履歴スタックを戻ったり進んだりするように指示します。
 
 ```tsx
 navigate(-1); // 戻る
@@ -64,7 +64,7 @@ navigate(1); // 進む
 navigate(-2); // 2つ戻る
 ```
 
-ブラウザの履歴スタックはアプリケーションに限定されていないため、この操作によってアプリケーションから移動してしまう可能性があることに注意してください。
+ブラウザの履歴スタックはアプリケーションに限定されないため、これによりアプリケーションから移動してしまう可能性があることに注意してください。
 
 ### `options`
 
@@ -78,14 +78,14 @@ navigate(".", {
 });
 ```
 
-- **replace**: boolean - 新しいエントリをプッシュするのではなく、履歴スタックの現在のエントリを置き換えます。
+- **replace**: boolean - 履歴スタックに新しいエントリをプッシュする代わりに、現在のエントリを置き換えます。
 - **relative**: `"route" | "path"` - リンクの相対パスの動作を定義します。
-  - `"route"` はルート階層を使用するため、`".."` は現在のルートパターンのすべてのURLセグメントを削除します。一方、`"path"` はURLパスを使用するため、`".."` は1つのURLセグメントを削除します。
-- **state**: any - 次の場所に永続的なクライアントサイドルーティング状態を追加します。
-- **preventScrollReset**: boolean - [`<ScrollRestoration>`][scroll-restoration]を使用している場合、ナビゲート時にスクロール位置がウィンドウの上部にリセットされないようにします。
-- **flushSync**: boolean - このナビゲーションの初期状態の更新を、デフォルトの[`React.startTransition`][start-transition]ではなく、[`ReactDOM.flushSync`][flush-sync]呼び出しでラップします。
-- **viewTransition**: boolean - このナビゲーションに[ビュー遷移][view-transitions]を有効にします。最終状態の更新を `document.startViewTransition()` でラップします。
-  - このビュー遷移に特定のスタイルを適用する必要がある場合は、[`useViewTransitionState()`][use-view-transition-state]も活用する必要があります。
+  - `"route"` はルート階層を使用するため、`".."` は現在のルートパターンのすべての URL セグメントを削除しますが、`"path"` は URL パスを使用するため、`".."` は 1 つの URL セグメントを削除します。
+- **state**: any - 次の場所に永続的なクライアント側のルーティング状態を追加します。
+- **preventScrollReset**: boolean - [`<ScrollRestoration>`][scroll-restoration] を使用している場合、ナビゲート時にスクロール位置がウィンドウの上部にリセットされるのを防ぎます。
+- **flushSync**: boolean - このナビゲーションの初期状態の更新を、デフォルトの [`React.startTransition`][start-transition] 呼び出しの代わりに、[`ReactDOM.flushSync`][flush-sync] 呼び出しでラップします。
+- **viewTransition**: boolean - 最終的な状態の更新を `document.startViewTransition()` でラップすることにより、このナビゲーションの [View Transition][view-transitions] を有効にします。
+  - このビュー遷移に特定のスタイルを適用する必要がある場合は、[`useViewTransitionState()`][use-view-transition-state] も活用する必要があります。
 
 [redirect]: ../utils/redirect
 [flush-sync]: https://react.dev/reference/react-dom/flushSync
@@ -96,6 +96,4 @@ navigate(".", {
 [loader]: ../route/loader
 [relativesplatpath]: ./use-resolved-path#splat-paths
 [scroll-restoration]: ../components/scroll-restoration#preventing-scroll-reset
-
-
 

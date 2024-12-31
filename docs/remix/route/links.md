@@ -4,7 +4,7 @@ title: links
 
 # `links`
 
-`links`関数は、ユーザーがルートにアクセスしたときにページに追加する [`<link>`要素][link-element] を定義します。
+`links` 関数は、ユーザーがルートにアクセスしたときにページに追加する [`<link>` 要素][link-element] を定義します。
 
 ```tsx
 import type { LinksFunction } from "@remix-run/node"; // または cloudflare/deno
@@ -30,15 +30,15 @@ export const links: LinksFunction = () => {
 };
 ```
 
-返せるリンク記述子は2種類あります。
+返せるリンク記述子には2つのタイプがあります。
 
 #### `HtmlLinkDescriptor`
 
-これは、通常の `<link {...props} />` 要素のオブジェクト表現です。 [リンク API の MDN ドキュメントをご覧ください][link-element]。
+これは、通常の `<link {...props} />` 要素のオブジェクト表現です。[link API の MDN ドキュメントを参照してください][link-element]。
 
 ルートからの `links` エクスポートは、`HtmlLinkDescriptor` オブジェクトの配列を返す必要があります。
 
-例:
+例：
 
 ```tsx
 import type { LinksFunction } from "@remix-run/node"; // または cloudflare/deno
@@ -54,24 +54,25 @@ export const links: LinksFunction = () => {
       type: "image/png",
     },
 
-    // 外部のスタイルシートを追加
+    // 外部スタイルシートを追加
     {
       rel: "stylesheet",
       href: "https://example.com/some/styles.css",
       crossOrigin: "anonymous",
     },
 
-    // ローカルのスタイルシートを追加、Remix は本番環境のキャッシュのためにファイル名をフィンガープリント化します
+    // ローカルスタイルシートを追加。remix は本番環境でのキャッシュのためにファイル名をフィンガープリントします。
     { rel: "stylesheet", href: stylesHref },
 
-    // ユーザーがページとやり取りする際に表示される可能性のある画像をブラウザのキャッシュに事前に取得します。たとえば、ユーザーがボタンをクリックしてサマリー/詳細要素に表示する場合などです。
+    // ユーザーがこのページを操作する際に表示される可能性の高い画像をブラウザキャッシュにプリフェッチします。
+    // たとえば、サマリー/詳細要素で表示するためにボタンをクリックするかもしれません。
     {
       rel: "prefetch",
       as: "image",
       href: "/img/bunny.jpg",
     },
 
-    // 画面が大きい場合にのみ事前に取得
+    // より大きな画面の場合のみプリフェッチします。
     {
       rel: "prefetch",
       as: "image",
@@ -84,7 +85,7 @@ export const links: LinksFunction = () => {
 
 #### `PageLinkDescriptor`
 
-これらの記述子を使用すると、ユーザーが移動する可能性のあるページのリソースを事前に取得できます。 この API は便利ですが、代わりに `<Link prefetch="render">` を使用したほうが効果的な場合があります。 ただし、必要に応じて、この API を使用して同じ動作を実現できます。
+これらの記述子を使用すると、ユーザーが移動する可能性の高いページのプリフェッチを行うことができます。この API は便利ですが、代わりに `<Link prefetch="render">` を使用する方が効果的かもしれません。ただし、必要であれば、この API で同じ動作を実現できます。
 
 ```tsx
 export const links: LinksFunction = () => {
@@ -92,9 +93,9 @@ export const links: LinksFunction = () => {
 };
 ```
 
-これにより、ユーザーが移動する前に、JavaScript モジュール、ローダーデータ、次のルートの `links` エクスポートで定義されているスタイルシートがブラウザのキャッシュに読み込まれます。
+これにより、ユーザーが移動する前に、JavaScript モジュール、ローダーデータ、およびスタイルシート（次のルートの `links` エクスポートで定義）がブラウザキャッシュにロードされます。
 
-<docs-warning>この機能の使用には注意が必要です。 ユーザーが訪問しない可能性のあるページの JavaScript やデータが 10 MB もダウンロードされないようにしてください。</docs-warning>
+<docs-warning>この機能には注意が必要です。ユーザーが訪問する可能性の低いページのために 10MB の JavaScript とデータをダウンロードすることは避けるべきです。</docs-warning>
 
 [link-element]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
 

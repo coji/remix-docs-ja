@@ -1,14 +1,14 @@
 ---
-title: フォーム検証
+title: フォームのバリデーション
 ---
 
-# フォーム検証
+# フォームのバリデーション
 
-このガイドでは、Remix でシンプルなサインアップフォームのフォーム検証を実装する方法を説明します。ここでは、[`action`][action]、アクションデータ、エラーのレンダリングなど、Remix のフォーム検証の基本を理解するのに役立つ重要な要素に焦点を当てます。
+このガイドでは、Remix での簡単なサインアップフォームのフォームバリデーションの実装について説明します。ここでは、[`action`][action]、アクションデータ、エラーのレンダリングなど、Remix でのフォームバリデーションの重要な要素を理解するための基本を捉えることに焦点を当てます。
 
-## ステップ 1: サインアップフォームの設定
+## ステップ 1: サインアップフォームのセットアップ
 
-最初に、Remix の [`Form`][form_component] コンポーネントを使用して、基本的なサインアップフォームを作成します。
+まず、Remix の [`Form`][form_component] コンポーネントを使用して、基本的なサインアップフォームを作成します。
 
 ```tsx filename=app/routes/signup.tsx
 import { Form } from "@remix-run/react";
@@ -32,7 +32,7 @@ export default function Signup() {
 
 ## ステップ 2: アクションの定義
 
-このステップでは、`Signup` コンポーネントと同じファイルにサーバー `action` を定義します。ここでは、フォーム検証ルールやエラーオブジェクト構造の詳細な説明ではなく、フォーム検証のメカニズムの概要を提供することを目的としています。メールとパスワードの簡単なチェックを使用して、基本的な概念を説明します。
+このステップでは、`Signup` コンポーネントと同じファイルにサーバー `action` を定義します。ここでの目的は、フォームバリデーションのルールやエラーオブジェクトの構造を深く掘り下げるのではなく、関連するメカニズムの概要を説明することです。コアコンセプトを示すために、メールとパスワードの基本的なチェックを使用します。
 
 ```tsx filename=app/routes/signup.tsx
 import type { ActionFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
@@ -40,7 +40,7 @@ import { json, redirect } from "@remix-run/node"; // or cloudflare/deno
 import { Form } from "@remix-run/react";
 
 export default function Signup() {
-  // 省略
+  // 簡潔にするため省略
 }
 
 export async function action({
@@ -53,28 +53,28 @@ export async function action({
   const errors = {};
 
   if (!email.includes("@")) {
-    errors.email = "無効なメールアドレスです";
+    errors.email = "無効なメールアドレス";
   }
 
   if (password.length < 12) {
     errors.password =
-      "パスワードは12文字以上にする必要があります";
+      "パスワードは12文字以上である必要があります";
   }
 
   if (Object.keys(errors).length > 0) {
     return json({ errors });
   }
 
-  // 検証が成功したら、ダッシュボードにリダイレクトします
+  // バリデーションが成功した場合はダッシュボードにリダイレクト
   return redirect("/dashboard");
 }
 ```
 
-検証エラーが見つかった場合、`action` からクライアントに返されます。これは、UI に修正が必要なことを知らせる方法です。そうでない場合、ユーザーはダッシュボードにリダイレクトされます。
+バリデーションエラーが見つかった場合、それらは `action` からクライアントに返されます。これは、UI に何かを修正する必要があることを知らせる方法です。そうでない場合、ユーザーはダッシュボードにリダイレクトされます。
 
-## ステップ 3: 検証エラーの表示
+## ステップ 3: バリデーションエラーの表示
 
-最後に、`Signup` コンポーネントを変更して、検証エラー（存在する場合）を表示します。[`useActionData`][use_action_data] を使用して、これらのエラーにアクセスして表示します。
+最後に、`Signup` コンポーネントを修正して、バリデーションエラーがある場合は表示します。これらのエラーにアクセスして表示するために、[`useActionData`][use_action_data] を使用します。
 
 ```tsx filename=app/routes/signup.tsx lines=[3,6,12-14,19-21]
 import type { ActionFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
@@ -108,14 +108,15 @@ export default function Signup() {
 export async function action({
   request,
 }: ActionFunctionArgs) {
-  // 省略
+  // 簡潔にするため省略
 }
 ```
 
-## まとめ
+## 結論
 
-これで、Remix で基本的なフォーム検証フローを設定することができました。このアプローチの良い点は、`action` データに基づいてエラーが自動的に表示され、ユーザーがフォームを再送信するたびにエラーが更新されることです。これにより、記述する必要がある定型コードが減り、開発プロセスが効率化されます。
+これで完了です！Remix で基本的なフォームバリデーションフローを正常に設定しました。このアプローチの利点は、エラーが `action` データに基づいて自動的に表示され、ユーザーがフォームを再送信するたびに更新されることです。これにより、記述する必要があるボイラープレートコードの量が減り、開発プロセスがより効率的になります。
 
 [action]: ../route/action
 [form_component]: ../components/form
 [use_action_data]: ../hooks/use-action-data
+

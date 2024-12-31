@@ -5,9 +5,9 @@ toc: false
 
 # `redirectDocument`
 
-これは、[`redirect`][redirect] をラップしたもので、クライアント側のナビゲーションではなく、ドキュメントレベルのリダイレクトを新しい場所にトリガーします。
+これは、クライアントサイドのナビゲーションではなく、新しいロケーションへのドキュメントレベルのリダイレクトをトリガーする[`redirect`][redirect]の小さなラッパーです。
 
-これは、同じドメイン上に Remix アプリと非 Remix アプリが隣接しており、Remix アプリから非 Remix アプリにリダイレクトする必要がある場合に最も役立ちます。
+これは、同じドメイン上にRemixアプリと非Remixアプリが共存しており、Remixアプリから非Remixアプリにリダイレクトする必要がある場合に最も役立ちます。
 
 ```tsx lines=[1,7]
 import { redirectDocument } from "@remix-run/node"; // または cloudflare/deno
@@ -16,7 +16,7 @@ export const action = async () => {
   const userSession = await getUserSessionOrWhatever();
 
   if (!userSession) {
-    // `/login` は別の非 Remix アプリであると仮定
+    // `/login` が別の非Remixアプリであると仮定
     return redirectDocument("/login");
   }
 
@@ -24,7 +24,7 @@ export const action = async () => {
 };
 ```
 
-[`redirect`][redirect] と同様に、ステータスコードまたは `ResponseInit` を 2 番目のパラメータとして受け付けます。
+[`redirect`][redirect]と同様に、ステータスコードまたは `ResponseInit` を2番目のパラメータとして受け入れます。
 
 ```ts
 redirectDocument(path, 301);
@@ -40,5 +40,4 @@ redirectDocument(path, {
 ```
 
 [redirect]: ./redirect
-
 

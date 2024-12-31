@@ -5,19 +5,19 @@ order: 1
 
 # クイックスタート
 
-このガイドでは、できるだけ早くRemixアプリを実行するために必要な基本的な配管について説明します。さまざまなランタイム、デプロイターゲット、データベースを持つスターターテンプレートはたくさんありますが、ここではゼロからベアメタルのプロジェクトを作成します。
+このガイドでは、Remix アプリをできるだけ早く実行するために必要な基本的な仕組みについて説明します。さまざまなランタイム、デプロイターゲット、データベースを備えた多くのスターターテンプレートがありますが、ここでは、ゼロから必要最低限のプロジェクトを作成します。
 
-Remixプロジェクトを本格的に始める準備ができたら、コミュニティテンプレートから始めることを検討してください。テンプレートには、TypeScriptの設定、データベース、テストハーネス、認証などが含まれています。コミュニティテンプレートのリストは、[Remix Resources][templates]ページにあります。
+Remix プロジェクトに本格的に取り組む準備ができたら、コミュニティテンプレートから始めることを検討するとよいでしょう。これらには、TypeScript の設定、データベース、テストハーネス、認証などが含まれています。コミュニティテンプレートのリストは、[Remix リソース][templates]ページで確認できます。
 
 ## インストール
 
-バッテリー込みのRemixプロジェクトを初期化したい場合は、[`create-remix` CLI][create-remix]を使用できます。
+すぐに使える Remix プロジェクトを初期化したい場合は、[`create-remix` CLI][create-remix] を使用できます。
 
 ```shellscript nonumber
 npx create-remix@latest
 ```
 
-ただし、このガイドでは、CLIがプロジェクトをセットアップするために実行するすべての操作を説明します。CLIを使用する代わりに、次の手順に従うことができます。Remixを初めて使用する場合は、このガイドに従って、Remixアプリを構成するさまざまなパーツを理解することをお勧めします。
+ただし、このガイドでは、CLI がプロジェクトをセットアップするために行うすべてのことを説明します。CLI を使用する代わりに、以下の手順に従うことができます。Remix を使い始めたばかりの場合は、Remix アプリを構成するさまざまな要素を理解するために、このガイドに従うことをお勧めします。
 
 ```shellscript nonumber
 mkdir my-remix-app
@@ -31,13 +31,13 @@ npm i @remix-run/node @remix-run/react @remix-run/serve isbot@4 react react-dom
 npm i -D @remix-run/dev vite
 ```
 
-## Vite設定
+## Vite 設定
 
 ```shellscript nonumber
 touch vite.config.js
 ```
 
-Remixは[Vite]を使用するため、Remix Viteプラグインを含む[Vite設定][vite-config]を提供する必要があります。必要な基本的な設定を次に示します。
+Remix は [Vite] を使用するため、Remix Vite プラグインを含む [Vite 設定][vite-config] を提供する必要があります。以下は、必要な基本的な設定です。
 
 ```js filename=vite.config.js
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -55,7 +55,7 @@ mkdir app
 touch app/root.jsx
 ```
 
-`app/root.jsx`は、私たちが「ルートルート」と呼ぶものです。これは、アプリ全体のルートレイアウトです。すべてのプロジェクトに必要な基本的な要素を次に示します。
+`app/root.jsx` は、いわゆる「ルートルート」です。これは、アプリ全体のルートレイアウトです。以下は、すべてのプロジェクトに必要な基本的な要素のセットです。
 
 ```jsx filename=app/root.jsx
 import {
@@ -89,17 +89,17 @@ export default function App() {
 
 ## ビルドと実行
 
-最初に、アプリを本番環境用にビルドします。
+まず、本番環境用にアプリをビルドします。
 
 ```shellscript nonumber
 npx remix vite:build
 ```
 
-これで、`build`フォルダに、`server`フォルダ（アプリのサーバーバージョン）と`client`フォルダ（ブラウザバージョン）が作成され、そこにビルドアーティファクトが含まれます。（これはすべて[構成可能][vite_config]です。）
+これで、`build` フォルダーに、`server` フォルダー（アプリのサーバーバージョン）と、いくつかのビルド成果物を含む `client` フォルダー（ブラウザーバージョン）が表示されるはずです。（これはすべて[設定可能][vite_config]です。）
 
-👉 **`remix-serve`でアプリを実行する**
+👉 **`remix-serve` でアプリを実行する**
 
-最初に、`package.json`でタイプを`module`に指定する必要があります。そうすることで、`remix-serve`がアプリを実行できるようになります。
+まず、`remix-serve` がアプリを実行できるように、`package.json` で型をモジュールとして指定する必要があります。
 
 ```jsonc filename=package.json lines=[2] nocopy
 {
@@ -108,16 +108,16 @@ npx remix vite:build
 }
 ```
 
-これで、`remix-serve`でアプリを実行できます。
+これで、`remix-serve` でアプリを実行できます。
 
 ```shellscript nonumber
 # ダッシュに注意！
 npx remix-serve build/server/index.js
 ```
 
-[http://localhost:3000][http-localhost-3000]を開くと、「hello world」ページが表示されます。
+[http://localhost:3000][http-localhost-3000] を開いて、「hello world」ページが表示されるはずです。
 
-`node_modules`内の大量のコードを除けば、Remixアプリは単一のファイルのみです。
+`node_modules` にある膨大な量のコードを除けば、Remix アプリは 1 つのファイルだけです。
 
 ```
 ├── app/
@@ -126,24 +126,24 @@ npx remix-serve build/server/index.js
 └── vite.config.js
 ```
 
-## 独自のサーバーを用意する
+## 独自のサーバーを持ち込む
 
-`remix vite:build`によって作成された`build/server`ディレクトリは、単なるモジュールです。これは、Express、Cloudflare Workers、Netlify、Vercel、Fastly、AWS、Deno、Azure、Fastify、Firebaseなど、サーバー内で実行します。...どこでも。
+`remix vite:build` によって作成された `build/server` ディレクトリは、Express、Cloudflare Workers、Netlify、Vercel、Fastly、AWS、Deno、Azure、Fastify、Firebase などのサーバー内で実行するモジュールにすぎません。
 
-独自のサーバーをセットアップしたくない場合は、`remix-serve`を使用できます。これは、Remixチームが保守するシンプルなexpressベースのサーバーです。ただし、Remixは、どのJavaScript環境でも実行できるように設計されているため、スタックを所有できます。多くの場合、特に本番環境のアプリでは、独自のサーバーを持つことが期待されます。この点については、[Runtimes、Adapters、and Stacks][runtimes]で詳しく説明しています。
+独自のサーバーをセットアップしたくない場合は、`remix-serve` を使用できます。これは、Remix チームが管理するシンプルな Express ベースのサーバーです。ただし、Remix は、スタックを所有できるように、_あらゆる_ JavaScript 環境で実行するように特別に設計されています。多くの（ほとんどではないにしても）本番アプリには独自のサーバーがあることが予想されます。これについては、[ランタイム、アダプター、スタック][runtimes]で詳しく読むことができます。
 
-ちょっとした実験として、`remix-serve`の使用をやめて、代わりにexpressを使用してみましょう。
+試しに、`remix-serve` の使用を停止して、代わりに Express を使用してみましょう。
 
-👉 **Express、Remix Expressアダプター、および本番モードで実行するための[cross-env]をインストールする**
+👉 **Express、Remix Express アダプター、および本番モードで実行するための [cross-env] をインストールする**
 
 ```shellscript nonumber
 npm i express @remix-run/express cross-env
 
-# これ以上は使用しない
+# これはもう使用しない
 npm uninstall @remix-run/serve
 ```
 
-👉 **Expressサーバーを作成する**
+👉 **Express サーバーを作成する**
 
 ```shellscript nonumber
 touch server.js
@@ -153,13 +153,13 @@ touch server.js
 import { createRequestHandler } from "@remix-run/express";
 import express from "express";
 
-// `remix vite:build`の結果は「単なるモジュール」であることに注意
+// `remix vite:build` の結果は「単なるモジュール」であることに注意してください
 import * as build from "./build/server/index.js";
 
 const app = express();
 app.use(express.static("build/client"));
 
-// アプリも「単なるリクエストハンドラー」です
+// そして、アプリは「単なるリクエストハンドラー」です
 app.all("*", createRequestHandler({ build }));
 
 app.listen(3000, () => {
@@ -167,13 +167,13 @@ app.listen(3000, () => {
 });
 ```
 
-👉 **expressでアプリを実行する**
+👉 **Express でアプリを実行する**
 
 ```shellscript nonumber
 node server.js
 ```
 
-これでサーバーを所有したため、サーバーが備えているツールを使用してアプリをデバッグできます。たとえば、[Node.js inspectフラグ][inspect]を使用して、chrome devtoolsでアプリを検査できます。
+これでサーバーを所有したので、サーバーが持つツールを使用してアプリをデバッグできます。たとえば、[Node.js inspect フラグ][inspect]を使用して、Chrome DevTools でアプリを検査できます。
 
 ```shellscript nonumber
 node --inspect server.js
@@ -181,11 +181,11 @@ node --inspect server.js
 
 ## 開発ワークフロー
 
-サーバーを停止、再ビルド、起動を繰り返すのではなく、[Viteミドルウェアモード][vite-middleware]を使用してRemixを開発モードで実行できます。これにより、React Refresh（ホットモジュール置換）とRemix Hot Data Revalidationを使用して、アプリの変更に対する即時のフィードバックが可能になります。
+サーバーを常に停止、再構築、起動する代わりに、[ミドルウェアモードの Vite][vite-middleware]を使用して、開発中に Remix を実行できます。これにより、React Refresh（ホットモジュールリプレースメント）と Remix ホットデータ再検証を使用して、アプリの変更に即座にフィードバックできます。
 
-まず、便宜上、`package.json`に`dev`と`start`コマンドを追加します。これらは、それぞれ開発モードと本番モードでサーバーを実行します。
+まず、便宜上、`package.json` に `dev` コマンドと `start` コマンドを追加します。これにより、それぞれ開発モードと本番モードでサーバーが実行されます。
 
-👉 **`package.json`に「scripts」エントリを追加する**
+👉 **`package.json` に "scripts" エントリを追加する**
 
 ```jsonc filename=package.json lines=[2-4] nocopy
 {
@@ -197,9 +197,9 @@ node --inspect server.js
 }
 ```
 
-👉 **サーバーにVite開発ミドルウェアを追加する**
+👉 **Vite 開発ミドルウェアをサーバーに追加する**
 
-`process.env.NODE_ENV`が`"production"`に設定されている場合は、Viteミドルウェアは適用されません。この場合は、前述のように、通常のビルド出力を実行し続けます。
+`process.env.NODE_ENV` が `"production"` に設定されている場合、Vite ミドルウェアは適用されません。この場合、以前と同様に通常のビルド出力が実行されます。
 
 ```js filename=server.js lines=[4-11,14-18,20-25]
 import { createRequestHandler } from "@remix-run/express";
@@ -241,32 +241,32 @@ app.listen(3000, () => {
 npm run dev
 ```
 
-これで、アプリをすぐにフィードバックを得ながら操作できます。試してみてください。`root.jsx`のテキストを変更して、変化を見てみましょう！
+これで、アプリをすぐにフィードバックを得ながら作業できます。試してみて、`root.jsx` のテキストを変更して見てください。
 
-## サーバーとブラウザのエントリを制御する
+## サーバーとブラウザーのエントリの制御
 
-Remixでは、ほとんどのアプリでは触る必要のない、デフォルトのマジックファイルを使用しています。しかし、Remixのサーバーとブラウザへのエントリポイントをカスタマイズしたい場合は、`remix reveal`を実行すると、これらのファイルがプロジェクトにダンプされます。
+Remix が使用しているデフォルトのマジックファイルがあり、ほとんどのアプリでは変更する必要はありませんが、サーバーとブラウザーへの Remix のエントリポイントをカスタマイズしたい場合は、`remix reveal` を実行すると、それらがプロジェクトにダンプされます。
 
 ```shellscript nonumber
 npx remix reveal
 ```
 
 ```
-Entry file entry.client created at app/entry.client.tsx.
-Entry file entry.server created at app/entry.server.tsx.
+エントリファイル entry.client が app/entry.client.tsx に作成されました。
+エントリファイル entry.server が app/entry.server.tsx に作成されました。
 ```
 
 ## まとめ
 
-おめでとうございます。Remixを履歴書に追加できます！要約すると、次のようなことを学びました。
+おめでとうございます。Remix を履歴書に追加できます。まとめると、次のことを学びました。
 
-- Remixはアプリを2つのものに変換します。
-  - 独自のJavaScriptサーバーに追加するリクエストハンドラー
-  - ブラウザ用のパブリックディレクトリにある静的資産の山
-- アダプターを使用して独自のサーバーを用意して、どこでもデプロイできます。
-- HMRが組み込まれた開発ワークフローをセットアップできます。
+- Remix はアプリを次の 2 つにコンパイルします。
+  - 独自の JavaScript サーバーに追加するリクエストハンドラー
+  - ブラウザー用のパブリックディレクトリにある静的アセットの山
+- アダプターを使用して独自のサーバーを持ち込み、どこにでもデプロイできます
+- HMR が組み込まれた開発ワークフローをセットアップできます
 
-一般的に、Remixは少し「ガッツ」があります。少しのボイラープレートを記述するだけで、スタックを所有できます。
+一般的に、Remix は少し「内臓がむき出し」です。数分のボイラープレートですが、これでスタックを所有できます。
 
 次は？
 
@@ -284,6 +284,4 @@ Entry file entry.server created at app/entry.server.tsx.
 [vite-config]: https://vitejs.dev/config
 [vite-middleware]: https://vitejs.dev/guide/ssr#setting-up-the-dev-server
 [cross-env]: https://www.npmjs.com/package/cross-env
-
-
 

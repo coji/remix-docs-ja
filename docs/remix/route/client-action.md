@@ -4,9 +4,9 @@ title: clientAction
 
 # `clientAction`
 
-[`action`][action] に加えて（または代わりに）、クライアントで実行される `clientAction` 関数を定義できます。
+[`action`][action] に加えて (または代わりに)、クライアントで実行される `clientAction` 関数を定義できます。
 
-各ルートは、変更を処理する `clientAction` 関数を定義できます。
+各ルートは、ミューテーションを処理する `clientAction` 関数を定義できます。
 
 ```tsx
 export const clientAction = async ({
@@ -20,10 +20,10 @@ export const clientAction = async ({
 };
 ```
 
-この関数はクライアントでのみ実行され、次の方法で使用できます。
+この関数はクライアントでのみ実行され、いくつかの方法で使用できます。
 
-- フルクライアントルートの場合、サーバー側の `action` の代わりに使用
-- `clientLoader` キャッシュと一緒に使用して、変更時にキャッシュを無効にする
+- 完全なクライアントルートの場合、サーバーの `action` の代わりに
+- ミューテーション時にキャッシュを無効化することで、`clientLoader` キャッシュと併用する
 - React Router からの移行を容易にする
 
 ## 引数
@@ -38,9 +38,9 @@ export const clientAction = async ({
 
 ### `serverAction`
 
-`serverAction` は、このルートのサーバー側の `action` に [fetch][fetch] 呼び出しを行う非同期関数です。
+`serverAction` は、このルートのサーバー `action` への [fetch][fetch] 呼び出しを行う非同期関数です。
 
-こちらもご覧ください。
+以下も参照してください。
 
 - [クライアントデータガイド][client-data-guide]
 - [clientLoader][clientloader]
@@ -48,6 +48,7 @@ export const clientAction = async ({
 [action]: ./action
 [action-params]: ./loader#params
 [action-request]: ./loader#request
-[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+[fetch]: https://developer.mozilla.org/ja/docs/Web/API/Fetch_API
 [client-data-guide]: ../guides/client-data
 [clientloader]: ./client-loader
+

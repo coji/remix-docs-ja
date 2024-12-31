@@ -5,11 +5,11 @@ toc: false
 
 # `replace`
 
-これは、[`redirect`][redirect] の小さなラッパーで、`history.pushState` ではなく `history.replaceState` を使用して、新しい場所にクライアント側のリダイレクトをトリガーします。
+これは、[`redirect`][redirect] の小さなラッパーで、`history.pushState` の代わりに `history.replaceState` を使用して、新しい場所にクライアントサイドのリダイレクトをトリガーします。
 
 JavaScript がロードされていない場合、これは標準のドキュメントレベルのリダイレクトとして動作し、履歴スタックに新しいエントリを追加します。
 
-[`redirect`][redirect] と同様に、2 番目のパラメーターとしてステータスコードまたは `ResponseInit` を受け取ります。
+[`redirect`][redirect] と同様に、2番目のパラメータとしてステータスコードまたは `ResponseInit` を受け入れます。
 
 ```ts
 replace(path, 301);
@@ -24,5 +24,5 @@ replace(path, {
 });
 ```
 
-[redirect]: ./redirect 
+[redirect]: ./redirect
 

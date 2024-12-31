@@ -4,7 +4,7 @@ title: useSubmit
 
 # `useSubmit`
 
-[`<Form>`][form-component]の命令型バージョンで、ユーザーではなく、プログラマーがフォームを送信できます。
+[`<Form>`][form-component] の命令型バージョンで、ユーザーではなくプログラマーがフォームを送信できるようにします。
 
 ```tsx
 import { useSubmit } from "@remix-run/react";
@@ -29,7 +29,7 @@ submit(targetOrData, options);
 
 ### `targetOrData`
 
-次のいずれかになります。
+次のいずれかを指定できます。
 
 **[`HTMLFormElement`][html-form-element] インスタンス**
 
@@ -49,13 +49,13 @@ formData.append("myKey", "myValue");
 submit(formData, { method: "post" });
 ```
 
-**`FormData`としてシリアライズされるプレーンオブジェクト**
+**`FormData` としてシリアライズされるプレーンオブジェクト**
 
 ```tsx
 submit({ myKey: "myValue" }, { method: "post" });
 ```
 
-**JSONとしてシリアライズされるプレーンオブジェクト**
+**JSON としてシリアライズされるプレーンオブジェクト**
 
 ```tsx
 submit(
@@ -66,19 +66,19 @@ submit(
 
 ### `options`
 
-送信のオプション。[`<Form>`][form-component]のプロパティと同じです。すべてのオプションは省略可能です。
+送信のオプションで、[`<Form>`][form-component] の props と同じです。すべてのオプションは省略可能です。
 
-- **action**: 送信先へのhref。デフォルトは現在のルートパスです。
-- **method**: POSTなどの使用するHTTPメソッド。デフォルトはGETです。
-- **encType**: フォーム送信に使用するエンコーディングタイプ: `application/x-www-form-urlencoded`, `multipart/form-data`, `application/json`, または `text/plain`。デフォルトは `application/x-www-form-urlencoded` です。
-- **navigate**: ナビゲーションを実行するのではなく、フェッチャーを使用して送信するには `false` を指定します。
+- **action**: 送信する href。デフォルトは現在のルートパスです。
+- **method**: POST のような使用する HTTP メソッド。デフォルトは GET です。
+- **encType**: フォーム送信に使用するエンコードタイプ: `application/x-www-form-urlencoded`、`multipart/form-data`、`application/json`、または `text/plain`。デフォルトは `application/x-www-form-urlencoded` です。
+- **navigate**: ナビゲーションを実行する代わりに、フェッチャーを使用して送信する場合は `false` を指定します。
 - **fetcherKey**: `navigate: false` を介してフェッチャーを使用して送信する場合に使用するフェッチャーキー。
-- **preventScrollReset**: データが送信されたときにスクロール位置がウィンドウの上部にリセットされないようにします。デフォルトは `false` です。
-- **replace**: 新しいエントリをプッシュするのではなく、履歴スタックの現在のエントリを置き換えます。デフォルトは `false` です。
-- **relative**: 相対ルート解決の動作を定義します。 `"route"` (ルート階層に対して) または `"path"` (URLに対して)。
-- **flushSync**: このナビゲーションの初期状態の更新を、デフォルトの [`React.startTransition`][start-transition] ではなく [`ReactDOM.flushSync`][flush-sync] 呼び出しでラップします。
-- **viewTransition**: このナビゲーションの[ビュー遷移][view-transitions]を有効にします。これにより、最終的な状態の更新が `document.startViewTransition()` でラップされます。
-  - このビュー遷移に特定のスタイルを適用する必要がある場合は、[`useViewTransitionState()`][use-view-transition-state] も利用する必要があります。
+- **preventScrollReset**: データが送信されたときに、スクロール位置がウィンドウの上部にリセットされるのを防ぎます。デフォルトは `false` です。
+- **replace**: 新しいエントリをプッシュする代わりに、履歴スタック内の現在のエントリを置き換えます。デフォルトは `false` です。
+- **relative**: 相対ルート解決の動作を定義します。`"route"` (ルート階層に対して相対的) または `"path"` (URL に対して相対的) のいずれかです。
+- **flushSync**: このナビゲーションの初期状態の更新を、デフォルトの [`React.startTransition`][start-transition] 呼び出しの代わりに [`ReactDOM.flushSync`][flush-sync] 呼び出しでラップします。
+- **viewTransition**: 最終的な状態の更新を `document.startViewTransition()` でラップすることにより、このナビゲーションの [View Transition][view-transitions] を有効にします。
+  - このビュー遷移に特定のスタイルを適用する必要がある場合は、[`useViewTransitionState()`][use-view-transition-state] も活用する必要があります。
 
 ```tsx
 submit(data, {
@@ -91,15 +91,15 @@ submit(data, {
 });
 ```
 
-<docs-info>相対的な `useSubmit()` の動作についてのスプラットルート内の `future.v3_relativeSplatPath` 未来フラグの動作に関する注意については、`useResolvedPath` ドキュメントの[スプラットパス][relativesplatpath]セクションをご覧ください。</docs-info>
+<docs-info>スプラットルート内の相対的な `useSubmit()` の動作に関する `future.v3_relativeSplatPath` future フラグの動作については、`useResolvedPath` ドキュメントの [スプラットパス][relativesplatpath] セクションを参照してください。</docs-info>
 
-## 関連リソース
+## 追加リソース
 
 **ディスカッション**
 
-- [フォームとフェッチャー][form-vs-fetcher]
+- [Form vs. Fetcher][form-vs-fetcher]
 
-**関連API**
+**関連 API**
 
 - [`<Form>`][form-component]
 - [`fetcher.submit`][fetcher-submit]
@@ -114,6 +114,4 @@ submit(data, {
 [view-transitions]: https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API
 [use-view-transition-state]: ../hooks//use-view-transition-state
 [relativesplatpath]: ./use-resolved-path#splat-paths
-
-
 

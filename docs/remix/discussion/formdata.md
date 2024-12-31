@@ -1,8 +1,7 @@
 ---
-title: Working with FormData
+title: FormData の操作
 hidden: true
 ---
 
-# FormData を扱う
-
+# FormData の操作
 

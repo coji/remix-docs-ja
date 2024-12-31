@@ -5,16 +5,16 @@ toc: false
 
 # `json`
 
-これは、`application/json` 応答を作成するためのショートカットです。これは、`utf-8` エンコーディングを使用していることを前提としています。
+これは `application/json` レスポンスを作成するためのショートカットです。`utf-8` エンコーディングを使用することを前提としています。
 
 ```tsx lines=[1,5]
 import { json } from "@remix-run/node"; // または cloudflare/deno
 
 export const loader = async () => {
-  // これを書くことができます：
+  // このように書くことができます:
   return json({ any: "thing" });
 
-  // これの代わりに：
+  // 代わりにこのように書くこともできます:
   return new Response(JSON.stringify({ any: "thing" }), {
     headers: {
       "Content-Type": "application/json; charset=utf-8",
@@ -38,5 +38,4 @@ export const loader = async () => {
   );
 };
 ```
-
 

@@ -1,41 +1,40 @@
 ---
-title: ブレッドクラムガイド
+title: パンくずリストガイド
 ---
 
-# ブレッドクラムガイド
+# パンくずリストガイド
 
-Remixでは、ルート階層に基づいて動的なブレッドクラムを簡単に構築できます。このガイドでは、[`useMatches`][use-matches]と[`handle`][handle]機能を使用してそのプロセスを説明します。
+Remix では、ルート階層に基づいて動的なパンくずリストを簡単に構築できます。このガイドでは、[`useMatches`][use-matches] および [`handle`][handle] 機能を使用したプロセスについて説明します。
 
 ## 基本の理解
 
-Remixは、React要素ツリーの一番上で、すべてのルートマッチとその関連データへのアクセスを提供します。これにより、[`<Meta />`][meta-component]、[`<Links />`][links-component]、[`<Scripts />`][scripts-component]などのコンポーネントは、ネストされたルートから値を取得し、ドキュメントの一番上にレンダリングできます。
+Remix は、React 要素ツリーの最上位で、すべてのルートマッチと関連データへのアクセスを提供します。これにより、[`<Meta />`][meta-component]、[`<Links />`][links-component]、および [`<Scripts />`][scripts-component] などのコンポーネントは、ネストされたルートから値を取得し、ドキュメントの最上位にレンダリングできます。
 
-`useMatches`と`handle`関数を用いて同様の戦略を使用できます。ブレッドクラムに焦点を当てていますが、ここで示す原則は、さまざまなシナリオに適用できます。
+`useMatches` および `handle` 関数を使用して、同様の戦略を使用できます。ここではパンくずリストに焦点を当てていますが、ここで説明する原則は、さまざまなシナリオに適用できます。
 
+## ルートのパンくずリストの定義
 
-## ルートのブレッドクラムの定義
-
-ルートの`handle`に`breadcrumb`属性を追加することから始めます。この属性はRemix固有のものではなく、好きな名前を付けることができます。この例では`breadcrumb`と呼びます。
+まず、ルートの `handle` に `breadcrumb` 属性を追加します。この属性は Remix に固有のものではありません。好きな名前を付けることができます。この例では、`breadcrumb` と呼びます。
 
 ```tsx filename=app/routes/parent.tsx
 export const handle = {
-  breadcrumb: () => <Link to="/parent">Some Route</Link>,
+  breadcrumb: () => <Link to="/parent">親ルート</Link>,
 };
 ```
 
-同様に、子ルートのブレッドクラムを定義できます。
+同様に、子ルートのパンくずリストを定義できます。
 
 ```tsx filename=app/routes/parent.child.tsx
 export const handle = {
   breadcrumb: () => (
-    <Link to="/parent/child">Child Route</Link>
+    <Link to="/parent/child">子ルート</Link>
   ),
 };
 ```
 
-## ルートルートでのブレッドクラムの集約
+## ルートルートでのパンくずリストの集約
 
-次に、`useMatches`を使用してルートルートですべてをまとめます。
+次に、`useMatches` を使用してルートルートですべてをまとめます。
 
 ```tsx filename=app/root.tsx lines=[5,9,19-28]
 import {
@@ -75,11 +74,11 @@ export default function Root() {
 }
 ```
 
-`match`オブジェクトをブレッドクラムに渡すことに注意してください。これにより、ルートのデータに基づいてブレッドクラムの内容を強化するために`match.data`を利用できる可能性があります。この例では使用していませんが、ブレッドクラムにはローダーデータの値を使用する必要があるでしょう。
+`match` オブジェクトをパンくずリストに渡すことに注意してください。これにより、ルートのデータに基づいてパンくずリストの内容を強化するために `match.data` を利用できる可能性があります。この例では使用していませんが、パンくずリストにはローダーデータからの値を使用することをお勧めします。
 
-`handle`と共に`useMatches`を使用すると、ルートが実際のレンダリングポイントよりも上位の要素ツリーでのレンダリングプロセスに貢献するための堅牢な方法が提供されます。
+`useMatches` を `handle` と共に使用すると、ルートが実際のレンダリングポイントよりも要素ツリーの上位のレンダリングプロセスに貢献するための堅牢な方法が提供されます。
 
-## 追加のリソース
+## 追加リソース
 
 - [`useMatches`][use-matches]
 - [`handle`][handle]

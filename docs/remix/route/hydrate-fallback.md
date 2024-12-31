@@ -4,19 +4,19 @@ title: HydrateFallback
 
 # `HydrateFallback`
 
-`HydrateFallback` コンポーネントは、Remix に、`clientLoader` が hydration を完了するまでルートコンポーネントをレンダリングしないように指示する方法です。エクスポートされると、Remix はデフォルトのルートコンポーネントではなく、SSR 中にフォールバックをレンダリングし、`clientLoader` が完了したらクライアントサイドでルートコンポーネントをレンダリングします。
+`HydrateFallback` コンポーネントは、Remix に対して、ハイドレーション時に `clientLoader` が実行されるまでルートコンポーネントをレンダリングしたくないことを通知する方法です。エクスポートすると、Remix はデフォルトのルートコンポーネントの代わりに SSR 中にフォールバックをレンダリングし、`clientLoader` が完了するとクライアント側でルートコンポーネントをレンダリングします。
 
-これの最も一般的なユースケースは、クライアントのみのルート（ブラウザ内キャンバスゲームなど）と、サーバーデータにクライアントサイドデータ（保存されたユーザー設定など）を追加することです。
+最も一般的なユースケースは、クライアント専用のルート（ブラウザ内キャンバスゲームなど）と、サーバーデータをクライアント側のデータ（保存されたユーザー設定など）で拡張することです。
 
 ```tsx filename=routes/client-only-route.tsx
 export async function clientLoader() {
   const data = await loadSavedGameOrPrepareNewGame();
   return data;
 }
-// 注：clientLoader.hydrate はサーバーローダーがない場合、暗黙的に指定されます
+// 注: server loader がない場合、clientLoader.hydrate は暗黙的に設定されます
 
 export function HydrateFallback() {
-  return <p>ゲームを読み込んでいます...</p>;
+  return <p>Loading Game...</p>;
 }
 
 export default function Component() {
@@ -48,7 +48,7 @@ export async function clientLoader({
 clientLoader.hydrate = true;
 
 export function HydrateFallback() {
-  return <p>ユーザー設定を読み込んでいます...</p>;
+  return <p>Loading user preferences...</p>;
 }
 
 export default function Component() {
@@ -61,19 +61,20 @@ export default function Component() {
 }
 ```
 
-`HydrateFallback` の動作に関する注意点がいくつかあります。
+`HydrateFallback` の動作に関して注意すべき点がいくつかあります。
 
-- 最初のドキュメントリクエストと hydration にのみ関連し、その後のクライアントサイドナビゲーションではレンダリングされません。
-- 特定のルートで [`clientLoader.hydrate=true`][hydrate-true] を設定している場合にのみ関連します。
-- また、サーバー `loader` がない `clientLoader` がある場合も関連します。これは、`useLoaderData` から返されるローダーデータがないため、`clientLoader.hydrate=true` が暗黙的に指定されていることを意味します。
-  - この場合、`HydrateFallback` を指定しなくても、Remix はルートコンポーネントをレンダリングせず、祖先の `HydrateFallback` コンポーネントにバブルアップします。
-  - これは、`useLoaderData` が「ハッピーパス」を維持することを保証するためです。
-  - サーバー `loader` がない場合、`useLoaderData` はレンダリングされたルートコンポーネントで `undefined` を返します。
-- 子ルートが正しく動作することを保証できないため、`HydrateFallback` 内に `<Outlet/>` をレンダリングすることはできません。なぜなら、子ルートが hydration で `clientLoader` 関数を実行している場合（つまり、`useRouteLoaderData()` や `useMatches()` などのユースケース）、祖先ローダーデータがまだ利用できない可能性があるためです。
+- これは、最初のドキュメントリクエストとハイドレーションでのみ関連し、後続のクライアント側のナビゲーションではレンダリングされません。
+- これは、特定のルートで [`clientLoader.hydrate=true`][hydrate-true] も設定している場合にのみ関連します。
+- また、サーバーの `loader` なしで `clientLoader` を持つ場合にも関連します。これは、`useLoaderData` から返すローダーデータが他にないため、`clientLoader.hydrate=true` を意味します。
+  - この場合、`HydrateFallback` を指定しなくても、Remix はルートコンポーネントをレンダリングせず、祖先の `HydrateFallback` コンポーネントまでバブルアップします。
+  - これは、`useLoaderData` が「ハッピーパス」のままであることを保証するためです。
+  - サーバーの `loader` がない場合、`useLoaderData` はレンダリングされたルートコンポーネントで `undefined` を返します。
+- 子ルートは、ハイドレーション時に `clientLoader` 関数を実行している場合、祖先のローダーデータがまだ利用可能でない可能性があるため（つまり、`useRouteLoaderData()` や `useMatches()` などのユースケース）、正しく動作することが保証されないため、`HydrateFallback` で `<Outlet/>` をレンダリングすることはできません。
 
-関連項目:
+以下も参照してください。
 
 - [clientLoader][clientloader]
 
 [hydrate-true]: ./client-loader#clientloaderhydrate
 [clientloader]: ./client-loader
+

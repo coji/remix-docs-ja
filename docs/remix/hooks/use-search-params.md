@@ -4,7 +4,7 @@ title: useSearchParams
 
 # `useSearchParams`
 
-現在のURLの [`searchParams`][search-params] とそれを更新する関数のタプルを返します。検索パラメータを設定すると、ナビゲーションが発生します。
+現在のURLの[`searchParams`][search-params]と、それらを更新する関数のタプルを返します。検索パラメータを設定すると、ナビゲーションが発生します。
 
 ```tsx
 import { useSearchParams } from "@remix-run/react";
@@ -25,11 +25,11 @@ const [searchParams, setSearchParams] = useSearchParams();
 
 ### `searchParams`
 
-返される最初の値は、Web の [URLSearchParams][url-search-params] オブジェクトです。
+返される最初の値は、Web [URLSearchParams][url-search-params]オブジェクトです。
 
 ### `setSearchParams(params, navigateOptions)`
 
-返される2番目の値は、新しい検索パラメータを設定し、呼び出されるとナビゲーションを行う関数です。ナビゲーションを構成するために、[ナビゲーションオプション][navigateoptions] を持つ省略可能な2番目の引数を渡すことができます。
+返される2番目の値は、新しい検索パラメータを設定し、呼び出されるとナビゲーションを引き起こす関数です。オプションの2番目の引数として、ナビゲーションを構成するための[ナビゲーションオプション][navigateoptions]を渡すことができます。
 
 ```tsx
 <button
@@ -58,6 +58,7 @@ const [searchParams, setSearchParams] = useSearchParams();
 />
 ```
 
-[search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URL/searchParams
-[url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+[search-params]: https://developer.mozilla.org/ja/docs/Web/API/URL/searchParams
+[url-search-params]: https://developer.mozilla.org/ja/docs/Web/API/URLSearchParams
 [navigateoptions]: ./use-navigate#options
+

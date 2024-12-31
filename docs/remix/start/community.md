@@ -1,34 +1,34 @@
 ---
 title: コミュニティ
-description: Remix と関連技術を学ぶためのコミュニティリソース
+description: Remixと関連技術を学ぶためのコミュニティリソース
 order: 4
 ---
 
 # コミュニティ
 
-Remix コミュニティは、人々が集まって助け合い、交流できるフレンドリーな場所となるよう、努力しています。私たちは皆、素晴らしいウェブサイトを構築し、ウェブをより良くしようとしています。
+私たちは、Remixコミュニティを、人々が集まり、助け合い、助けられることを望むフレンドリーな場所に保つために努力しています。私たちは皆、素晴らしいウェブサイトを構築し、ウェブをより良くしようとしているだけです。
 
-その目的を達成するため、[行動規範][our-code-of-conduct] を心にとめておいてください。
+そのため、[私たちの行動規範][our-code-of-conduct]を念頭に置いてください。
 
-- [Remix Discord][remix-discord-server] - Remix について、会話、質問、回答を行うのに最適な場所です。
+- [Remix Discord][remix-discord-server] - Remixに関する会話をしたり、質問をしたり、答えたりするのに最適な場所です。
 
-- [GitHub ディスカッション][git-hub-discussions-forum] - Remix への変更を提案するのに最適な場所です。チームはこれを利用して、興味やユースケースを把握しています。
+- [GitHub Discussions][git-hub-discussions-forum] - これはRemixへの変更を提案するのに最適な場所です。チームはそれを使って関心を測り、ユースケースを理解します。
 
-- [Remix Twitter][twitter] - チームからの Remix に関するヒント、更新情報、ニュース。
+- [Remix Twitter][twitter] - チームからのRemixに関するヒント、アップデート、ニュース。
 
-- [例][the-examples-repository] - チームとコミュニティから提供された、数十もの Remix の例。
+- [Examples][the-examples-repository] - チームとコミュニティからの数十のRemixの例。
 
-- [Remix Conf][remix-conf] - Remix に関する年間会議。主にコミュニティからの講演が行われます。
+- [Remix Conf][remix-conf] - 主にコミュニティからの講演がある、Remixに関する年次カンファレンス。
 
-- [Remix メーリングリスト][official-remix-team-mailing-list] - Remix チームから不定期に送信される、チームの活動状況を知らせるメール。
+- [Remix Mailing List][official-remix-team-mailing-list] - Remixチームからの、チームが何をしているかを知らせる、それほど頻繁ではないメール。
 
-- [ミートアップ][the-remix-meetup-page] - 世界中に数千人のメンバーを持つ、Remix ミートアップが開催されています。オンライン、対面、またはその両方で行われるものがあります。
+- [Meetups][the-remix-meetup-page] - 世界中に何千人ものメンバーがいるRemix Meetupがあります。オンラインのものもあれば、対面のものもあれば、その2つのハイブリッドのものもあります。
 
-- [Remix ガイド][remix-guide] - Remix エコシステムで起こっていることすべてを集めた、素晴らしいコミュニティサイトです。オンラインコース、ブログ記事、アプリテンプレート、イベントなどが含まれています。
+- [Remix Guide][remix-guide] - オンラインコース、ブログ記事、アプリテンプレート、イベントなど、Remixエコシステムで起こっているすべてのことをまとめた素晴らしいコミュニティサイト。
 
-- [Moulton][moulton] - Remix コミュニティのニュースレター
+- [Moulton][moulton] - コミュニティRemixニュースレター
 
-- [GitHub リリース][releases-on-git-hub] - Remix リリースを購読しておくのは悪くないアイデアです。そうすれば、何が来るのかわかります。
+- [GitHubでのリリース][releases-on-git-hub] - Remixのリリースを購読して、何が来るかを知っておくのも悪くありません。
 
 [our-code-of-conduct]: https://github.com/remix-run/remix/blob/main/CODE_OF_CONDUCT.md
 [remix-discord-server]: https://rmx.as/discord

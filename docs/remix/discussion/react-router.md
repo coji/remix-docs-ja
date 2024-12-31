@@ -5,23 +5,23 @@ order: 6
 
 # React Router
 
-Remixはマルチページアプリとして機能しますが、JavaScriptがロードされると、クライアントサイドルーティングを使用して、フルシングルページアプリのユーザーエクスペリエンスを提供します。これには、スピードとネットワーク効率が向上するという利点があります。
+Remixはマルチページアプリとして動作しますが、JavaScriptがロードされると、クライアントサイドのルーティングを使用して、完全なシングルページアプリのユーザーエクスペリエンスを実現し、それに伴うすべての速度とネットワーク効率を実現します。
 
-Remixは[React Router][react_router]をベースにして構築されており、同じチームによってメンテナンスされています。つまり、RemixアプリでReact Routerのすべての機能を使用できます。
+Remixは[React Router][react_router]の上に構築されており、同じチームによってメンテナンスされています。これは、RemixアプリでReact Routerのすべての機能を使用できることを意味します。
 
-これはまた、Remixの90％が実際にはReact Routerであることを意味します。React Routerは非常に古く、非常に安定したライブラリであり、おそらくReactエコシステムで最大の依存関係です。Remixは単にその背後にサーバーを追加するだけです。
+また、Remixの90％は実際にはReact Routerに過ぎないことも意味します。Reactエコシステムで最大の依存関係である、非常に古く、非常に安定したライブラリです。Remixは単にその背後にサーバーを追加するだけです。
 
 ## コンポーネントとフックのインポート
 
-Remixは、React Router DOMのすべてのコンポーネントとフックを再エクスポートするため、React Routerを自分でインストールする必要はありません。
+RemixはReact Router DOMのすべてのコンポーネントとフックを再エクスポートするため、React Routerを自分でインストールする必要はありません。
 
-🚫 これは行わないでください。
+🚫 これはしないでください:
 
 ```tsx bad
 import { useLocation } from "react-router-dom";
 ```
 
-✅ これは行います。
+✅ これをしてください:
 
 ```tsx good
 import { useLocation } from "@remix-run/react";
@@ -29,9 +29,9 @@ import { useLocation } from "@remix-run/react";
 
 ## 拡張された動作
 
-いくつかのコンポーネントとフックは、Remixのサーバーレンダリングとデータフェッチ機能で動作するように拡張されています。たとえば、`Link`はReact Routerバージョンでは不可能な、Remixでデータとリソースをプリフェッチできます。
+一部のコンポーネントとフックは、Remixのサーバーレンダリングおよびデータフェッチ機能と連携するように拡張されています。たとえば、`Link`はRemixでデータとリソースをプリフェッチできますが、React Routerバージョンではできません。
 
-🚫 これは行わないでください。
+🚫 これはしないでください:
 
 ```tsx bad
 import { Link } from "react-router-dom";
@@ -40,7 +40,7 @@ import { Link } from "react-router-dom";
 <Link prefetch="intent" />;
 ```
 
-✅ これは行います。
+✅ これをしてください:
 
 ```tsx good
 import { Link } from "@remix-run/react";

@@ -1,17 +1,17 @@
 ---
-title: アセットインポート
+title: アセットのインポート
 toc: false
 ---
 
-# アセットURLインポート
+# アセット URL のインポート
 
-`app`フォルダ内のファイルは、モジュールにインポートできます。Remixは次の処理を行います。
+`app` フォルダ内のファイルは、モジュールにインポートできます。Remix は次の処理を行います。
 
-1. ファイルをブラウザビルドディレクトリにコピーします
-2. ファイルのフィンガープリントを生成して長期キャッシュを実現します
-3. モジュールにパブリックURLを返し、レンダリング時に使用します
+1. ファイルをブラウザのビルドディレクトリにコピーします。
+2. 長期キャッシュのためにファイルのフィンガープリントを作成します。
+3. レンダリング中に使用されるパブリック URL をモジュールに返します。
 
-これはスタイルシートでよく使われますが、[定義済みのローダー][remix-loaders]があれば、どんなファイルタイプでも使用できます。
+これはスタイルシートで最も一般的ですが、[定義されたローダー][remix-loaders]を持つ任意のファイルタイプで使用できます。
 
 ```tsx
 import type { LinksFunction } from "@remix-run/node"; // または cloudflare/deno
@@ -34,5 +34,4 @@ export default function Page() {
 ```
 
 [remix-loaders]: https://github.com/remix-run/remix/blob/main/packages/remix-dev/compiler/utils/loaders.ts
-
 

@@ -4,17 +4,17 @@ title: ErrorBoundary
 
 # `ErrorBoundary`
 
-Remix の `ErrorBoundary` コンポーネントは、通常の React の [エラーバウンダリ][error-boundaries] と同じように動作しますが、いくつかの追加機能があります。ルートコンポーネントでエラーが発生すると、`ErrorBoundary` はその代わりにレンダリングされ、親ルート内にネストされます。`ErrorBoundary` コンポーネントは、ルートの `loader` または `action` 関数でエラーが発生した場合にもレンダリングされるため、そのルートのすべてのエラーを 1 か所で処理できます。
+Remix の `ErrorBoundary` コンポーネントは、通常の React の[エラー境界][error-boundaries]とほぼ同じように動作しますが、いくつかの追加機能があります。ルートコンポーネントでエラーが発生した場合、`ErrorBoundary` はその代わりに、親ルート内にネストされてレンダリングされます。`ErrorBoundary` コンポーネントは、ルートの `loader` または `action` 関数でエラーが発生した場合にもレンダリングされるため、そのルートのすべてのエラーを 1 か所で処理できます。
 
 最も一般的なユースケースは次のとおりです。
 
-- 意図的に 4xx `Response` をスローしてエラー UI をトリガーする場合
-  - 不正なユーザー入力に対して 400 をスローする
-  - 権限のないアクセスに対して 401 をスローする
+- 意図的に 4xx `Response` をスローしてエラー UI をトリガーする場合があります。
+  - 不正なユーザー入力で 400 をスローする
+  - アクセスが許可されていない場合に 401 をスローする
   - 要求されたデータが見つからない場合に 404 をスローする
-- React がレンダリング中にランタイムエラーが発生した場合、意図せずに `Error` をスローする可能性があります
+- レンダリング中にランタイムエラーが発生した場合、React が意図せずに `Error` をスローする場合があります。
 
-スローされたオブジェクトを取得するには、[`useRouteError`][use-route-error] フックを使用できます。`Response` がスローされると、`state` / `statusText` / `data` フィールドを持つ `ErrorResponse` インスタンスに自動的にアンラップされるため、コンポーネント内で `await response.json()` を気にする必要はありません。スローされた `Response` をスローされた `Error` と区別するには、[`isRouteErrorResponse`][is-route-error-response] ユーティリティを使用できます。
+スローされたオブジェクトを取得するには、[`useRouteError`][use-route-error] フックを使用できます。`Response` がスローされると、`state` / `statusText` / `data` フィールドを持つ `ErrorResponse` インスタンスに自動的にアンラップされるため、コンポーネントで `await response.json()` を使用する必要はありません。スローされた `Response` をスローされた `Error` と区別するには、[`isRouteErrorResponse`][is-route-error-response] ユーティリティを使用できます。
 
 ```tsx
 import {
@@ -52,3 +52,4 @@ export function ErrorBoundary() {
 [error-boundaries]: https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
 [use-route-error]: ../hooks/use-route-error
 [is-route-error-response]: ../utils/is-route-error-response
+

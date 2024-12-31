@@ -4,21 +4,21 @@ title: useBlocker
 
 # `useBlocker`
 
-`useBlocker`フックを使用すると、ユーザーが現在の場所から移動するのを防ぎ、カスタムUIを表示して、移動を許可するかどうかを確認できます。
+`useBlocker` フックを使用すると、ユーザーが現在の場所から移動するのを防ぎ、ナビゲーションを確定するためのカスタム UI を表示できます。
 
 <docs-info>
-これは、React Routerアプリケーション内のクライアントサイドナビゲーションでのみ機能し、ドキュメントリクエストはブロックされません。ドキュメントナビゲーションを阻止するには、独自の<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event" target="_blank">`beforeunload`</a>イベントハンドラーを追加する必要があります。
+これは、React Router アプリケーション内のクライアントサイドのナビゲーションでのみ機能し、ドキュメントリクエストをブロックしません。ドキュメントのナビゲーションを防ぐには、独自の <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event" target="_blank">`beforeunload`</a> イベントハンドラーを追加する必要があります。
 </docs-info>
 
 <docs-warning>
-ユーザーの移動をブロックすることは、少し反パターンであるため、このフックの使用について注意深く検討し、控えめに使用してください。半分入力されたフォームからユーザーが移動するのを防ぐという、事実上のユースケースでは、保存されていない状態を`sessionStorage`に永続化し、ユーザーが移動から戻った場合は自動的に再入力することを検討してください。
+ユーザーがナビゲーションするのをブロックすることは、アンチパターンになりがちですので、このフックの使用は慎重に検討し、控えめに使用してください。未入力のフォームからユーザーが移動するのを防ぐという事実上のユースケースでは、未保存の状態を `sessionStorage` に永続化し、移動をブロックする代わりに、ユーザーが戻ってきた場合に自動的に再入力することを検討してください。
 </docs-warning>
 
 ```tsx
 function ImportantForm() {
   const [value, setValue] = React.useState("");
 
-  // 入力にデータが入力されると、別の場所への移動をブロックします
+  // 入力にデータが入力された場合、他の場所に移動するのをブロックします
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
       value !== "" &&
@@ -39,9 +39,9 @@ function ImportantForm() {
 
       {blocker.state === "blocked" ? (
         <div>
-          <p>移動してもよろしいですか?</p>
+          <p>本当に移動しますか？</p>
           <button onClick={() => blocker.proceed()}>
-            移動
+            続行
           </button>
           <button onClick={() => blocker.reset()}>
             キャンセル
@@ -53,7 +53,7 @@ function ImportantForm() {
 }
 ```
 
-より完全な例については、リポジトリの[例][example]を参照してください。
+より完全な例については、リポジトリの [例][example] を参照してください。
 
 ## プロパティ
 
@@ -61,22 +61,23 @@ function ImportantForm() {
 
 ブロッカーの現在の状態
 
-- `unblocked` - ブロッカーはアイドル状態であり、ナビゲーションを阻止していません
-- `blocked` - ブロッカーはナビゲーションを阻止しました
-- `proceeding` - ブロッカーは、ブロックされたナビゲーションから進行しています
+- `unblocked` - ブロッカーはアイドル状態で、ナビゲーションを妨げていません
+- `blocked` - ブロッカーがナビゲーションを妨げました
+- `proceeding` - ブロッカーはブロックされたナビゲーションから進行中です
 
 ### `location`
 
-`blocked`状態の場合、これはナビゲーションをブロックした場所を表します。`proceeding`状態の場合、これは`blocker.proceed()`呼び出し後にナビゲーションされる場所です。
+`blocked` 状態の場合、これはナビゲーションをブロックした場所を表します。`proceeding` 状態の場合、これは `blocker.proceed()` 呼び出し後にナビゲートされる場所です。
 
 ## メソッド
 
 ### `proceed()`
 
-`blocked`状態の場合、`blocker.proceed()`を呼び出して、ブロックされた場所に移動できます。
+`blocked` 状態の場合、`blocker.proceed()` を呼び出して、ブロックされた場所に移動できます。
 
 ### `reset()`
 
-`blocked`状態の場合、`blocker.reset()`を呼び出して、ブロッカーを`unblocked`状態に戻し、ユーザーを現在の場所に留めることができます。
+`blocked` 状態の場合、`blocker.reset()` を呼び出して、ブロッカーを `unblocked` 状態に戻し、ユーザーを現在の場所に残すことができます。
 
 [example]: https://github.com/remix-run/react-router/tree/main/examples/navigation-blocking
+

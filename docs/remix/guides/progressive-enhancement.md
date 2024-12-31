@@ -1,6 +1,7 @@
 ---
-title: プログレッシブエンハンスメント
+title: Progressive Enhancement
 hidden: true
 ---
 
-# プログレッシブエンハンスメント 
+# プログレッシブエンハンスメント
+

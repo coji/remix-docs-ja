@@ -5,7 +5,7 @@ new: true
 
 # `useAsyncValue`
 
-最も近い [`<Await>`][await_component] 親コンポーネントから解決されたデータを取得します。
+最も近い祖先の [`<Await>`][await_component] コンポーネントから解決されたデータを返します。
 
 ```tsx
 function SomeDescendant() {
@@ -20,7 +20,7 @@ function SomeDescendant() {
 </Await>
 ```
 
-## 関連リソース
+## 追加リソース
 
 **ガイド**
 
@@ -33,4 +33,5 @@ function SomeDescendant() {
 
 [await_component]: ../components/await
 [streaming_guide]: ../guides/streaming
-[use_async_error]: ../hooks/use-async-error 
+[use_async_error]: ../hooks/use-async-error
+

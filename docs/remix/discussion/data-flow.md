@@ -5,17 +5,17 @@ order: 4
 
 # フルスタックデータフロー
 
-Remixの主な機能の1つは、UIを永続的なサーバー状態と自動的に同期させる方法です。これは3つのステップで行われます。
+Remix の主要な機能の 1 つは、UI を永続的なサーバーの状態と自動的に同期させる方法です。これは 3 つのステップで実行されます。
 
-1. ルートローダーはUIにデータを提供します
-2. フォームは、永続的な状態を更新するルートアクションにデータを投稿します
-3. ページのローダーデータは自動的に再検証されます
+1. ルートローダーが UI にデータを提供します
+2. フォームが永続的な状態を更新するルートアクションにデータをポストします
+3. ページ上のローダーデータが自動的に再検証されます
 
 <img class="tutorial rounded-xl" src="/blog-images/posts/remix-data-flow/loader-action-component.png" />
 
-## ルートモジュールエクスポート
+## ルートモジュールのエクスポート
 
-ユーザーアカウント編集ルートを考えてみましょう。ルートモジュールには、以下に示す3つのエクスポートがあり、これらについて説明します。
+ユーザーアカウント編集ルートを考えてみましょう。ルートモジュールには、これから記述して説明する 3 つのエクスポートがあります。
 
 ```tsx filename=routes/account.tsx
 export async function loader() {
@@ -23,7 +23,7 @@ export async function loader() {
 }
 
 export default function Component() {
-  // UIをレンダリングします
+  // UI をレンダリングします
 }
 
 export async function action() {
@@ -33,7 +33,7 @@ export async function action() {
 
 ## ルートローダー
 
-ルートファイルは、[`loader`][loader]関数をエクスポートできます。この関数は、ルートコンポーネントにデータを提供します。ユーザーが一致するルートに移動すると、最初にデータがロードされ、次にページがレンダリングされます。
+ルートファイルは、ルートコンポーネントにデータを提供する [`loader`][loader] 関数をエクスポートできます。ユーザーが一致するルートに移動すると、最初にデータがロードされ、次にページがレンダリングされます。
 
 ```tsx filename=routes/account.tsx lines=[1-2,4-12]
 import type { LoaderFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
@@ -60,7 +60,7 @@ export async function action() {
 
 ## ルートコンポーネント
 
-ルートファイルのデフォルトエクスポートは、レンダリングされるコンポーネントです。これは、[`useLoaderData`][use_loader_data]を使用してローダーデータを読み取ります。
+ルートファイルのデフォルトのエクスポートは、レンダリングするコンポーネントです。[`useLoaderData`][use_loader_data] を使用してローダーデータを読み取ります。
 
 ```tsx lines=[3,15-30]
 import type { LoaderFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
@@ -81,7 +81,7 @@ export default function Component() {
   const user = useLoaderData<typeof loader>();
   return (
     <Form method="post" action="/account">
-      <h1>Settings for {user.displayName}</h1>
+      <h1>{user.displayName} の設定</h1>
 
       <input
         name="displayName"
@@ -89,7 +89,7 @@ export default function Component() {
       />
       <input name="email" defaultValue={user.email} />
 
-      <button type="submit">Save</button>
+      <button type="submit">保存</button>
     </Form>
   );
 }
@@ -101,7 +101,7 @@ export async function action() {
 
 ## ルートアクション
 
-最後に、フォームのアクション属性と一致するルートのアクションは、フォームが送信されると呼び出されます。この例では、同じルートです。フォームフィールドの値は、標準の[`request.formData()`][request_form_data]APIで利用できます。入力の`name`属性は、[`formData.get(fieldName)`][form_data_get]ゲッターと結合されていることに注意してください。
+最後に、フォームの action 属性に一致するルートのアクションは、フォームが送信されるときに呼び出されます。この例では、同じルートです。フォームフィールドの値は、標準の [`request.formData()`][request_form_data] API で利用できます。入力の `name` 属性は、[`formData.get(fieldName)`][form_data_get] ゲッターに結合されていることに注意してください。
 
 ```tsx lines=[2,35-47]
 import type {
@@ -125,7 +125,7 @@ export default function Component() {
   const user = useLoaderData<typeof loader>();
   return (
     <Form method="post" action="/account">
-      <h1>Settings for {user.displayName}</h1>
+      <h1>{user.displayName} の設定</h1>
 
       <input
         name="displayName"
@@ -133,7 +133,7 @@ export default function Component() {
       />
       <input name="email" defaultValue={user.email} />
 
-      <button type="submit">Save</button>
+      <button type="submit">保存</button>
     </Form>
   );
 }
@@ -155,25 +155,25 @@ export async function action({
 
 ## 送信と再検証
 
-ユーザーがフォームを送信すると:
+ユーザーがフォームを送信すると、次のようになります。
 
-1. Remixは`fetch`を使用してフォームデータをルートアクションに送信し、`useNavigation`や`useFetcher`などのフックを介して保留状態が利用可能になります。
-2. アクションが完了すると、ローダーが再検証されて新しいサーバー状態が取得されます。
-3. `useLoaderData`はサーバーから更新された値を返し、保留状態はアイドル状態に戻ります。
+1. Remix は `fetch` を介してフォームデータをルートアクションに送信し、`useNavigation` や `useFetcher` などのフックを介して保留中の状態が利用可能になります。
+2. アクションが完了すると、ローダーが再検証され、新しいサーバーの状態を取得します。
+3. `useLoaderData` はサーバーから更新された値を返し、保留中の状態はアイドル状態に戻ります。
 
-このようにして、UIはサーバー状態と同期したままになり、その同期のためのコードを記述する必要はありません。
+このようにして、UI はその同期のためのコードを記述することなく、サーバーの状態と同期されます。
 
-HTMLフォーム要素以外に、フォームを送信する方法はいくつかあります（ドラッグアンドドロップやonChangeイベントなど）。フォームの検証、エラー処理、保留状態などについて、もっと詳しく説明する必要があります。これらについては後で説明しますが、これはRemixのデータフローの概要です。
+HTML フォーム要素以外にも、フォームを送信する方法はいくつかあります（ドラッグアンドドロップや onChange イベントへの応答など）。フォームの検証、エラー処理、保留中の状態などについて説明することもたくさんあります。これらについては後で説明しますが、これが Remix のデータフローの要点です。
 
-## JavaScriptがロードされる前
+## JavaScript がロードされる前
 
-サーバーからHTMLを送信する場合、JavaScriptがロードされる前に動作するようにするのが最善です。Remixの一般的なデータフローでは、これは自動的に行われます。フローは同じですが、ブラウザが一部の作業を行います。
+サーバーから HTML を送信する場合は、JavaScript がロードされる前でも動作するようにするのが最適です。Remix の一般的なデータフローは、これを自動的に行います。フローは同じですが、ブラウザが一部の作業を行います。
 
-ユーザーがJavaScriptがロードされる前にフォームを送信すると:
+ユーザーが JavaScript がロードされる前にフォームを送信すると、次のようになります。
 
-1. ブラウザはフォームをアクションに送信し（`fetch`ではなく）、ブラウザの保留状態がアクティブになります（回転するファビコン）。
+1. ブラウザは（`fetch` の代わりに）フォームをアクションに送信し、ブラウザの保留中の状態がアクティブになります（回転するファビコン）。
 2. アクションが完了すると、ローダーが呼び出されます。
-3. Remixはページをレンダリングし、ブラウザにHTMLを送信します。
+3. Remix はページをレンダリングし、HTML をブラウザに送信します。
 
 [loader]: ../route/loader
 [use_loader_data]: ../hooks/use-loader-data

@@ -4,9 +4,9 @@ title: Await
 
 # `<Await>`
 
-ストリーミングデータの使用方法については、[ストリーミングガイド][streaming_guide] をご参照ください。
+ストリーミングデータの利用を開始するには、[ストリーミングガイド][streaming_guide]を参照してください。
 
-`<Await>` コンポーネントは、[`useLoaderData`][use_loader_data] からアクセスされる延期されたローダープロミスを解決する役割を担います。
+`<Await>` コンポーネントは、[`useLoaderData`][use_loader_data] からアクセスされる遅延ローダーの Promise を解決する役割を担います。
 
 ```tsx
 import { Await } from "@remix-run/react";
@@ -22,13 +22,13 @@ import { Await } from "@remix-run/react";
 
 ### `resolve`
 
-`resolve` プロパティは、[`useLoaderData`][use_loader_data] から取得したプロミスを受け取り、データがストリーミングされたときに解決します。
+`resolve` プロパティは、データがストリーミングされたときに解決される [`useLoaderData`][use_loader_data] からの Promise を受け取ります。
 
 ```tsx
 <Await resolve={somePromise} />
 ```
 
-プロミスが解決されない場合、親のサスペンス境界のフォールバックがレンダリングされます。
+Promise が解決されていない場合、親の Suspense バウンダリーのフォールバックがレンダリングされます。
 
 ```tsx
 <Suspense fallback={<div>Loading...</div>}>
@@ -36,7 +36,7 @@ import { Await } from "@remix-run/react";
 </Suspense>
 ```
 
-プロミスが解決されると、`children` がレンダリングされます。
+Promise が解決されると、`children` がレンダリングされます。
 
 ### `children`
 
@@ -67,13 +67,13 @@ function SomeChild() {
 
 ### `errorElement`
 
-`errorElement` プロパティは、プロミスが拒否されたときにエラー境界をレンダリングするために使用できます。
+`errorElement` プロパティは、Promise が拒否されたときにエラーバウンダリーをレンダリングするために使用できます。
 
 ```tsx
 <Await errorElement={<div>Oops!</div>} />
 ```
 
-エラーは、サブツリー内の [`useAsyncError`][use_async_error] を使用してアクセスできます。
+エラーは、サブツリー内の [`useAsyncError`][use_async_error] でアクセスできます。
 
 ```tsx
 <Await errorElement={<SomeChild />} />
@@ -92,3 +92,4 @@ function SomeChild() {
 [use_loader_data]: ../hooks/use-loader-data
 [use_async_value]: ../hooks/use-async-value
 [use_async_error]: ../hooks/use-async-error
+

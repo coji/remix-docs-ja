@@ -1,4 +1,5 @@
 ---
-title: クッキーとセッション
+title: Cookies and Sessions
 hidden: true
---- 
+---
+

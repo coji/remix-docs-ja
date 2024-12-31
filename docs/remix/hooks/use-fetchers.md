@@ -5,7 +5,7 @@ toc: false
 
 # `useFetchers`
 
-すべての進行中のフェッチャーの配列を返します。これは、フェッチャーを作成していないが、楽観的なUIに参加するためにその送信を使用したいアプリケーション全体のコンポーネントに役立ちます。
+現在実行中のすべてのフェッチャーの配列を返します。これは、フェッチャーを作成しなかったが、楽観的 UI に参加するためにそれらの送信を使用したいアプリ全体のコンポーネントに役立ちます。
 
 ```tsx
 import { useFetchers } from "@remix-run/react";
@@ -18,14 +18,14 @@ function SomeComponent() {
 }
 ```
 
-フェッチャーには、[`fetcher.Form`][fetcher_form]、[`fetcher.submit`][fetcher_submit]、または [`fetcher.load`][fetcher_load] は含まれていません。[`fetcher.formData`][fetcher_form_data]、[`fetcher.state`][fetcher_state] などの状態のみが含まれています。
+フェッチャーには、[`fetcher.Form`][fetcher_form]、[`fetcher.submit`][fetcher_submit]、または [`fetcher.load`][fetcher_load] は含まれておらず、[`fetcher.formData`][fetcher_form_data]、[`fetcher.state`][fetcher_state] などの状態のみが含まれています。
 
-## 追加のリソース
+## 追加リソース
 
 **ディスカッション**
 
-- [フォーム vs. フェッチャー][form_vs_fetcher]
-- [保留中、楽観的なUI][pending_optimistic_ui]
+- [Form vs. Fetcher][form_vs_fetcher]
+- [Pending, Optimistic UI][pending_optimistic_ui]
 
 **API**
 
@@ -41,3 +41,4 @@ function SomeComponent() {
 [pending_optimistic_ui]: ../discussion/pending-ui
 [use_fetcher]: ./use-fetcher
 [fetcherpersist]: ../file-conventions/remix-config#future
+

@@ -5,11 +5,11 @@ toc: false
 
 # `useActionData`
 
-最も最近のルート[アクション][action]からシリアル化されたデータ、または存在しない場合は`undefined`を返します。このフックは、コンテキスト内のルートからのアクションデータのみを返します。親または子ルートのデータにはアクセスできません。
+最新のルートの[アクション][action]からシリアライズされたデータを返します。アクションがない場合は `undefined` を返します。このフックは、コンテキスト内のルートからのアクションデータのみを返します。他の親または子ルートからのデータにはアクセスできません。
 
 ```tsx lines=[10,14]
-import type { ActionFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
-import { json } from "@remix-run/node"; // または cloudflare/deno
+import type { ActionFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
+import { json } from "@remix-run/node"; // or cloudflare/deno
 import { Form, useActionData } from "@remix-run/react";
 
 export async function action({
@@ -31,11 +31,11 @@ export default function Invoices() {
 }
 ```
 
-## 追加のリソース
+## 追加リソース
 
 **ガイド**
 
-- [フォーム検証][form_validation]
+- [フォームのバリデーション][form_validation]
 
 **関連API**
 

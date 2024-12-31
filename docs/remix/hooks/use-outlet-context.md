@@ -4,7 +4,7 @@ title: useOutletContext
 
 # `useOutletContext`
 
-[`<Outlet context={val} />`][outlet-context] コンポーネントの最も近い親からコンテキスト値を返す、[React Context][react-context] 上の便利な API です。
+[React Context][react-context] を利用した便利な API で、最も近い親の [`<Outlet context={val} />`][outlet-context] コンポーネントからコンテキスト値を返します。
 
 ```tsx
 import { useOutletContext } from "@remix-run/react";
@@ -15,9 +15,10 @@ function Child() {
 }
 ```
 
-## 追加リソース
+## 関連リソース
 
 - [`<Outlet context>`][outlet-context]
 
 [react-context]: https://react.dev/learn/passing-data-deeply-with-context
 [outlet-context]: ../components/outlet#context
+

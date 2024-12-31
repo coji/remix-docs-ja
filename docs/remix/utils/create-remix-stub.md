@@ -4,12 +4,12 @@ title: createRemixStub
 
 # `createRemixStub`
 
-このユーティリティを使用すると、Remix のフック/コンポーネントに依存する独自のコンポーネントを、モックのルートセットを設定することでユニットテストできます。
+このユーティリティを使用すると、モックされたルートを設定することで、Remix のフック/コンポーネントに依存する独自のコンポーネントをユニットテストできます。
 
 ```tsx
 import { createRemixStub } from "@remix-run/testing";
 
-test("ローダーデータを表示する", async () => {
+test("ローダーデータをレンダリングする", async () => {
   const RemixStub = createRemixStub([
     {
       path: "/",
@@ -32,16 +32,16 @@ test("ローダーデータを表示する", async () => {
 
   render(<RemixStub />);
 
-  // 初期レンダリングをアサートする
+  // 初期レンダリングをアサート
   await waitFor(() => screen.findByText("..."));
 
-  // ボタンをクリックして UI の変更をアサートする
-  user.click(screen.getByText("ボタン テキスト"));
+  // ボタンをクリックして UI の変更をアサート
+  user.click(screen.getByText("ボタンテキスト"));
   await waitFor(() => screen.findByText("..."));
 });
 ```
 
-[`loader`][loader] が `getLoadContext` メソッドに依存している場合、`createRemixStub` への第 2 パラメーターでスタブされたコンテキストを提供できます。
+[`loader`][loader] が `getLoadContext` メソッドに依存している場合は、`createRemixStub` の 2 番目のパラメーターを介してスタブ化されたコンテキストを提供できます。
 
 ```tsx
 const RemixStub = createRemixStub(
@@ -58,10 +58,10 @@ const RemixStub = createRemixStub(
 );
 ```
 
-`<RemixStub>` コンポーネント自体は、React Router に似たプロパティを受け取り、初期 URL、履歴スタック、ハイドレーションデータ、または将来のフラグを制御する必要がある場合に役立ちます。
+`<RemixStub>` コンポーネント自体は、初期 URL、履歴スタック、ハイドレーションデータ、または将来のフラグを制御する必要がある場合に、React Router と同様のプロパティを受け取ります。
 
 ```tsx
-// 2 つの前の履歴スタックエントリを持つ "/2" にレンダリングされたアプリケーションをテストする
+// "/2" でレンダリングされたアプリを、2 つ前の履歴スタックエントリでテスト
 render(
   <RemixStub
     initialEntries={["/", "/1", "/2"]}
@@ -69,8 +69,8 @@ render(
   />
 );
 
-// ルートルートの初期ローダーデータでレンダリングされたアプリケーションをテストします。
-// これを使用する場合は、ルート定義でルートに独自の ID を付与することをお勧めします
+// ルートルートの初期ローダーデータでレンダリングされたアプリをテストします。
+// これを使用する場合は、ルート定義でルートに独自のユニークな ID を与えるのが最適です。
 render(
   <RemixStub
     hydrationData={{
@@ -79,10 +79,9 @@ render(
   />
 );
 
-// 指定された将来のフラグを有効にしてレンダリングされたアプリケーションをテストする
+// 指定された将来のフラグが有効になっている状態でレンダリングされたアプリをテスト
 render(<RemixStub future={{ v3_coolFeature: true }} />);
 ```
 
 [loader]: ../route/loader
-
 

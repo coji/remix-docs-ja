@@ -1,4 +1,5 @@
 ---
-title: 同時提出
+title: Concurrent Submissions
 hidden: true
---- 
+---
+

@@ -1,10 +1,10 @@
 ---
-title: アウトレット
+title: Outlet
 ---
 
 # `<Outlet>`
 
-親ルートの対応する子ルートをレンダリングします。
+親ルートにマッチする子ルートをレンダリングします。
 
 ```tsx
 import { Outlet } from "@remix-run/react";
@@ -20,18 +20,17 @@ export default function SomeParent() {
 }
 ```
 
-## プロパティ
+## Props
 
 ### `context`
 
-アウトレットの下にある要素ツリーにコンテキスト値を提供します。親ルートが子ルートに値を提供する必要がある場合に使用します。
+アウトレット以下の要素ツリーにコンテキスト値を提供します。親ルートが子ルートに値を提供する必要がある場合に使用します。
 
 ```tsx
 <Outlet context={myContextValue} />
 ```
 
-こちらもご覧ください: [`useOutletContext`][use-outlet-context]
+関連情報: [`useOutletContext`][use-outlet-context]
 
 [use-outlet-context]: ../hooks/use-outlet-context
-
 

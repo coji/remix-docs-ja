@@ -4,13 +4,13 @@ title: "@remix-run/testing"
 
 # `@remix-run/testing`
 
-このパッケージには、Remix アプリケーションの一部をユニットテストする際に役立つユーティリティが含まれています。これは、コンパイラによって出力される Remix ルートモジュール/アセットマニフェストをモックし、[createMemoryRouter][create-memory-router] を使用してメモリ内の React Router アプリを生成することで実現されます。
+このパッケージには、Remixアプリケーションの一部のユニットテストを支援するためのユーティリティが含まれています。これは、コンパイラによって出力されるRemixルートモジュール/アセットマニフェストをモックし、[createMemoryRouter][create-memory-router] を介してインメモリのReact Routerアプリを生成することで実現されます。
 
-一般的に、これは、Remix のフック/コンポーネントに依存するコンポーネント/フックをテストするために使用されます。これらのフック/コンポーネントは、クリーンにモックすることができません（[`useLoaderData`][use-loader-data]、[`useFetcher`][use-fetcher] など）。より高度なテスト（リンクをクリックしてページに移動するなど）にも使用できますが、それらは [Cypress][cypress] や [Playwright][playwright] などのエンドツーエンドテストの方が適しています。
+このパッケージの一般的な使い方は、クリーンにモックすることができないRemixのフック/コンポーネント（[`useLoaderData`][use-loader-data]、[`useFetcher`][use-fetcher]など）に依存するコンポーネント/フックをテストすることです。リンクをクリックしてページをナビゲートするなどのより高度なテストにも使用できますが、それらは[Cypress][cypress]や[Playwright][playwright]のようなツールを使用したエンドツーエンドテストに適しています。
 
-## 使用方法
+## 使用法
 
-[`createRemixStub`][create-remix-stub] を使用するには、React Router のようなルートオブジェクトを使用してルートを定義します。ここで、`path`、`Component`、`loader` などを指定します。これらは、基本的に Remix アプリのルートファイルのネストとエクスポートをモックしています。
+[`createRemixStub`][create-remix-stub]を使用するには、React Routerのようなルートオブジェクトを使用してルートを定義します。ここで、`path`、`Component`、`loader`などを指定します。これらは基本的に、Remixアプリのルートファイルのネストとエクスポートをモックしています。
 
 ```tsx
 import { createRemixStub } from "@remix-run/testing";
@@ -26,7 +26,7 @@ const RemixStub = createRemixStub([
 ]);
 ```
 
-次に、`<RemixStub />` コンポーネントをレンダリングし、それをアサートできます。
+次に、`<RemixStub />`コンポーネントをレンダリングして、それに対してアサートできます。
 
 ```tsx
 render(<RemixStub />);
@@ -35,7 +35,7 @@ await screen.findByText("Some rendered text");
 
 ## 例
 
-以下は、[`jest`][jest] と [React Testing Library][rtl] を使用したテストの完全な動作例です。
+[`jest`][jest]と[React Testing Library][rtl]を使用した完全な動作例を次に示します。
 
 ```tsx
 import { json } from "@remix-run/node";
@@ -48,7 +48,7 @@ import {
 } from "@testing-library/react";
 
 test("renders loader data", async () => {
-  // ⚠️ 通常、これはアプリコードからインポートするコンポーネントです
+  // ⚠️ これは通常、アプリのコードからインポートするコンポーネントです
   function MyComponent() {
     const data = useLoaderData() as { message: string };
     return <p>Message: {data.message}</p>;
@@ -78,6 +78,4 @@ test("renders loader data", async () => {
 [create-remix-stub]: ../utils/create-remix-stub
 [jest]: https://jestjs.io
 [rtl]: https://testing-library.com/docs/react-testing-library/intro
-
-
 

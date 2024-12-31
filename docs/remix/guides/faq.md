@@ -1,35 +1,35 @@
 ---
-title: よくある質問
-description: Remixに関するよくある質問
+title: FAQs
+description: Remix に関するよくある質問
 ---
 
 # よくある質問
 
-## 親ルートローダーでユーザーを検証して、すべての子ルートを保護するにはどうすればよいですか？
+## 親ルートのローダーでユーザーを検証し、すべての子ルートを保護するにはどうすればよいですか？
 
-それはできません😅。クライアント側の遷移中、アプリをできるだけ高速にするために、Remixはすべてのローダーを別々のフェッチ要求で並行して呼び出します。それぞれのローダーは独自の認証チェックを行う必要があります。
+できません😅。クライアントサイドのトランジション中、アプリをできるだけ高速にするために、Remix はすべてのローダーを _並行して_、別々のフェッチリクエストで呼び出します。それぞれのローダーには、独自の認証チェックが必要です。
 
-これは、Remixを使用する前と同じである可能性があり、今は単に明確になっているだけです。Remix以外では、「APIルート」に複数のフェッチを行う場合、それらのエンドポイントのそれぞれがユーザーセッションを検証する必要があります。言い換えれば、Remixルートローダーは独自の「APIルート」であり、そうとして扱う必要があります。
+これはおそらく、Remix を使用する前にやっていたことと変わりないでしょう。ただ、今はより明確になっているだけかもしれません。Remix の外部では、「API ルート」に複数のフェッチを行う場合、それらのエンドポイントはそれぞれユーザーセッションを検証する必要があります。言い換えれば、Remix のルートローダーは独自の「API ルート」であり、そのように扱う必要があります。
 
-ユーザーセッションを検証する関数を作り、それを必要とするルートに追加することをお勧めします。
+ユーザーセッションを検証する関数を作成し、それを必要なルートに追加することをお勧めします。
 
 ```ts filename=app/session.ts lines=[9-22]
 import {
   createCookieSessionStorage,
   redirect,
-} from "@remix-run/node"; // または cloudflare/deno
+} from "@remix-run/node"; // or cloudflare/deno
 
-// セッションストレージがある場所
+// どこかにセッションストレージがある
 const { getSession } = createCookieSessionStorage();
 
 export async function requireUserSession(request) {
-  // セッションを取得する
+  // セッションを取得
   const cookie = request.headers.get("cookie");
   const session = await getSession(cookie);
 
-  // セッションを検証する、`userId`は単なる例であり、ユーザーが認証したときにセッションに保存した値を使用する
+  // セッションを検証します。`userId` は単なる例です。ユーザーが認証されたときにセッションに設定した値を使用してください。
   if (!session.has("userId")) {
-    // ユーザーセッションがない場合は、ログインにリダイレクトする
+    // ユーザーセッションがない場合は、ログインにリダイレクトします
     throw redirect("/login");
   }
 
@@ -37,16 +37,16 @@ export async function requireUserSession(request) {
 }
 ```
 
-これで、ユーザーセッションを必要とするローダーまたはアクションでは、この関数を呼び出すことができます。
+これで、ユーザーセッションが必要なローダーまたはアクションで、この関数を呼び出すことができます。
 
 ```tsx filename=app/routes/projects.tsx lines=[5]
 export async function loader({
   request,
 }: LoaderFunctionArgs) {
-  // ユーザーが認証されていない場合は、ログインにリダイレクトされます
+  // ユーザーが認証されていない場合、これはログインにリダイレクトします
   const session = await requireUserSession(request);
 
-  // それ以外の場合は、コードは実行を続けます
+  // それ以外の場合は、コードの実行が続行されます
   const projects = await fakeDb.projects.scan({
     userId: session.get("userId"),
   });
@@ -54,35 +54,35 @@ export async function loader({
 }
 ```
 
-セッション情報が必要なくても、この関数は引き続きルートを保護します。
+セッション情報が必要ない場合でも、この関数はルートを保護します。
 
 ```tsx
 export async function loader({
   request,
 }: LoaderFunctionArgs) {
   await requireUserSession(request);
-  // 続ける
+  // 続行
 }
 ```
 
-## 1つのルートで複数のフォームを処理するにはどうすればよいですか？
+## 1 つのルートで複数のフォームを処理するにはどうすればよいですか？
 
-[YouTubeで視聴][watch_on_youtube]
+[YouTube で見る][watch_on_youtube]
 
-HTMLでは、フォームは`action`プロパティで任意のURLに投稿でき、アプリはそのURLにナビゲートします。
+HTML では、フォームは action プロパティを使用して任意の URL に POST でき、アプリはそこに移動します。
 
 ```tsx
 <Form action="/some/where" />
 ```
 
-Remixでは、アクションはフォームがレンダリングされているルートにデフォルトで設定されているため、UIとそれを処理するサーバー側のコードを簡単に配置できます。開発者はしばしば、このシナリオで複数のアクションをどのように処理するか疑問に思います。2つの選択肢があります。
+Remix では、action はフォームがレンダリングされるルートにデフォルト設定されるため、UI とそれを処理するサーバーコードを簡単に同じ場所に配置できます。開発者は、このシナリオで複数のアクションを処理する方法を疑問に思うことがよくあります。2 つの選択肢があります。
 
-1. 行いたいアクションを決定するフォームフィールドを送信する
-2. 別のルートに投稿して、元のルートにリダイレクトする
+1. 実行するアクションを決定するためのフォームフィールドを送信する
+2. 別のルートに POST し、元のルートにリダイレクトする
 
-オプション(1)は、UIにバリデーションエラーを戻すためにセッションを操作する必要がないため、最もシンプルであることがわかります。
+(1) のオプションは、検証エラーを UI に戻すためにセッションをいじる必要がないため、最も簡単です。
 
-HTMLボタンは値を送信できるので、これが実装する最も簡単な方法です。
+HTML ボタンは値を送信できるため、これを実装する最も簡単な方法です。
 
 ```tsx filename=app/routes/projects.$id.tsx lines=[5-6,35,41]
 export async function action({
@@ -92,11 +92,11 @@ export async function action({
   const intent = formData.get("intent");
   switch (intent) {
     case "update": {
-      // 更新を実行する
+      // 更新を実行
       return updateProjectName(formData.get("name"));
     }
     case "delete": {
-      // 削除を実行する
+      // 削除を実行
       return deleteStuff(formData);
     }
     default: {
@@ -134,16 +134,16 @@ export default function Projects() {
 }
 ```
 
-<docs-warning>古いブラウザバージョンでは、[SubmitEvent: submitter プロパティ][submitevent-submitter]または[FormData() コンストラクターの submitter パラメーター][formdata-submitter]をサポートしていない可能性があるため、この機能が壊れる可能性があります。これらの機能のブラウザ互換性を必ず確認してください。ポリフィルが必要な場合は、[Event Submitter ポリフィル][polyfill-event-submitter]と[FormData Submitter ポリフィル][polyfill-formdata-submitter]を参照してください。詳細については、関連する問題[remix-run/remix#9704][remix-submitter-issue]をご覧ください。</docs-warning>
+<docs-warning>古いブラウザバージョンでは、[SubmitEvent: submitter プロパティ][submitevent-submitter] または [FormData() コンストラクター submitter パラメーター][formdata-submitter] をサポートしていないため、この機能が壊れる可能性があります。これらの機能のブラウザ互換性を必ず確認してください。これをポリフィルする必要がある場合は、[Event Submitter Polyfill][polyfill-event-submitter] および [FormData Submitter Polyfill][polyfill-formdata-submitter] を参照してください。詳細については、関連する問題 [remix-run/remix#9704][remix-submitter-issue] を参照してください。</docs-warning>
 
-## フォームに構造化されたデータを含めるにはどうすればよいですか？
+## フォームに構造化データを含めるにはどうすればよいですか？
 
-`application/json`のコンテンツタイプでフェッチを行うことに慣れている場合は、フォームがどのように当てはまるのか疑問に思うかもしれません。[`FormData`][form_data]はJSONとは少し異なります。
+`application/json` のコンテンツタイプでフェッチを行うことに慣れている場合は、フォームがどのように適合するのか疑問に思うかもしれません。[`FormData`][form_data] は JSON と少し異なります。
 
-- ネストされたデータを持つことはできません。単なる「キー値」です。
-- JSONとは異なり、_同じキーに複数のエントリを持つ_ことができます。
+- ネストされたデータを持つことはできず、「キーと値」のみです。
+- JSON とは異なり、1 つのキーに複数のエントリを持つことができます。
 
-構造化されたデータを送信したい場合は、単に配列を投稿するために、同じキーを複数の入力に使用できます。
+構造化データを単に配列を POST するために送信したい場合は、複数の入力で同じキーを使用できます。
 
 ```tsx
 <Form method="post">
@@ -154,7 +154,7 @@ export default function Projects() {
   </label>
   <label>
     <input type="checkbox" name="category" value="music" />{" "}
-    ミュージック
+    音楽
   </label>
   <label>
     <input type="checkbox" name="category" value="howto" />{" "}
@@ -163,7 +163,7 @@ export default function Projects() {
 </Form>
 ```
 
-各チェックボックスの名前は「category」です。`FormData`は同じキーに複数の値を持つことができるため、JSONは必要ありません。アクションでは`formData.getAll()`を使用してチェックボックスの値にアクセスします。
+各チェックボックスには、"category" という名前が付いています。`FormData` は同じキーに複数の値を持つことができるため、これに JSON は必要ありません。アクションで `formData.getAll()` を使用してチェックボックスの値にアクセスします。
 
 ```tsx
 export async function action({
@@ -175,38 +175,38 @@ export async function action({
 }
 ```
 
-同じ入力名と`formData.getAll()`を使用すると、ほとんどの場合、構造化されたデータをフォームに送信したい場合に役立ちます。
+同じ入力名と `formData.getAll()` を使用すると、フォームで構造化データを送信したい場合のほとんどのケースに対応できます。
 
-それでもネストされた構造を送信したい場合は、標準ではないフォームフィールドの命名規則とnpmの[`query-string`][query_string]パッケージを使用できます。
+それでもネストされた構造も送信したい場合は、非標準のフォームフィールド命名規則と npm の [`query-string`][query_string] パッケージを使用できます。
 
 ```tsx
 <>
-  // []を使用した配列
+  // [] を使用した配列
   <input name="category[]" value="comedy" />
   <input name="category[]" value="comedy" />
-  // ネストされた構造、親キー[子キー]
+  // ネストされた構造 parentKey[childKey]
   <input name="user[name]" value="Ryan" />
 </>
 ```
 
-そして、アクションで
+そして、アクションで次のようにします。
 
 ```tsx
 import queryString from "query-string";
 
-// アクションで
+// アクション内:
 export async function action({
   request,
 }: ActionFunctionArgs) {
-  // フォームデータを取得するために`request.text()`を使用する、`request.formData`ではなく、URLエンコードされたフォームクエリ文字列
+  // `request.formData` ではなく `request.text()` を使用して、フォームデータを URL エンコードされたフォームクエリ文字列として取得します
   const formQueryString = await request.text();
 
-  // オブジェクトに解析する
+  // オブジェクトに解析します
   const obj = queryString.parse(formQueryString);
 }
 ```
 
-一部の人は、JSONを非表示フィールドにダンプすることさえあります。この方法は、プログレッシブエンハンスメントでは機能しないことに注意してください。それがアプリにとって重要ではない場合は、構造化されたデータを簡単に送信できます。
+JSON を非表示フィールドにダンプする人もいます。このアプローチは、プログレッシブエンハンスメントでは機能しないことに注意してください。それがアプリにとって重要でない場合は、構造化データを送信する簡単な方法です。
 
 ```tsx
 <input
@@ -216,7 +216,7 @@ export async function action({
 />
 ```
 
-そして、アクションでそれを解析します。
+そして、アクションで解析します。
 
 ```tsx
 export async function action({
@@ -227,7 +227,7 @@ export async function action({
 }
 ```
 
-繰り返しますが、`formData.getAll()`は多くの場合で十分です。ぜひ試してみてください！
+繰り返しますが、`formData.getAll()` は多くの場合、必要なすべてです。ぜひ試してみてください。
 
 [form_data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
 [query_string]: https://npm.im/query-string
@@ -238,6 +238,4 @@ export async function action({
 [polyfill-event-submitter]: https://github.com/idea2app/event-submitter-polyfill
 [polyfill-formdata-submitter]: https://github.com/jenseng/formdata-submitter-polyfill
 [remix-submitter-issue]: https://github.com/remix-run/remix/issues/9704
-
-
 

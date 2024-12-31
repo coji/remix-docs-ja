@@ -5,7 +5,7 @@ toc: false
 
 # `useRouteLoaderData`
 
-ルートIDによって、特定のルートのローダーデータを取得します。
+指定されたルートのIDに基づいて、ローダーデータを返します。
 
 ```tsx
 import { useRouteLoaderData } from "@remix-run/react";
@@ -15,10 +15,11 @@ function SomeComponent() {
 }
 ```
 
-Remixは自動的にルートIDを作成します。ルートIDは、拡張子を除いたappフォルダからの相対パスになります。
+RemixはルートIDを自動的に作成します。これらは単に、拡張子を除いた、アプリフォルダに対するルートファイルの相対パスです。
 
 | ルートファイル名             | ルートID             |
 | -------------------------- | -------------------- |
 | `app/root.tsx`             | `"root"`             |
 | `app/routes/teams.tsx`     | `"routes/teams"`     |
-| `app/routes/teams.$id.tsx` | `"routes/teams.$id"` | 
+| `app/routes/teams.$id.tsx` | `"routes/teams.$id"` |
+

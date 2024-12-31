@@ -1,6 +1,7 @@
 ---
-title: HTML フォーム API
+title: HTML Form APIs
 hidden: true
 ---
 
-# HTML フォーム API 
+# HTML フォーム API
+

@@ -1,53 +1,60 @@
 ---
-title: ブログチュートリアル（短縮版）
+title: ブログチュートリアル (短縮版)
 order: 3
 hidden: true
 ---
 
 # ブログチュートリアル
 
-このクイックスタートでは、コードを短く、説明を簡潔に記述します。Remixの概要を15分で知りたい方は、このチュートリアルが最適です。
+このクイックスタートでは、言葉を少なく、コードを素早く進めていきます。Remixがどんなものか15分で知りたいなら、これが最適です。
 
-<docs-info>このチュートリアルは、Kentが作成した<a target="_blank" rel="noopener noreferrer" href="https://rmx.as/egghead-course">無料のEgghead.ioコース</a>と併せて行うことをお勧めします。</docs-info>
+<docs-info>このチュートリアルをKentと一緒に<a target="_blank" rel="noopener noreferrer" href="https://rmx.as/egghead-course">この無料のEgghead.ioコース</a>で進めてください</docs-info>
 
-このチュートリアルではTypeScriptを使用しています。RemixはTypeScriptなしでも使用できます。TypeScriptで記述すると生産性が向上しますが、TypeScript構文をスキップしたい場合は、JavaScriptでコードを記述することもできます。
+このチュートリアルではTypeScriptを使用します。RemixはTypeScriptなしでも間違いなく使用できます。私たちはTypeScriptを書くときに最も生産性が高いと感じていますが、TypeScriptの構文をスキップしたい場合は、JavaScriptでコードを書いても構いません。
 
-<docs-info>💿 こんにちは、RemixコンパクトディスクのDerrickです 👋  何かを実行する必要がある場合は、私が表示されます。</docs-info>
+<docs-info>💿 こんにちは、Remixコンパクトディスクのデリックです 👋 何かをする必要があるときは、私を見かけるでしょう</docs-info>
 
 ## 前提条件
 
-このボタンをクリックして、プロジェクトが設定され、VS CodeまたはJetBrainsで直接ブラウザまたはデスクトップで実行できる状態の[Gitpod][gitpod]ワークスペースを作成します。
+このボタンをクリックすると、プロジェクトがセットアップされ、VS CodeまたはJetBrainsでブラウザ上またはデスクトップ上で直接実行できる状態の[Gitpod][gitpod]ワークスペースが作成されます。
 
-[![Gitpodの準備完了][gitpod-ready-to-code]][gitpod-ready-to-code-image]
+[![Gitpod Ready-to-Code][gitpod-ready-to-code]][gitpod-ready-to-code-image]
 
-このチュートリアルを自分のコンピュータでローカルに実行する場合は、以下のものがインストールされている必要があります。
+このチュートリアルをローカルのコンピュータで実行する場合は、以下のものがインストールされていることが重要です。
 
-- [Node.js][node-js]バージョン（>=18.0.0）
-- [npm][npm] 7以上
-- コードエディタ（[VSCode][vs-code]がお勧めです）
+* [Node.js][node-js] バージョン (>=18.0.0)
+* [npm][npm] 7以上
+* コードエディタ ([VSCode][vs-code] がおすすめです)
+
+[gitpod]: https://www.gitpod.io/
+[gitpod-ready-to-code]: https://gitpod.io/#https://github.com/your-repo-here
+[gitpod-ready-to-code-image]: https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod
+[node-js]: https://nodejs.org/
+[npm]: https://www.npmjs.com/
+[vs-code]: https://code.visualstudio.com/
 
 ## プロジェクトの作成
 
-<docs-warning>Node v18以上を実行していることを確認してください。</docs-warning>
+<docs-warning>Node v18 以上が実行されていることを確認してください</docs-warning>
 
-💿 Remixプロジェクトを初期化します。ここでは「blog-tutorial」という名前をつけますが、必要に応じて別の名前をつけることもできます。
+💿 新しい Remix プロジェクトを初期化します。ここでは「blog-tutorial」と名付けますが、必要に応じて別の名前を付けても構いません。
 
 ```shellscript nonumber
 npx create-remix@latest --template remix-run/indie-stack blog-tutorial
 ```
 
 ```
-Install dependencies with npm?
-Yes
+npm で依存関係をインストールしますか？
+はい
 ```
 
-[スタックのドキュメント][the-stacks-docs]で、使用可能なスタックについて詳しく読むことができます。
+利用可能なスタックの詳細については、[スタックのドキュメント][the-stacks-docs]を参照してください。
 
-ここでは、[Indieスタック][the-indie-stack]を使用します。これは、[fly.io][fly-io]にデプロイする準備ができたフルアプリケーションです。開発ツールに加えて、本番環境対応の認証と永続化が含まれています。使用するツールに不慣れな場合でも心配しないでください。順を追って説明していきます。
+ここでは、[Indie スタック][the-indie-stack]を使用します。これは、[fly.io][fly-io]にデプロイできるフルアプリケーションです。これには、開発ツールだけでなく、本番環境に対応した認証と永続化も含まれています。使用されているツールに慣れていなくても心配しないでください。進めていく中で説明します。
 
-<docs-info>注記：`--template`フラグなしで`npx create-remix@latest`を実行することで、「Just the basics」から始めることもできます。生成されるプロジェクトは、その場合、はるかに最小限のものになります。ただし、チュートリアルの一部は異なるものになり、デプロイ用の設定を手動で行う必要があります。</docs-info>
+<docs-info>注意: `--template` フラグなしで `npx create-remix@latest` を実行して、「基本のみ」から始めることもできます。生成されるプロジェクトは、その方がはるかに最小限です。ただし、チュートリアルのいくつかの部分が異なり、デプロイを手動で構成する必要があります。</docs-info>
 
-💿 次に、生成されたプロジェクトをお気に入りのエディタで開き、`README.md`ファイルの指示を確認してください。このファイルをよく読んでください。デプロイについては、チュートリアルの後半で説明します。
+💿 次に、生成されたプロジェクトを好みのエディターで開き、`README.md` ファイルの指示を確認してください。自由に読んでください。デプロイについては、チュートリアルの後半で説明します。
 
 💿 開発サーバーを起動しましょう。
 
@@ -55,17 +62,22 @@ Yes
 npm run dev
 ```
 
-💿 [http://localhost:3000][http-localhost-3000]を開くと、アプリケーションが実行されているはずです。
+💿 [http://localhost:3000][http-localhost-3000] を開くと、アプリが実行されているはずです。
 
-時間があれば、UIを少し見てみてください。アカウントを作成して、ノートを作成したり削除したりして、UIで最初から使用できるものを確認してください。
+必要に応じて、少しUIを触ってみてください。自由にアカウントを作成し、いくつかのメモを作成/削除して、すぐに利用できるUIの概要を把握してください。
 
-## 最初のルート
+[the-stacks-docs]: https://remix.run/docs/en/main/pages/stacks
+[the-indie-stack]: https://github.com/remix-run/indie-stack
+[fly-io]: https://fly.io
+[http-localhost-3000]: http://localhost:3000
 
-`/posts`のURLでレンダリングされる新しいルートを作成します。その前に、ルートへのリンクを作成しましょう。
+## 初めてのルート
 
-💿 `app/routes/_index.tsx`に投稿へのリンクを追加します。
+"/posts" URL でレンダリングする新しいルートを作成します。その前に、リンクを追加しましょう。
 
-以下をコピーして貼り付けます。
+💿 `app/routes/_index.tsx` に投稿へのリンクを追加する
+
+これをコピー＆ペーストしてください。
 
 ```tsx filename=app/routes/_index.tsx
 <div className="mx-auto mt-16 max-w-7xl text-center">
@@ -73,62 +85,66 @@ npm run dev
     to="/posts"
     className="text-xl text-blue-600 underline"
   >
-    Blog Posts
+    ブログ記事
   </Link>
 </div>
 ```
 
-どこにでも配置できます。私は、スタックで使用されているすべてのテクノロジーのアイコンのすぐ上に配置しました。
+どこに配置しても構いません。私はスタックで使用されているすべてのテクノロジーのアイコンのすぐ上に配置しました。
 
-<!-- TODO: ウェブサイトが適切にデプロイされたら、この画像を自己ホスト型バージョンに更新します -->
+<!-- TODO: ウェブサイトが適切にデプロイできるようになったら、この画像を自己ホスト版に更新してください -->
 
-<!-- ![ブログ投稿リンクを表示するアプリのスクリーンショット](/blog-tutorial/blog-post-link.png) -->
+<!-- ![ブログ記事のリンクが表示されているアプリのスクリーンショット](/blog-tutorial/blog-post-link.png) -->
 
-![ブログ投稿リンクを表示するアプリのスクリーンショット][screenshot-of-the-app-showing-the-blog-post-link]
+![ブログ記事のリンクが表示されているアプリのスクリーンショット][screenshot-of-the-app-showing-the-blog-post-link]
 
-<docs-info><a href="https://tailwindcss.com">Tailwind CSS</a>のクラスを使用していることに気づいたかもしれません。</docs-info>
+<docs-info> <a href="https://tailwindcss.com">Tailwind CSS</a> クラスを使用していることにお気づきかもしれません。</docs-info>
 
-Remix Indieスタックには、[Tailwind CSS][tailwind]のサポートが事前設定されています。Tailwind CSSを使用しない場合は、削除して別のものを使用することもできます。Remixでのスタイリングオプションの詳細については、[スタイリングガイド][the-styling-guide]をご覧ください。
+Remix Indie スタックには、[Tailwind CSS][tailwind] のサポートが事前に設定されています。Tailwind CSS を使用したくない場合は、削除して別のものを使用しても構いません。Remix でのスタイリングオプションの詳細については、[スタイリングガイド][the-styling-guide] を参照してください。
 
-ブラウザに戻ってリンクをクリックしてください。まだルートを作成していないため、404ページが表示されます。ルートを作成しましょう。
+ブラウザに戻ってリンクをクリックしてください。まだこのルートを作成していないため、404 ページが表示されるはずです。それでは、ルートを作成しましょう。
 
-💿 `app/routes/posts._index.tsx`に新しいファイルを作成します。
+💿 `app/routes/posts._index.tsx` に新しいファイルを作成する
 
 ```shellscript nonumber
 touch app/routes/posts._index.tsx
 ```
 
-<docs-info>ファイルやフォルダを作成するためのターミナルコマンドが表示された場合は、好きな方法で作成できますが、`touch`を使用すると、作成する必要があるファイルが明確になります。</docs-info>
+<docs-info>ファイルやフォルダを作成するためのターミナルコマンドが表示された場合は、もちろん好きなように作成できますが、`touch` を使用するのは、どのファイルを作成する必要があるかを明確にするためです。</docs-info>
 
-ファイル名を`posts.tsx`にすることもできますが、すぐに別のルートを作成する予定なので、ファイルを隣り合わせに配置する方が便利です。インデックスルートは、親のパスでレンダリングされます（ウェブサーバーの`index.html`と同じです）。
+`posts.tsx` という名前にすることもできましたが、すぐに別のルートを作成するので、それらを互いに近くに配置すると便利です。インデックスルートは、親のパスでレンダリングされます（Web サーバーの `index.html` と同様）。
 
-これで、`/posts`ルートに移動すると、リクエストを処理する方法がないというエラーが表示されます。これは、まだそのルートで何もしていないからです。コンポーネントを追加して、デフォルトとしてエクスポートしましょう。
+`/posts` ルートに移動すると、リクエストを処理する方法がないことを示すエラーが表示されます。それは、まだそのルートで何もしていないからです！コンポーネントを追加して、デフォルトとしてエクスポートしましょう。
 
-💿 投稿コンポーネントを作成します。
+💿 投稿コンポーネントを作成する
 
 ```tsx filename=app/routes/posts._index.tsx
 export default function Posts() {
   return (
     <main>
-      <h1>Posts</h1>
+      <h1>投稿</h1>
     </main>
   );
 }
 ```
 
-ブラウザを更新すると、新しい、シンプルな投稿ルートが表示されるはずです。
+新しい、簡素な投稿ルートを表示するには、ブラウザを更新する必要があるかもしれません。
 
-## データの読み込み
+[screenshot-of-the-app-showing-the-blog-post-link]: /blog-tutorial/blog-post-link.png
+[tailwind]: https://tailwindcss.com
+[the-styling-guide]: https://remix.run/docs/en/main/styling
 
-Remixにはデータ読み込み機能が組み込まれています。
+## データのロード
 
-最近の数年でウェブ開発を主に経験している場合は、おそらくここで2つのものを作成しているはずです。APIルートでデータを提供し、そのデータを利用するフロントエンドコンポーネントです。Remixでは、フロントエンドコンポーネントは独自のAPIルートでもあり、すでにサーバーからブラウザへの通信方法を認識しています。つまり、フェッチする必要はありません。
+データローディングはRemixに組み込まれています。
 
-MVCウェブフレームワーク（Railsなど）でより以前から開発を行っている場合は、RemixルートをReactをテンプレートとして使用するバックエンドビューと考えることができます。ただし、分離されたjQueryコードでユーザーインタラクションを飾り立てる代わりに、ブラウザでシームレスにハイドレートして、華やかさを加えることができます。これは、完全な実現を遂げたプログレッシブエンハンスメントです。さらに、ルートは独自のコントローラです。
+もしあなたのWeb開発のバックグラウンドがここ数年のものであれば、おそらくここで2つのものを作成することに慣れているでしょう。データを供給するAPIルートと、それを利用するフロントエンドコンポーネントです。Remixでは、フロントエンドコンポーネントもそれ自身のAPIルートであり、ブラウザからサーバー上の自身と通信する方法をすでに知っています。つまり、フェッチする必要はありません。
 
-では、コンポーネントにデータを提供してみましょう。
+もしあなたのバックグラウンドがRailsのようなMVC Webフレームワークを使ったそれよりも少し古いものであれば、RemixのルートをReactをテンプレートに使用するバックエンドビューと考えることができます。しかし、それらはブラウザでシームレスにハイドレートして、ユーザーインタラクションを飾るために分離されたjQueryコードを書く代わりに、いくつかの華やかさを加える方法を知っています。これは、最大限に実現されたプログレッシブエンハンスメントです。さらに、ルートはそれ自身のコントローラーです。
 
-💿 投稿ルートの`loader`を作成します。
+それでは、コンポーネントにデータを提供してみましょう。
+
+💿 postsルートの`loader`を作成する
 
 ```tsx filename=app/routes/posts._index.tsx lines=[1-2,4-17,20-21]
 import { json } from "@remix-run/node";
@@ -159,13 +175,13 @@ export default function Posts() {
 }
 ```
 
-`loader`関数は、コンポーネントのバックエンド「API」であり、`useLoaderData`によってすでに接続されています。Remixルートでは、クライアントとサーバーの境界線がぼやけているのは本当にすごいことです。サーバーとブラウザのコンソールを両方とも開いている場合は、両方に投稿データがログ出力されていることに気づきます。これは、Remixがサーバー上でレンダリングして従来のウェブフレームワークのように完全なHTMLドキュメントを送信しますが、クライアントでもハイドレートしてログ出力もしているためです。
+`loader`関数は、コンポーネントのバックエンド「API」であり、`useLoaderData`を通じてすでに接続されています。Remixルートでは、クライアントとサーバーの境界線がどれほど曖昧であるかは少し驚きです。サーバーとブラウザの両方のコンソールを開いている場合、両方が投稿データをログに記録していることに気づくでしょう。これは、Remixが従来のWebフレームワークのように完全なHTMLドキュメントを送信するためにサーバーでレンダリングしたためですが、クライアントでもハイドレートしてログに記録したためです。
 
 <docs-error>
-ローダーから返されるものは、コンポーネントがレンダリングしていなくても、クライアントに公開されます。ローダーは、公開APIエンドポイントと同じように慎重に扱ってください。
+ローダーから返すものは何でも、コンポーネントがレンダリングしなくてもクライアントに公開されます。ローダーは、パブリックAPIエンドポイントと同じように注意して扱ってください。
 </docs-error>
 
-💿 投稿へのリンクをレンダリングします。
+💿 投稿へのリンクをレンダリングする
 
 ```tsx filename=app/routes/posts._index.tsx lines=[2,10-21] nocopy
 import { json } from "@remix-run/node";
@@ -194,19 +210,19 @@ export default function Posts() {
 }
 ```
 
-素晴らしいですね。すべてが同じファイルで定義されているため、ネットワークリクエストでも非常に高いレベルの型安全性を実現しています。Remixがデータをフェッチしている最中にネットワークがダウンしない限り、このコンポーネントとそのAPI（コンポーネントはすでに独自のAPIルートであることを覚えておいてください）には型安全性があります。
+これはかなりクールです。すべてが同じファイルで定義されているため、ネットワークリクエストを介してもかなり高いレベルの型安全性を得ることができます。Remixがデータをフェッチしている間にネットワークがダウンしない限り、このコンポーネントとそのAPI（コンポーネントはすでにそれ自身のAPIルートであることを思い出してください）で型安全性が確保されています。
 
-## リファクタリング
+## ちょっとしたリファクタリング
 
-良い慣習として、特定の懸念事項を扱うモジュールを作成することをお勧めします。ここでは、投稿の読み書きを扱うモジュールを作成します。モジュールを設定し、モジュールに`getPosts`エクスポートを追加します。
+特定の関心事に対処するモジュールを作成することは、確かなプラクティスです。今回のケースでは、投稿の読み書きを扱うモジュールを作成します。早速設定して、モジュールに `getPosts` エクスポートを追加しましょう。
 
-💿 `app/models/post.server.ts`を作成します。
+💿 `app/models/post.server.ts` を作成します。
 
 ```shellscript nonumber
 touch app/models/post.server.ts
 ```
 
-ほとんどのコードは、ルートからコピーして貼り付けるだけです。
+ほとんどの場合、ルートからコピー＆ペーストします。
 
 ```tsx filename=app/models/post.server.ts
 type Post = {
@@ -228,7 +244,7 @@ export async function getPosts(): Promise<Array<Post>> {
 }
 ```
 
-`getPosts`関数を`async`にしています。現在非同期処理を行っていませんが、すぐに非同期処理を行うようになるためです。
+`getPosts` 関数を `async` にしていることに注意してください。現在は非同期処理を行っていませんが、すぐに非同期処理を行うようになるからです！
 
 💿 新しい投稿モジュールを使用するように投稿ルートを更新します。
 
@@ -247,16 +263,16 @@ export const loader = async () => {
 
 ## データソースからの取得
 
-Indie Stackを使用すると、SQLiteデータベースがすでに設定され、使用できるようになっているため、データベーススキーマをSQLiteに対応するように更新しましょう。データベースとのやり取りには[Prisma][prisma]を使用するため、スキーマを更新すると、Prismaがスキーマに合わせてデータベースを更新し、必要なSQLコマンドを生成して実行し、マイグレーションを実行します。
+Indie Stack では、SQLite データベースがすでにセットアップされ、構成されているので、SQLite を処理するようにデータベーススキーマを更新しましょう。データベースとのやり取りには [Prisma][prisma] を使用しているので、そのスキーマを更新すると、Prisma がデータベースをスキーマに合わせて更新してくれます (また、移行に必要な SQL コマンドを生成して実行してくれます)。
 
-<docs-info>Remixを使用する場合、Prismaを使用する必要はありません。Remixは、現在使用しているデータベースやデータ永続化サービスと連携できます。</docs-info>
+<docs-info>Remix を使用する際に Prisma を使用する必要はありません。Remix は、現在使用している既存のデータベースやデータ永続化サービスとうまく連携します。</docs-info>
 
-Prismaを初めて使用する場合は、心配しないでください。手順を説明していきます。
+Prisma を使用したことがない場合でも、ご心配なく。順を追って説明します。
 
-💿 まず、Prismaスキーマを更新する必要があります。
+💿 まず、Prisma スキーマを更新する必要があります。
 
 ```prisma filename=prisma/schema.prisma nocopy
-// このコードをファイルの最後に追加します。
+// このファイルを一番下に貼り付けます。
 
 model Post {
   slug     String @id
@@ -268,13 +284,13 @@ model Post {
 }
 ```
 
-💿 スキーマの変更に合わせてマイグレーションファイルを作成しましょう。これは、ローカルで開発モードで実行するのではなく、アプリケーションをデプロイする場合に必要です。これにより、ローカルデータベースとTypeScript定義がスキーマの変更に合わせて更新されます。マイグレーションの名前は「create post model」とします。
+💿 スキーマ変更の移行ファイルを作成しましょう。これは、ローカルで開発モードで実行するだけでなく、アプリケーションをデプロイする場合に必要になります。これにより、ローカルデータベースと TypeScript の定義もスキーマの変更に合わせて更新されます。移行には「create post model」という名前を付けます。
 
 ```shellscript nonumber
 npx prisma migrate dev --name "create post model"
 ```
 
-💿 いくつかの投稿でデータベースをシードしましょう。`prisma/seed.ts`を開いて、シード機能の最後に（`console.log`の直前に）以下を追加します。
+💿 いくつかの投稿でデータベースをシードしましょう。`prisma/seed.ts` を開き、シード機能の最後 ( `console.log` の直前) にこれを追加します。
 
 ```ts filename=prisma/seed.ts
 const posts = [
@@ -282,16 +298,16 @@ const posts = [
     slug: "my-first-post",
     title: "My First Post",
     markdown: `
-# This is my first post
+# これは私の最初の投稿です
 
-Isn't it great?
+素晴らしいでしょう？
     `.trim(),
   },
   {
     slug: "90s-mixtape",
-    title: "A Mixtape I Made Just For You",
+    title: "あなたのためだけに作ったミックステープ",
     markdown: `
-# 90s Mixtape
+# 90年代ミックステープ
 
 - I wish (Skee-Lo)
 - This Is How We Do It (Montell Jordan)
@@ -323,15 +339,15 @@ for (const post of posts) {
 }
 ```
 
-<docs-info>注記：`upsert`を使用しているので、シードスクリプトを何度も実行しても、同じ投稿が複数回追加されることはありません。</docs-info>
+<docs-info>ここでは `upsert` を使用しているため、毎回同じ投稿の複数のバージョンを追加することなく、シードスクリプトを何度も実行できることに注意してください。</docs-info>
 
-シードスクリプトを使用して、投稿をデータベースに登録しましょう。
+素晴らしい、シードスクリプトでこれらの投稿をデータベースに入れましょう。
 
 ```
 npx prisma db seed
 ```
 
-💿 これで、`app/models/post.server.ts`ファイルを更新して、SQLiteデータベースから読み込めるようになりました。
+💿 次に、`app/models/post.server.ts` ファイルを更新して、SQLite データベースから読み取るようにします。
 
 ```ts filename=app/models/post.server.ts
 import { prisma } from "~/db.server";
@@ -341,24 +357,24 @@ export async function getPosts() {
 }
 ```
 
-<docs-success>注記：返り値の型を削除できますが、それでもすべて型付けされています。PrismaのTypeScript機能は、最大の強みの1つです。手動で型付けする必要が少なくなり、それでも型安全性は維持されます。</docs-success>
+<docs-success>戻り値の型を削除できますが、すべてが完全に型付けされていることに注目してください。Prisma の TypeScript 機能は、その最大の強みの 1 つです。手動での型付けが少なくなり、それでも型安全です！</docs-success>
 
-<docs-info>`~/db.server`のインポートは、`app/db.server.ts`のファイルをインポートしています。`~`は`app`ディレクトリへの便利なエイリアスなので、ファイルの移動時に`../../`をいくつ含めるか考える必要はありません。</docs-info>
+<docs-info>`~/db.server` インポートは、`app/db.server.ts` にあるファイルをインポートしています。`~` は `app` ディレクトリへの便利なエイリアスなので、ファイルを移動するときにインポートに含める `../../` の数を気にする必要はありません。</docs-info>
 
-`http://localhost:3000/posts`にアクセスすると、投稿はまだ存在しているはずです。ただし、今回はSQLiteから取得されています。
+`http://localhost:3000/posts` にアクセスすると、投稿はまだそこにあるはずですが、今度は SQLite から取得されています。
 
-## 動的ルートパラメータ
+## 動的なルートパラメータ
 
-次に、投稿を実際に表示するルートを作成しましょう。以下のURLが動作するようにします。
+それでは、実際に投稿を表示するためのルートを作成しましょう。以下のURLが機能するようにします。
 
 ```
 /posts/my-first-post
 /posts/90s-mixtape
 ```
 
-投稿ごとにルートを作成するのではなく、URLに「動的セグメント」を使用できます。Remixが解析して渡すので、動的に投稿を検索できます。
+投稿ごとにルートを作成する代わりに、URLに「動的セグメント」を使用できます。Remixが解析して渡してくれるので、投稿を動的に検索できます。
 
-💿 `app/routes/posts.$slug.tsx`に動的ルートを作成します。
+💿 `app/routes/posts.$slug.tsx` に動的ルートを作成します。
 
 ```shellscript nonumber
 touch app/routes/posts.\$slug.tsx
@@ -369,16 +385,16 @@ export default function PostSlug() {
   return (
     <main className="mx-auto max-w-4xl">
       <h1 className="my-6 border-b-2 text-center text-3xl">
-        Some Post
+        何かの投稿
       </h1>
     </main>
   );
 }
 ```
 
-投稿のいずれかをクリックすると、新しいページが表示されます。
+投稿のいずれかをクリックすると、新しいページが表示されるはずです。
 
-💿 パラメータにアクセスするローダーを追加します。
+💿 パラメータにアクセスするためのローダーを追加します。
 
 ```tsx filename=app/routes/posts.$slug.tsx lines=[1-3,5-9,12,16]
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -396,18 +412,18 @@ export default function PostSlug() {
   return (
     <main className="mx-auto max-w-4xl">
       <h1 className="my-6 border-b-2 text-center text-3xl">
-        Some Post: {slug}
+        何かの投稿: {slug}
       </h1>
     </main>
   );
 }
 ```
 
-ファイル名に`$`が付いている部分は、ローダーに渡される`params`オブジェクトのキー名になります。これを使って投稿を検索します。
+ファイル名の `$` に続く部分は、ローダーに渡される `params` オブジェクトの名前付きキーになります。これがブログ記事を検索する方法です。
 
-では、実際にスラグで投稿のコンテンツをデータベースから取得してみましょう。
+それでは、実際にデータベースからスラッグで投稿内容を取得しましょう。
 
-💿 投稿モジュールに`getPost`関数を追加します。
+💿 `getPost` 関数を投稿モジュールに追加します。
 
 ```tsx filename=app/models/post.server.ts lines=[7-9]
 import { prisma } from "~/db.server";
@@ -421,7 +437,7 @@ export async function getPost(slug: string) {
 }
 ```
 
-💿 ルートで新しい`getPost`関数を使用します。
+💿 新しい `getPost` 関数をルートで使用します。
 
 ```tsx filename=app/routes/posts.$slug.tsx lines=[5,10-11,15,19]
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -449,9 +465,9 @@ export default function PostSlug() {
 }
 ```
 
-確認してください。これで、投稿はJavaScriptとしてブラウザにすべて含めるのではなく、データソースから取得されるようになりました。
+見てください！JavaScriptとしてブラウザにすべてを含めるのではなく、データソースから投稿を取得するようになりました。
 
-TypeScriptにコードを認識させましょう。
+TypeScriptでコードを満足させましょう。
 
 ```tsx filename=app/routes/posts.$slug.tsx lines=[4,11,14]
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -484,21 +500,21 @@ export default function PostSlug() {
 }
 ```
 
-`params`の`invariant`について簡単に説明します。`params`はURLから取得されるため、`params.slug`が必ず定義されるとは限りません。ファイルの名前を`posts.$postId.ts`に変更したかもしれません！`invariant`を使用して検証すると良い習慣になり、TypeScriptも満足します。
+パラメータの `invariant` について簡単に説明します。`params` はURLから取得されるため、`params.slug` が定義されているとは限りません。たとえば、ファイル名を `posts.$postId.ts` に変更するかもしれません。`invariant` で検証するのは良い習慣であり、TypeScriptも満足させます。
 
-投稿の`invariant`も追加しました。`404`のケースは後で適切に処理します。続行しましょう。
+投稿にもinvariantがあります。`404` のケースは後でより適切に処理します。このまま進みましょう！
 
-次に、マークダウンを解析してHTMLに変換し、ページにレンダリングしましょう。マークダウンパーサはたくさんありますが、このチュートリアルでは`marked`を使用します。これは非常に簡単に動作させることができるからです。
+次に、マークダウンを解析してHTMLにレンダリングしてページに表示しましょう。マークダウンパーサーはたくさんありますが、このチュートリアルでは `marked` を使用します。これは非常に簡単に動作させることができるからです。
 
 💿 マークダウンをHTMLに解析します。
 
 ```shellscript nonumber
 npm add marked@^4.3.0
-# さらに、TypeScriptを使用する場合は
+# additionally, if using typescript
 npm add @types/marked@^4.3.1 -D
 ```
 
-`marked`がインストールされたら、サーバーを再起動する必要があります。開発サーバーを停止し、`npm run dev`で再起動します。
+`marked` がインストールされたので、サーバーを再起動する必要があります。したがって、開発サーバーを停止し、`npm run dev` で再度起動します。
 
 ```tsx filename=app/routes/posts.$slug.tsx lines=[4,17-18,22,28]
 import type { LoaderFunctionArgs } from "@remix-run/node";
@@ -534,15 +550,15 @@ export default function PostSlug() {
 }
 ```
 
-すごいですね。これでブログができました。確認してみましょう。次は、新しいブログ投稿を作成しやすくします📝。
+すごい、できました。ブログができました。確認してみてください！次に、新しいブログ記事を簡単に作成できるようにします📝
 
 ## ネストされたルーティング
 
-現在、ブログ投稿はデータベースのシードから取得するだけです。これは現実的な解決策ではないため、データベースに新しいブログ投稿を作成する方法が必要です。ここでは、アクションを使用します。
+現在、ブログ記事はデータベースのシードから取得しているだけです。これは現実的な解決策ではないため、データベースに新しいブログ記事を作成する方法が必要です。そのためにアクションを使用します。
 
-アプリの新しい「admin」セクションを作成します。
+アプリに新しい「admin」セクションを作成しましょう。
 
-💿 まず、投稿のインデックスルートに管理セクションへのリンクを追加します。
+💿 まず、投稿インデックスルートにadminセクションへのリンクを追加しましょう。
 
 ```tsx filename=app/routes/posts._index.tsx
 // ...
@@ -552,11 +568,11 @@ export default function PostSlug() {
 // ...
 ```
 
-コンポーネントのどこにでも配置できます。私は`<h1>`のすぐ下に配置しました。
+コンポーネント内の任意の場所に配置してください。私は`<h1>`のすぐ下に配置しました。
 
-<docs-info>`to`プロパティが「admin」で、`/posts/admin`にリンクしていることに気づいたでしょうか。Remixでは、相対リンクが使用されます。</docs-info>
+<docs-info> `to`プロパティが単に「admin」であり、`/posts/admin`にリンクしていることに気づきましたか？Remixでは、相対リンクを使用できます。</docs-info>
 
-💿 `app/routes/posts.admin.tsx`に管理ルートを作成します。
+💿 `app/routes/posts.admin.tsx`にadminルートを作成します。
 
 ```shellscript nonumber
 touch app/routes/posts.admin.tsx
@@ -603,14 +619,14 @@ export default function PostAdmin() {
 }
 ```
 
-これまでの処理と似たものがいくつかあるはずです。これにより、左側に投稿が表示され、右側にプレースホルダーが表示されるページが作成されます。
-管理者リンクをクリックすると、[http://localhost:3000/posts/admin][http-localhost-3000-posts-admin]に移動します。
+ここで行っていることのいくつかは、これまでに行ってきたことから認識できるはずです。これで、左側に投稿、右側にプレースホルダーが表示された、見栄えの良いページが表示されるはずです。
+Adminリンクをクリックすると、[http://localhost:3000/posts/admin][http-localhost-3000-posts-admin]に移動します。
 
 ### インデックスルート
 
-そのプレースホルダーを、管理者のインデックスルートで埋めてみましょう。もう少し説明しますが、ルートファイルのネストがUIコンポーネントのネストになる「ネストされたルート」を導入します。
+プレースホルダーをadmin用のインデックスルートで埋めましょう。ここで「ネストされたルート」を紹介します。ルートファイルのネストがUIコンポーネントのネストになるものです。
 
-💿 `posts.admin.tsx`の子ルートのインデックスルートを作成します。
+💿 `posts.admin.tsx` の子ルート用のインデックスルートを作成します。
 
 ```shellscript nonumber
 touch app/routes/posts.admin._index.tsx
@@ -623,16 +639,16 @@ export default function AdminIndex() {
   return (
     <p>
       <Link to="new" className="text-blue-600 underline">
-        Create a New Post
+        新しい投稿を作成
       </Link>
     </p>
   );
 }
 ```
 
-ブラウザを更新しても、まだ表示されません。`app/routes/posts.admin.`で始まるすべてのルートは、URLが一致した場合、`app/routes/posts.admin.tsx`の_内部_でレンダリングできるようになりました。どの部分の`posts.admin.tsx`レイアウトに子ルートをレンダリングするかを制御できます。
+リフレッシュしてもまだ表示されません。`app/routes/posts.admin.` で始まるすべてのルートは、URLが一致すると `app/routes/posts.admin.tsx` の*内部*にレンダリングできるようになりました。子ルートをレンダリングする `posts.admin.tsx` レイアウトのどの部分を制御するかを決定できます。
 
-💿 管理ページにアウトレットを追加します。
+💿 adminページにアウトレットを追加します。
 
 ```tsx filename=app/routes/posts.admin.tsx lines=[4,37]
 import { json } from "@remix-run/node";
@@ -653,7 +669,7 @@ export default function PostAdmin() {
   return (
     <div className="mx-auto max-w-4xl">
       <h1 className="my-6 mb-2 border-b-2 text-center text-3xl">
-        Blog Admin
+        ブログ管理
       </h1>
       <div className="grid grid-cols-4 gap-6">
         <nav className="col-span-4 md:col-span-1">
@@ -679,11 +695,11 @@ export default function PostAdmin() {
 }
 ```
 
-少しお待ちください。インデックスルートは最初はわかりにくいかもしれません。URLが親ルートのパスに一致する場合、インデックスが`Outlet`の内部にレンダリングされることを覚えておいてください。
+少しの間お付き合いください。インデックスルートは最初は混乱するかもしれません。URLが親ルートのパスと一致すると、インデックスが `Outlet` の内部にレンダリングされることを知っておいてください。
 
-これが理解しやすいかもしれません。`/posts/admin/new`ルートを追加して、リンクをクリックしたときに何が起こるかを確認してみましょう。
+これが役立つかもしれません。`/posts/admin/new` ルートを追加して、リンクをクリックしたときに何が起こるかを見てみましょう。
 
-💿 `app/routes/posts.admin.new.tsx`ファイルを作成します。
+💿 `app/routes/posts.admin.new.tsx` ファイルを作成します。
 
 ```shellscript nonumber
 touch app/routes/posts.admin.new.tsx
@@ -691,17 +707,17 @@ touch app/routes/posts.admin.new.tsx
 
 ```tsx filename=app/routes/posts.admin.new.tsx
 export default function NewPost() {
-  return <h2>New Post</h2>;
+  return <h2>新しい投稿</h2>;
 }
 ```
 
-これで、インデックスルートからリンクをクリックすると、`<Outlet/>`が自動的にインデックスルートを「new」ルートに切り替えます。
+インデックスルートのリンクをクリックすると、`<Outlet/>` が自動的にインデックスルートを「new」ルートに置き換えるのを見てください！
 
 ## アクション
 
-本格的に取り組みましょう。新しい「new」ルートに新しい投稿を作成するためのフォームを作成します。
+ここからが本番です。新しい「new」ルートに新しい投稿を作成するためのフォームを作成しましょう。
 
-💿 新しいルートにフォームを追加します。
+💿 newルートにフォームを追加する
 
 ```tsx filename=app/routes/posts.admin.new.tsx
 import { Form } from "@remix-run/react";
@@ -714,7 +730,7 @@ export default function NewPost() {
     <Form method="post">
       <p>
         <label>
-          Post Title:{" "}
+          投稿タイトル:{" "}
           <input
             type="text"
             name="title"
@@ -724,7 +740,7 @@ export default function NewPost() {
       </p>
       <p>
         <label>
-          Post Slug:{" "}
+          投稿スラッグ:{" "}
           <input
             type="text"
             name="slug"
@@ -747,7 +763,7 @@ export default function NewPost() {
           type="submit"
           className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400 disabled:bg-blue-300"
         >
-          Create Post
+          投稿を作成
         </button>
       </p>
     </Form>
@@ -755,13 +771,13 @@ export default function NewPost() {
 }
 ```
 
-HTMLが好きな方は、ワクワクしているはずです。`<form onSubmit>`や`<button onClick>`をたくさん使用してきた方は、HTMLに驚かれるでしょう。
+もしあなたが私たちのようにHTMLを愛しているなら、かなり興奮しているはずです。もしあなたが`<form onSubmit>`や`<button onClick>`をたくさん使ってきたなら、HTMLによってあなたの考え方が変わるでしょう。
 
-この機能に必要なものは、ユーザーからデータを取得するためのフォームと、それを処理するバックエンドアクションだけです。Remixでは、これだけです。
+このような機能に必要なのは、ユーザーからデータを取得するためのフォームと、それを処理するためのバックエンドアクションだけです。そしてRemixでは、それだけですべてが完了します。
 
-投稿を保存する方法の基本的なコードを、まず`post.ts`モジュールに作成しましょう。
+まず、`post.ts`モジュールで投稿を保存する方法を知っている必須のコードを作成しましょう。
 
-💿 `app/models/post.server.ts`のどこにでも`createPost`を追加します。
+💿 `app/models/post.server.ts`内の任意の場所に`createPost`を追加する
 
 ```tsx filename=app/models/post.server.ts nocopy
 // ...
@@ -770,7 +786,7 @@ export async function createPost(post) {
 }
 ```
 
-💿 新しい投稿ルートのアクションから`createPost`を呼び出します。
+💿 新しい投稿ルートのアクションから`createPost`を呼び出す
 
 ```tsx filename=app/routes/posts.admin.new.tsx lines=[1-2,5,7-19] nocopy
 import type { ActionFunctionArgs } from "@remix-run/node";
@@ -796,18 +812,35 @@ export const action = async ({
 // ...
 ```
 
-これで完了です。Remix（およびブラウザ）が、残りの処理を行います。送信ボタンをクリックすると、投稿がリストされているサイドバーが自動的に更新されます。
+これで完了です。Remix（とブラウザ）が残りの処理を行います。送信ボタンをクリックすると、投稿を一覧表示するサイドバーが自動的に更新されるのを確認してください。
 
-HTMLでは、入力の`name`属性はネットワーク経由で送信され、リクエストの`formData`で同じ名前で利用できます。ちなみに、`request`と`formData`のオブジェクトは、どちらもウェブ仕様のものです。どちらかのオブジェクトについて詳しく知りたい場合は、MDNをご覧ください。
+HTMLでは、入力の`name`属性がネットワーク経由で送信され、リクエストの`formData`で同じ名前で利用できます。ああ、それと、`request`と`formData`オブジェクトはどちらもWeb仕様から直接取得したものであることを忘れないでください。したがって、どちらかについて詳しく知りたい場合は、MDNにアクセスしてください。
 
-- [`Request`][mdn-request]
-- [`Request.formData`][mdn-request-form-data]。
+* [`Request`][mdn-request]
+* [`Request.formData`][mdn-request-form-data].
 
-TypeScriptはまた、怒っています。いくつかのフィールドに値が提供されなかった場合、APIを呼び出すことができるため、`createPost`の呼び出しに対してTypeScriptは怒っています。
+TypeScriptがまた怒っているので、型を追加しましょう。
 
-投稿を作成する前に、バリデーションを追加しましょう。
+💿 `app/models/post.server.ts`に型を追加する
 
-💿 フォームデータに必要なものが含まれているかどうかを検証し、含まれていない場合はエラーを返します。
+```tsx filename=app/models/post.server.ts lines=[2,7]
+// ...
+import type { Post } from "@prisma/client";
+
+// ...
+
+export async function createPost(
+  post: Pick<Post, "slug" | "title" | "markdown">
+) {
+  return prisma.post.create({ data: post });
+}
+```
+
+TypeScriptを使用しているかどうかに関わらず、ユーザーがこれらのフィールドに値を指定しない場合に問題が発生します（そしてTSは`createPost`の呼び出しについてまだ怒っています）。
+
+投稿を作成する前に、いくつかの検証を追加しましょう。
+
+💿 フォームデータに必要なものが含まれているかどうかを検証し、そうでない場合はエラーを返す
 
 ```tsx filename=app/routes/posts.admin.new.tsx lines=[2,16-26]
 import type { ActionFunctionArgs } from "@remix-run/node";
@@ -826,9 +859,9 @@ export const action = async ({
   const markdown = formData.get("markdown");
 
   const errors = {
-    title: title ? null : "Title is required",
-    slug: slug ? null : "Slug is required",
-    markdown: markdown ? null : "Markdown is required",
+    title: title ? null : "タイトルは必須です",
+    slug: slug ? null : "スラッグは必須です",
+    markdown: markdown ? null : "Markdownは必須です",
   };
   const hasErrors = Object.values(errors).some(
     (errorMessage) => errorMessage
@@ -845,9 +878,9 @@ export const action = async ({
 // ...
 ```
 
-今回は、リダイレクトを返さずに、エラーを返します。これらのエラーは、`useActionData`によってコンポーネントから利用できます。`useLoaderData`に似ていますが、このデータはフォームPOSTの後、アクションから取得されます。
+今回はリダイレクトを返さず、実際にはエラーを返していることに注意してください。これらのエラーは、`useActionData`を介してコンポーネントで利用できます。これは`useLoaderData`と似ていますが、データはフォームPOST後のアクションから取得されます。
 
-💿 UIにバリデーションメッセージを追加します。
+💿 UIに検証メッセージを追加する
 
 ```tsx filename=app/routes/posts.admin.new.tsx lines=[3,11,18-20,27-29,36-40]
 import type { ActionFunctionArgs } from "@remix-run/node";
@@ -866,7 +899,7 @@ export default function NewPost() {
     <Form method="post">
       <p>
         <label>
-          Post Title:{" "}
+          投稿タイトル:{" "}
           {errors?.title ? (
             <em className="text-red-600">{errors.title}</em>
           ) : null}
@@ -875,8 +908,189 @@ export default function NewPost() {
       </p>
       <p>
         <label>
-          Post Slug:{" "}
+          投稿スラッグ:{" "}
           {errors?.slug ? (
             <em className="text-red-600">{errors.slug}</em>
           ) : null}
-          <input type="text" name="slug" className={
+          <input type="text" name="slug" className={inputClassName} />
+        </label>
+      </p>
+      <p>
+        <label htmlFor="markdown">
+          Markdown:{" "}
+          {errors?.markdown ? (
+            <em className="text-red-600">
+              {errors.markdown}
+            </em>
+          ) : null}
+        </label>
+        <br />
+        <textarea
+          id="markdown"
+          rows={20}
+          name="markdown"
+          className={`${inputClassName} font-mono`}
+        />
+      </p>
+      <p className="text-right">
+        <button
+          type="submit"
+          className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400 disabled:bg-blue-300"
+        >
+          投稿を作成
+        </button>
+      </p>
+    </Form>
+  );
+}
+```
+
+TypeScriptはまだ怒っています。なぜなら、誰かが文字列以外の値でAPIを呼び出す可能性があるからです。そのため、それを満足させるためにいくつかの不変条件を追加しましょう。
+
+```tsx filename=app/routes/posts.admin.new.tsx nocopy
+//...
+import invariant from "tiny-invariant";
+// ..
+
+export const action = async ({
+  request,
+}: ActionFunctionArgs) => {
+  // ...
+  invariant(
+    typeof title === "string",
+    "title must be a string"
+  );
+  invariant(
+    typeof slug === "string",
+    "slug must be a string"
+  );
+  invariant(
+    typeof markdown === "string",
+    "markdown must be a string"
+  );
+
+  await createPost({ title, slug, markdown });
+
+  return redirect("/posts/admin");
+};
+```
+
+## プログレッシブエンハンスメント
+
+ちょっとした楽しみとして、開発者ツールで[JavaScriptを無効化][disable-java-script]して試してみてください。RemixはHTTPとHTMLの基本に基づいて構築されているため、ブラウザでJavaScriptがなくてもすべて機能します🤯 しかし、それがポイントではありません。重要なのは、これによりUIがネットワークの問題に対して回復力を持つということです。しかし、私たちはブラウザでJavaScriptを使用するのが好きですし、JavaScriptがあるときにはできるクールなことがたくさんあります。そのため、次にユーザーエクスペリエンスを*プログレッシブに拡張*するために必要になるので、続行する前にJavaScriptを再度有効にしてください。
+
+少しペースを落として、フォームに「保留中のUI」を追加しましょう。
+
+💿 フェイクの遅延でアクションを遅くする
+
+```tsx filename=app/routes/posts.admin.new.tsx lines=[5-6]
+// ...
+export const action = async ({
+  request,
+}: ActionFunctionArgs) => {
+  // TODO: remove me
+  await new Promise((res) => setTimeout(res, 1000));
+
+  // ...
+};
+//...
+```
+
+💿 `useNavigation`で保留中のUIを追加する
+
+```tsx filename=app/routes/posts.admin.new.tsx lines=[6,14-17,26,28]
+import type { ActionFunctionArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import {
+  Form,
+  useActionData,
+  useNavigation,
+} from "@remix-run/react";
+
+// ..
+
+export default function NewPost() {
+  const errors = useActionData<typeof action>();
+
+  const navigation = useNavigation();
+  const isCreating = Boolean(
+    navigation.state === "submitting"
+  );
+
+  return (
+    <Form method="post">
+      {/* ... */}
+      <p className="text-right">
+        <button
+          type="submit"
+          className="rounded bg-blue-500 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400 disabled:bg-blue-300"
+          disabled={isCreating}
+        >
+          {isCreating ? "作成中..." : "投稿を作成"}
+        </button>
+      </p>
+    </Form>
+  );
+}
+```
+
+はい、これでJavaScript対応のプログレッシブエンハンスメントを実装しました！🥳 これまでに行ったことで、エクスペリエンスはブラウザ単独でできることよりも優れています。多くのアプリはJavaScriptを使用してエクスペリエンスを*有効に*しています（そして、実際に動作するためにJavaScriptを必要とするアプリも少数あります）が、私たちはベースラインとして動作するエクスペリエンスを持ち、JavaScriptを使用してそれを*拡張*しただけです。
+
+[disable-java-script]: https://developer.chrome.com/docs/devtools/javascript/
+
+## 宿題
+
+今日のところは以上です！さらに深く掘り下げたい場合は、以下の宿題を実装してみてください。
+
+**投稿の更新/削除:** 投稿用の `posts.admin.$slug.tsx` ページを作成してください。これは、投稿を更新したり、削除したりできる編集ページを開く必要があります。リンクはすでにサイドバーにありますが、404を返します！投稿を読み込み、フィールドに入れる新しいルートを作成してください。必要なコードはすべて `app/routes/posts.$slug.tsx` と `app/routes/posts.admin.new.tsx` にあります。それらを組み合わせるだけです。
+
+**楽観的UI:** ツイートをお気に入りに追加すると、ハートがすぐに赤くなり、ツイートが削除されると元に戻るのをご存知ですか？それが楽観的UIです。リクエストが成功すると仮定し、成功した場合にユーザーに表示されるものをレンダリングします。したがって、宿題は、「作成」を押すと、左側のナビゲーションに投稿がレンダリングされ、「新しい投稿を作成」リンクがレンダリングされるようにすることです（または、更新/削除を追加する場合は、それらも同様に）。そこにたどり着くのに少し時間がかかったとしても、これは思ったよりも簡単であることがわかるでしょう（そして、過去にこのパターンを実装したことがある場合は、Remixがこれをはるかに簡単にするでしょう）。詳細については、[保留中のUIガイド][the-pending-ui-guide]を参照してください。
+
+**認証済みユーザーのみ:** もう1つクールな宿題は、認証済みユーザーのみが投稿を作成できるようにすることです。Indie Stackのおかげで、認証はすでにすべて設定されています。ヒント：自分だけが投稿できるようにしたい場合は、ローダーとアクションでユーザーのメールアドレスを確認し、自分のメールアドレスでない場合は、[どこか][somewhere]にリダイレクトするだけです😈
+
+**アプリのカスタマイズ:** Tailwind CSSに満足している場合は、そのまま使用してください。それ以外の場合は、[スタイリングガイド][the-styling-guide]で他のオプションについて学んでください。`Notes`モデルとルートなどを削除します。このアプリを自分のものにするために、好きなようにしてください。
+
+**アプリのデプロイ:** プロジェクトのREADMEを確認してください。Fly.ioにアプリをデプロイするための手順が記載されています。そうすれば、実際にブログを始めることができます！
+
+Remixを気に入っていただければ幸いです！💿 👋
+
+[gitpod]: https://gitpod.io
+
+[gitpod-ready-to-code-image]: https://gitpod.io/#https://github.com/remix-run/indie-stack
+
+[gitpod-ready-to-code]: https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod
+
+[node-js]: https://nodejs.org
+
+[npm]: https://www.npmjs.com
+
+[vs-code]: https://code.visualstudio.com
+
+[the-stacks-docs]: ../guides/templates#stacks
+
+[the-indie-stack]: https://github.com/remix-run/indie-stack
+
+[fly-io]: https://fly.io
+
+[http-localhost-3000]: http://localhost:3000
+
+[screenshot-of-the-app-showing-the-blog-post-link]: https://user-images.githubusercontent.com/1500684/160208939-34fe20ed-3146-4f4b-a68a-d82284339c47.png
+
+[tailwind]: https://tailwindcss.com
+
+[the-styling-guide]: ../styling/tailwind
+
+[prisma]: https://prisma.io
+
+[http-localhost-3000-posts-admin]: http://localhost:3000/posts/admin
+
+[mdn-request]: https://developer.mozilla.org/en-US/docs/Web/API/Request
+
+[mdn-request-form-data]: https://developer.mozilla.org/en-US/docs/Web/API/Request/formData
+
+[disable-java-script]: https://developer.chrome.com/docs/devtools/javascript/disable
+
+[the-pending-ui-guide]: ../discussion/pending-ui
+
+[somewhere]: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+

@@ -1,24 +1,24 @@
 ---
-title: 通常のCSS
+title: Regular CSS
 ---
 
 # 通常のCSS
 
-Remixは、ネストされたルートと[`links`][links]を使用して、通常のCSSでアプリをスケールアップするのに役立ちます。
+Remixは、ネストされたルートと[`links`][links]を使って、通常のCSSでアプリをスケールさせるのに役立ちます。
 
-CSSのメンテナンスの問題は、いくつかの理由でWebアプリに忍び寄ってくる可能性があります。次のように知ることは困難になる可能性があります。
+CSSのメンテナンスの問題は、いくつかの理由でWebアプリに忍び寄ることがあります。以下のことが分かりにくくなる可能性があります。
 
-- CSSをいつどのようにロードするか。そのため、通常はすべてのページにロードされていました
-- 使用しているクラス名とセレクターがアプリの他のUIを誤ってスタイル設定しているかどうか
-- CSSソースコードが時間の経過とともに増加するにつれて、一部のルールがもはや使用されていないかどうか
+* CSSをどのように、いつロードするか。そのため、通常はすべてのページでロードされていました。
+* 使用しているクラス名とセレクターが、アプリ内の他のUIを誤ってスタイルしているかどうか。
+* CSSのソースコードが時間とともに増えるにつれて、一部のルールがもはや使用されていないかどうか。
 
-Remixは、ルートベースのスタイルシートでこれらの問題を軽減します。ネストされたルートはそれぞれ、独自のスタイルシートをページに追加することができ、Remixは自動的にそれらをプリフェッチ、ロード、アンロードします。懸念範囲がアクティブなルートのみに限定されている場合、これらの問題のリスクは大幅に軽減されます。競合が発生する可能性があるのは、親ルートのスタイルだけです（それでも、親ルートもレンダリングしているので、競合が表示される可能性があります）。
+Remixは、ルートベースのスタイルシートでこれらの問題を軽減します。ネストされたルートはそれぞれ独自のスタイルシートをページに追加でき、Remixはルートとともに自動的にプリフェッチ、ロード、アンロードを行います。関心の範囲がアクティブなルートのみに限定されると、これらの問題のリスクは大幅に軽減されます。競合の可能性は、親ルートのスタイルとの間のみです（それでも、親ルートもレンダリングされているため、競合が発生する可能性が高いです）。
 
-<docs-warning> [Classic Remix Compiler][classic-remix-compiler]ではなく[Remix Vite][remix-vite]を使用している場合は、CSSインポートパスの末尾から`?url`を削除する必要があります。</docs-warning>
+<docs-warning>[Remix Vite][remix-vite]ではなく、[Classic Remix Compiler][classic-remix-compiler]を使用している場合は、CSSインポートパスの末尾から`?url`を削除する必要があります。</docs-warning>
 
-### ルートスタイル
+### ルートのスタイル
 
-各ルートは、ページにスタイルリンクを追加できます。たとえば、
+各ルートは、ページにスタイルリンクを追加できます。例を以下に示します。
 
 ```tsx filename=app/routes/dashboard.tsx
 import type { LinksFunction } from "@remix-run/node"; // or cloudflare/deno
@@ -50,7 +50,7 @@ export const links: LinksFunction = () => [
 ];
 ```
 
-これらのルートを考えると、この表は、特定のURLでどのCSSが適用されるかを示しています。
+これらのルートが与えられた場合、次の表は特定のURLでどのCSSが適用されるかを示しています。
 
 | URL                 | スタイルシート                    |
 | ------------------- | ------------------------------ |
@@ -58,15 +58,15 @@ export const links: LinksFunction = () => [
 | /dashboard/accounts | dashboard.css<br/>accounts.css |
 | /dashboard/sales    | dashboard.css<br/>sales.css    |
 
-これは微妙なことですが、この小さな機能は、プレーンなスタイルシートを使用してアプリをスタイル設定する場合の多くの難しさを解消します。
+これは微妙な点ですが、この小さな機能により、プレーンなスタイルシートでアプリをスタイリングする際の多くの困難が解消されます。
 
-### 共有コンポーネントスタイル
+### 共有コンポーネントのスタイル
 
-大小さまざまなWebサイトは通常、アプリの残りの部分で使用される共有コンポーネントセット（ボタン、フォーム要素、レイアウトなど）を持っています。Remixでプレーンスタイルシートを使用する場合、推奨される2つのアプローチがあります。
+大小を問わず、ウェブサイトには通常、アプリ全体で使用される共有コンポーネントのセットがあります。ボタン、フォーム要素、レイアウトなどです。Remixでプレーンなスタイルシートを使用する場合、推奨されるアプローチが2つあります。
 
 #### 共有スタイルシート
 
-最初の方法は非常に簡単です。それらをすべて`app/root.tsx`に含まれる`shared.css`ファイルに入れます。これにより、コンポーネント自体がCSSコードを共有することが容易になり（そして、エディターが[カスタムプロパティ][custom-properties]などのインテリセンスを提供することもできます）、各コンポーネントはすでにJavaScriptで一意のモジュール名が必要なので、スタイルを一意のクラス名またはデータ属性にスコープできます。
+最初のアプローチは非常にシンプルです。すべてのスタイルを `app/root.tsx` に含まれる `shared.css` ファイルにまとめます。これにより、コンポーネント自体が CSS コードを共有しやすくなり（また、エディターが[カスタムプロパティ][custom-properties]のようなものに対してインテリセンスを提供できるようになります）、各コンポーネントはすでに JavaScript で一意のモジュール名を必要とするため、スタイルを一意のクラス名またはデータ属性にスコープすることができます。
 
 ```css filename=app/styles/shared.css
 /* クラス名でスコープ */
@@ -78,7 +78,8 @@ export const links: LinksFunction = () => [
   /* ... */
 }
 
-/* または、classNameプロパティの連結を回避するためにデータ属性でスコープしますが、実際にはあなた次第です */
+/* または、className プロパティを連結するのを避けるためにデータ属性でスコープ
+   ただし、これは完全にあなた次第です */
 [data-primary-button] {
   /* ... */
 }
@@ -88,9 +89,9 @@ export const links: LinksFunction = () => [
 }
 ```
 
-このファイルは大きくなる可能性がありますが、アプリのすべてのルートで共有される単一のURLになります。
+このファイルは大きくなる可能性がありますが、アプリ内のすべてのルートで共有される単一の URL になります。
 
-これにより、ルートがコンポーネントのスタイルを調整することも容易になり、コンポーネントに公式の新しいバリアントを追加する必要はありません。あなたは、それが`/accounts`ルート以外ではコンポーネントに影響を与えないことを知っています。
+また、これにより、ルートがコンポーネントの API に公式の新しいバリアントを追加する必要なく、コンポーネントのスタイルを調整することも簡単になります。`/accounts` ルート以外ではコンポーネントに影響を与えないことがわかります。
 
 ```css filename=app/styles/accounts.css
 .PrimaryButton {
@@ -98,13 +99,13 @@ export const links: LinksFunction = () => [
 }
 ```
 
-#### スタイルの露出
+#### スタイルの表面化
 
-2番目のアプローチは、コンポーネントごとに個別のCSSファイルを作成し、それらのスタイルをそれらを使用するルートに「公開する」ことです。
+2つ目のアプローチは、コンポーネントごとに個別のCSSファイルを作成し、それらのスタイルを使用するルートに「表面化」させることです。
 
-おそらく、`app/components/button/index.tsx`に`app/components/button/styles.css`にあるスタイルの`<Button>`と、それを拡張する`<PrimaryButton>`があります。
+例えば、`app/components/button/index.tsx` に `<Button>` があり、`app/components/button/styles.css` にスタイルがあり、それを拡張する `<PrimaryButton>` があるとします。
 
-これらはルートではないことに注意してください。ただし、ルートのように`links`関数をエクスポートします。これを使用して、それらのスタイルを使用するルートに公開します。
+これらはルートではありませんが、ルートであるかのように `links` 関数をエクスポートします。これを使用して、スタイルを使用するルートにスタイルを表面化します。
 
 ```css filename=app/components/button/styles.css
 [data-button] {
@@ -131,7 +132,7 @@ export const Button = React.forwardRef(
 Button.displayName = "Button";
 ```
 
-そして、それを拡張する`<PrimaryButton>`：
+そして、それを拡張する `<PrimaryButton>`:
 
 ```css filename=app/components/primary-button/styles.css
 [data-primary-button] {
@@ -162,11 +163,11 @@ export const PrimaryButton = React.forwardRef(
 PrimaryButton.displayName = "PrimaryButton";
 ```
 
-プライマリボタンの`links`には、ベースボタンのリンクが含まれていることに注意してください。このようにして、`<PrimaryButton>`のコンシューマーは、その依存関係を知る必要はありません（JavaScriptインポートと同じです）。
+プライマリボタンの `links` には、ベースボタンのリンクが含まれていることに注意してください。これにより、`<PrimaryButton>` の利用者は、その依存関係を知る必要がありません（JavaScriptのインポートと同様）。
 
-これらのボタンはルートではなく、URLセグメントに関連付けられていないため、Remixはスタイルをいつプリフェッチ、ロード、またはアンロードするかを認識しません。コンポーネントを使用するルートにリンクを「公開する」必要があります。
+これらのボタンはルートではなく、したがってURLセグメントに関連付けられていないため、Remixはいつスタイルをプリフェッチ、ロード、またはアンロードするかを認識しません。コンポーネントを使用するルートにリンクを「表面化」する必要があります。
 
-`app/routes/_index.tsx`がプライマリボタンコンポーネントを使用することを考えてみましょう。
+`app/routes/_index.tsx` がプライマリボタンコンポーネントを使用しているとします。
 
 ```tsx filename=app/routes/_index.tsx lines=[3-6,10]
 import type { LinksFunction } from "@remix-run/node"; // or cloudflare/deno
@@ -183,9 +184,9 @@ export const links: LinksFunction = () => [
 ];
 ```
 
-これで、Remixは`button.css`、`primary-button.css`、およびルートの`index.css`のスタイルをプリフェッチ、ロード、およびアンロードできます。
+これで、Remixは `button.css`、`primary-button.css`、およびルートの `index.css` のスタイルをプリフェッチ、ロード、およびアンロードできます。
 
-これに対する最初の反応は、ルートが望んでいるよりも多くのことを知っておく必要があるということです。各コンポーネントはすでにインポートする必要があるため、新しい依存関係を導入しているわけではなく、単にアセットを取得するためのボイラープレートです。たとえば、次のような製品カテゴリページを考えてみましょう。
+これに対する最初の反応は、ルートが望むよりも多くのことを知る必要があるということです。各コンポーネントはすでにインポートされている必要があることを覚えておいてください。つまり、新しい依存関係を導入するのではなく、アセットを取得するためのボイラープレートを導入するだけです。たとえば、次のような製品カテゴリページを考えてみましょう。
 
 ```tsx filename=app/routes/$category.tsx lines=[3-7]
 import type { LinksFunction } from "@remix-run/node"; // or cloudflare/deno
@@ -215,7 +216,7 @@ export default function Category() {
 }
 ```
 
-コンポーネントのインポートはすでにそこにあり、アセットを公開するだけです。
+コンポーネントのインポートはすでに存在するため、アセットを表面化するだけです。
 
 ```tsx filename=app/routes/$category.tsx
 import type { LinksFunction } from "@remix-run/node"; // or cloudflare/deno
@@ -251,19 +252,19 @@ export const links: LinksFunction = () => {
 // ...
 ```
 
-これは少しボイラープレートですが、次のようなことが可能になります。
+これは少しボイラープレートですが、多くのことを可能にします。
 
-- ネットワークタブを制御でき、CSS依存関係がコードで明確になります
-- コンポーネントと共存するスタイル
-- ロードされるCSSは、現在のページで使用されるCSSのみ
-- ルートでコンポーネントが使用されない場合、そのCSSはページからアンロードされます
-- Remixは、[`<Link prefetch>`][link]を使用して次のページにリンクすると、CSSをプリフェッチします
-- コンポーネントのスタイルが変更されても、他のコンポーネントのブラウザとCDNキャッシュは、すべて独自のURLを持っているため壊れません
-- コンポーネントのJavaScriptが変更されてもスタイルが変更されない場合、スタイルのキャッシュは壊れません
+* ネットワークタブを制御し、CSSの依存関係がコードで明確になります。
+* コンポーネントとスタイルを同じ場所に配置します。
+* ロードされるCSSは、現在のページで使用されているCSSのみです。
+* コンポーネントがルートで使用されていない場合、そのCSSはページからアンロードされます。
+* Remixは、[`<Link prefetch>`][link]を使用して、次のページのCSSをプリフェッチします。
+* あるコンポーネントのスタイルが変更されても、他のコンポーネントのブラウザとCDNキャッシュは、すべて独自のURLを持っているため、壊れません。
+* コンポーネントのJavaScriptが変更されても、スタイルが変更されない場合、スタイルのキャッシュは壊れません。
 
-#### アセットプリロード
+#### アセットのプリロード
 
-これらは単なる`<link>`タグなので、スタイルシートリンク以上のことができます。たとえば、要素のSVGアイコンの背景用のアセットプリロードを追加できます。
+これらは単なる `<link>` タグなので、スタイルシートのリンクだけでなく、要素の SVG アイコン背景のアセットプリロードを追加するなど、さまざまなことができます。
 
 ```css filename=app/components/copy-to-clipboard.css
 [data-copy-to-clipboard] {
@@ -296,11 +297,11 @@ export const CopyToClipboard = React.forwardRef(
 CopyToClipboard.displayName = "CopyToClipboard";
 ```
 
-これにより、ネットワークタブでアセットが優先順位付けされるだけでなく、[`<Link prefetch>`][link]を使用してページにリンクすると、Remixは`preload`を`prefetch`に変換するため、SVGの背景は、次のルートのデータ、モジュール、スタイルシート、およびその他のプリロードと並行してプリフェッチされます。
+これにより、ネットワークタブでアセットの優先度が高くなるだけでなく、Remix は、[`<Link prefetch>`][link] を使用してページにリンクすると、その `preload` を `prefetch` に変換します。これにより、SVG 背景は、次のルートのデータ、モジュール、スタイルシート、およびその他のプリロードと並行してプリフェッチされます。
 
-### リンクメディアクエリ
+### メディアクエリをリンクする
 
-プレーンなスタイルシートと`<link>`タグを使用すると、ユーザーのブラウザが画面をペイントする場合に、ブラウザが処理する必要があるCSSの量を減らすこともできます。リンクタグは`media`をサポートしているので、次のようなことができます。
+プレーンなスタイルシートと `<link>` タグを使用すると、ユーザーのブラウザが画面をペイントする際に処理する必要がある CSS の量を減らすこともできます。リンクタグは `media` をサポートしているため、次のように記述できます。
 
 ```tsx lines=[10,15,20]
 export const links: LinksFunction = () => {
@@ -329,9 +330,12 @@ export const links: LinksFunction = () => {
 ```
 
 [links]: ../route/links
-[custom-properties]: https://developer.mozilla.org/en-US/docs/Web/CSS/--*
-[link]: ../components/link
-[classic-remix-compiler]: ../guides/vite#classic-remix-compiler-vs-remix-vite
-[remix-vite]: ../guides/vite
 
+[custom-properties]: https://developer.mozilla.org/en-US/docs/Web/CSS/--*
+
+[link]: ../components/link
+
+[classic-remix-compiler]: ../guides/vite#classic-remix-compiler-vs-remix-vite
+
+[remix-vite]: ../guides/vite
 

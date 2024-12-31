@@ -4,18 +4,18 @@ title: useFormAction
 
 # `useFormAction`
 
-コンポーネント階層内で最も近いルートへのURLを解決します。アプリの現在のURLではありません。
+アプリの現在の URL ではなく、コンポーネント階層内で最も近いルートの URL を解決します。
 
-これは、[`<Form>`][form_component]で最も近いルートへのアクションを解決するために内部的に使用されますが、汎用的に使用することもできます。
+これは内部的に [`<Form>`][form_component] によって、アクションを最も近いルートに解決するために使用されますが、汎用的に使用することもできます。
 
 ```tsx
 import { useFormAction } from "@remix-run/react";
 
 function SomeComponent() {
-  // 最も近いルートのURL
+  // 最も近いルートの URL
   const action = useFormAction();
 
-  // 最も近いルートのURL + "destroy"
+  // 最も近いルートの URL + "destroy"
   const destroyAction = useFormAction("destroy");
 }
 ```
@@ -28,13 +28,14 @@ useFormAction(action, options)
 
 ### `action`
 
-オプション。最も近いルートURLに追加するアクション。
+オプション。最も近いルートの URL に追加するアクション。
 
 ### `options`
 
-唯一のオプションは`{ relative: "route" | "path"}`です。
+唯一のオプションは `{ relative: "route" | "path"}` です。
 
-- **route** デフォルト - URL階層ではなく、ルート階層に対する相対パス
-- **path** - アクションをURLパスの相対パスにします。そのため、`..`はURLセグメントを1つ削除します。
+- **route** デフォルト - URL ではなく、ルート階層に対する相対パス
+- **path** - アクションを URL パスに対する相対パスにするため、`..` は URL セグメントを 1 つ削除します。
 
 [form_component]: ../components/form
+

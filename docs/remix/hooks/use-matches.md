@@ -5,7 +5,7 @@ toc: false
 
 # `useMatches`
 
-ページ上の現在のルートマッチを返します。これは、現在のルートを使用してレイアウト抽象化を作成するのに役立ちます。
+現在のページにおけるルートのマッチを返します。これは、現在のルートでレイアウトの抽象化を作成するのに役立ちます。
 
 ```tsx
 function SomeComponent() {
@@ -15,7 +15,7 @@ function SomeComponent() {
 }
 ```
 
-`matches` は次の形をしています。
+`matches` は次の形状をしています。
 
 ```ts
 [
@@ -26,8 +26,9 @@ function SomeComponent() {
 ];
 ```
 
-## さらなるリソース
+## 追加リソース
 
 - [パンくずリストガイド][breadcrumbs-guide]
 
-[breadcrumbs-guide]: ../guides/breadcrumbs 
+[breadcrumbs-guide]: ../guides/breadcrumbs
+

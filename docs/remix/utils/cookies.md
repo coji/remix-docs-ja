@@ -4,38 +4,41 @@ title: Cookies
 
 # クッキー
 
-[クッキー][cookie]は、サーバーがHTTPレスポンスでクライアントに送信する小さな情報で、ブラウザは後続のリクエストでサーバーに送信します。この技術は、多くのインタラクティブなWebサイトの基本的な構成要素であり、状態を追加することで、認証（[セッション][sessions]参照）、ショッピングカート、ユーザー設定、および「ログイン」しているユーザーを記憶する必要があるその他の多くの機能を構築できます。
+[クッキー][cookie]とは、サーバーがHTTPレスポンスで送信する小さな情報であり、ブラウザは後続のリクエストでそれを送り返します。この技術は、認証（[セッション][sessions]を参照）、ショッピングカート、ユーザー設定、および「ログイン」している人を記憶する必要があるその他の多くの機能を作成できるように、状態を追加する多くのインタラクティブなWebサイトの基本的な構成要素です。
 
 Remixの`Cookie`インターフェースは、クッキーのメタデータのための論理的で再利用可能なコンテナを提供します。
 
+[cookie]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+[sessions]: ./sessions
+
 ## クッキーの使用
 
-手動でこれらのクッキーを作成することもできますが、[セッションストレージ][sessions]を使用する方が一般的です。
+これらのクッキーを手動で作成することもできますが、[セッションストレージ][sessions]を使用する方が一般的です。
 
-Remixでは、通常、`loader`関数または`action`関数（<Link to="../mutations">ミューテーション</Link>を参照）でクッキーを操作します。これらの関数は、データの読み書きが必要な場所です。
+Remixでは、通常、`loader`や`action`関数（<Link to="../mutations">ミューテーション</Link>を参照）でクッキーを操作します。これらはデータの読み書きが必要な場所だからです。
 
-たとえば、電子商取引サイトに、現在セール中の商品をチェックするようにユーザーに促すバナーがあるとします。バナーはホームページの上部に表示され、ユーザーが少なくとも1週間は表示されないように、バナーを非表示にするボタンが横に付いています。
+例えば、あなたのeコマースサイトに、現在セール中の商品をチェックするようユーザーに促すバナーがあるとします。バナーはホームページの上部に表示され、ユーザーがバナーを閉じて少なくとも1週間は表示されないようにするためのボタンが側面にあります。
 
 まず、クッキーを作成します。
 
 ```ts filename=app/cookies.server.ts
-import { createCookie } from "@remix-run/node"; // or cloudflare/deno
+import { createCookie } from "@remix-run/node"; // または cloudflare/deno
 
 export const userPrefs = createCookie("user-prefs", {
   maxAge: 604_800, // 1週間
 });
 ```
 
-次に、クッキーを`import`し、`loader`関数または`action`関数で使用できます。この場合の`loader`は、ユーザー設定の値をチェックするだけで、コンポーネントで使用してバナーを表示するかどうかを判断します。ボタンをクリックすると、`<form>`はサーバー上の`action`を呼び出し、バナーなしでページを再読み込みします。
+次に、クッキーを`import`して、`loader`や`action`で使用できます。この例では、`loader`はユーザー設定の値を確認するだけで、コンポーネントでバナーを表示するかどうかを決定するために使用できます。ボタンがクリックされると、`<form>`がサーバー上の`action`を呼び出し、バナーなしでページをリロードします。
 
-**注:** 現時点では、アプリに必要なすべてのクッキーを`*.server.ts`ファイルに作成し、ルートモジュールに`import`することをお勧めします。これにより、Remixコンパイラは、これらの`import`をブラウザビルドから正しく削除できるため、ブラウザビルドでは必要ありません。この注意書きは、今後削除される予定です。
+**注意:** アプリに必要なすべてのクッキーを`*.server.ts`ファイルで作成し、それらをルートモジュールに`import`することを（今のところ）推奨します。これにより、Remixコンパイラーは、ブラウザビルドで不要なこれらのインポートを正しく削除できます。最終的にはこの注意書きを削除したいと考えています。
 
 ```tsx filename=app/routes/_index.tsx lines=[12,17-19,26-28,37]
 import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
-} from "@remix-run/node"; // or cloudflare/deno
-import { json, redirect } from "@remix-run/node"; // or cloudflare/deno
+} from "@remix-run/node"; // または cloudflare/deno
+import { json, redirect } from "@remix-run/node"; // または cloudflare/deno
 import {
   useLoaderData,
   Link,
@@ -96,13 +99,13 @@ export default function Home() {
 }
 ```
 
-## クッキー属性
+## Cookie の属性
 
-クッキーには、有効期限、アクセス方法、送信先を制御する[いくつかの属性][cookie-attrs]があります。これらの属性は、`createCookie(name, options)`で指定するか、`Set-Cookie`ヘッダーが生成されるときの`serialize()`中に指定することができます。
+Cookie には、有効期限、アクセス方法、送信先を制御する[いくつかの属性][cookie-attrs]があります。これらの属性は、`createCookie(name, options)` で指定するか、`Set-Cookie` ヘッダーが生成される際の `serialize()` で指定できます。
 
 ```ts
 const cookie = createCookie("user-prefs", {
-  // これは、このクッキーのデフォルトです。
+  // これらはこの Cookie のデフォルトです。
   path: "/",
   sameSite: "lax",
   httpOnly: true,
@@ -114,17 +117,17 @@ const cookie = createCookie("user-prefs", {
 // デフォルトを使用することもできます。
 cookie.serialize(userPrefs);
 
-// または、必要に応じて個々の属性をオーバーライドすることもできます。
+// または、必要に応じて個別に上書きすることもできます。
 cookie.serialize(userPrefs, { sameSite: "strict" });
 ```
 
-これらの属性の詳細については、[属性に関する詳細情報][cookie-attrs]を参照して、これらの属性がどのように機能するかを理解してください。
+これらの属性が何をするのかをより深く理解するために、[これらの属性に関する詳細情報][cookie-attrs]をお読みください。
 
 ## クッキーの署名
 
-クッキーのコンテンツを受け取ったときに自動的に検証できるように、クッキーに署名することができます。HTTPヘッダーを偽造することは比較的簡単であるため、認証情報（[セッション][sessions]を参照）など、偽造したくない情報は署名することをお勧めします。
+クッキーに署名することで、受信時にその内容を自動的に検証することが可能です。HTTPヘッダーを偽造するのは比較的簡単なので、認証情報（[セッション][sessions]を参照）のように、誰かに偽造されたくない情報については、これは良い考えです。
 
-クッキーに署名するには、最初にクッキーを作成するときに、1つ以上の`secrets`を指定します。
+クッキーに署名するには、最初にクッキーを作成するときに1つ以上の`secrets`を提供します。
 
 ```ts
 const cookie = createCookie("user-prefs", {
@@ -132,9 +135,9 @@ const cookie = createCookie("user-prefs", {
 });
 ```
 
-1つ以上の`secrets`を持つクッキーは、クッキーの整合性を確保する方法で保存および検証されます。
+1つ以上の`secrets`を持つクッキーは、クッキーの整合性を保証する方法で保存および検証されます。
 
-`secrets`配列の先頭に新しい`secrets`を追加することで、`secrets`をローテーションできます。古い`secrets`で署名されたクッキーは、`cookie.parse()`で引き続き正常にデコードされ、最新の`secrets`（配列の最初の`secrets`）は、`cookie.serialize()`で作成される送信されるクッキーに常に使用されます。
+`secrets`配列の先頭に新しいシークレットを追加することで、シークレットをローテーションできます。古いシークレットで署名されたクッキーは、`cookie.parse()`で正常にデコードされ、`cookie.serialize()`で作成された送信クッキーの署名には常に最新のシークレット（配列の最初のもの）が使用されます。
 
 ```ts filename=app/cookies.server.ts
 export const cookie = createCookie("user-prefs", {
@@ -149,12 +152,12 @@ export async function loader({
   request,
 }: LoaderFunctionArgs) {
   const oldCookie = request.headers.get("Cookie");
-  // oldCookieは「olds3cret」で署名されている可能性がありますが、それでも正常に解析されます。
+  // oldCookieは"olds3cret"で署名されている可能性がありますが、それでも正常に解析されます
   const value = await cookie.parse(oldCookie);
 
   new Response("...", {
     headers: {
-      // Set-Cookieは「n3wsecr3t」で署名されています。
+      // Set-Cookieは"n3wsecr3t"で署名されます
       "Set-Cookie": await cookie.serialize(value),
     },
   });
@@ -163,13 +166,13 @@ export async function loader({
 
 ## `createCookie`
 
-サーバーからブラウザクッキーを管理するための論理的なコンテナを作成します。
+サーバーからブラウザのクッキーを管理するための論理的なコンテナを作成します。
 
 ```ts
-import { createCookie } from "@remix-run/node"; // or cloudflare/deno
+import { createCookie } from "@remix-run/node"; // または cloudflare/deno
 
 const cookie = createCookie("cookie-name", {
-  // これらはすべて、実行時にオーバーライドできるオプションのデフォルトです。
+  // これらはすべてオプションのデフォルト値で、実行時に上書きできます
   expires: new Date(Date.now() + 60_000),
   httpOnly: true,
   maxAge: 60,
@@ -180,37 +183,39 @@ const cookie = createCookie("cookie-name", {
 });
 ```
 
-各属性の詳細については、[MDN Set-Cookieドキュメント][cookie-attrs]を参照してください。
+各属性の詳細については、[MDN Set-Cookie ドキュメント][cookie-attrs]を参照してください。
+
+[cookie-attrs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
 ## `isCookie`
 
-オブジェクトがRemixクッキーコンテナである場合は`true`を返します。
+オブジェクトが Remix のクッキーコンテナである場合に `true` を返します。
 
 ```ts
-import { isCookie } from "@remix-run/node"; // or cloudflare/deno
+import { isCookie } from "@remix-run/node"; // または cloudflare/deno
 const cookie = createCookie("user-prefs");
 console.log(isCookie(cookie));
 // true
 ```
 
-## クッキーAPI
+## Cookie API
 
-クッキーコンテナは、`createCookie`から返され、いくつかのプロパティとメソッドを持っています。
+`createCookie` から返されるクッキーコンテナには、いくつかのプロパティとメソッドがあります。
 
 ```ts
 const cookie = createCookie(name);
 cookie.name;
 cookie.parse();
-// etc.
+// など
 ```
 
 ### `cookie.name`
 
-`Cookie`と`Set-Cookie`のHTTPヘッダーで使用されるクッキーの名前。
+`Cookie` および `Set-Cookie` HTTP ヘッダーで使用されるクッキーの名前です。
 
 ### `cookie.parse()`
 
-指定された`Cookie`ヘッダーからこのクッキーの値を抽出して返します。
+指定された `Cookie` ヘッダーから、このクッキーの値を抽出して返します。
 
 ```ts
 const value = await cookie.parse(
@@ -220,7 +225,7 @@ const value = await cookie.parse(
 
 ### `cookie.serialize()`
 
-値をシリアライズし、このクッキーのオプションと組み合わせて`Set-Cookie`ヘッダーを作成します。これは、送信される`Response`で使用できます。
+値をシリアライズし、このクッキーのオプションと組み合わせて、送信 `Response` で使用するのに適した `Set-Cookie` ヘッダーを作成します。
 
 ```ts
 new Response("...", {
@@ -234,7 +239,7 @@ new Response("...", {
 
 ### `cookie.isSigned`
 
-クッキーが`secrets`を使用している場合は`true`、それ以外の場合は`false`になります。
+クッキーが何らかの `secrets` を使用している場合は `true`、そうでない場合は `false` になります。
 
 ```ts
 let cookie = createCookie("user-prefs");
@@ -248,7 +253,7 @@ console.log(cookie.isSigned); // true
 
 ### `cookie.expires`
 
-このクッキーが期限切れになる`Date`。クッキーに`maxAge`と`expires`の両方がある場合、この値は、`Max-Age`が`Expires`よりも優先されるため、現在の時刻から`maxAge`の値を加えた日時になります。
+このクッキーが期限切れになる `Date` です。クッキーに `maxAge` と `expires` の両方が設定されている場合、`Max-Age` が `Expires` より優先されるため、この値は現在の時刻に `maxAge` の値を加算した日付になります。
 
 ```ts
 const cookie = createCookie("user-prefs", {
@@ -259,7 +264,8 @@ console.log(cookie.expires); // "2020-01-01T00:00:00.000Z"
 ```
 
 [sessions]: ./sessions
-[cookie]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
-[cookie-attrs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes
 
+[cookie]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+
+[cookie-attrs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes
 

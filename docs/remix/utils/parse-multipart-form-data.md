@@ -4,11 +4,11 @@ title: unstable_parseMultipartFormData
 
 # `unstable_parseMultipartFormData`
 
-アプリのマルチパートフォーム（ファイルアップロード）を処理できます。
+アプリでマルチパートフォーム（ファイルアップロード）を処理できるようにします。
 
-このAPIの使い方を知るには、[ブラウザのファイルAPI][the-browser-file-api] を理解することが役立ちます。
+このAPIの使用方法を理解するには、[ブラウザのFile API][the-browser-file-api]を理解すると役立ちます。
 
-これは `request.formData()` の代わりに使用されます。
+これは、`request.formData()` の代わりに使用します。
 
 ```diff
 - const formData = await request.formData();
@@ -23,44 +23,45 @@ export const action = async ({
 }: ActionFunctionArgs) => {
   const formData = await unstable_parseMultipartFormData(
     request,
-    uploadHandler // <-- これは後で詳しく説明します
+    uploadHandler // <-- これについては後で詳しく見ていきます
   );
 
   // ファイルフィールドの戻り値は、uploadHandler が返すものです。
-  // アバターをS3にアップロードすると想像してみましょう。
-  // そのため、uploadHandler はURLを返します。
+  // アバターをs3にアップロードしていると仮定すると、
+  // uploadHandlerはURLを返します。
   const avatarUrl = formData.get("avatar");
 
-  // データベースに現在ログインしているユーザーのアバターを更新します
+  // 現在ログインしているユーザーのアバターをデータベースで更新します
   await updateUserAvatar(request, avatarUrl);
 
-  // 成功！ アカウントページにリダイレクトします
+  // 成功！アカウントページにリダイレクトします
   return redirect("/account");
 };
 
 export default function AvatarUploadRoute() {
   return (
     <Form method="post" encType="multipart/form-data">
-      <label htmlFor="avatar-input">Avatar</label>
+      <label htmlFor="avatar-input">アバター</label>
       <input id="avatar-input" type="file" name="avatar" />
-      <button>Upload</button>
+      <button>アップロード</button>
     </Form>
   );
 }
 ```
 
-アップロードされたファイルの内容を読み取るには、[Blob API][the-blob-api] から継承されたメソッドのいずれかを使用します。たとえば、`.text()` はファイルのテキストコンテンツを非同期に返し、`.arrayBuffer()` はバイナリコンテンツを返します。
+アップロードされたファイルの内容を読み取るには、[Blob API][the-blob-api]から継承したメソッドのいずれかを使用します。たとえば、`.text()` はファイルのテキストコンテンツを非同期的に返し、`.arrayBuffer()` はバイナリコンテンツを返します。
 
 ### `uploadHandler`
 
-`uploadHandler` は、このすべての中心です。クライアントからストリーミングされているマルチパート/フォームデータのパーツがどのように処理されるかを担当します。ディスクに保存したり、メモリに保存したり、別の場所に（ファイルストレージプロバイダーなど）送信するためのプロキシとして機能したりできます。
+`uploadHandler` は、全体の鍵となるものです。クライアントからストリーミングされるマルチパート/フォームデータのパーツに対して何が起こるかを担当します。ディスクに保存したり、メモリに保存したり、プロキシとして機能して他の場所（ファイルストレージプロバイダーなど）に送信したりできます。
 
-Remixには、`uploadHandler` を作成するためのユーティリティが2つあります。
+Remixには、`uploadHandler`を作成するための2つのユーティリティがあります。
 
 - `unstable_createFileUploadHandler`
 - `unstable_createMemoryUploadHandler`
 
-これらは、非常に単純なユースケースを処理するための、完全に機能するユーティリティです。メモリに非常に小さなファイルしか読み込まないことをお勧めします。ファイルをディスクに保存することは、多くのユースケースにおける妥当なソリューションです。しかし、ファイルをファイルホスティングプロバイダーにアップロードする場合は、自分で作成する必要があります。
+これらは、比較的単純なユースケースを処理するためのフル機能のユーティリティです。非常に小さなファイル以外はメモリにロードしないことをお勧めします。ファイルをディスクに保存することは、多くのユースケースにとって妥当な解決策です。ただし、ファイルをファイルホスティングプロバイダーにアップロードする場合は、独自のものを記述する必要があります。
 
 [the-browser-file-api]: https://developer.mozilla.org/en-US/docs/Web/API/File
 [the-blob-api]: https://developer.mozilla.org/en-US/docs/Web/API/Blob
+

@@ -4,11 +4,11 @@ title: action
 
 # `action`
 
-<docs-success>📼 Remix Singles をご覧ください: <a href="https://www.youtube.com/playlist?list=PLXoynULbYuEDG2wBFSZ66b85EIspy3fy6">📼 Remix Singles</a>: <a href="https://www.youtube.com/watch?v=Iv25HAHaFDs&list=PLXoynULbYuEDG2wBFSZ66b85EIspy3fy6">フォーム + アクションによるデータ変更</a> と <a href="https://www.youtube.com/watch?v=w2i-9cYxSdc&list=PLXoynULbYuEDG2wBFSZ66b85EIspy3fy6">複数のフォームと単一のボタン変更</a></docs-success>
+<docs-success><a href="https://www.youtube.com/playlist?list=PLXoynULbYuEDG2wBFSZ66b85EIspy3fy6">📼 Remix Singles</a> をご覧ください: <a href="https://www.youtube.com/watch?v=Iv25HAHaFDs&list=PLXoynULbYuEDG2wBFSZ66b85EIspy3fy6">Form + action によるデータ変更</a> と <a href="https://www.youtube.com/watch?v=w2i-9cYxSdc&list=PLXoynULbYuEDG2wBFSZ66b85EIspy3fy6">複数のフォームと単一ボタンによる変更</a></docs-success>
 
-ルート `action` は、データの変更やその他の操作を処理するためのサーバー側専用の関数です。ルートに `GET` 以外のリクエスト (`DELETE`, `PATCH`, `POST`, または `PUT`) が行われると、`action` は [`loader`][loader] より先に呼び出されます。
+ルートの `action` は、データ変更やその他のアクションを処理するためのサーバー専用の関数です。ルートに対して `GET` 以外のリクエスト (`DELETE`, `PATCH`, `POST`, または `PUT`) が行われた場合、[`loader`][loader] が呼び出される前に action が呼び出されます。
 
-`action` は `loader` と同じ API を持ちますが、唯一の違いは呼び出されるタイミングです。これにより、データセットに関するすべてのものを単一のルートモジュールにまとめることができます。データの読み込み、データをレンダリングするコンポーネント、データの書き込みです。
+`action` は `loader` と同じ API を持ちますが、呼び出されるタイミングが異なるだけです。これにより、データセットに関するすべてのものを単一のルートモジュールにまとめることができます。データの読み取り、データをレンダリングするコンポーネント、データの書き込みです。
 
 ```tsx
 import type { ActionFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
@@ -39,27 +39,27 @@ export default function Todos() {
       <TodoList todos={data} />
       <Form method="post">
         <input type="text" name="title" />
-        <button type="submit">Todo 作成</button>
+        <button type="submit">Create Todo</button>
       </Form>
     </div>
   );
 }
 ```
 
-URL に `POST` が行われると、ルート階層内の複数のルートが URL と一致します。`GET` から `loader` へのリクエストの場合、UI を構築するためにすべてが呼び出されますが、_呼び出される `action` は 1 つのみ_です。
+URL に対して `POST` が行われると、ルート階層内の複数のルートがその URL に一致します。UI を構築するためにすべてが呼び出されるローダーへの `GET` とは異なり、_1 つの action のみが呼び出されます_。
 
-<docs-info>呼び出されるルートは、最も深く一致するルートになります。ただし、最も深く一致するルートが "インデックスルート" の場合は、インデックスの親ルートに投稿されます (同じ URL を共有するため、親が優先されます)。</docs-info>
+<docs-info>呼び出されるルートは、最も深く一致するルートになります。ただし、最も深く一致するルートが「インデックスルート」である場合は除きます。この場合、インデックスの親ルートにポストされます（同じ URL を共有しているため、親が優先されます）。</docs-info>
 
-インデックスルートに投稿する場合は、`action` に `?index` を使用します。`<Form action="/accounts?index" method="post" />`
+インデックスルートにポストしたい場合は、action で `?index` を使用します: `<Form action="/accounts?index" method="post" />`
 
-| action の URL     | ルートのアクション                   |
-| ---------------- | ------------------------------- |
+| action url        | ルート action                     |
+| ----------------- | -------------------------------- |
 | `/accounts?index` | `app/routes/accounts._index.tsx` |
-| `/accounts`      | `app/routes/accounts.tsx`       |
+| `/accounts`       | `app/routes/accounts.tsx`        |
 
-また、アクションプロパティのないフォーム (`<Form method="post">`) は、レンダリングされたのと同じルートに自動的に投稿されます。そのため、親ルートとインデックスルートを区別するために `?index` パラメータを使用するのは、インデックスルート自体以外からインデックスルートに投稿する場合にのみ役立ちます。インデックスルートからそれ自体に、または親ルートからそれ自体に投稿する場合は、`<Form action>` を定義する必要はありません。省略してください。`<Form method="post">`。
+また、action プロパティのないフォーム (`<Form method="post">`) は、レンダリングされているルートと同じルートに自動的にポストされることに注意してください。したがって、親ルートとインデックスルートを区別するために `?index` パラメータを使用するのは、インデックスルート自体以外の場所からインデックスルートにポストする場合にのみ役立ちます。インデックスルートからそれ自体にポストする場合、または親ルートからそれ自体にポストする場合は、`<Form action>` を定義する必要はまったくありません。単に省略してください: `<Form method="post">`。
 
-こちらも参照してください:
+以下も参照してください:
 
 - [`<Form>`][form-component]
 - [`<Form action>`][form-component-action]
@@ -69,3 +69,4 @@ URL に `POST` が行われると、ルート階層内の複数のルートが U
 [form-component]: ../components/form
 [form-component-action]: ../components/form#action
 [index-query-param]: ../guides/index-query-param
+

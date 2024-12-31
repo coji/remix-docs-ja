@@ -1,6 +1,7 @@
 ---
-title: フォームバリデーション
+title: Form Validation
 hidden: true
 ---
 
-# フォームバリデーション 
+# フォームの検証
+

@@ -5,9 +5,9 @@ toc: false
 
 # `defer`
 
-ストリーミングデータの使用方法については、[ストリーミングガイド][streaming_guide]をご覧ください。
+ストリーミングデータの利用を開始するには、[ストリーミングガイド][streaming_guide]を参照してください。
 
-これはストリーミング/遅延レスポンスを作成するためのショートカットです。`utf-8`エンコーディングを使用していると想定しています。開発者の観点から見ると、[`json()`][json]と同じように動作しますが、UIコンポーネントにプロミスを転送する機能があります。
+これは、ストリーミング/遅延レスポンスを作成するためのショートカットです。`utf-8`エンコーディングを使用していることを前提としています。開発者の視点からは、[`json()`][json]とまったく同じように動作しますが、PromiseをUIコンポーネントに転送する機能が追加されています。
 
 ```tsx lines=[1,7-10]
 import { defer } from "@remix-run/node"; // または cloudflare/deno
@@ -15,7 +15,7 @@ import { defer } from "@remix-run/node"; // または cloudflare/deno
 export const loader = async () => {
   const aStillRunningPromise = loadSlowDataAsync();
 
-  // これはプロミスを待たずに記述できます。
+  // Promiseをawaitせずにこのように書くことができます。
   return defer({
     critical: "data",
     slowPromise: aStillRunningPromise,
@@ -46,5 +46,4 @@ export const loader = async () => {
 
 [streaming_guide]: ../guides/streaming
 [json]: ./json
-
 

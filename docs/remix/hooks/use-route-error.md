@@ -5,7 +5,7 @@ new: true
 
 # `useRouteError`
 
-[`action`][action]、[`loader`][loader]、またはレンダリング中にスローされたエラーにアクセスし、[`ErrorBoundary`][error-boundary]で使用します。
+[`action`][action]、[`loader`][loader]、またはレンダリング中にスローされたエラーにアクセスし、[`ErrorBoundary`][error-boundary] で使用できるようにします。
 
 ```jsx filename=routes/some-route.tsx
 export function ErrorBoundary() {
@@ -20,7 +20,7 @@ export function ErrorBoundary() {
 
 - [エラー処理ガイド][error-handling-guide]
 
-**APIリファレンス**
+**API リファレンス**
 
 - [`ErrorBoundary`][error-boundary]
 
@@ -28,3 +28,4 @@ export function ErrorBoundary() {
 [loader]: ../route/loader
 [error-boundary]: ../route/error-boundary
 [error-handling-guide]: ../guides/errors
+

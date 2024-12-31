@@ -4,7 +4,7 @@ title: useParams
 
 # `useParams`
 
-現在の URL からルートによって一致した動的パラメータのキー/値のペアオブジェクトを返します。子ルートは、親ルートからすべてのパラメータを継承します。
+現在のURLから、ルートによってマッチした動的なパラメータのキーと値のペアのオブジェクトを返します。子ルートは、親ルートからすべてのパラメータを継承します。
 
 ```tsx
 import { useParams } from "@remix-run/react";
@@ -15,6 +15,7 @@ function SomeComponent() {
 }
 ```
 
-`routes/posts/$postId.tsx` などのルートが `/posts/123` によって一致する場合、`params.postId` は `"123"` になります。[スプラットルート][splat-routes] のパラメータは `params["*"]` として使用できます。
+`routes/posts/$postId.tsx` のようなルートが `/posts/123` によってマッチした場合、`params.postId` は `"123"` になります。[スプラットルート][splat-routes]のパラメータは `params["*"]` として利用できます。
 
-[splat-routes]: ../file-conventions/routes#splat-routes 
+[splat-routes]: ../file-conventions/routes#splat-routes
+

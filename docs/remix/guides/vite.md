@@ -4,65 +4,72 @@ title: Vite
 
 # Vite
 
-[Vite][vite] は、JavaScript プロジェクトのための強力で高性能で拡張性のある開発環境です。Remix のバンドリング機能を改善し拡張するために、私たちは今Viteをもう一つのコンパイラとしてサポートしています。近い将来、Viteがデフォルトのコンパイラになるでしょう。
+[Vite][vite] は、JavaScript プロジェクトのための強力で高性能、かつ拡張可能な開発環境です。Remix のバンドル機能を向上させ、拡張するために、代替コンパイラとして Vite をサポートするようになりました。将来的には、Vite が Remix のデフォルトコンパイラになります。
 
-## クラシックなRemixコンパイラvsRemixのVite
+## クラシックRemixコンパイラ vs. Remix Vite
 
-既存のRemixコンパイラは、`remix build`および`remix dev` CLIコマンドで利用でき、`remix.config.js`で設定されています。これは「クラシックなRemixコンパイラ」と呼ばれるようになりました。
+`remix build` と `remix dev` CLIコマンドでアクセスし、`remix.config.js` で設定される既存のRemixコンパイラは、現在「クラシックRemixコンパイラ」と呼ばれています。
 
-Remix Viteプラグインと`remix vite:build`および`remix vite:dev`CLIコマンドを総称して「Remix Vite」と呼びます。
+Remix Viteプラグインと`remix vite:build` および `remix vite:dev` CLIコマンドは、まとめて「Remix Vite」と呼ばれます。
 
-今後、特に記載がない限り、ドキュメントはRemix Viteの使用を前提とします。
+特に断りのない限り、今後のドキュメントではRemix Viteの使用を前提とします。
 
 ## はじめに
 
-様々なVite ベースのテンプレートをご用意しています。
+いくつかの異なるViteベースのテンプレートを用意して、すぐに始められるようにしました。
 
 ```shellscript nonumber
-# 最小構成:
+# 最小限のサーバー:
 npx create-remix@latest
 
 # Express:
 npx create-remix@latest --template remix-run/remix/templates/express
 
-# Cloudflare: 
+# Cloudflare:
 npx create-remix@latest --template remix-run/remix/templates/cloudflare
 
 # Cloudflare Workers:
 npx create-remix@latest --template remix-run/remix/templates/cloudflare-workers
 ```
 
-これらのテンプレートには、Remix Viteプラグインが設定された`vite.config.ts`ファイルが含まれています。
+これらのテンプレートには、Remix Viteプラグインが設定されている`vite.config.ts`ファイルが含まれています。
 
 ## 設定
 
-Remix Viteプラグインは、プロジェクトのルートにある`vite.config.ts`ファイルで設定されます。詳細は[Vite設定のドキュメント][vite-config]をご覧ください。
+Remix Viteプラグインは、プロジェクトルートにある`vite.config.ts`ファイルで設定されます。詳細については、[Vite設定ドキュメント][vite-config]を参照してください。
+
+
+[vite-config]:  (This needs a URL to be added here.  Replace with the actual link to the Vite config documentation.)
 
 ## Cloudflare
 
-Cloudflareを使い始めるには、[`cloudflare`][template-cloudflare]テンプレートを使うと良いでしょう:
+Cloudflareを使い始めるには、[`cloudflare`][template-cloudflare] テンプレートを使用できます。
 
 ```shellscript nonumber
 npx create-remix@latest --template remix-run/remix/templates/cloudflare
 ```
 
-Viteでローカルで実行する2つの方法があります:
+Cloudflareアプリをローカルで実行するには、2つの方法があります。
 
 ```shellscript nonumber
 # Vite
 remix vite:dev
 
 # Wrangler
-remix vite:build # アプリケーションを先にビルドしてから wrangler を実行
+remix vite:build # アプリをビルドしてからwranglerを実行します
 wrangler pages dev ./build/client
 ```
 
-Viteはより良い開発体験を提供しますが、Wranglerはクラウドワーカーの`workerd`ランタイムで実行することで、Cloudflare環境をより忠実に模擬できます。
+Viteはより優れた開発エクスペリエンスを提供しますが、WranglerはNodeではなく[Cloudflareの`workerd`ランタイム][cloudflare-workerd]でサーバーコードを実行することで、Cloudflare環境により近いエミュレーションを提供します。
 
-#### Cloudflareプロキシ
 
-Viteでクラウドワーカー環境をシミュレーションするために、Wranglerは[ローカルの`workerd`バインディングへのNodeプロキシ][wrangler-getplatformproxy]を提供しています。
-Remix のCloudflareプロキシプラグインはこれらのプロキシを設定してくれます:
+[template-cloudflare]: <a href="ここにtemplate-cloudflareへのリンクを挿入">template-cloudflareへのリンク</a>
+[cloudflare-workerd]: <a href="ここにcloudflare-workerdへのリンクを挿入">cloudflare-workerdへのリンク</a>
+
+#### Cloudflare プロキシ
+
+Vite で Cloudflare 環境をシミュレートするために、Wrangler は [ローカル `workerd` バインディングへの Node プロキシを提供します][wrangler-getplatformproxy]。
+Remix の Cloudflare プロキシプラグインは、これらのプロキシを自動的に設定します。
 
 ```ts filename=vite.config.ts lines=[3,8]
 import {
@@ -76,25 +83,32 @@ export default defineConfig({
 });
 ```
 
-これにより、`loader`や`action`関数内で`context.cloudflare`から使えるようになります:
+その後、これらのプロキシは `loader` 関数または `action` 関数内の `context.cloudflare` で利用できます。
 
 ```ts
 export const loader = ({ context }: LoaderFunctionArgs) => {
   const { env, cf, ctx } = context.cloudflare;
-  // ... more loader code here...
+  // ... さらに loader コードをここに記述します...
 };
 ```
 
-Cloudflare の`getPlatformProxy`ドキュメントで、これらのプロキシについてさらに詳しく確認できます。
+これらのプロキシの詳細については、[Cloudflare の `getPlatformProxy` ドキュメント][wrangler-getplatformproxy-return] を参照してください。
+
+
+[wrangler-getplatformproxy]: <リンクをここに挿入>
+[wrangler-getplatformproxy-return]: <リンクをここに挿入>
 
 #### バインディング
 
-ローカル開発でのViteやWranglerの設定には[wrangler.toml][wrangler-toml-bindings]を、デプロイ時にはCloudflareダッシュボードの[Cloudflare Pages バインディング][cloudflare-pages-bindings]を使います。
+Cloudflare リソースのバインディングを構成するには：
 
-`wrangler.toml`ファイルを変更したら、必ず`wrangler types`を実行してバインディングを再生成する必要があります。
+* Vite または Wrangler を使用したローカル開発には、[wrangler.toml][wrangler-toml-bindings] を使用します。
+* デプロイには、[Cloudflare ダッシュボード][cloudflare-pages-bindings] を使用します。
 
-その後、`context.cloudflare.env`からバインディングにアクセスできます。
-例えば、[KVネームスペース][cloudflare-kv]が`MY_KV`としてバインドされている場合:
+`wrangler.toml` ファイルを変更するたびに、バインディングを再生成するために `wrangler types` を実行する必要があります。
+
+その後、`context.cloudflare.env` を介してバインディングにアクセスできます。
+たとえば、`MY_KV` としてバインドされた[KV 名前空間][cloudflare-kv] の場合：
 
 ```ts filename=app/routes/_index.tsx
 export async function loader({
@@ -106,19 +120,22 @@ export async function loader({
 }
 ```
 
+
+[wrangler-toml-bindings]: <wrangler.tomlへのリンク>
+[cloudflare-pages-bindings]: <Cloudflareダッシュボードへのリンク>
+[cloudflare-kv]: <Cloudflare KVへのリンク>
+
 #### ロードコンテキストの拡張
 
-ロードコンテキストに追加のプロパティを追加したい場合は、共有モジュールから`getLoadContext`関数をエクスポートする必要があります。これにより、Vite、Wrangler、Cloudflare Pagesでロードコンテキストが一貫して拡張されます:
+ロードコンテキストに追加のプロパティを追加したい場合は、共有モジュールから`getLoadContext`関数をエクスポートします。これにより、**Vite、Wrangler、Cloudflare Pagesのロードコンテキストがすべて同じ方法で拡張されます**。
 
 ```ts filename=load-context.ts lines=[1,4-9,20-33]
 import { type AppLoadContext } from "@remix-run/cloudflare";
 import { type PlatformProxy } from "wrangler";
 
-// `wrangler.toml`を使ってバインディングを設定する場合、
-// `wrangler types`がそれらのバインディングの型を
-// グローバルな`Env`インターフェイスに生成します。
-// `wrangler.toml`が存在しない場合でもタイプチェックが通るよう、
-// 空のインターフェイスを定義しています。
+// `wrangler.toml`を使用してバインディングを構成する場合、
+// `wrangler types`はこれらのバインディングの型をグローバルな`Env`インターフェースに生成します。
+// `wrangler.toml`が存在しない場合でも、型チェックがパスするように、この空のインターフェースが必要です。
 interface Env {}
 
 type Cloudflare = Omit<PlatformProxy<Env>, "dispose">;
@@ -135,7 +152,7 @@ type GetLoadContext = (args: {
   context: { cloudflare: Cloudflare }; // 拡張前のロードコンテキスト
 }) => AppLoadContext;
 
-// Vite、Wrangler、Cloudflare Pagesで互換性のある共有実装
+// Vite、Wrangler、Cloudflare Pagesと互換性のある共有実装
 export const getLoadContext: GetLoadContext = ({
   context,
 }) => {
@@ -146,9 +163,9 @@ export const getLoadContext: GetLoadContext = ({
 };
 ```
 
-<docs-warning>Cloudflareプロキシプラグインとリクエストハンドラ`functions/[[path]].ts`の両方で`getLoadContext`を渡す必要があります。そうしないと、アプリの実行方法によってロードコンテキストの拡張が一貫していません。</docs-warning>
+<docs-warning>アプリの実行方法によっては、ロードコンテキストの拡張に一貫性がなくなってしまうため、`getLoadContext`を**両方**のCloudflare Proxyプラグインと`functions/[[path]].ts`のリクエストハンドラーに渡す必要があります。</docs-warning>
 
-まず、Vite設定でCloudflareプロキシプラグインに`getLoadContext`を渡して、Viteの実行時にロードコンテキストを拡張します:
+まず、Viteを実行する際のロードコンテキストを拡張するために、Viteの設定でCloudflare Proxyプラグインに`getLoadContext`を渡します。
 
 ```ts filename=vite.config.ts lines=[8,12]
 import {
@@ -168,12 +185,12 @@ export default defineConfig({
 });
 ```
 
-次に、Wranglerや Cloudflare Pagesへのデプロイ時にロードコンテキストを拡張するため、`functions/[[path]].ts`のリクエストハンドラに`getLoadContext`を渡します:
+次に、Wranglerを実行する場合やCloudflare Pagesにデプロイする場合のロードコンテキストを拡張するために、`functions/[[path]].ts`ファイルのリクエストハンドラーに`getLoadContext`を渡します。
 
 ```ts filename=functions/[[path]].ts lines=[5,9]
 import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
 
-// @ts-ignore - the server build file is generated by `remix vite:build`
+// @ts-ignore - サーバービルドファイルは`remix vite:build`によって生成されます
 import * as build from "../build/server";
 import { getLoadContext } from "../load-context";
 
@@ -183,40 +200,52 @@ export const onRequest = createPagesFunctionHandler({
 });
 ```
 
-## クライアントとサーバーコードの分離
+## クライアントコードとサーバーコードの分割
 
-Viteは、クラシックなRemixコンパイラとは異なる方法でクライアントとサーバーコードを扱います。詳細は[クライアントとサーバーコードの分離][splitting-up-client-and-server-code]のドキュメントをご覧ください。
+Viteは、クライアントコードとサーバーコードの混合使用を、従来のRemixコンパイラとは異なる方法で処理します。詳細については、[クライアントコードとサーバーコードの分割に関するドキュメント][splitting-up-client-and-server-code]を参照してください。
+
+
+[splitting-up-client-and-server-code]:  (ここにリンクを挿入してください)
 
 ## 新しいビルド出力パス
 
-Viteが`public`ディレクトリを扱う方法と、既存のRemixコンパイラとは大きな違いがあります。Viteは`public`ディレクトリからファイルをクライアントビルドディレクトリにコピーしますが、Remixコンパイラは`public`ディレクトリを変更せず、別のサブディレクトリ(`public/build`)をクライアントビルドディレクトリとして使っていました。
+Viteが`public`ディレクトリを管理する方法と既存のRemixコンパイラとの間には、注目すべき違いがあります。Viteは`public`ディレクトリからファイルをクライアントビルドディレクトリにコピーしますが、Remixコンパイラは`public`ディレクトリをそのままにして、サブディレクトリ(`public/build`)をクライアントビルドディレクトリとして使用していました。
 
-Remix のデフォルトプロジェクト構造をViteの動作に合わせるため、ビルド出力パスが変更されました。`assetsBuildDirectory`と`serverBuildDirectory`のオプションが廃止され、単一の`buildDirectory`オプションに統一されました。デフォルトでは、サーバーは`build/server`に、クライアントは`build/client`にビルドされます。
+Viteの動作に合わせてRemixプロジェクトのデフォルト構造を調整するため、ビルド出力パスが変更されました。個別の`assetsBuildDirectory`と`serverBuildDirectory`オプションに代わって、デフォルトで`"build"`となる単一の`buildDirectory`オプションが追加されました。これは、デフォルトではサーバーが`build/server`に、クライアントが`build/client`にコンパイルされることを意味します。
 
-これに伴い、以下のデフォルト設定も変更されています:
+これにより、次の設定のデフォルト値も変更されました。
 
-- [publicPath][public-path]は[Viteの"base"オプション][vite-base]に置き換えられ、デフォルトは`"/"`になりました (以前は`"/build/"`でした)。
-- [serverBuildPath][server-build-path]は`serverBuildFile`に置き換えられ、デフォルトは`"index.js"`になりました。このファイルは、設定した`buildDirectory`内のサーバーディレクトリに書き込まれます。
+* [publicPath][public-path]は[Viteの"base"オプション][vite-base]に置き換えられ、デフォルトは`"/"`ではなく`"/"`になりました。
+* [serverBuildPath][server-build-path]は`serverBuildFile`に置き換えられ、デフォルトは`"index.js"`になりました。このファイルは、設定された`buildDirectory`内のサーバーディレクトリに書き込まれます。
 
-RemixがViteに移行する理由の1つは、Remixを採用する際の学習コストを下げることです。
-つまり、追加の bundling 機能を使う場合は、Remix のドキュメントではなく [Viteのドキュメント][vite]と[Viteプラグインコミュニティ][vite-plugins]を参照してください。
+RemixがViteに移行する理由の1つは、Remixを採用する際に学習する内容を減らすためです。
+つまり、使用したい追加のバンドル機能については、Remixのドキュメントではなく、[Viteのドキュメント][vite]と[Viteプラグインコミュニティ][vite-plugins]を参照する必要があります。
 
-Viteには、既存のRemixコンパイラには含まれていない多くの [機能][vite-features]と[プラグイン][vite-plugins]があります。
-これらの機能を使う場合は、以降Viteのみを使うことを意図している必要があります。そうでない場合、既存のRemixコンパイラではアプリをコンパイルできなくなります。
+Viteには、既存のRemixコンパイラには組み込まれていない多くの[機能][vite-features]と[プラグイン][vite-plugins]があります。
+このような機能を使用すると、既存のRemixコンパイラではアプリをコンパイルできなくなるため、Viteを今後専ら使用する予定の場合のみ使用してください。
+
+
+[public-path]: (リンクをここに挿入)
+[vite-base]: (リンクをここに挿入)
+[server-build-path]: (リンクをここに挿入)
+[vite]: (リンクをここに挿入)
+[vite-plugins]: (リンクをここに挿入)
+[vite-features]: (リンクをここに挿入)
+
 
 ## 移行
 
-#### Viteのセットアップ
+#### Viteの設定
 
-👉 **Viteを開発依存関係としてインストール**
+👉 **開発依存関係としてViteをインストールする**
 
 ```shellscript nonumber
 npm install -D vite
 ```
 
-Remixはもはやスタンドアロンのコンパイラではなく、Viteプラグインに過ぎないので、Viteにフックアップする必要があります。
+Remixは現在Viteプラグインなので、Viteに接続する必要があります。
 
-👉 **Remix アプリのルートに `vite.config.ts` を作成し、`remix.config.js` を削除**
+👉 **Remixアプリのルートにある`remix.config.js`を`vite.config.ts`に置き換える**
 
 ```ts filename=vite.config.ts
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -227,7 +256,7 @@ export default defineConfig({
 });
 ```
 
-[サポートされているRemix設定オプション][vite-config]のサブセットは、プラグインに直接渡す必要があります:
+[サポートされているRemixの設定オプション][vite-config] のサブセットは、プラグインに直接渡す必要があります。
 
 ```ts filename=vite.config.ts lines=[3-5]
 export default defineConfig({
@@ -241,9 +270,9 @@ export default defineConfig({
 
 #### HMR & HDR
 
-Viteは HMR やその他の開発機能のためのロバストなクライアントサイドランタイムを提供するので、`<LiveReload />`コンポーネントは不要になりました。Remix Viteプラグインを使って開発する際は、`<Scripts />`コンポーネントがViteのクライアントサイドランタイムやその他の開発用スクリプトを自動的に含むようになります。
+Viteは、HMRのような開発機能のための堅牢なクライアントサイドランタイムを提供するため、`<LiveReload />`コンポーネントは不要になりました。Remix Viteプラグインを開発で使用する場合、`<Scripts />`コンポーネントは自動的にViteのクライアントサイドランタイムとその他の開発時のみのスクリプトを含みます。
 
-👉 **`<LiveReload/>`を削除し、`<Scripts />`を残す**
+👉 **`<LiveReload/>`を削除し、`<Scripts />`を保持**
 
 ```diff
   import {
@@ -269,13 +298,13 @@ Viteは HMR やその他の開発機能のためのロバストなクライア�
 
 #### TypeScript統合
 
-Viteは様々なファイルタイプのインポートを扱いますが、既存のRemixコンパイラとは異なる方法で行う場合があるので、`@remix-run/dev`の古い型ではなく、`vite/client`の型を参照する必要があります。
+Viteは様々な種類のファイルのインポートを処理しますが、既存のRemixコンパイラとは異なる方法で処理することがあります。そのため、非推奨になった`@remix-run/dev`からの型ではなく、`vite/client`からViteの型を参照しましょう。
 
-`vite/client`が提供する型は`@remix-run/dev`に暗黙的に含まれる型と互換性がないため、TypeScript設定で`skipLibCheck`フラグを有効にする必要があります。将来的にViteプラグインがデフォルトのコンパイラになれば、Remixはこのフラグを必要としなくなるでしょう。
+`vite/client`によって提供されるモジュール型は、`@remix-run/dev`に暗黙的に含まれるモジュール型と互換性がないため、TypeScriptの設定で`skipLibCheck`フラグを有効にする必要があります。Viteプラグインがデフォルトのコンパイラになれば、Remixはこのフラグを必要としなくなります。
 
-👉 **`tsconfig.json`を更新**
+👉 **`tsconfig.json`の更新**
 
-`tsconfig.json`の`types`フィールドを更新し、`skipLibCheck`、`module`、`moduleResolution`が適切に設定されていることを確認してください。
+`tsconfig.json`の`types`フィールドを更新し、`skipLibCheck`、`module`、`moduleResolution`が正しく設定されていることを確認してください。
 
 ```json filename=tsconfig.json lines=[3-6]
 {
@@ -290,7 +319,14 @@ Viteは様々なファイルタイプのインポートを扱いますが、既�
 
 👉 **`remix.env.d.ts`の更新/削除**
 
-`remix.env.d.ts`から以下の型宣言を削除します
+`remix.env.d.ts`内の以下の型宣言を削除してください。
+
+```diff filename=remix.env.d.ts
+- /// <reference types="@remix-run/dev" />
+- /// <reference types="@remix-run/node" />
+```
+
+`remix.env.d.ts`が空になった場合は、削除してください。
 
 ```shellscript nonumber
 rm remix.env.d.ts
@@ -298,16 +334,17 @@ rm remix.env.d.ts
 
 #### Remix App Serverからの移行
 
-開発時に`remix-serve`を使っていた場合 (または`remix dev`に`-c`フラグをつけていなかった場合)、新しいミニマルなdevサーバーに切り替える必要があります。
-これは Remix Viteプラグインに組み込まれており、`remix vite:dev`を実行すると自動的に起動します。
+開発環境で`remix-serve`（または`-c`フラグなしの`remix dev`）を使用していた場合は、新しい最小限の開発サーバーに切り替える必要があります。
+これはRemix Viteプラグインに組み込まれており、`remix vite:dev`を実行すると動作します。
 
-Remix Viteプラグインは[グローバルなNode polyfill][global-node-polyfills]をインストールしないので、`remix-serve`に依存していた場合は自分でインストールする必要があります。これは、Vite設定の冒頭で`installGlobals`を呼び出すのが一番簡単です。
+Remix Viteプラグインは、[グローバルNodeポリフィル][global-node-polyfills]をインストールしないため、`remix-serve`に依存していた場合は、自分でインストールする必要があります。これを行う最も簡単な方法は、Vite設定の先頭で`installGlobals`を呼び出すことです。
 
-Viteのdevサーバーのデフォルトポートは`remix-serve`とは異なるので、同じポートを維持したい場合は、Viteの`server.port`オプションで設定する必要があります。
+Vite開発サーバーのデフォルトポートは`remix-serve`とは異なるため、同じポートを維持したい場合は、Viteの`server.port`オプションで設定する必要があります。
 
-また、新しいビルド出力パスに合わせて更新する必要があります。サーバーは`build/server`に、クライアントアセットは`build/client`にビルドされます。
+また、サーバーには`build/server`、クライアントアセットには`build/client`という新しいビルド出力パスに更新する必要があります。
 
-👉 **`dev`、`build`、`start`スクリプトを更新**
+
+👉 **`dev`、`build`、`start`スクリプトを更新する**
 
 ```json filename=package.json lines=[3-5]
 {
@@ -319,7 +356,7 @@ Viteのdevサーバーのデフォルトポートは`remix-serve`とは異なる
 }
 ```
 
-👉 **グローバルなNode polyfillをVite設定に追加**
+👉 **Vite設定でグローバルNodeポリフィルをインストールする**
 
 ```diff filename=vite.config.ts
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -333,7 +370,7 @@ export default defineConfig({
 });
 ```
 
-👉 **Viteのdevサーバーポートを設定(オプション)**
+👉 **Vite開発サーバーポートを設定する（オプション）**
 
 ```js filename=vite.config.ts lines=[2-4]
 export default defineConfig({
@@ -346,16 +383,15 @@ export default defineConfig({
 
 #### カスタムサーバーの移行
 
-カスタムサーバーを開発時に使っていた場合、カスタムサーバーを編集して Viteの`connect`ミドルウェアを使う必要があります。
-これにより、開発中にアセットリクエストと初期レンダリングリクエストをViteにデリゲートできるので、Viteの優れたDXを活用できます。
+開発でカスタムサーバーを使用していた場合、Viteの`connect`ミドルウェアを使用するようにカスタムサーバーを編集する必要があります。これにより、開発中にアセットリクエストと最初のレンダリングリクエストがViteに委任され、カスタムサーバーを使用する場合でも、Viteの優れた開発者エクスペリエンスを活用できます。
 
-その上で、開発時に`"virtual:remix/server-build"`という仮想モジュールをロードして、Viteベースのリクエストハンドラを作成できます。
+その後、開発中に仮想モジュール`"virtual:remix/server-build"`をロードして、Viteベースのリクエストハンドラーを作成できます。
 
-また、サーバーコードを更新して新しいビルド出力パスを参照する必要がああります。サーバービルドは`build/server`に、クライアントアセットは`build/client`にビルドされます。
+また、サーバーコードを更新して、新しいビルド出力パスを参照する必要があります。サーバービルドの場合は`build/server`、クライアントアセットの場合は`build/client`です。
 
-Expressを使っていた場合の例は以下の通りです。
+たとえば、Expressを使用している場合、次のように実行できます。
 
-👉 **`server.mjs`ファイルを更新**
+👉 **`server.mjs`ファイルの更新**
 
 ```ts filename=server.mjs lines=[7-14,18-21,29,36-41]
 import { createRequestHandler } from "@remix-run/express";
@@ -375,7 +411,7 @@ const viteDevServer =
 
 const app = express();
 
-// アセットリクエストを処理
+// アセットリクエストの処理
 if (viteDevServer) {
   app.use(viteDevServer.middlewares);
 } else {
@@ -389,7 +425,7 @@ if (viteDevServer) {
 }
 app.use(express.static("build/client", { maxAge: "1h" }));
 
-// SSRリクエストを処理
+// SSRリクエストの処理
 app.all(
   "*",
   createRequestHandler({
@@ -408,7 +444,7 @@ app.listen(port, () =>
 );
 ```
 
-👉 **`build`、`dev`、`start`スクリプトを更新**
+👉 **`build`、`dev`、`start`スクリプトの更新**
 
 ```json filename=package.json lines=[3-5]
 {
@@ -420,24 +456,28 @@ app.listen(port, () =>
 }
 ```
 
-TypeScriptでカスタムサーバーを書きたい場合は、[`tsx`][tsx]や[`tsm`][tsm]などのツールを使ってサーバーを実行できます:
+必要に応じて、TypeScriptでカスタムサーバーを作成することもできます。その後、[`tsx`][tsx]や[`tsm`][tsm]などのツールを使用してカスタムサーバーを実行できます。
 
 ```shellscript nonumber
 tsx ./server.ts
 node --loader tsm ./server.ts
 ```
 
-ただし、サーバー起動時の初期遅延が若干目立つ可能性があります。
+ただし、これを行うと、サーバーの初回起動時に顕著な遅延が発生する可能性があることに注意してください。
 
-#### Cloudflareファンクションの移行
+
+[tsx]: <リンクをtsxのドキュメントに挿入>
+[tsm]: <リンクをtsmのドキュメントに挿入>
+
+#### Cloudflare Functions の移行
 
 <docs-warning>
 
-Remix Viteプラグインは、フルスタックアプリケーション向けに設計された[Cloudflare Pages][cloudflare-pages]のみをサポートしています。[Cloudflare Workers Sites][cloudflare-workers-sites]をご利用の場合は、[Cloudflare Pagesへの移行ガイド][cloudflare-pages-migration-guide]をご覧ください。
+Remix Vite プラグインは、フルスタックアプリケーション向けに特別に設計された[Cloudflare Pages][cloudflare-pages]のみを正式にサポートしています。[Cloudflare Workers Sites][cloudflare-workers-sites]とは異なります。現在 Cloudflare Workers Sites を使用している場合は、[Cloudflare Pages 移行ガイド][cloudflare-pages-migration-guide]を参照してください。
 
 </docs-warning>
 
-👉 `remix`プラグインの前に`cloudflareDevProxyVitePlugin`を追加して、Viteのdevサーバーのミドルウェアを適切に上書きする!
+👉 Vite開発サーバーのミドルウェアを正しく上書きするには、`remix`プラグインの**前**に`cloudflareDevProxyVitePlugin`を追加してください！
 
 ```ts filename=vite.config.ts lines=[3,9]
 import {
@@ -451,11 +491,11 @@ export default defineConfig({
 });
 ```
 
-アプリケーションでは、[Remix設定の`server`フィールド][remix-config-server]を使ってCatchallのCloudflareファンクションを生成していた可能性があります。
-Viteでは、このような間接的な方法は不要になりました。
-代わりに、Express用やその他のカスタムサーバー用と同じように、Cloudflare用の Catchall ルートを直接記述できます。
+Cloudflare アプリケーションでは、[Remix 設定の `server` フィールド][remix-config-server]を設定して、キャッチオール Cloudflare Function を生成している可能性があります。
+Vite では、この間接参照は不要になりました。
+代わりに、Express やその他のカスタムサーバーと同様に、Cloudflare 用のキャッチオールルートを直接作成できます。
 
-👉 **Remixの Catchall ルートを作成**
+👉 **Remix のキャッチオールルートを作成する**
 
 ```ts filename=functions/[[page]].ts
 import { createPagesFunctionHandler } from "@remix-run/cloudflare-pages";
@@ -468,13 +508,13 @@ export const onRequest = createPagesFunctionHandler({
 });
 ```
 
-👉 **バインディングと環境変数は`context.cloudflare.env`から、`context.env`ではなく**
+👉 **`context.env` ではなく `context.cloudflare.env` を使用して、バインディングと環境変数にアクセスする**
 
-主に開発時にはViteを使いますが、Wranglerでプレビューやデプロイすることもできます。
+開発中は主に Vite を使用しますが、Wrangler を使用してアプリのプレビューとデプロイを行うこともできます。
 
-詳細は、このドキュメントの[_Cloudflare_][cloudflare-vite]セクションをご覧ください。
+詳細については、このドキュメントの[*Cloudflare*][cloudflare-vite]セクションを参照してください。
 
-👉 **`package.json`のスクリプトを更新**
+👉 **`package.json` スクリプトを更新する**
 
 ```json filename=package.json lines=[3-6]
 {
@@ -487,16 +527,16 @@ export const onRequest = createPagesFunctionHandler({
 }
 ```
 
-#### ビルド出力パスの参照の更新
+#### ビルド出力パスの参照を移行する
 
-既存のRemixコンパイラのデフォルトオプションを使っていた場合、サーバーは`build`に、クライアントは`public/build`にビルドされていました。Viteが`public`ディレクトリを扱う方法と、既存のRemixコンパイラとは異なるため、これらの出力パスが変更されました。
+既存のRemixコンパイラのデフォルトオプションを使用する場合、サーバーは`build`ディレクトリに、クライアントは`public/build`ディレクトリにコンパイルされていました。Viteが`public`ディレクトリを扱う方法と既存のRemixコンパイラとの違いにより、これらの出力パスが変更されました。
 
-👉 **ビルド出力パスの参照を更新**
+👉 **ビルド出力パスの参照を更新する**
 
-- サーバーは現在、デフォルトで`build/server`にビルドされます。
-- クライアントは現在、デフォルトで`build/client`にビルドされます。
+* サーバーは、デフォルトで`build/server`ディレクトリにコンパイルされるようになりました。
+* クライアントは、デフォルトで`build/client`ディレクトリにコンパイルされるようになりました。
 
-例えば、[Blues Stack][blues-stack]のDockerfileを更新する場合:
+例えば、[Blues Stack][blues-stack]のDockerfileを更新するには、以下のようにします。
 
 ```diff filename=Dockerfile
 -COPY --from=build /myapp/build /myapp/build
@@ -505,19 +545,22 @@ export const onRequest = createPagesFunctionHandler({
 +COPY --from=build /myapp/build/client /myapp/build/client
 ```
 
+
+[blues-stack]:  (Blues Stackへのリンクをここに挿入)
+
 #### パスエイリアスの設定
 
-Remixコンパイラは、`tsconfig.json`の`paths`オプションを活用してパスエイリアスを解決していました。Remixコミュニティでは、`app`ディレクトリに`~`というエイリアスを定義するのが一般的でした。
+Remixコンパイラは、パスエイリアスの解決に`tsconfig.json`の`paths`オプションを利用します。Remixコミュニティでは一般的に、`~`を`app`ディレクトリのエイリアスとして定義するために使用されます。
 
-Viteはデフォルトではパスエイリアスを提供していません。この機能に依存していた場合は、[vite-tsconfig-paths][vite-tsconfig-paths]プラグインを使ってRemixコンパイラと同様の動作を実現できます:
+Viteはデフォルトではパスエイリアスを提供しません。この機能に依存していた場合、[vite-tsconfig-paths][vite-tsconfig-paths]プラグインをインストールして、Remixコンパイラの動作に合わせて、`tsconfig.json`からのパスエイリアスをViteで自動的に解決することができます。
 
-👉 **`vite-tsconfig-paths`をインストール**
+👉 **`vite-tsconfig-paths`のインストール**
 
 ```shellscript nonumber
 npm install -D vite-tsconfig-paths
 ```
 
-👉 **Vite設定に`vite-tsconfig-paths`を追加**
+👉 **Vite設定への`vite-tsconfig-paths`の追加**
 
 ```ts filename=vite.config.ts lines=[3,6]
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -531,17 +574,17 @@ export default defineConfig({
 
 #### `@remix-run/css-bundle`の削除
 
-Viteには、CSS Side Effect インポート、PostCSS、CSS Modules など、CSS バンドリングの機能が組み込まれています。Remix Viteプラグインは、自動的にバンドルされたCSSをリレバントなルートに適用します。
+Viteは、CSSの副作用インポート、PostCSS、CSS Modulesなどを含む、CSSバンドル機能を組み込みでサポートしています。Remix Viteプラグインは、バンドルされたCSSを関連するルートに自動的にアタッチします。
 
-<nobr>[`@remix-run/css-bundle`][css-bundling]</nobr>パッケージは、Viteを使う場合は不要になります。なぜなら、その`cssBundleHref`エクスポートは常に`undefined`になるからです。
+<nobr>[`@remix-run/css-bundle`][css-bundling]</nobr>パッケージは、Viteを使用する場合、その`cssBundleHref`エクスポートは常に`undefined`になるため、冗長です。
 
-👉 **`@remix-run/css-bundle`をアンインストール**
+👉 **`@remix-run/css-bundle`をアンインストールする**
 
 ```shellscript nonumber
 npm uninstall @remix-run/css-bundle
 ```
 
-👉 **`cssBundleHref`の参照を削除**
+👉 **`cssBundleHref`への参照を削除する**
 
 ```diff filename=app/root.tsx
 - import { cssBundleHref } from "@remix-run/css-bundle";
@@ -555,7 +598,7 @@ npm uninstall @remix-run/css-bundle
   ];
 ```
 
-ルートの`links`関数が`cssBundleHref`を設定するためだけに使われている場合は、完全に削除できます。
+ルートの`links`関数が`cssBundleHref`を接続するためだけに使用されている場合、完全に削除できます。
 
 ```diff filename=app/root.tsx
 - import { cssBundleHref } from "@remix-run/css-bundle";
@@ -568,15 +611,15 @@ npm uninstall @remix-run/css-bundle
 - ];
 ```
 
-#### `links`で参照されるCSSインポートを修正
+#### `links` で参照されている CSS インポートを修正する
 
-<docs-info>これは、[CSSバンドリングの他の形式][css-bundling]、例えばCSSモジュール、CSS Side Effect インポート、Vanilla Extract などでは必要ありません。</docs-info>
+<docs-info>これは、[CSS バンドリング][css-bundling] の他の形式（例：CSS Modules、CSS サイドエフェクトインポート、Vanilla Extract など）には必要ありません。</docs-info>
 
-[`links`関数でCSSを参照している][regular-css]場合、対応するCSSインポートを[Viteの明示的な`?url`インポート構文][vite-url-imports]に更新する必要があります。
+[ `links` 関数で CSS を参照している場合][regular-css]、対応する CSS インポートを [Vite の明示的な `?url` インポート構文を使用するように更新する必要があります。][vite-url-imports]
 
-👉 **`links`で使われているCSSインポートに`?url`を追加**
+👉 **`links` で使用されている CSS インポートに `?url` を追加する**
 
-<docs-warning>`.css?url`インポートには、Vite v5.1以降が必要です</docs-warning>
+<docs-warning>`.css?url` インポートには、Vite v5.1 以降が必要です。</docs-warning>
 
 ```diff
 -import styles from "~/styles/dashboard.css";
@@ -589,12 +632,18 @@ export const links = () => {
 }
 ```
 
-#### TailwindにPostCSSを使って有効化
 
-プロジェクトが [Tailwind CSS][tailwind] を使っている場合、Remix コンパイラでは `tailwind` オプションを有効にするだけで設定が不要でした。
-しかし、Viteの場合は明示的にPostCSSの設定ファイルが必要です。
+[css-bundling]:  (CSS バンドリングへのリンク)
+[regular-css]: (通常のCSS参照へのリンク)
+[vite-url-imports]: (Viteの?urlインポートへのリンク)
 
-👉 **PostCSSの設定ファイルがない場合は追加し、`tailwindcss`プラグインを含める**
+
+#### PostCSS を介して Tailwind を有効化
+
+プロジェクトで [Tailwind CSS][tailwind] を使用している場合、まず、Vite によって自動的に検出される [PostCSS][postcss] 設定ファイルがあることを確認する必要があります。
+これは、Remix の `tailwind` オプションが有効になっている場合、Remix コンパイラでは PostCSS 設定ファイルが不要だったためです。
+
+👉 **PostCSS 設定ファイルが存在しない場合は追加し、`tailwindcss` プラグインを含めます**
 
 ```js filename=postcss.config.mjs
 export default {
@@ -604,10 +653,10 @@ export default {
 };
 ```
 
-プロジェクトにすでにPostCSSの設定ファイルがある場合は、`tailwindcss`プラグインが含まれていない可能性があります。
-これは、Remixコンパイラの [`tailwind` 設定オプション][tailwind-config-option]が有効だった場合、自動的に含まれていたためです。
+プロジェクトに既に PostCSS 設定ファイルがある場合は、`tailwindcss` プラグインがまだ存在しない場合は追加する必要があります。
+これは、Remix コンパイラが Remix の [`tailwind` 設定オプション][tailwind-config-option] が有効になっている場合、このプラグインを自動的に含めていたためです。
 
-👉 **PostCSSの設定にTailwindプラグインが含まれていない場合は追加**
+👉 **`tailwindcss` プラグインが不足している場合は、PostCSS 設定ファイルに追加します**
 
 ```js filename=postcss.config.mjs lines=[3]
 export default {
@@ -618,21 +667,28 @@ export default {
 };
 ```
 
-👉 **Tailwind CSS インポートの移行**
+👉 **Tailwind CSS のインポートを移行します**
 
-[`links`関数でTailwind CSSファイルを参照している][regular-css]場合、[Tailwind CSSインポートステートメントを移行する必要があります][fix-up-css-imports-referenced-in-links]。
+[ `links` 関数で Tailwind CSS ファイルを参照している場合][regular-css]、[Tailwind CSS のインポート文を移行する必要があります。][fix-up-css-imports-referenced-in-links]
 
-#### Vanilla Extractプラグインの追加
 
-[Vanilla Extract][vanilla-extract]を使っている場合は、Viteプラグインを設定する必要があります。
+[tailwind]: (Tailwind CSSへのリンク)
+[postcss]: (PostCSSへのリンク)
+[tailwind-config-option]: (Remixのtailwind設定オプションへのリンク)
+[regular-css]: (通常のCSS参照方法へのリンク)
+[fix-up-css-imports-referenced-in-links]: (CSSインポート文の修正方法へのリンク)
 
-👉 **[Vanilla Extractの公式Viteプラグイン][vanilla-extract-vite-plugin]をインストール**
+#### Vanilla Extract プラグインの追加
+
+[Vanilla Extract][vanilla-extract] を使用している場合は、Viteプラグインを設定する必要があります。
+
+👉 **公式の [Vanilla Extract Viteプラグイン][vanilla-extract-vite-plugin] をインストールします**
 
 ```shellscript nonumber
 npm install -D @vanilla-extract/vite-plugin
 ```
 
-👉 **Vite設定にVanilla Extractプラグインを追加**
+👉 **Vite設定にVanilla Extractプラグインを追加します**
 
 ```ts filename=vite.config.ts lines=[2,6]
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -644,11 +700,15 @@ export default defineConfig({
 });
 ```
 
+
+[vanilla-extract]: <Vanilla Extractへのリンクをここに挿入>
+[vanilla-extract-vite-plugin]: <Vanilla Extract Viteプラグインへのリンクをここに挿入>
+
 #### MDXプラグインの追加
 
-[MDX][mdx]を使っている場合、ViteのプラグインAPI はRollupのプラグインAPI の拡張なので、公式の[MDX Rollupプラグイン][mdx-rollup-plugin]を使うべきです:
+[MDX][mdx]を使用している場合、ViteのプラグインAPIは[Rollup][rollup]プラグインAPIの拡張であるため、公式の[MDX Rollupプラグイン][mdx-rollup-plugin]を使用する必要があります。
 
-👉 **MDX Rollupプラグインをインストール**
+👉 **MDX Rollupプラグインのインストール**
 
 ```shellscript nonumber
 npm install -D @mdx-js/rollup
@@ -656,12 +716,12 @@ npm install -D @mdx-js/rollup
 
 <docs-info>
 
-RemixプラグインはJavaScriptやTypeScriptファイルを処理することを期待しているので、他の言語 (MDXなど) からの変換は先に行う必要があります。
-この場合、MDXプラグインをRemixプラグインの前に配置する必要があります。
+RemixプラグインはJavaScriptまたはTypeScriptファイルを処理することを想定しているため、MDXなどの他の言語からのトランスパイルは先に実行する必要があります。
+この場合、MDXプラグインをRemixプラグインの*前に*配置する必要があります。
 
 </docs-info>
 
-👉 **Vite設定にMDX Rollupプラグインを追加**
+👉 **Vite設定へのMDX Rollupプラグインの追加**
 
 ```ts filename=vite.config.ts lines=[1,6]
 import mdx from "@mdx-js/rollup";
@@ -673,17 +733,22 @@ export default defineConfig({
 });
 ```
 
-##### MDXフロントマターのサポート
 
-Remixコンパイラでは、[MDXでフロントマターを定義][mdx-frontmatter]できました。この機能を使っていた場合、Viteでは[remark-mdx-frontmatter]を使って実現できます。
+[mdx]: <a href="https://mdxjs.com/">https://mdxjs.com/</a>
+[rollup]: <a href="https://rollupjs.org/">https://rollupjs.org/</a>
+[mdx-rollup-plugin]: <a href="https://github.com/mdx-js/mdx/tree/main/packages/rollup">https://github.com/mdx-js/mdx/tree/main/packages/rollup</a>
 
-👉 **必要な[Remark][remark]フロントマタープラグインをインストール**
+##### MDXフロントマターサポートの追加
+
+Remixコンパイラでは、[MDXのフロントマター][mdx-frontmatter]を定義できました。この機能を使用していた場合、Viteでは[remark-mdx-frontmatter]を使用して実現できます。
+
+👉 **必要な[Remark][remark]フロントマタープラグインをインストールする**
 
 ```shellscript nonumber
 npm install -D remark-frontmatter remark-mdx-frontmatter
 ```
 
-👉 **MDX RollupプラグインにRemarkフロントマタープラグインを渡す**
+👉 **RemarkフロントマタープラグインをMDX Rollupプラグインに渡す**
 
 ```ts filename=vite.config.ts lines=[3-4,9-14]
 import mdx from "@mdx-js/rollup";
@@ -705,9 +770,9 @@ export default defineConfig({
 });
 ```
 
-Remixコンパイラでは、フロントマターのエクスポート名は`attributes`でしたが、フロントマタープラグインのデフォルトのエクスポート名は`frontmatter`です。エクスポート名を設定することは可能ですが、代わりにアプリコードを更新して、デフォルトのエクスポート名を使うことをお勧めします。
+Remixコンパイラでは、フロントマターのエクスポート名は`attributes`でした。これは、フロントマタープラグインのデフォルトのエクスポート名`frontmatter`とは異なります。フロントマターのエクスポート名を構成することもできますが、代わりにデフォルトのエクスポート名を使用するようにアプリコードを更新することをお勧めします。
 
-👉 **MDXファイル内のMDX `attributes` エクスポートを`frontmatter`に変更**
+👉 **MDXファイル内でMDXの`attributes`エクスポート名を`frontmatter`に名前変更する**
 
 ```diff filename=app/posts/first-post.mdx
   ---
@@ -718,7 +783,7 @@ Remixコンパイラでは、フロントマターのエクスポート名は`at
 + # {frontmatter.title}
 ```
 
-👉 **MDX `attributes`エクスポートを`frontmatter`に変更(consumer側)**
+👉 **コンシューマー向けにMDXの`attributes`エクスポート名を`frontmatter`に名前変更する**
 
 ```diff filename=app/routes/posts/first-post.tsx
   import Component, {
@@ -727,9 +792,12 @@ Remixコンパイラでは、フロントマターのエクスポート名は`at
   } from "./posts/first-post.mdx";
 ```
 
+[mdx-frontmatter]: <必要なURLをここに挿入>
+[remark]: <必要なURLをここに挿入>
+
 ###### MDXファイルの型定義
 
-👉 **`env.d.ts`にMDX用の型を追加**
+👉 **`env.d.ts`に`*.mdx`ファイルの型を追加する**
 
 ```ts filename=env.d.ts lines=[4-8]
 /// <reference types="@remix-run/node" />
@@ -742,13 +810,11 @@ declare module "*.mdx" {
 }
 ```
 
-###### MDXのフロントマターをルートエクスポートにマッピング
+###### Map MDX frontmatter to route exports
 
-Remixコンパイラでは、フロントマターから`headers`、`meta`、`handle`ルートエクスポートを定義できました。
-この Remix 固有の機能は、`remark-mdx-frontmatter`プラグインではサポートされていません。
-この機能を使っていた場合は、手動でフロントマターをルートエクスポートにマッピングする必要があります:
+Remixコンパイラでは、frontmatterに`headers`、`meta`、`handle`ルートエクスポートを定義することができました。このRemix固有の機能は、`remark-mdx-frontmatter`プラグインでは明らかにサポートされていません。この機能を使用していた場合は、frontmatterをルートエクスポートに手動でマッピングする必要があります。
 
-👉 **MDXルートでフロントマターをルートエクスポートにマッピング**
+👉 **MDXルートのfrontmatterをルートエクスポートにマッピングする**
 
 ```mdx lines=[10-11]
 ---
@@ -766,7 +832,7 @@ export const headers = frontmatter.headers;
 # Hello World
 ```
 
-注意点として、MDXのルートエクスポートを明示的にマッピングすることで、好きな形式のフロントマターを使うことができるようになります。
+MDXルートエクスポートを明示的にマッピングしているので、好きなfrontmatter構造を使用できます。
 
 ```mdx
 ---
@@ -787,20 +853,17 @@ export const meta = () => {
 # Hello World
 ```
 
-###### MDXファイル名の使用の更新
+###### MDX ファイル名の使用方法の更新
 
-Remixコンパイラでは、すべてのMDXファイルから`filename`エクスポートが提供されていました。
-これは主に、MDXルートのコレクションにリンクする際に使われていました。
-この機能を使っていた場合、Viteでは[グローブインポート][glob-imports]を使うと、ファイル名をモジュールにマッピングする便利なデータ構造が得られます。
-これにより、個々のMDXファイルをすべて手動でインポートする必要がなくなります。
+Remix コンパイラは、すべての MDX ファイルから `filename` エクスポートも提供していました。これは主に、MDX ルートのコレクションへのリンクを有効にするために設計されていました。この機能を使用していた場合は、[glob インポート][glob-imports] を介して Vite で実現できます。これにより、ファイル名とモジュールをマッピングする便利なデータ構造が得られます。これにより、各ファイルを個別にインポートする必要がなくなるため、MDX ファイルのリストを維持することがはるかに容易になります。
 
-例えば、`posts`ディレクトリ内のすべてのMDXファイルをインポートするには:
+たとえば、`posts` ディレクトリ内のすべての MDX ファイルをインポートするには、次のようにします。
 
 ```ts
 const posts = import.meta.glob("./posts/*.mdx");
 ```
 
-これは、以下のように個々にインポートするのと同等です:
+これは、手動で次のように記述することと同じです。
 
 ```ts
 const posts = {
@@ -811,7 +874,7 @@ const posts = {
 };
 ```
 
-すぐにMDXファイルをインポートしたい場合は、以下のようにできます:
+必要に応じて、すべての MDX ファイルを事前にインポートすることもできます。
 
 ```ts
 const posts = import.meta.glob("./posts/*.mdx", {
@@ -819,43 +882,51 @@ const posts = import.meta.glob("./posts/*.mdx", {
 });
 ```
 
+[glob-imports]:  (glob インポートへのリンクをここに挿入してください)
+
 ## デバッグ
 
-`NODE_OPTIONS`環境変数を使ってデバッグセッションを開始できます:
+[`NODE_OPTIONS` 環境変数][node-options] を使用してデバッグセッションを開始できます。
 
 ```shellscript nonumber
 NODE_OPTIONS="--inspect-brk" npm run dev
 ```
 
-次に、ブラウザからデバッガーを接続できます。
-例えば、Chromeでは `chrome://inspect` を開いたり、開発者ツールのNodeJSアイコンをクリックするとデバッガーに接続できます。
+その後、ブラウザからデバッガを接続できます。
+たとえば、Chromeでは`chrome://inspect`を開くか、開発ツールのNodeJSアイコンをクリックしてデバッガを接続できます。
+
+
+[node-options]:  (This needs a URL to be added if available.  For example:  [https://nodejs.org/api/cli.html#cli_node_options](https://nodejs.org/api/cli.html#cli_node_options))
 
 #### vite-plugin-inspect
 
-[`vite-plugin-inspect`][vite-plugin-inspect]は、各Viteプラグインがコードをどのように変換しているか、およびプラグインごとの所要時間を表示してくれます。
+[`vite-plugin-inspect`][vite-plugin-inspect] は、各Viteプラグインがどのようにコードを変換し、各プラグインにかかる時間を表示します。
 
 ## パフォーマンス
 
-Remixには`--profile`フラグがあり、パフォーマンスプロファイリングが可能です。
+Remixには、パフォーマンスプロファイリングのための`--profile`フラグが含まれています。
 
 ```shellscript nonumber
 remix vite:build --profile
 ```
 
-`--profile`モードで実行すると、`.cpuprofile`ファイルが生成されます。これをspeedscope.appにアップロードして分析できます。
+`--profile`を付けて実行すると、`.cpuprofile`ファイルが生成されます。これは共有したり、speedscope.appにアップロードして分析したりできます。
 
-開発中も、`p + enter`を押してプロファイリングセッションを開始/停止できます。
-開発サーバーの起動時にプロファイリングを行いたい場合は、`--profile`フラグを使います:
+開発中にプロファイリングを行うには、開発サーバーの実行中に`p + enter`を押して、新しいプロファイリングセッションを開始するか、現在のセッションを停止することもできます。
+開発サーバーの起動をプロファイリングする必要がある場合は、`--profile`フラグを使用して起動時にプロファイリングセッションを初期化することもできます。
 
 ```shellscript nonumber
 remix vite:dev --profile
 ```
 
-[Viteのパフォーマンスドキュメント][vite-perf]も参考にしてください!
+[Vite パフォーマンスドキュメント][vite-perf]でさらにヒントを確認することもできます！
+
+
+[vite-perf]:  (Vite パフォーマンスドキュメントへのリンクをここに挿入してください)
 
 #### バンドル分析
 
-バンドルを視覚化、分析するには、[rollup-plugin-visualizer][rollup-plugin-visualizer]プラグインを使えます:
+バンドルを視覚化および分析するには、[rollup-plugin-visualizer][rollup-plugin-visualizer] プラグインを使用できます。
 
 ```ts filename=vite.config.ts
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -864,13 +935,13 @@ import { visualizer } from "rollup-plugin-visualizer";
 export default defineConfig({
   plugins: [
     remix(),
-    // `emitFile`は Remix が複数のバンドルを構築するため必要
+    // `emitFile` は、Remix が複数のバンドルをビルドするため必要です！
     visualizer({ emitFile: true }),
   ],
 });
 ```
 
-`remix vite:build`を実行すると、各バンドルに`stats.html`ファイルが生成されます:
+その後、`remix vite:build` を実行すると、各バンドルに `stats.html` ファイルが生成されます。
 
 ```
 build
@@ -883,48 +954,67 @@ build
     └── stats.html 👈
 ```
 
-`stats.html`をブラウザで開いて、バンドルの分析ができます。
+ブラウザで `stats.html` を開いて、バンドルを分析してください。
 
 ## トラブルシューティング
 
-[デバッグ][debugging]と[パフォーマンス][performance]のセクションで、一般的なトラブルシューティングのヒントを確認してください。
-また、[githubのRemix Viteプラグインの既知の問題][issues-vite]で、同様の問題が報告されていないかチェックしてください。
+一般的なトラブルシューティングのヒントについては、[デバッグ][debugging] セクションと[パフォーマンス][performance] セクションを確認してください。
+また、[GitHub の remix vite プラグインの既知の問題][issues-vite] を調べて、他に同じ問題を抱えている人がいないか確認してください。
+
+
+[debugging]:  (デバッグセクションへのリンクをここに挿入)
+[performance]: (パフォーマンスセクションへのリンクをここに挿入)
+[issues-vite]: (GitHub の issues ページへのリンクをここに挿入)
 
 #### HMR
 
-ホットアップデートを期待しているのにフルページリロードが発生する場合は、[ホットモジュール置換に関する議論][hmr]を確認し、一般的な問題への対処方法を学んでください。
+ホットアップデートを期待しているのに、ページ全体が再読み込みされる場合は、[ホットモジュール置換に関する議論][hmr] を参照して、React Fast Refreshの制限と一般的な問題の回避策について詳しく学んでください。
+
+
+[hmr]: [hmrのリンクをここに挿入]
 
 #### ESM / CJS
 
-ViteはESMとCJSの両方のディペンデンシーをサポートしますが、時々ESM/CJSの相互運用性の問題に遭遇することがあります。
-通常、これはディペンデンシーがESMをうまくサポートしていないためです。
-そしてそれは非常に難しい問題なので、私たちも彼らを非難するつもりはありません[ESMとCJSの両立は本当に難しい][modernizing-packages-to-esm]。
+ViteはESMとCJSの両方の依存関係をサポートしていますが、ESM/CJSの相互運用で問題が発生することがあります。
+通常、これは依存関係がESMを適切にサポートするように構成されていないことが原因です。
+そして、彼らを責めるわけではありません。[ESMとCJSの両方を適切にサポートするのは非常に難しいです][modernizing-packages-to-esm]。
 
-例の不具合を修正する方法の詳細については、[🎥 How to Fix CJS/ESM Bugs in Remix][how-fix-cjs-esm]をご覧ください。
+例のバグを修正する手順については、[🎥 How to Fix CJS/ESM Bugs in Remix][how-fix-cjs-esm]をご覧ください。
 
-ディペンデンシーが正しく設定されていないかどうかを診断するには、[publint][publint]や[_Are The Types Wrong_][arethetypeswrong]を使ってください。
-さらに、[Viteの`ssr.noExternal`オプション][ssr-no-external]を使って、Remixコンパイラの [`serverDependenciesToBundle`][server-dependencies-to-bundle]と同様の動作をEmulateするこ
-ともできます。
+依存関係のいずれかが誤って構成されているかどうかを診断するには、[publint][publint]または[*Are The Types Wrong*][arethetypeswrong]を確認してください。
+さらに、[vite-plugin-cjs-interopプラグイン][vite-plugin-cjs-interop]を使用して、外部CJS依存関係の`default`エクスポートに関する問題を解決できます。
 
-#### 開発中にブラウザにサーバーコードのエラーが表示される
+最後に、[Viteの`ssr.noExternal`オプション][ssr-no-external]を使用して、サーバーバンドルにバンドルする依存関係を明示的に構成し、Remixコンパイラの[`serverDependenciesToBundle`][server-dependencies-to-bundle]（Remix Viteプラグインを使用）をエミュレートすることもできます。
 
-開発中にブラウザのコンソールにサーバーコードに関するエラーが表示される場合は、[明示的にサーバー専用コードを分離][explicitly-isolate-server-only-code]する必要があります。
-例えば、以下のようなエラーが表示された場合:
+
+[modernizing-packages-to-esm]: <a href="ここにリンクを挿入">ここにリンクを挿入</a>
+[how-fix-cjs-esm]: <a href="ここにリンクを挿入">ここにリンクを挿入</a>
+[publint]: <a href="ここにリンクを挿入">ここにリンクを挿入</a>
+[arethetypeswrong]: <a href="ここにリンクを挿入">ここにリンクを挿入</a>
+[vite-plugin-cjs-interop]: <a href="ここにリンクを挿入">ここにリンクを挿入</a>
+[ssr-no-external]: <a href="ここにリンクを挿入">ここにリンクを挿入</a>
+[server-dependencies-to-bundle]: <a href="ここにリンクを挿入">ここにリンクを挿入</a>
+
+#### 開発中のブラウザにおけるサーバーコードエラー
+
+開発中にブラウザコンソールにサーバーコードを指し示すエラーが表示される場合、[サーバー専用コードを明示的に分離する][explicitly-isolate-server-only-code]必要がある可能性があります。
+
+例えば、次のようなものが見られる場合：
 
 ```shellscript
 Uncaught ReferenceError: process is not defined
 ```
 
-`process`などのサーバー専用のグローバル変数を使っているモジュールを特定し、[別の`.server`モジュールや`vite-env-only`を使って隔離][explicitly-isolate-server-only-code]する必要があります。
-Viteはロールアップを使ってコードをツリーシェイクするので、これらのエラーは開発中にのみ発生します。
+`process`のようなサーバー専用グローバル変数を期待する依存関係を取り込んでいるモジュールを突き止め、[別の`.server`モジュール内、または`vite-env-only`を使用して][explicitly-isolate-server-only-code]コードを分離する必要があります。Viteは本番環境でコードをツリーシェイクするためにRollupを使用するため、これらのエラーは開発時のみ発生します。
 
-#### 他のViteベースのツールでのプラグインの使用 (Vitest、Storybookなど)
 
-Remix Viteプラグインは、アプリケーションの開発サーバーと本番ビルドでのみ使用することを意図しています。
-一方、Vitest やStorybookなどの他のViteベースのツールもVite設定ファイルを使用しますが、Remix Viteプラグインはこれらのツールと連携するように設計されていません。
-現時点では、他のViteベースのツールと併用する際は、プラグインを除外することをお勧めします。
+[explicitly-isolate-server-only-code]:  (この部分はリンク先URLに置き換えてください)
 
-Vitest の場合:
+#### その他のViteベースツール（例：Vitest、Storybook）でのプラグインの使用
+
+Remix Viteプラグインは、アプリケーションの開発サーバーと本番ビルドでの使用のみを目的としています。VitestやStorybookなど、Viteの設定ファイルを使用する他のViteベースのツールもありますが、Remix Viteプラグインはこれらのツールでの使用を想定して設計されていません。現在、他のViteベースのツールで使用する場合には、プラグインを除外することをお勧めします。
+
+Vitestの場合：
 
 ```ts filename=vite.config.ts lines=[5]
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -934,13 +1024,13 @@ export default defineConfig({
   plugins: [!process.env.VITEST && remix()],
   test: {
     environment: "happy-dom",
-    // 加えて、vitest実行時に ".env.test" を読み込む
+    // さらに、これはvitest実行中に".env.test"を読み込むためです
     env: loadEnv("test", process.cwd(), ""),
   },
 });
 ```
 
-Storybookの場合:
+Storybookの場合：
 
 ```ts filename=vite.config.ts lines=[7]
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -953,21 +1043,34 @@ export default defineConfig({
 });
 ```
 
-または、ツールごとに別のVite設定ファイルを使うこともできます。
-Remixに特化したVite設定ファイルを使う例:
+あるいは、各ツールに個別のVite設定ファイルを使用することもできます。たとえば、Remixに特化したVite設定を使用するには：
 
 ```shellscript nonumber
 remix vite:dev --config vite.config.remix.ts
 ```
 
-Remix Viteプラグインを提供しない場合は、[Vite Plugin React][vite-plugin-react]を自分で提供する必要がある
+Remix Viteプラグインを提供しない場合、設定で[Vite Plugin React][vite-plugin-react]を提供する必要がある場合もあります。たとえば、Vitestを使用する場合：
 
+```ts filename=vite.config.ts lines=[2,6]
+import { vitePlugin as remix } from "@remix-run/dev";
+import react from "@vitejs/plugin-react";
+import { defineConfig, loadEnv } from "vite";
 
-#### ドキュメントがリマウントされるときにスタイルが消える問題
+export default defineConfig({
+  plugins: [!process.env.VITEST ? remix() : react()],
+  test: {
+    environment: "happy-dom",
+    // さらに、これはvitest実行中に".env.test"を読み込むためです
+    env: loadEnv("test", process.cwd(), ""),
+  },
+});
+```
 
-Remix では、ドキュメント全体をReactで描画しています。この際、`head`要素に動的に要素が挿入されると問題が発生する可能性があります。ドキュメントが再マウントされると、既存の`head`要素が削除され新しいものに置き換わるため、Viteが開発中に注入した`style`要素が削除されてしまうのです。
+#### 開発中にドキュメントが再マウントされるとスタイルが消える
 
-これは Reactの既知の問題で、[canary版][react-canaries]で修正されています。リスクを理解した上で、特定の[Reactバージョン][react-versions]にピンポイントでアプリを固定し、[パッケージのオーバーライド][package-overrides]を使ってプロジェクト全体で同じバージョンのReactを使うことができます。例:
+Reactがドキュメント全体をレンダリングする場合（Remixが行うように）、`head`要素に動的に要素が挿入されると問題が発生する可能性があります。ドキュメントが再マウントされると、既存の`head`要素は削除され、完全に新しい要素に置き換えられ、Viteが開発中に挿入した`style`要素が削除されます。
+
+これは既知のReactの問題であり、[カナリアリリースチャンネル][react-canaries]で修正されています。リスクを理解している場合は、アプリを特定の[Reactバージョン][react-versions]に固定し、[パッケージオーバーライド][package-overrides]を使用して、プロジェクト全体でこれが唯一のReactバージョンであることを確認できます。例：
 
 ```json filename=package.json
 {
@@ -982,24 +1085,25 @@ Remix では、ドキュメント全体をReactで描画しています。この
 }
 ```
 
-<docs-info>参考までに、Next.jsはこの方法を内部的に採用しているので、一般的によく使われる手法です。Remixではデフォルトで提供されていませんが、これを使う選択肢はあります。</docs-info>
+<docs-info>参考までに、これはNext.jsが内部的にReactのバージョン管理を処理する方法です。そのため、Remixがデフォルトで提供していないにもかかわらず、このアプローチは予想以上に広く使用されています。</docs-info>
 
-この Viteによって開発中に注入されたスタイルの問題は、本番ビルドでは発生しません。なぜなら、静的なCSSファイルが生成されるからです。
+Viteによって挿入されたスタイルに関するこの問題は、開発中のみ発生することに注意することが重要です。**本番ビルドでは、静的CSSファイルが生成されるため、この問題は発生しません**。
 
-Remixでは、[ルートコンポーネントのデフォルトエクスポート][route-component]と、そのErrorBoundaryやHydrateFallbackエクスポートの間で描画が切り替わると、新しいドキュメントレベルのコンポーネントがマウントされるため、この問題が表面化する可能性があります。
+Remixでは、この問題は、[ルートルートのデフォルトコンポーネントエクスポート][route-component]とその[ErrorBoundary][error-boundary]および/または[HydrateFallback][hydrate-fallback]エクスポート間でレンダリングが切り替わる場合に発生する可能性があります。これは、新しいドキュメントレベルのコンポーネントがマウントされるためです。
 
-hydrationエラーも同様の問題を引き起こす可能性があります。hydrationエラーはアプリのコードが原因である場合もありますし、ブラウザ拡張機能によってドキュメントが書き換えられることが原因になることもあります。
+ハイドレーションエラーが原因で発生することもあります。これは、Reactがページ全体を最初から再レンダリングするためです。ハイドレーションエラーはアプリコードによって発生する可能性がありますが、ドキュメントを操作するブラウザ拡張機能によって発生する可能性もあります。
 
-これがViteに関連するのは、開発時にViteがCSSインポートをJSファイルに変換し、それらを副作用としてドキュメントにインジェクションしているためです。これにより、遅延読み込みやCSSファイルのHMRをサポートしています。
+これはViteにとって重要です。なぜなら、開発中はViteがCSSインポートをJSファイルに変換し、副作用としてドキュメントにスタイルを挿入するためです。Viteは、静的CSSファイルの遅延読み込みとHMRをサポートするためにこれを行います。
 
-例えば、アプリに以下のようなCSSファイルがあるとします:
+たとえば、アプリに次のCSSファイルがあるとします。
 
 <!-- prettier-ignore -->
+
 ```css filename=app/styles.css
 * { margin: 0 }
 ```
 
-開発時、このCSSファイルは以下のようなJavaScriptコードに変換されます:
+開発中は、このCSSファイルは、副作用としてインポートされると、次のJavaScriptコードに変換されます。
 
 <!-- prettier-ignore-start -->
 
@@ -1018,11 +1122,20 @@ import.meta.hot.prune(()=>__vite__removeStyle(__vite__id));
 
 <!-- prettier-ignore-end -->
 
-この変換は本番コードには適用されないため、この問題は開発時にのみ発生します。
+この変換は本番コードには適用されないため、このスタイルの問題は開発のみに影響します。
 
-#### 開発時のWranglerエラー
 
-Cloudflare Pagesを使っている場合、`wrangler pages dev`から以下のようなエラーが発生することがあります:
+[react-canaries]: (Reactカナリアリリースチャンネルへのリンクをここに挿入)
+[react-versions]: (Reactバージョンのリストへのリンクをここに挿入)
+[package-overrides]: (パッケージオーバーライドに関するドキュメントへのリンクをここに挿入)
+[route-component]: (ルートルートのデフォルトコンポーネントエクスポートに関するドキュメントへのリンクをここに挿入)
+[error-boundary]: (ErrorBoundaryに関するドキュメントへのリンクをここに挿入)
+[hydrate-fallback]: (HydrateFallbackに関するドキュメントへのリンクをここに挿入)
+
+
+#### 開発中のWranglerエラー
+
+Cloudflare Pagesを使用している場合、`wrangler pages dev`から次のエラーが発生することがあります。
 
 ```txt nonumber
 ERROR: Your worker called response.clone(), but did not read the body of both clones.
@@ -1037,94 +1150,167 @@ them), use `new Response(response.body, response)` instead.
 
 </docs-info>
 
-## 謝辞
+##謝辞
 
-Viteは素晴らしいプロジェクトで、Viteチームの皆様に感謝しています。
-特に、[Matias Capeletto、Arnaud Barré、Bjorn Luのようなメンバー][vite-team]からの指導に感謝します。
+Viteは素晴らしいプロジェクトであり、Viteチームの尽力に感謝しています。
+Viteチームの[Matias Capeletto、Arnaud Barré、Bjorn Lu][vite-team]には特に感謝しています。
 
-RemixコミュニティもすぐにViteサポートを探求してくれ、その貢献に感謝しています:
+RemixコミュニティはViteサポートの調査を迅速に進めてくれ、その貢献に感謝しています。
 
-- [Discussion: Consider using Vite][consider-using-vite]
-- [remix-kit][remix-kit]
-- [remix-vite][remix-vite]
-- [vite-plugin-remix][vite-plugin-remix]
+* [ディスカッション: Viteの使用を検討する][consider-using-vite]
+* [remix-kit][remix-kit]
+* [remix-vite][remix-vite]
+* [vite-plugin-remix][vite-plugin-remix]
 
-最後に、他のフレームワークがViteサポートをどのように実装したかにも触発されました:
+最後に、他のフレームワークがViteサポートを実装した方法からインスピレーションを受けました。
 
-- [Astro][astro]
-- [SolidStart][solidstart]
-- [SvelteKit][sveltekit]
+* [Astro][astro]
+* [SolidStart][solidstart]
+* [SvelteKit][sveltekit]
 
 [vite]: https://vitejs.dev
+
 [template-cloudflare]: https://github.com/remix-run/remix/tree/main/templates/cloudflare
+
 [public-path]: ../file-conventions/remix-config#publicpath
+
 [server-build-path]: ../file-conventions/remix-config#serverbuildpath
+
 [vite-config]: ../file-conventions/vite-config
+
 [vite-plugins]: https://vitejs.dev/plugins
+
 [vite-features]: https://vitejs.dev/guide/features
+
 [tsx]: https://github.com/esbuild-kit/tsx
+
 [tsm]: https://github.com/lukeed/tsm
+
 [vite-tsconfig-paths]: https://github.com/aleclarson/vite-tsconfig-paths
+
 [css-bundling]: ../styling/bundling
+
 [regular-css]: ../styling/css
+
 [vite-url-imports]: https://vitejs.dev/guide/assets.html#explicit-url-imports
+
 [tailwind]: https://tailwindcss.com
+
 [postcss]: https://postcss.org
+
 [tailwind-config-option]: ../file-conventions/remix-config#tailwind
+
 [vanilla-extract]: https://vanilla-extract.style
+
 [vanilla-extract-vite-plugin]: https://vanilla-extract.style/documentation/integrations/vite
+
 [mdx]: https://mdxjs.com
+
 [rollup]: https://rollupjs.org
+
 [mdx-rollup-plugin]: https://mdxjs.com/packages/rollup
+
 [mdx-frontmatter]: https://mdxjs.com/guides/frontmatter
+
 [remark-mdx-frontmatter]: https://github.com/remcohaszing/remark-mdx-frontmatter
+
 [remark]: https://remark.js.org
+
 [glob-imports]: https://vitejs.dev/guide/features.html#glob-import
+
 [issues-vite]: https://github.com/remix-run/remix/labels/vite
+
 [hmr]: ../discussion/hot-module-replacement
+
 [vite-team]: https://vitejs.dev/team
+
 [consider-using-vite]: https://github.com/remix-run/remix/discussions/2427
+
 [remix-kit]: https://github.com/jrestall/remix-kit
+
 [remix-vite]: https://github.com/sudomf/remix-vite
+
 [vite-plugin-remix]: https://github.com/yracnet/vite-plugin-remix
+
 [astro]: https://astro.build/
+
 [solidstart]: https://start.solidjs.com/getting-started/what-is-solidstart
+
 [sveltekit]: https://kit.svelte.dev/
+
 [modernizing-packages-to-esm]: https://blog.isquaredsoftware.com/2023/08/esm-modernization-lessons/
+
 [arethetypeswrong]: https://arethetypeswrong.github.io/
+
 [publint]: https://publint.dev/
+
 [vite-plugin-cjs-interop]: https://github.com/cyco130/vite-plugin-cjs-interop
+
 [ssr-no-external]: https://vitejs.dev/config/ssr-options.html#ssr-noexternal
+
 [server-dependencies-to-bundle]: https://remix.run/docs/en/main/file-conventions/remix-config#serverdependenciestobundle
+
 [blues-stack]: https://github.com/remix-run/blues-stack
+
 [global-node-polyfills]: ../other-api/node#polyfills
+
 [vite-plugin-inspect]: https://github.com/antfu/vite-plugin-inspect
+
 [vite-perf]: https://vitejs.dev/guide/performance.html
+
 [node-options]: https://nodejs.org/api/cli.html#node_optionsoptions
+
 [rollup-plugin-visualizer]: https://github.com/btd/rollup-plugin-visualizer
-[debugging]: #デバッグ
-[performance]: #パフォーマンス
-[explicitly-isolate-server-only-code]: #クライアントとサーバーコードの分離
+
+[debugging]: #debugging
+
+[performance]: #performance
+
+[explicitly-isolate-server-only-code]: #splitting-up-client-and-server-code
+
 [route-component]: ../route/component
+
 [error-boundary]: ../route/error-boundary
+
 [hydrate-fallback]: ../route/hydrate-fallback
+
 [react-canaries]: https://react.dev/blog/2023/05/03/react-canaries
+
 [react-versions]: https://www.npmjs.com/package/react?activeTab=versions
+
 [package-overrides]: https://docs.npmjs.com/cli/v10/configuring-npm/package-json#overrides
+
 [wrangler-toml-bindings]: https://developers.cloudflare.com/workers/wrangler/configuration/#bindings
+
 [cloudflare-pages]: https://pages.cloudflare.com
+
 [cloudflare-workers-sites]: https://developers.cloudflare.com/workers/configuration/sites
+
 [cloudflare-pages-migration-guide]: https://developers.cloudflare.com/pages/migrations/migrating-from-workers
+
 [cloudflare-request-clone-errors]: https://github.com/cloudflare/workers-sdk/issues/3259
+
 [cloudflare-pages-bindings]: https://developers.cloudflare.com/pages/functions/bindings/
+
 [cloudflare-kv]: https://developers.cloudflare.com/pages/functions/bindings/#kv-namespaces
+
 [cloudflare-workerd]: https://blog.cloudflare.com/workerd-open-source-workers-runtime
+
 [wrangler-getplatformproxy]: https://developers.cloudflare.com/workers/wrangler/api/#getplatformproxy
+
 [wrangler-getplatformproxy-return]: https://developers.cloudflare.com/workers/wrangler/api/#return-type-1
+
 [remix-config-server]: https://remix.run/docs/en/main/file-conventions/remix-config#server
+
 [cloudflare-vite]: #cloudflare
+
 [vite-base]: https://vitejs.dev/config/shared-options.html#base
+
 [how-fix-cjs-esm]: https://www.youtube.com/watch?v=jmNuEEtwkD4
+
 [fix-up-css-imports-referenced-in-links]: #fix-up-css-imports-referenced-in-links
+
 [vite-plugin-react]: https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react
+
 [splitting-up-client-and-server-code]: ../discussion/server-vs-client
+

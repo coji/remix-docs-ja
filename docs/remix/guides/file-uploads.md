@@ -2,9 +2,9 @@
 title: ファイルアップロード
 ---
 
-<docs-warning>このドキュメントは WIP です。これはファイルアップロードの API ドキュメントから抽出したものであり、少し文脈が異なります。これをファイルアップロードに関する一般的なガイドとして書き直す予定です。</docs-warning>
+<docs-warning>このドキュメントは作成中です: ファイルアップロードのAPIドキュメントから抽出されたため、少し文脈が欠けています。これをファイルアップロードに関する一般的なガイドとして書き直す予定です。</docs-warning>
 
-ほとんどの場合、ファイルホストにファイルをプロキシしたいと思うでしょう。
+ほとんどの場合、ファイルをファイルホストにプロキシしたいと思うでしょう。
 
 **例:**
 
@@ -18,7 +18,7 @@ import {
   unstable_createMemoryUploadHandler,
   unstable_parseMultipartFormData,
 } from "@remix-run/node"; // または cloudflare/deno
-import { writeAsyncIterableToWritable } from "@remix-run/node"; // `writeAsyncIterableToWritable` は Node 専用のユーティリティです
+import { writeAsyncIterableToWritable } from "@remix-run/node"; // `writeAsyncIterableToWritable` は Node のみのユーティリティ
 import type {
   UploadApiOptions,
   UploadApiResponse,
@@ -70,7 +70,7 @@ export const action = async ({
       );
       return uploadedImage.secure_url;
     },
-    // その他すべてに対してメモリへのフォールバック
+    // それ以外はすべてメモリにフォールバック
     unstable_createMemoryUploadHandler()
   );
 
@@ -81,25 +81,25 @@ export const action = async ({
 
   const imageUrl = formData.get("avatar");
 
-  // アップロードハンドラーは文字列を返すため、imageUrl は文字列になります。
-  // ... 等
+  // uploadHandlerが文字列を返すため、imageUrlは文字列になります。
+  // ... など
 };
 ```
 
-`UploadHandler` 関数は、ファイルに関するいくつかのパラメータを受け取ります。
+`UploadHandler`関数は、ファイルに関するいくつかのパラメーターを受け取ります。
 
 | プロパティ    | 型                      | 説明                                                                  |
 | ----------- | ------------------------- | ---------------------------------------------------------------------------- |
-| name        | string                    | フィールド名（HTML フォームフィールドの「name」値から取得）                |
-| data        | AsyncIterable<Uint8Array> | ファイルバイトのイテラブル                                               |
-| filename    | string                    | ユーザーがアップロードのために選択したファイルの名前（例：`rickroll.mp4`） |
+| name        | string                    | フィールド名（HTMLフォームフィールドの「name」の値から取得）                |
+| data        | AsyncIterable<Uint8Array> | ファイルのバイトのイテラブル                                               |
+| filename    | string                    | ユーザーがアップロード用に選択したファイルの名前（例：`rickroll.mp4`） |
 | contentType | string                    | ファイルのコンテンツタイプ（例：`videomp4`）                               |
 
-あなたの仕事は、`data` を使って必要な操作を行い、有効な \[`FormData`]\[form-data] 値：\[`File`]\[the-browser-file-api]、`string`、または `undefined` を返し、結果の FormData に追加するかどうかをスキップします。
+あなたの仕事は、`data`を使って必要なことを行い、有効な\[`FormData`]\[form-data]値である\[`File`]\[the-browser-file-api]、`string`、または結果のFormDataに追加しない場合は`undefined`を返すことです。
 
-### アップロードハンドラの合成
+### アップロードハンドラーの構成
 
-`unstable_createFileUploadHandler` と `unstable_createMemoryUploadHandler` が組み込まれています。将来的に、さらに多くのアップロードハンドラーユーティリティが開発される予定です。さまざまなアップロードハンドラーを使用する必要があるフォームがある場合は、カスタムハンドラーと組み合わせて合成することができます。以下は理論的な例です。
+組み込みの`unstable_createFileUploadHandler`と`unstable_createMemoryUploadHandler`があり、将来的にはより多くのアップロードハンドラーユーティリティが開発されると予想されます。異なるアップロードハンドラーを使用する必要があるフォームがある場合は、カスタムハンドラーでそれらを構成できます。以下に理論的な例を示します。
 
 ```ts filename=file-upload-handler.server.ts
 import type { UploadHandler } from "@remix-run/node"; // または cloudflare/deno
@@ -125,5 +125,4 @@ export const fileUploadHandler: UploadHandler = (args) => {
   return undefined;
 };
 ```
-
 

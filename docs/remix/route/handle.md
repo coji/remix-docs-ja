@@ -4,7 +4,7 @@ title: handle
 
 # `handle`
 
-ハンドルをエクスポートすると、[`useMatches`][use-matches]フックを使用してアプリケーションの慣例を作成できます。ハンドルには、任意の値を置くことができます。
+`handle` をエクスポートすることで、[`useMatches`][use-matches] フックを使ってアプリケーションの規約を作成できます。任意の値を設定できます。
 
 ```tsx
 export const handle = {
@@ -12,12 +12,13 @@ export const handle = {
 };
 ```
 
-これは、ほとんどの場合、`useMatches`と組み合わせて使用されます。ハンドルでできることについては、詳細を学ぶために[`useMatches`][use-matches]を参照してください。
+これはほとんどの場合、`useMatches` と組み合わせて使用されます。`handle` で何ができるかについては、[`useMatches`][use-matches] を参照してください。
 
-## 追加のリソース
+## 追加リソース
 
 - [パンくずリストガイド][breadcrumbs-guide]
 - [`useMatches`][use-matches]
 
 [use-matches]: ../hooks/use-matches
-[breadcrumbs-guide]: ../guides/breadcrumbs 
+[breadcrumbs-guide]: ../guides/breadcrumbs
+

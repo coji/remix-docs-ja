@@ -1,49 +1,49 @@
 ---
-title: ランタイム、アダプター、テンプレート、およびデプロイメント
+title: ランタイム、アダプター、テンプレート、デプロイ
 order: 2
 ---
 
-# ランタイム、アダプター、テンプレート、およびデプロイメント
+# ランタイム、アダプター、テンプレート、デプロイ
 
-Remix アプリケーションのデプロイには、次の4つのレイヤーがあります。
+Remixアプリケーションのデプロイには、4つのレイヤーがあります。
 
-1. Node.js のような JavaScript ランタイム
-2. Express.js のような JavaScript ウェブサーバー
-3. `@remix-run/express` のようなサーバーアダプター
+1. Node.jsのようなJavaScriptランタイム
+2. Express.jsのようなJavaScriptウェブサーバー
+3. `@remix-run/express`のようなサーバーアダプター
 4. ウェブホストまたはプラットフォーム
 
-ウェブホストによっては、レイヤーが少なくなる場合があります。たとえば、Cloudflare Pages にデプロイすると、2、3、4 がすべて一度に処理されます。Express アプリケーション内に Remix をデプロイすると、すべて4つ揃います。また、「Remix App Server」を使用すると、2と3が統合されます！
+ウェブホストによっては、レイヤーが少なくなる場合があります。たとえば、Cloudflare Pagesへのデプロイでは、2、3、4がすべて一度に処理されます。Expressアプリ内でRemixをデプロイする場合は、4つすべてが必要になり、「Remix App Server」を使用すると2と3が結合されます。
 
-これらのレイヤーをすべて自分で設定することも、Remix テンプレートから始めることもできます。
+これらすべてを自分で接続することも、Remixテンプレートから始めることもできます。
 
-各部分の機能について説明します。
+各部分が何をするかについて説明しましょう。
 
-## JavaScript ランタイム
+## JavaScriptランタイム
 
-Remix は、Node.js、Shopify Oxygen、Cloudflare Workers/Pages、Fastly Compute、Deno、Bun などのあらゆる JavaScript ランタイムにデプロイできます。
+Remixは、Node.js、Shopify Oxygen、Cloudflare Workers/Pages、Fastly Compute、Deno、Bunなどの任意のJavaScriptランタイムにデプロイできます。
 
-各ランタイムは、Remix の基盤となっている標準的な Web API に対して、異なるレベルのサポートを提供します。そのため、ランタイムの欠落している機能をポリフィルするために、Remix ランタイムパッケージが必要です。これらのポリフィルには、Request、Response、crypto などの Web 標準 API が含まれています。これにより、サーバー側とブラウザ側で同じ API を使用できます。
+各ランタイムは、Remixが構築されている標準のWeb APIのサポートが異なるため、ランタイムの不足している機能をポリフィルするためにRemixランタイムパッケージが必要です。これらのポリフィルには、Request、Response、cryptoなどのWeb標準APIが含まれます。これにより、サーバーとブラウザーで同じAPIを使用できます。
 
-次のランタイムパッケージが利用できます。
+次のランタイムパッケージが利用可能です。
 
 - [`@remix-run/cloudflare-pages`][remix_run_cloudflare_pages]
 - [`@remix-run/cloudflare-workers`][remix_run_cloudflare_workers]
 - [`@remix-run/deno`][remix_run_deno]
 - [`@remix-run/node`][remix_run_node]
 
-アプリケーションで対話する API のほとんどは、これらのパッケージから直接インポートされるわけではないため、コードはランタイム間でかなり移植可能です。ただし、標準の Web API ではない特定の機能のために、これらのパッケージから何かをインポートすることが時々あります。
+アプリで操作するAPIの大部分は、これらのパッケージから直接インポートされないため、コードはランタイム間でかなり移植可能です。ただし、標準のWeb APIではない特定の機能のために、これらのパッケージから何かをインポートすることがあります。
 
-たとえば、クッキーをファイルシステムや Cloudflare KV ストレージに保存したい場合などです。これらは、他のランタイムと共有されていないランタイム固有の機能です。
+たとえば、ファイルをシステムに、またはCloudflare KVストレージにCookieを保存したい場合があります。これらは、他のランタイムと共有されないランタイムの特定の機能です。
 
 ```tsx
-// Cloudflare KV ストレージにセッションを保存する
+// cloudflare KVストレージにセッションを保存
 import { createWorkersKVSessionStorage } from "@remix-run/cloudflare";
 
-// Node.js でファイルシステムにセッションを保存する
+// nodeでファイルシステムにセッションを保存
 import { createFileSessionStorage } from "@remix-run/node";
 ```
 
-しかし、セッションをクッキー自体に保存する場合、これはすべてのランタイムでサポートされています。
+ただし、Cookie自体にセッションを保存する場合は、すべてのランタイムでサポートされています。
 
 ```tsx
 import { createCookieSessionStorage } from "@remix-run/node"; // または cloudflare/deno
@@ -51,36 +51,36 @@ import { createCookieSessionStorage } from "@remix-run/node"; // または cloud
 
 ## アダプター
 
-Remix は HTTP サーバーではなく、既存の HTTP サーバー内のハンドラーです。アダプターを使用すると、Remix ハンドラーを HTTP サーバー内で実行できます。一部の JavaScript ランタイム、特に Node.js は、HTTP サーバーを作成する複数の方法を提供しています。たとえば、Node.js では、Express.js、fastify、または生の `http.createServer` を使用できます。
+RemixはHTTPサーバーではなく、既存のHTTPサーバー内のハンドラーです。アダプターを使用すると、RemixハンドラーをHTTPサーバー内で実行できます。一部のJavaScriptランタイム、特にNode.jsには、HTTPサーバーを作成する複数の方法があります。たとえば、Node.jsでは、Express.js、fastify、または生の`http.createServer`を使用できます。
 
-これらのサーバーはそれぞれ、独自の Request/Response API を持っています。アダプターの役割は、受信したリクエストを Web Fetch Request に変換し、Remix ハンドラーを実行した後、Web Fetch Response をホストサーバーのレスポンス API に適合させることです。
+これらの各サーバーには、独自のRequest/Response APIがあります。アダプターの役割は、受信リクエストをWeb Fetch Requestに変換し、Remixハンドラーを実行し、Web Fetch ResponseをホストサーバーのレスポンスAPIに戻すことです。
 
-以下は、フローを示す疑似コードです。
+フローを示す擬似コードを次に示します。
 
 ```tsx
-// `remix build` によって作成されたアプリケーションビルドをインポートする
+// `remix build`で作成されたアプリビルドをインポート
 import build from "./build/index.js";
 
-// Express HTTP サーバー
+// express httpサーバー
 const app = express();
 
-// そして、Remix アプリケーションは「単なるリクエストハンドラー」です
+// ここでRemixアプリは「単なるリクエストハンドラー」です
 app.all("*", createRequestHandler({ build }));
 
-// これは疑似コードですが、アダプターの機能を示しています。
+// これは擬似コードですが、アダプターの役割を示しています。
 export function createRequestHandler({ build }) {
-  // サーバービルドから Fetch API リクエストハンドラーを作成する
+  // サーバービルドからFetch APIリクエストハンドラーを作成します
   const handleRequest = createRemixRequestHandler(build);
 
-  // Express サーバー用の Express.js 固有のハンドラーを返す
+  // express.jsサーバー用のexpress.js固有のハンドラーを返します
   return async (req, res) => {
-    // Express.req を Fetch API リクエストに適合させる
+    // express.reqをFetch APIリクエストに適合させます
     const request = createRemixRequest(req);
 
-    // アプリケーションハンドラーを呼び出して、Fetch API レスポンスを受け取る
+    // アプリハンドラーを呼び出し、Fetch APIレスポンスを受け取ります
     const response = await handleRequest(request);
 
-    // Fetch API レスポンスを Express.res に適合させる
+    // Fetch APIレスポンスをexpress.resに適合させます
     sendRemixResponse(res, response);
   };
 }
@@ -88,25 +88,25 @@ export function createRequestHandler({ build }) {
 
 ### Remix App Server
 
-Remix App Server は、新しいプロジェクト、試行、または Express のようなサーバーから特定のニーズがなく、Node.js 環境にデプロイされるプロジェクト用に設計された、基本的な Express サーバーです。
+便宜上、Remix App Serverは、新しいプロジェクト、試行錯誤、またはExpressのようなサーバーからの特定のニーズがなく、Node.js環境にデプロイされるプロジェクト向けの基本的なExpressサーバーです。
 
-[`@remix-run/serve`][serve] を参照してください。
+[`@remix-run/serve`][serve]を参照してください。
 
 ## テンプレート
 
-Remix は、UI をバックエンドに接続するために必要なだけの意見を持ちながら、非常に柔軟性がありながらも、使用するデータベース、データのキャッシュ方法、アプリケーションのデプロイ場所や方法に関する意見は持ち合わせていません。
+Remixは、UIをバックエンドに接続するための十分な意見を持ちながら、非常に柔軟になるように設計されていますが、使用するデータベース、データのキャッシュ方法、アプリのデプロイ場所と方法に関する意見は持ち合わせていません。
 
-Remix テンプレートは、コミュニティによって作成され、これらの追加の意見をすべて組み込んだ、アプリケーション開発の出発点です。
+Remixテンプレートは、コミュニティによって作成された、これらの追加の意見が組み込まれたアプリ開発の出発点です。
 
-GitHub 上のリポジトリを指す `--template` フラグを Remix CLI で使用して、テンプレートを使用できます。
+Remix CLIで`--template`フラグを使用して、GitHubのリポジトリを指すテンプレートを使用できます。
 
 ```
 npx create-remix@latest --template <org>/<repo>
 ```
 
-テンプレートの詳細については、[テンプレートガイド][templates_guide] を参照してください。
+テンプレートの詳細については、[テンプレートガイド][templates_guide]を参照してください。
 
-テンプレートを選択するか、[最初からアプリケーションを設定する][quickstart] と、アプリケーションの構築を開始できます！
+テンプレートを選択するか、[アプリをゼロからセットアップ][quickstart]したら、アプリの構築を開始する準備が整いました。
 
 [templates]: https://remix.guide/templates
 [serve]: ../other-api/serve
@@ -116,3 +116,4 @@ npx create-remix@latest --template <org>/<repo>
 [remix_run_cloudflare_workers]: https://npm.im/@remix-run/cloudflare-workers
 [remix_run_deno]: https://npm.im/@remix-run/deno
 [remix_run_node]: https://npm.im/@remix-run/node
+

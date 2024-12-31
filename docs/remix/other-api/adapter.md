@@ -7,38 +7,38 @@ order: 3
 
 ## 公式アダプター
 
-イディオム的な Remix アプリは、一般的にどこでもデプロイできます。なぜなら、Remix はサーバーのリクエスト/レスポンスを [Web Fetch API][web-fetch-api] に適応させるからです。これは、アダプターを通じて行われます。私たちはいくつかのアダプターを維持しています。
+Remix アプリは、一般的にどこにでもデプロイできます。これは、Remix がサーバーの request/response を [Web Fetch API][web-fetch-api] に適合させるためです。これはアダプターを通じて行われます。私たちはいくつかのアダプターを管理しています。
 
 - `@remix-run/architect`
 - `@remix-run/cloudflare-pages`
 - `@remix-run/cloudflare-workers`
 - `@remix-run/express`
 
-これらのアダプターは、サーバーのエントリポイントにインポートされ、Remix アプリ自体では使用されません。
+これらのアダプターは、サーバーのエントリーにインポートされ、Remix アプリ自体の中では使用されません。
 
-`npx create-remix@latest` で Remix App Server 以外の何かでアプリを初期化した場合は、`server/index.js` ファイルにこれらのアダプターのいずれかをインポートして使用していることに注意してください。
+`npx create-remix@latest` で、組み込みの Remix App Server 以外のものを使用してアプリを初期化した場合、これらのアダプターのいずれかをインポートして使用する `server/index.js` ファイルがあることに気づくでしょう。
 
-<docs-info>Remix App Server を組み込みで使用している場合は、この API とはやり取りしません。</docs-info>
+<docs-info>組み込みの Remix App Server を使用している場合、この API を操作する必要はありません</docs-info>
 
-各アダプターは同じ API を持っています。将来的には、デプロイしているプラットフォームに固有のヘルパーを用意するかもしれません。
+各アダプターは同じ API を持っています。将来的には、デプロイ先のプラットフォームに固有のヘルパーを用意するかもしれません。
 
 ## コミュニティアダプター
 
 - [`@fastly/remix-server-adapter`][fastly-remix-server-adapter] - [Fastly Compute][fastly-compute] 用。
 - [`@mcansh/remix-fastify`][remix-fastify] - [Fastify][fastify] 用。
-- [`@mcansh/remix-raw-http`][remix-raw-http] - 古き良き素朴な Node サーバー用。
+- [`@mcansh/remix-raw-http`][remix-raw-http] - 古き良きベアボーンの Node サーバー用。
 - [`@netlify/remix-adapter`][netlify-remix-adapter] - [Netlify][netlify] 用。
 - [`@netlify/remix-edge-adapter`][netlify-remix-edge-adapter] - [Netlify][netlify] Edge 用。
 - [`@vercel/remix`][vercel-remix] - [Vercel][vercel] 用。
-- [`remix-google-cloud-functions`][remix-google-cloud-functions] - [Google Cloud][google-cloud-functions] と [Firebase][firebase-functions] 関数用。
+- [`remix-google-cloud-functions`][remix-google-cloud-functions] - [Google Cloud][google-cloud-functions] および [Firebase][firebase-functions] 関数用。
 - [`partymix`][partymix] - [PartyKit][partykit] 用。
-- [`@scandinavianairlines/remix-azure-functions`][remix-azure-functions]: [Azure Functions][azure-functions] と [Azure Static Web Apps][azure-static-web-apps] 用。
+- [`@scandinavianairlines/remix-azure-functions`][remix-azure-functions]: [Azure Functions][azure-functions] および [Azure Static Web Apps][azure-static-web-apps] 用。
 
 ## アダプターの作成
 
 ### `createRequestHandler`
 
-サーバーがアプリを提供するために、リクエストハンドラーを作成します。これは、Remix アプリケーションの究極のエントリポイントです。
+アプリを提供するためにサーバー用のリクエストハンドラーを作成します。これは Remix アプリケーションの最終的なエントリポイントです。
 
 ```ts
 const {
@@ -47,7 +47,7 @@ const {
 createRequestHandler({ build, getLoadContext });
 ```
 
-以下は、express を使った完全な例です。
+以下は express を使用した完全な例です。
 
 ```ts lines=[1-3,11-22]
 const {
@@ -57,16 +57,16 @@ const express = require("express");
 
 const app = express();
 
-// 全ての動詞（GET、POST など）を処理する必要があります
+// すべての動詞 (GET、POST など) を処理する必要があります
 app.all(
   "*",
   createRequestHandler({
-    // `remix build` と `remix dev` はビルドディレクトリにファイルを書き出します。
-    // そのビルドをリクエストハンドラーに渡す必要があります
+    // `remix build` および `remix dev` はファイルを build ディレクトリに出力します。
+    // その build をリクエストハンドラーに渡す必要があります
     build: require("./build"),
 
-    // ローダーとアクションで `context` として利用できるように、ここで何かを返します。
-    // これは、Remix とサーバーの橋渡しをする場所です
+    // ローダーとアクションで `context` として利用できるように、ここで任意のものを返します。
+    // これは、Remix とサーバー間のギャップを埋めることができる場所です
     getLoadContext(req, res) {
       return {};
     },
@@ -74,7 +74,7 @@ app.all(
 );
 ```
 
-以下は、Architect（AWS）を使った例です。
+以下は Architect (AWS) を使用した例です。
 
 ```ts
 const {
@@ -85,7 +85,7 @@ exports.handler = createRequestHandler({
 });
 ```
 
-以下は、簡略化された Cloudflare Workers API を使った例です。
+以下は、簡略化された Cloudflare Workers API を使用した例です。
 
 ```ts
 import { createEventHandler } from "@remix-run/cloudflare-workers";
@@ -95,7 +95,7 @@ import * as build from "../build";
 addEventListener("fetch", createEventHandler({ build }));
 ```
 
-以下は、より低レベルな Cloudflare Workers API を使った例です。
+以下は、より低レベルの Cloudflare Workers API を使用した例です。
 
 ```ts
 import {
@@ -136,7 +136,7 @@ addEventListener("fetch", (event) => {
 });
 ```
 
-[web-fetch-api]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+[web-fetch-api]: https://developer.mozilla.org/ja/docs/Web/API/Fetch_API
 [fastly-remix-server-adapter]: https://github.com/fastly/remix-compute-js/tree/main/packages/remix-server-adapter
 [fastly-compute]: https://developer.fastly.com/learning/compute/
 [remix-google-cloud-functions]: https://github.com/penx/remix-google-cloud-functions
@@ -153,6 +153,6 @@ addEventListener("fetch", (event) => {
 [partykit]: https://partykit.io
 [partymix]: https://github.com/partykit/partykit/tree/main/packages/partymix
 [remix-azure-functions]: https://github.com/scandinavianairlines/remix-azure-functions
-[azure-functions]: https://azure.microsoft.com/en-us/products/functions/
-[azure-static-web-apps]: https://azure.microsoft.com/en-us/products/app-service/static
+[azure-functions]: https://azure.microsoft.com/ja-jp/products/functions/
+[azure-static-web-apps]: https://azure.microsoft.com/ja-jp/products/app-service/static
 

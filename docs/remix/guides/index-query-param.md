@@ -5,22 +5,22 @@ toc: false
 
 # インデックスクエリパラメータ
 
-フォームを送信すると、アプリの URL にワイルドな `?index` が表示されることがあります。
+フォームを送信する際に、アプリのURLに `?index` という見慣れないものが現れることがあります。
 
-ネストされたルートのため、ルート階層内の複数のルートが URL に一致する可能性があります。ナビゲーションでは、一致するすべてのルートの [`loader`][loader] が呼び出されて UI が構築されますが、[`form`][form_element] を送信すると、_1 つのアクションのみが呼び出されます_。
+ネストされたルートのため、ルート階層内の複数のルートがURLに一致する可能性があります。UIを構築するために一致するすべてのルートの[`loader`][loader]が呼び出されるナビゲーションとは異なり、[`form`][form_element]が送信されると、_1つのアクションのみが呼び出されます_。
 
-インデックスルートは親ルートと同じ URL を共有するため、`?index` パラメータを使用すると、2 つを区別できます。
+インデックスルートは親と同じURLを共有するため、`?index` パラメータを使用すると、2つを区別できます。
 
-たとえば、次のフォームについて考えてみましょう。
+たとえば、次のフォームを考えてみましょう。
 
 ```tsx
 <Form method="post" action="/projects" />;
 <Form method="post" action="/projects?index" />;
 ```
 
-`?index` パラメータはインデックスルートに送信され、[`action`][form_component_action] にインデックスパラメータがない場合は親ルートに送信されます。
+`?index` パラメータはインデックスルートに送信し、インデックスパラメータのない[`action`][form_component_action]は親ルートに送信します。
 
-[`<Form>`][form_component] がインデックスルートで [`action`][action] なしでレンダリングされると、`?index` パラメータが自動的に追加され、フォームがインデックスルートに投稿されます。次のフォームは、送信されると `/projects?index` に投稿されます。これは、プロジェクトインデックスルートのコンテキストでレンダリングされるためです。
+[`<Form>`][form_component]が[`action`][action]なしでインデックスルートでレンダリングされると、フォームがインデックスルートにポストされるように、`?index` パラメータが自動的に追加されます。次のフォームは、プロジェクトのインデックスルートのコンテキストでレンダリングされるため、送信されると `/projects?index` にポストされます。
 
 ```tsx filename=app/routes/projects._index.tsx
 function ProjectsIndex() {
@@ -28,9 +28,9 @@ function ProjectsIndex() {
 }
 ```
 
-コードを `ProjectsLayout` ルートに移動すると、代わりに `/projects` に投稿されます。
+コードを `ProjectsLayout` ルートに移動すると、代わりに `/projects` にポストされます。
 
-これは `<Form>` およびそのすべての仲間にも適用されます。
+これは `<Form>` とそのすべての親戚に適用されます。
 
 ```tsx
 function Component() {
@@ -56,3 +56,4 @@ function Component() {
 [form_component_action]: ../components/form#action
 [form_component]: ../components/form
 [action]: ../route/action
+

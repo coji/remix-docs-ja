@@ -1,6 +1,7 @@
 ---
-title: コンポーネントデータ
+title: Component Data
 hidden: true
 ---
 
-# コンポーネントデータ 
+# コンポーネントデータ
+

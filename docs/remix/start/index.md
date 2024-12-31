@@ -1,4 +1,5 @@
 ---
-title: はじめに
+title: Getting Started
 order: 1
---- 
+---
+

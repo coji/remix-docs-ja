@@ -4,40 +4,40 @@ title: SPA モード
 
 # SPA モード
 
-Remix の基本的な考え方は、サーバーアーキテクチャをあなたが所有することです。そのため、Remix は [Web Fetch API][fetch] をベースに構築され、組み込みまたはコミュニティ提供のアダプターを通じて、あらゆる最新の [ランタイム][runtimes] 上で実行できます。 _ほとんど_ のアプリにとって、サーバーは最高の UX/パフォーマンス/SEO などを提供すると考えていますが、現実世界では、シングルページアプリケーションに適したユースケースも数多く存在することは間違いありません。
+Remix は当初から、サーバーアーキテクチャはユーザーが所有するという考え方を貫いています。そのため、Remix は [Web Fetch API][fetch] を基盤として構築されており、ビルトインまたはコミュニティ提供のアダプターを介して、あらゆる最新の [ランタイム][runtimes] で実行できます。ほとんどのアプリでは、サーバーを使用することで最高の UX/パフォーマンス/SEO などが得られると考えていますが、現実世界ではシングルページアプリケーション (SPA) に適したユースケースが数多く存在することも否定できません。
 
-- サーバーを管理したくない、または GitHub Pages や他の CDN に静的ファイルとしてアプリをデプロイしたい
+- サーバーを管理したくない、GitHub Pages またはその他の CDN で静的ファイルを使用してアプリをデプロイしたい
 - Node.js サーバーを実行したくない
-- [React Router アプリを Remix に移行したい][migrate-rr]
-- サーバーレンダリングできない特殊なタイプの埋め込みアプリを開発している
-- 「あなたのボスは SPA アーキテクチャの UX の限界を気にしておらず、開発チームにリアーキテクチャのための時間/能力を与えてくれない」 [- Kent C. Dodds][kent-tweet]
+- [React Router アプリを移行したい][migrate-rr]
+- サーバーサイドレンダリングできない特殊なタイプの埋め込みアプリを開発している
+- 「あなたのボスは SPA アーキテクチャの UX の限界を気にしておらず、開発チームにアーキテクチャの再設計に時間/能力を割く余裕を与えてくれない」[- Kent C. Dodds][kent-tweet]
 
-これが、[2.5.0][2.5.0] ([RFC][rfc]) で **SPA モード** のサポートを追加した理由です。これは、[クライアントデータ][client-data] API をベースに構築されています。
+そのため、[2.5.0][2.5.0] ([RFC][rfc]) で **SPA モード** のサポートを追加しました。これは、[クライアントデータ][client-data] API を基盤として構築されています。
 
-<docs-info>SPA モードを使用するには、アプリが Vite と [Remix Vite プラグイン][remix-vite] を使用している必要があります。</docs-info>
+<docs-info>SPA モードを使用するには、アプリで Vite と [Remix Vite プラグイン][remix-vite] を使用する必要があります。</docs-info>
 
 ## SPA モードとは？
 
-SPA モードは、基本的に `createBrowserRouter`/`RouterProvider` を使用して [React Router + Vite][rr-setup] を独自に設定した場合と同じですが、いくつかの追加の Remix 機能も備えています。
+SPA モードは、基本的に `createBrowserRouter`/`RouterProvider` を使用した独自の [React Router + Vite][rr-setup] セットアップと同様ですが、いくつかの追加の Remix の機能が備わっています。
 
-- ファイルベースのルーティング（または [`routes()`][routes-config] を使用した設定ベース）
-- [`route.lazy`][route-lazy] を使用したルートベースのコード分割の自動化
-- ルートモジュールを事前に読み込むための `<Link prefetch>` のサポート
-- Remix [`<Meta>`][meta]/[`<Links>`][links] API を使用した `<head>` の管理
+- ファイルベースのルーティング（または [`routes()`][routes-config] を介した設定ベース）
+- [`route.lazy`][route-lazy] による自動ルートベースのコード分割
+- ルートモジュールを事前にフェッチするための `<Link prefetch>` サポート
+- Remix の [`<Meta>`][meta]/[`<Links>`][links] API を使用した `<head>` の管理
 
-SPA モードは、Remix に実行時に Remix サーバーを実行しないことを伝え、ビルド時に静的な `index.html` ファイルを生成し、データの読み込みと変更には [クライアントデータ][client-data] API だけを使用することを示します。
+SPA モードは、実行時に Remix サーバーを実行する予定がなく、ビルド時に静的な `index.html` ファイルを生成し、データの読み込みと変更には [クライアントデータ][client-data] API のみを使用することを Remix に指示します。
 
-`index.html` は、`root.tsx` ルートの `HydrateFallback` コンポーネントから生成されます。`index.html` を生成するための最初の「レンダリング」には、ルートよりも深いルートは含まれません。これにより、`index.html` ファイルが、`/`（つまり `/about`）を超えたパスに対して提供/ハイドレートされるように、CDN/サーバーを設定できます。
+`index.html` は、`root.tsx` ルートの `HydrateFallback` コンポーネントから生成されます。`index.html` を生成するための最初の「レンダリング」には、ルートよりも深いルートは含まれません。これにより、CDN/サーバーで設定されている場合、`/`（つまり `/about`）を超えるパスに対して `index.html` ファイルを提供/ハイドレートできます。
 
-## 使用方法
+## 使い方
 
-リポジトリの SPA モードテンプレートを使用して、すぐに開始できます。
+リポジトリの SPA モードテンプレートを使用してすぐに開始できます。
 
 ```shellscript
 npx create-remix@latest --template remix-run/remix/templates/spa
 ```
 
-または、Remix + Vite アプリで、Remix Vite プラグインの設定で `ssr: false` を設定することで、手動で SPA モードを有効にすることができます。
+または、Remix+Vite アプリで Remix Vite プラグインの設定で `ssr: false` を設定することで、手動で SPA モードを有効にすることができます。
 
 ```js
 // vite.config.ts
@@ -55,15 +55,15 @@ export default defineConfig({
 
 ### 開発
 
-SPA モードでは、従来の Remix SSR アプリと同じように開発を行い、HMR/HDR を有効にするために実行中の Remix dev サーバーを使用します。
+SPA モードでは、従来の Remix SSR アプリと同様に開発を行い、実際には HMR/HDR を有効にするために実行中の Remix 開発サーバーを使用します。
 
 ```sh
 npx remix vite:dev
 ```
 
-### プロダクション
+### 本番環境
 
-SPA モードでアプリをビルドすると、Remix は `/` ルートのサーバーハンドラーを呼び出し、レンダリングされた HTML をクライアント側の資産（デフォルトでは `build/client/index.html`）とともに `index.html` ファイルに保存します。
+SPA モードでアプリをビルドすると、Remix は `/` ルートのサーバーハンドラーを呼び出し、レンダリングされた HTML をクライアントサイドアセット（デフォルトでは `build/client/index.html`）と一緒に `index.html` ファイルに保存します。
 
 ```sh
 npx remix vite:build
@@ -71,17 +71,17 @@ npx remix vite:build
 
 #### プレビュー
 
-[vite preview][vite-preview] を使用して、ローカルでプロダクションビルドをプレビューできます。
+[vite preview][vite-preview] を使用して、ローカルで本番ビルドをプレビューできます。
 
 ```shellscript
 npx vite preview
 ```
 
-<docs-warning>`vite preview` はプロダクションサーバーとして使用するための設計ではありません。</docs-warning>
+<docs-warning>`vite preview` は本番サーバーとして使用することを目的としていません。</docs-warning>
 
 #### デプロイ
 
-デプロイするには、任意の HTTP サーバーからアプリを提供できます。サーバーは、単一のルート `/index.html` ファイルから複数のパスを提供するように構成する必要があります（一般的には「SPA フォールバック」と呼ばれます）。この機能を直接サポートしていないサーバーの場合、追加の手順が必要になる場合があります。
+デプロイするには、任意の HTTP サーバーからアプリを提供できます。サーバーは、単一のルート `/index.html` ファイルから複数のパスを提供するように設定する必要があります（一般的に「SPA フォールバック」と呼ばれます）。サーバーがこの機能を直接サポートしていない場合は、追加の手順が必要になる場合があります。
 
 簡単な例として、[sirv-cli][sirv-cli] を使用できます。
 
@@ -89,7 +89,7 @@ npx vite preview
 npx sirv-cli build/client/ --single
 ```
 
-または、`express` サーバーで提供する場合（ただし、その時点で Remix を SSR モードで実行することを検討する必要があるかもしれません 😉）。
+または、`express` サーバーを介して提供する場合（ただし、その時点で Remix を SSR モードで実行することを検討した方が良いかもしれません 😉）：
 
 ```js
 app.use("/assets", express.static("build/client/assets"));
@@ -101,13 +101,13 @@ app.get("*", (req, res, next) =>
 );
 ```
 
-## ドキュメント全体ではなく、div をハイドレートする
+## ドキュメント全体ではなく div をハイドレートする
 
-HTML ドキュメント全体をハイドレートしたくない場合は、SPA モードを使用して `<div id="app">` などのドキュメントのサブセクションだけをハイドレートできます。変更はわずかです。
+HTML ドキュメント全体をハイドレートしたくない場合は、SPA モードを使用し、`<div id="app">` などのドキュメントのサブセクションのみをハイドレートするように、いくつかの小さな変更を加えることができます。
 
 **1. `index.html` ファイルを追加する**
 
-Remix は HTML ドキュメントをレンダリングしないため、HTML ドキュメントを外部から提供する必要があります。最も簡単な方法は、`app/index.html` ドキュメントを保持し、ビルド時に Remix でレンダリングされた HTML を置換できるプレースホルダーを保持して、最終的な `index.html` を生成することです。
+Remix は HTML ドキュメントをレンダリングしないため、Remix の外部で HTML を提供する必要があります。これを行う最も簡単な方法は、ビルド時に Remix でレンダリングされた HTML で置き換えることができるプレースホルダーを使用して、`app/index.html` ドキュメントを保持することです。最終的な `index.html` を生成します。
 
 ```html filename=app/index.html
 <!DOCTYPE html>
@@ -121,13 +121,13 @@ Remix は HTML ドキュメントをレンダリングしないため、HTML ド
 </html>
 ```
 
-`<!-- Remix SPA -->` の HTML コメントは、Remix の HTML で置換されます。
+`<!-- Remix SPA -->` HTML コメントは、Remix HTML で置き換えるものです。
 
-<docs-info>空白は DOM/VDOM ツリーで意味を持つため、周りに空白を含めないようにしてください。そうしないと、React のハイドレーションで問題が発生します。</docs-info>
+<docs-info>空白は DOM/VDOM ツリーで意味を持つため、周囲の `div` の周囲に空白を含めないことが重要です。それ以外の場合は、React のハイドレーションの問題が発生します。</docs-info>
 
 **2. `root.tsx` を更新する**
 
-`<div id="app">` のコンテンツだけをレンダリングするようにルートルートを更新します。
+`<div id="app">` の内容のみをレンダリングするようにルートルートを更新します。
 
 ```tsx filename=app/root.tsx
 export function HydrateFallback() {
@@ -151,7 +151,7 @@ export default function Component() {
 
 **3. `entry.server.tsx` を更新する**
 
-`app/entry.server.tsx` ファイルでは、Remix でレンダリングされた HTML を静的な `app/index.html` ファイルのプレースホルダーに挿入する必要があります。また、デフォルトの `entry.server.tsx` ファイルのように、`<!DOCTYPE html>` 宣言を先頭に付けるのをやめる必要があります。これは `app/index.html` ファイルに含まれるべきです。
+`app/entry.server.tsx` ファイルでは、Remix でレンダリングされた HTML を取得し、静的 `app/index.html` ファイルのプレースホルダーに挿入する必要があります。また、デフォルトの `entry.server.tsx` ファイルのように `<!DOCTYPE html>` 宣言を事前に追加するのを停止する必要があります。これは `app/index.html` ファイルにあるはずです）。
 
 ```tsx filename=app/entry.server.tsx
 import fs from "node:fs";
@@ -189,11 +189,11 @@ export default function handleRequest(
 }
 ```
 
-<docs-info>アプリに `app/entry.server.tsx` ファイルがない場合は、`npx remix reveal` を実行する必要があるかもしれません。</docs-info>
+<docs-info>アプリに `app/entry.server.tsx` ファイルがない場合は、`npx remix reveal` を実行する必要がある場合があります。</docs-info>
 
 **4. `entry.client.tsx` を更新する**
 
-`app/entry.client.tsx` を更新して、ドキュメントではなく `<div id="app">` をハイドレートします。
+ドキュメントではなく `<div id="app">` をハイドレートするように `app/entry.client.tsx` を更新します。
 
 ```tsx filename=app/entry.client.tsx
 import { RemixBrowser } from "@remix-run/react";
@@ -210,29 +210,29 @@ startTransition(() => {
 });
 ```
 
-<docs-info>アプリに `app/entry.client.tsx` ファイルがない場合は、`npx remix reveal` を実行する必要があるかもしれません。</docs-info>
+<docs-info>アプリに `app/entry.client.tsx` ファイルがない場合は、`npx remix reveal` を実行する必要がある場合があります。</docs-info>
 
-## 注釈/注意点
+## 注意点/注意点
 
-- SPA モードは、Vite と [Remix Vite プラグイン][remix-vite] を使用した場合にのみ機能します
+- SPA モードは、Vite と [Remix Vite プラグイン][remix-vite] を使用する場合のみ機能します。
 
-- `headers`、`loader`、`action` などのサーバー API は使用できません。ビルド時にエラーが発生します
+- `headers`、`loader`、`action` などのサーバー API は使用できません。これらの API をエクスポートすると、ビルドでエラーが発生します。
 
-- SPA モードでは、`root.tsx` から `HydrateFallback` だけをエクスポートできます。他のルートからエクスポートすると、ビルド時にエラーが発生します
+- SPA モードでは、`root.tsx` から `HydrateFallback` のみをエクスポートできます。他のルートからエクスポートすると、ビルドでエラーが発生します。
 
-- `clientLoader`/`clientAction` メソッドから `serverLoader`/`serverAction` を呼び出すことはできません。実行中のサーバーがないため、呼び出されると実行時エラーが発生します
+- 実行中のサーバーがないため、`clientLoader`/`clientAction` メソッドから `serverLoader`/`serverAction` を呼び出すことはできません。呼び出すと、ランタイムエラーが発生します。
 
 ### サーバービルド
 
-Remix SPA モードでは、ビルド時にサーバーでルートルートを「事前レンダリング」することによって、`index.html` ファイルが生成されることに注意することが重要です
+Remix SPA モードでは、ビルド時にサーバーでルートルートを「事前レンダリング」することで `index.html` ファイルが生成されることに注意することが重要です。
 
-- これは、SPA を作成している場合でも、「サーバービルド」と「サーバーレンダリング」の手順が必要になるため、`document`、`window`、`localStorage` などのクライアント側の側面を参照する依存関係を使用する際には注意する必要があることを意味します。
-- 通常、これらの問題を解決する方法は、`entry.client.tsx` からブラウザ専用のライブラリをインポートして、サーバービルドに含まれないようにすることです
-- そうでない場合は、[`React.lazy`][react-lazy] または `remix-utils` の [`<ClientOnly>`][client-only] コンポーネントを使用して、通常これらの問題を解決できます。
+- つまり、SPA を作成している場合でも、「サーバービルド」と「サーバーレンダリング」の手順があるため、`document`、`window`、`localStorage` など、クライアント側の側面を参照する依存関係の使用には注意する必要があります。
+- 一般的に、これらの問題を解決する方法は、サーバービルドに含まれないように、`entry.client.tsx` からブラウザー専用のライブラリをインポートすることです。
+- それ以外の場合は、[`React.lazy`][react-lazy] または `remix-utils` の [`<ClientOnly>`][client-only] コンポーネントを使用して、一般的にこれらの問題を解決できます。
 
 ### CJS/ESM 依存関係の問題
 
-アプリの依存関係で ESM/CJS の問題が発生している場合は、Vite の [ssr.noExternal][vite-ssr-noexternal] オプションを使用して、特定の依存関係をサーバーバンドルに含める必要があるかもしれません。
+アプリの依存関係で ESM/CJS の問題が発生している場合は、Vite の [ssr.noExternal][vite-ssr-noexternal] オプションを使用して、特定の依存関係をサーバーバンドルに含める必要がある場合があります。
 
 ```ts filename=vite.config.ts lines=[12-15]
 import { vitePlugin as remix } from "@remix-run/dev";
@@ -247,35 +247,35 @@ export default defineConfig({
     tsconfigPaths(),
   ],
   ssr: {
-    // `problematic-dependency` をサーバービルドにバンドルする
+    // サーバービルドに `problematic-dependency` をバンドルする
     noExternal: ["problematic-dependency"],
   },
   // ...
 });
 ```
 
-これらの問題は、通常、公開されたコードが CJS/ESM に対して正しく設定されていない依存関係が原因です。`ssr.noExternal` に特定の依存関係を含めることで、Vite は依存関係をサーバービルドにバンドルし、サーバーの実行時にインポートの問題を回避するのに役立ちます。
+これらの問題は、通常、公開されたコードが CJS/ESM に対して正しく設定されていない依存関係が原因です。`ssr.noExternal` に特定の依存関係を含めることで、Vite は依存関係をサーバービルドにバンドルし、サーバーの実行時にランタイムインポートの問題を回避するのに役立ちます。
 
-逆の場合で、特定の依存関係をバンドルから外部に保ちたい場合は、反対の [`ssr.external`][vite-ssr-external] オプションを使用できます。
+逆のユースケースがあり、依存関係をバンドルから明示的に除外したい場合は、反対の [`ssr.external`][vite-ssr-external] オプションを使用できます。
 
 ## React Router からの移行
 
-SPA モードは、既存の React Router アプリを Remix アプリ（SPA かどうかは問いません）に移行する際にも役立つと予想されます。
+SPA モードは、既存の React Router アプリを Remix アプリ（SPA かどうかは問わず）に移行する際に役立つと予想しています。
 
-この移行の最初のステップは、現在の React Router アプリを `vite` で実行することです。これにより、非 JS コード（CSS、SVG など）に必要なプラグインがすべて揃います。
+この移行の最初のステップは、現在の React Router アプリを `vite` で実行することです。これにより、JS 以外のコード（つまり、CSS、SVG など）に必要なプラグインがすべて揃います。
 
 **現在 `BrowserRouter` を使用している場合**
 
-`vite` を使用したら、[このガイド][migrating-rr] の手順に従って、`BrowserRouter` アプリをキャッチオールの Remix ルートにドロップできます。
+`vite` を使用している場合は、[このガイド][migrating-rr]の手順に従って、`BrowserRouter` アプリをキャッチオール Remix ルートにドロップできるはずです。
 
 **現在 `RouterProvider` を使用している場合**
 
-現在 `RouterProvider` を使用している場合は、ルートを個別のファイルに移動し、`route.lazy` を使用して読み込むのが最適な方法です。
+現在 `RouterProvider` を使用している場合は、ルートを個々のファイルに移動し、`route.lazy` を介して読み込むのが最適なアプローチです。
 
-- Remix ファイルの規約に従ってこれらのファイルに名前を付けると、Remix（SPA）への移動が容易になります。
-- ルートコンポーネントを、名前付きの `Component` エクスポート（RR 用）と `default` エクスポート（最終的に Remix で使用するため）の両方としてエクスポートします。
+- Remix ファイルの規則に従ってこれらのファイルに名前を付けると、Remix（SPA）への移行が容易になります。
+- ルートコンポーネントを名前付き `Component` エクスポート（RR 用）とデフォルトエクスポート（最終的に Remix で使用するため）としてエクスポートします。
 
-ルートがすべて独自のファイルに存在するようになったら、次のようにできます。
+すべてのルートが独自のファイルに存在するようになったら、次のことができます。
 
 - これらのファイルを Remix の `app/` ディレクトリに移動します。
 - SPA モードを有効にします。
@@ -295,13 +295,12 @@ SPA モードは、既存の React Router アプリを Remix アプリ（SPA か
 [links]: ../components/links
 [migrating-rr]: https://remix.run/docs/en/main/guides/migrating-react-router-app
 [remix-vite]: ./vite
-[migrate-rr]: #react-router-から-の移行
+[migrate-rr]: #migrating-from-react-router
 [react-lazy]: https://react.dev/reference/react/lazy
 [client-only]: https://github.com/sergiodxa/remix-utils?tab=readme-ov-file#clientonly
 [vite-preview]: https://vitejs.dev/guide/cli#vite-preview
 [sirv-cli]: https://www.npmjs.com/package/sirv-cli
 [vite-ssr-noexternal]: https://vitejs.dev/config/ssr-options#ssr-noexternal
 [vite-ssr-external]: https://vitejs.dev/config/ssr-options#ssr-external
-
 
 

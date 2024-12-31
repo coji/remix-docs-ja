@@ -1,38 +1,38 @@
 ---
-title: ホットモジュール置換
+title: ホットモジュールリプレースメント
 ---
 
-# ホットモジュール置換
+# ホットモジュールリプレースメント
 
-ホットモジュール置換とは、ページをリロードすることなくアプリケーションのモジュールを更新するテクニックです。
-開発者エクスペリエンスを向上させる素晴らしいテクニックであり、Remixはこれを標準でサポートしています。
+ホットモジュールリプレースメントは、ページをリロードせずにアプリ内のモジュールを更新する技術です。
+これは素晴らしい開発者体験であり、Remix はこれをすぐにサポートしています。
 
-特に、HMRは更新時にブラウザの状態を維持しようとします。
-モーダル内にフォームがあり、すべてのフィールドに入力した場合、従来のライブリロードではページがハードリフレッシュされます。
+特に、HMR は更新間でブラウザの状態を維持するために最善を尽くします。
+モーダル内にフォームがあり、すべてのフィールドに入力した場合、従来のリロードではページがハードリフレッシュされます。
 そのため、フォーム内のすべてのデータが失われます。
-変更を加えるたびに、_再度_モーダルを開き、_再度_フォームに入力する必要があります。 😭
+変更を加えるたびに、モーダルを _再度_ 開いてフォームを _再度_ 入力する必要があります。😭
 
-しかし、HMRでは、そのような状態は_更新間_で維持されます。 ✨
+しかし、HMR を使用すると、すべての状態が _更新間で_ 維持されます。✨
 
 ## React Fast Refresh
 
-Reactには、ボタンをクリックするなどのユーザー操作に応答して、[仮想DOM][virtual-dom] を介してDOMを更新するメカニズムがすでに存在します。
-コードの変更に応答してDOMの更新をReactが処理できたら、素晴らしいと思いませんか？
+React には、ボタンのクリックなどのユーザーインタラクションに応じて、[仮想 DOM][virtual-dom] を介して DOM を更新するメカニズムがすでにあります。
+React がコードの変更にも応答して DOM の更新を処理できたら素晴らしいと思いませんか？
 
-それがまさに[React Fast Refresh][react-refresh] の目的です！
-もちろん、Reactは一般的なJavaScriptコードではなく、コンポーネントを中心としたものなので、RFR単体では、エクスポートされたReactコンポーネントのホット更新のみを処理します。
+それがまさに [React Fast Refresh][react-refresh] の目的です！
+もちろん、React は一般的な JavaScript コードではなくコンポーネントに関するものなので、RFR 自体はエクスポートされた React コンポーネントのホットアップデートのみを処理します。
 
-しかし、React Fast Refreshには、認識しておく必要があるいくつかの制限があります。
+ただし、React Fast Refresh には注意すべきいくつかの制限があります。
 
 ### クラスコンポーネントの状態
 
-React Fast Refreshは、クラスコンポーネントの状態を維持しません。
-これには、内部的にクラスを返す高階コンポーネントが含まれます。
+React Fast Refresh は、クラスコンポーネントの状態を保持しません。
+これには、内部でクラスを返す高階コンポーネントが含まれます。
 
 ```tsx
 export class ComponentA extends Component {} // ❌
 
-export const ComponentB = HOC(ComponentC); // ❌ HOCがクラスコンポーネントを返す場合、機能しません
+export const ComponentB = HOC(ComponentC); // ❌ HOC がクラスコンポーネントを返す場合は機能しません
 
 export function ComponentD() {} // ✅
 export const ComponentE = () => {}; // ✅
@@ -41,7 +41,7 @@ export default function ComponentF() {} // ✅
 
 ### 名前付き関数コンポーネント
 
-関数コンポーネントは、React Fast Refreshが変更を追跡するために、匿名ではなく名前付きにする必要があります。
+関数コンポーネントは、React Fast Refresh が変更を追跡するために、匿名ではなく名前付きである必要があります。
 
 ```tsx
 export default () => {}; // ❌
@@ -55,31 +55,28 @@ export default function ComponentB() {} // ✅
 
 ### サポートされているエクスポート
 
-React Fast Refreshは、コンポーネントエクスポートのみを処理できます。Remixは、[`action`][action]、[`headers`][headers]、[`links`][links]、[`loader`][loader]、[`meta`][meta]など、特別なルートエクスポートを管理しますが、ユーザー定義のエクスポートはすべて、完全なリロードを引き起こします。
+React Fast Refresh は、コンポーネントのエクスポートのみを処理できます。Remix は、[`action`][action]、[`headers`][headers]、[`links`][links]、[`loader`][loader]、[`meta`][meta] などの特別なルートエクスポートを管理しますが、ユーザー定義のエクスポートは完全なリロードを引き起こします。
 
 ```tsx
-// これらのエクスポートは、Remix Viteプラグインによって処理され、
-// HMR互換になります
+// これらのエクスポートは、HMR と互換性があるように Remix Vite プラグインによって処理されます
 export const meta = { title: "Home" }; // ✅
 export const links = [
   { rel: "stylesheet", href: "style.css" },
 ]; // ✅
 
-// これらのエクスポートは、Remix Viteプラグインによって削除されるため、
-// HMRに影響を与えることはありません
+// これらのエクスポートは、HMR に影響を与えないように Remix Vite プラグインによって削除されます
 export const headers = { "Cache-Control": "max-age=3600" }; // ✅
 export const loader = async () => {}; // ✅
 export const action = async () => {}; // ✅
 
-// これは、Remixのエクスポートでもコンポーネントのエクスポートでもなく、
-// そのため、このルートの完全なリロードが発生します
+// これは Remix エクスポートでもコンポーネントエクスポートでもないため、このルートの完全なリロードを引き起こします
 export const myValue = "some value"; // ❌
 
 export default function Route() {} // ✅
 ```
 
-👆 ルートは、このようなランダムな値をエクスポートしない方が良いでしょう。
-ルート間で値を再利用する必要がある場合は、独自の非ルートモジュールに格納してください。
+👆 ルートは、いずれにしてもそのようなランダムな値をエクスポートすべきではありません。
+ルート間で値を再利用したい場合は、ルート以外の独自のモジュールにそれらを貼り付けてください。
 
 ```ts filename=my-custom-value.ts
 export const myValue = "some value";
@@ -87,10 +84,10 @@ export const myValue = "some value";
 
 ### フックの変更
 
-React Fast Refreshは、フックが追加または削除された場合、コンポーネントの変更を追跡できません。そのため、次のレンダリングの際に完全なリロードが発生します。フックが更新された後、変更は再びホット更新になるはずです。たとえば、コンポーネントに[`useLoaderData`][use-loader-data]を追加した場合、そのレンダリングの際に、そのコンポーネントのローカルな状態が失われる可能性があります。
+React Fast Refresh は、フックがコンポーネントに追加または削除されている場合、コンポーネントの変更を追跡できず、次のレンダリングのためだけに完全なリロードを引き起こします。フックが更新された後、変更は再びホットアップデートになるはずです。たとえば、[`useLoaderData`][use-loader-data] をコンポーネントに追加すると、そのレンダリングのためにそのコンポーネントにローカルな状態が失われる可能性があります。
 
-さらに、フックの戻り値をデストラクチャリングしている場合、デストラクチャリングされたキーが削除または名前変更された場合、React Fast Refreshはコンポーネントの状態を維持できません。
-たとえば、次のような場合です。
+さらに、フックの戻り値を分割代入している場合、分割代入されたキーが削除または名前変更された場合、React Fast Refresh はコンポーネントの状態を保持できません。
+例：
 
 ```tsx
 export const loader = async () => {
@@ -108,7 +105,7 @@ export default function Component() {
 }
 ```
 
-キー`stuff`を`things`に変更した場合：
+キー `stuff` を `things` に変更した場合：
 
 ```diff
   export const loader = async () => {
@@ -129,9 +126,9 @@ export default function Component() {
   }
 ```
 
-React Fast Refreshは、`<input />`の状態を維持できません ❌。
+次に、React Fast Refresh は状態 `<input />` ❌ を保持できません。
 
-回避策として、デストラクチャリングを避け、代わりにフックの戻り値を直接使用できます。
+回避策として、分割代入を控え、代わりにフックの戻り値を直接使用できます。
 
 ```tsx
 export const loader = async () => {
@@ -149,7 +146,7 @@ export default function Component() {
 }
 ```
 
-これで、キー`stuff`を`things`に変更した場合：
+ここで、キー `stuff` を `things` に変更した場合：
 
 ```diff
   export const loader = async () => {
@@ -169,11 +166,11 @@ export default function Component() {
   }
 ```
 
-React Fast Refreshは`<input />`の状態を維持しますが、次のセクションで説明されているように、状態のある要素（例：`<input />`）が変更された要素の兄弟要素である場合は、コンポーネントキーを使用する必要がある場合があります。
+次に、React Fast Refresh は `<input />` の状態を保持しますが、状態を持つ要素（例：`<input />`）が変更された要素の兄弟である場合は、次のセクションで説明するようにコンポーネントキーを使用する必要がある場合があります。
 
 ### コンポーネントキー
 
-場合によっては、Reactは、既存のコンポーネントが変更されたのか、新しいコンポーネントが追加されたのかを区別できません。[Reactは、これらの場合を区別し、兄弟要素が変更されたときに変更を追跡するために`key`を必要とします][react-keys]。
+場合によっては、React は変更されている既存のコンポーネントと追加されている新しいコンポーネントを区別できません。[React は、これらのケースを曖昧さを解消し、兄弟要素が変更されたときに変更を追跡するために `key` が必要です][react-keys]。
 
 [virtual-dom]: https://reactjs.org/docs/faq-internals.html#what-is-the-virtual-dom
 [react-refresh]: https://github.com/facebook/react/tree/main/packages/react-refresh
@@ -184,5 +181,4 @@ React Fast Refreshは`<input />`の状態を維持しますが、次のセクシ
 [meta]: ../route/meta
 [use-loader-data]: ../hooks/use-loader-data
 [react-keys]: https://react.dev/learn/rendering-lists#why-does-react-need-keys
-
 

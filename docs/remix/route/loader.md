@@ -4,23 +4,25 @@ title: loader
 
 # `loader`
 
-<docs-success>📼 Remix Single をご覧下さい: <a href="https://www.youtube.com/playlist?list=PLXoynULbYuEDG2wBFSZ66b85EIspy3fy6">Remix Single</a>: <a href="https://www.youtube.com/watch?v=NXqEP_PsPNc&list=PLXoynULbYuEDG2wBFSZ66b85EIspy3fy6">コンポーネントへのデータの読み込み</a></docs-success>
+<docs-success>
+<a href="https://www.youtube.com/playlist?list=PLXoynULbYuEDG2wBFSZ66b85EIspy3fy6">📼 Remix Single</a>: <a href="https://www.youtube.com/watch?v=NXqEP_PsPNc&list=PLXoynULbYuEDG2wBFSZ66b85EIspy3fy6">コンポーネントへのデータのロード</a>をご覧ください
+</docs-success>
 
 各ルートは、レンダリング時にルートにデータを提供する `loader` 関数を定義できます。
 
 ```tsx
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 
 export const loader = async () => {
   return json({ ok: true });
 };
 ```
 
-この関数は、サーバーでのみ実行されます。最初のサーバーレンダリング時に、HTMLドキュメントにデータを提供します。ブラウザでのナビゲーション時に、Remixはブラウザから[`fetch`][fetch]を介して関数を呼び出します。
+この関数はサーバーでのみ実行されます。最初のサーバーレンダリングでは、HTMLドキュメントにデータを提供します。ブラウザでのナビゲーションでは、Remixはブラウザから[`fetch`][fetch]を介して関数を呼び出します。
 
-つまり、データベースに直接アクセスしたり、サーバー専用のAPIシークレットを使用したりすることができます。UIのレンダリングに使用されないコードはすべて、ブラウザバンドルから削除されます。
+つまり、データベースと直接通信したり、サーバー専用のAPIシークレットを使用したりできます。UIのレンダリングに使用されないコードは、ブラウザバンドルから削除されます。
 
-データベースORM [Prisma][prisma]を例として使用します。
+データベースORMの[Prisma][prisma]を例として使用します。
 
 ```tsx lines=[3,5-7]
 import { useLoaderData } from "@remix-run/react";
@@ -43,15 +45,15 @@ export default function Users() {
 }
 ```
 
-`prisma` は `loader` でのみ使用されるため、ハイライトされた行で示されているように、コンパイラによってブラウザバンドルから削除されます。
+`prisma`は`loader`でのみ使用されるため、強調表示された行が示すように、コンパイラによってブラウザバンドルから削除されます。
 
 <docs-error>
-`loader` から返されるものはすべてクライアントに公開されます。コンポーネントがレンダリングしない場合でも同様です。`loader` は、パブリックAPIエンドポイントと同じように慎重に扱ってください。
+`loader`から返すものは、コンポーネントがレンダリングしなくてもクライアントに公開されることに注意してください。`loader`は、パブリックAPIエンドポイントと同じように注意して扱ってください。
 </docs-error>
 
 ## 型安全性
 
-`useLoaderData<typeof loader>` を使用すると、`loader` とコンポーネント間のネットワークで型安全性を確保できます。
+`loader` とコンポーネントに対して、ネットワーク越しに型安全性を実現するには、`useLoaderData<typeof loader>` を使用します。
 
 ```tsx lines=[9]
 import { json } from "@remix-run/node";
@@ -66,15 +68,18 @@ export default function SomeRoute() {
 }
 ```
 
-- `data.name` は、それが文字列であることを認識します。
-- `data.date` も、[`json`][json] に日付オブジェクトを渡したにもかかわらず、それが文字列であることを認識します。クライアント遷移のためにデータがフェッチされると、値は[`JSON.stringify`][json-stringify]でネットワーク経由でシリアル化され、型はそのことを認識しています。
+* `data.name` は文字列であることがわかります。
+* `data.date` は、[`json`][json] に日付オブジェクトを渡したにもかかわらず、文字列であることがわかります。クライアント遷移のためにデータがフェッチされる際、値は [`JSON.stringify`][json-stringify] を使用してネットワーク越しにシリアライズされ、型はそのことを認識しています。
+
+[json]: https://remix.run/docs/en/main/utils/json
+[json-stringify]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
 
 ## `params`
 
-ルートパラメータは、ルートファイル名によって定義されます。セグメントが `$` で始まる場合（例：`$invoiceId`）、そのセグメントのURLからの値は、`loader` に渡されます。
+ルートパラメータは、ルートファイル名によって定義されます。セグメントが `$invoiceId` のように `$` で始まる場合、そのセグメントの URL からの値が `loader` に渡されます。
 
 ```tsx filename=app/routes/invoices.$invoiceId.tsx nocopy
-// ユーザーが /invoices/123 を訪問した場合
+// ユーザーが /invoices/123 にアクセスした場合
 export async function loader({
   params,
 }: LoaderFunctionArgs) {
@@ -82,10 +87,10 @@ export async function loader({
 }
 ```
 
-パラメータは、ほとんどの場合、IDでレコードを検索する場合に役立ちます。
+パラメータは主に、ID でレコードを検索するのに役立ちます。
 
 ```tsx filename=app/routes/invoices.$invoiceId.tsx
-// ユーザーが /invoices/123 を訪問した場合
+// ユーザーが /invoices/123 にアクセスした場合
 export async function loader({
   params,
 }: LoaderFunctionArgs) {
@@ -97,18 +102,18 @@ export async function loader({
 
 ## `request`
 
-これは [Fetch Request][request] インスタンスです。すべてのプロパティを確認するには、MDNドキュメントを参照してください。
+これは[Fetch Request][request]インスタンスです。そのすべてのプロパティについては、MDNドキュメントを参照してください。
 
-`loader` で最も一般的なユースケースは、[ヘッダー][request-headers]（Cookieなど）とリクエストのURL [`URLSearchParams`][url-search-params] を読み取ることです。
+`loader`での最も一般的なユースケースは、[ヘッダー][request-headers]（クッキーなど）と、リクエストからのURL [`URLSearchParams`][url-search-params]を読み取ることです。
 
 ```tsx
 export async function loader({
   request,
 }: LoaderFunctionArgs) {
-  // Cookie を読み取る
+  // クッキーを読み取る
   const cookie = request.headers.get("Cookie");
 
-  // `?q=` の検索パラメータを解析する
+  // `?q=`の検索パラメータを解析する
   const url = new URL(request.url);
   const query = url.searchParams.get("q");
 }
@@ -116,11 +121,11 @@ export async function loader({
 
 ## `context`
 
-これは、サーバーアダプターの `getLoadContext()` 関数に渡されるコンテキストです。アダプターのリクエスト/レスポンスAPIとRemixアプリの間に橋渡しをする方法です。
+これは、サーバーアダプターの `getLoadContext()` 関数に渡されるコンテキストです。アダプターのリクエスト/レスポンス API と Remix アプリの間のギャップを埋めるための方法です。
 
-<docs-info>このAPIはエスケープハッチです。使用する必要はほとんどありません。</docs-info>
+<docs-info>この API はエスケープハッチであり、必要になることはまれです</docs-info>
 
-expressアダプターを例として使用します。
+express アダプターを例に挙げると：
 
 ```ts filename=server.ts
 const {
@@ -131,14 +136,14 @@ app.all(
   "*",
   createRequestHandler({
     getLoadContext(req, res) {
-      // これが loader コンテキストになります
+      // これがローダーコンテキストになります
       return { expressUser: req.user };
     },
   })
 );
 ```
 
-そして、`loader` はそれにアクセスできます。
+そして、`loader` がそれにアクセスできます。
 
 ```tsx filename=app/routes/some-route.tsx
 export async function loader({
@@ -149,7 +154,7 @@ export async function loader({
 }
 ```
 
-## レスポンスインスタンスの返却
+## レスポンスインスタンスを返す
 
 `loader` から [Fetch Response][response] を返す必要があります。
 
@@ -165,10 +170,10 @@ export async function loader() {
 }
 ```
 
-[`json ヘルパー`][json] を使用すると、これを簡略化できるので、自分で作成する必要はありませんが、これらの2つの例は、実際には同じです。
+[`json` ヘルパー][json] を使用すると、これを簡略化できるため、自分で構築する必要はありません。ただし、これらの2つの例は実質的に同じです。
 
 ```tsx
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 
 export const loader = async () => {
   const users = await fakeDb.users.findMany();
@@ -176,10 +181,10 @@ export const loader = async () => {
 };
 ```
 
-`json` は、`loader` をはるかにクリーンにするために少しの作業を行う方法がわかります。`json` ヘルパーを使用して、レスポンスにヘッダーまたはステータスコードを追加することもできます。
+`json` が `loader` をよりクリーンにするために少しだけ作業をしていることがわかります。また、`json` ヘルパーを使用して、レスポンスにヘッダーやステータスコードを追加することもできます。
 
 ```tsx
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 
 export const loader = async ({
   params,
@@ -198,20 +203,24 @@ export const loader = async ({
 
 こちらも参照してください。
 
-- [`headers`][headers]
-- [MDN Response Docs][response]
+* [`headers`][headers]
+* [MDN Response ドキュメント][response]
 
-## Loader でのレスポンスの投げ込み
+[response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
+[json]: https://remix.run/utils/json
+[headers]: https://remix.run/utils/headers
 
-レスポンスを返すことに加えて、`loader` から `Response` オブジェクトをスローすることもできます。これにより、コールスタックを突破して、次のいずれかを行うことができます。
+## ローダーでのレスポンスのスロー
 
-- 別のURLにリダイレクトする
-- `ErrorBoundary` を介してコンテキストデータを含む代替UIを表示する
+レスポンスを返すだけでなく、`loader` から `Response` オブジェクトをスローすることもできます。これにより、コールスタックを中断し、次の2つのいずれかを行うことができます。
 
-以下は、ローダーでのコードの実行を停止し、代替UIを表示するためにレスポンスをスローするユーティリティ関数の作成方法を示す完全な例です。
+* 別のURLにリダイレクトする
+* `ErrorBoundary` を介してコンテキストデータとともに代替UIを表示する
+
+以下は、ローダーでのコード実行を停止し、代替UIを表示するためにレスポンスをスローするユーティリティ関数を作成する方法を示す完全な例です。
 
 ```ts filename=app/db.ts
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 
 export function getInvoice(id) {
   const invoice = db.invoice.find({ where: { id } });
@@ -223,7 +232,7 @@ export function getInvoice(id) {
 ```
 
 ```ts filename=app/http.ts
-import { redirect } from "@remix-run/node"; // or cloudflare/deno
+import { redirect } from "@remix-run/node"; // または cloudflare/deno
 
 import { getSession } from "./session";
 
@@ -232,7 +241,9 @@ export async function requireUserSession(request) {
     request.headers.get("cookie")
   );
   if (!session) {
-    // `redirect` や `json` などのヘルパーをスローできます。これらのヘルパーは `Response` オブジェクトを返します。`redirect` レスポンスは別のURLにリダイレクトし、その他のレスポンスは `ErrorBoundary` でレンダリングされたUIをトリガーします。
+    // `redirect` や `json` のようなヘルパーは `Response` オブジェクトを返すため、
+    // これらをスローできます。`redirect` レスポンスは別のURLにリダイレクトし、
+    // 他のレスポンスは `ErrorBoundary` でレンダリングされるUIをトリガーします。
     throw redirect("/login", 302);
   }
   return session.get("user");
@@ -240,8 +251,8 @@ export async function requireUserSession(request) {
 ```
 
 ```tsx filename=app/routes/invoice.$invoiceId.tsx
-import type { LoaderFunctionArgs } from "@remix-run/node"; // or cloudflare/deno
-import { json } from "@remix-run/node"; // or cloudflare/deno
+import type { LoaderFunctionArgs } from "@remix-run/node"; // または cloudflare/deno
+import { json } from "@remix-run/node"; // または cloudflare/deno
 import {
   isRouteErrorResponse,
   useLoaderData,
@@ -281,20 +292,20 @@ export function ErrorBoundary() {
       case 401:
         return (
           <div>
-            <p>You don't have access to this invoice.</p>
+            <p>この請求書へのアクセス権がありません。</p>
             <p>
-              Contact {error.data.invoiceOwnerEmail} to get
-              access
+              アクセス権を得るには {error.data.invoiceOwnerEmail} に
+              連絡してください
             </p>
           </div>
         );
       case 404:
-        return <div>Invoice not found!</div>;
+        return <div>請求書が見つかりません！</div>;
     }
 
     return (
       <div>
-        Something went wrong: {error.status}{" "}
+        問題が発生しました: {error.status}{" "}
         {error.statusText}
       </div>
     );
@@ -302,22 +313,28 @@ export function ErrorBoundary() {
 
   return (
     <div>
-      Something went wrong:{" "}
-      {error?.message || "Unknown Error"}
+      問題が発生しました:{" "}
+      {error?.message || "不明なエラー"}
     </div>
   );
 }
 ```
 
-[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+[fetch]: https://developer.mozilla.org/ja/docs/Web/API/Fetch_API
+
 [prisma]: https://www.prisma.io
+
 [json]: ../utils/json
-[json-stringify]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
-[request]: https://developer.mozilla.org/en-US/docs/Web/API/Request
-[request-headers]: https://developer.mozilla.org/en-US/docs/Web/API/Response/headers
-[url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-[response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
+
+[json-stringify]: https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+
+[request]: https://developer.mozilla.org/ja/docs/Web/API/Request
+
+[request-headers]: https://developer.mozilla.org/ja/docs/Web/API/Response/headers
+
+[url-search-params]: https://developer.mozilla.org/ja/docs/Web/API/URLSearchParams
+
+[response]: https://developer.mozilla.org/ja/docs/Web/API/Response
+
 [headers]: ../route/headers
-
-
 
