@@ -9,7 +9,7 @@ compatibility_flags = [ "nodejs_compat" ]
 compatibility_date = "2024-09-26"
 
 # https://developers.cloudflare.com/workers/static-assets/binding/
-assets = { directory = "./build/client", binding = 'ASSETS'}
+assets = { directory = "./build/client", binding = 'ASSETS', html_handling = 'drop-trailing-slash'}
 
 [observability]
 enabled = true
