@@ -4,7 +4,7 @@ title: ステータスコード
 
 # ステータスコード
 
-ローダーとアクションから`data`を使ってステータスコードを設定します。
+`data` を使用して、ローダーとアクションからステータスコードを設定します。
 
 ```tsx filename=app/project.tsx lines=[3,12-15,20,23]
 // route('/projects/:projectId', './project.tsx')
@@ -19,7 +19,7 @@ export async function action({
   let title = await formData.get("title");
   if (!title) {
     return data(
-      { message: "Invalid title" },
+      { message: "無効なタイトル" },
       { status: 400 }
     );
   }
@@ -29,15 +29,15 @@ export async function action({
     return data(project, { status: 201 });
   } else {
     let project = await fakeDb.updateProject({ title });
-    // デフォルトのステータスコードは200なので、`data`は不要です
+    // デフォルトのステータスコードは 200 なので、`data` は不要
     return project;
   }
 }
 ```
 
-このようなフォームエラーのレンダリングについては、[フォーム検証](./form-validation)を参照してください。
+このようなフォームエラーのレンダリングに関する詳細は、[フォームの検証](./form-validation) を参照してください。
 
-もう1つの一般的なステータスコードは404です。
+もう1つの一般的なステータスコードは 404 です。
 
 ```tsx
 // route('/projects/:projectId', './project.tsx')
@@ -48,12 +48,12 @@ import { fakeDb } from "../db";
 export async function loader({ params }: Route.ActionArgs) {
   let project = await fakeDb.getProject(params.id);
   if (!project) {
-    // ErrorBoundaryにスローする
+    // ErrorBoundary にスロー
     throw data(null, { status: 404 });
   }
   return project;
 }
 ```
 
-スローされた`data`については、[エラーバウンダリ](./error-boundary)を参照してください。
+スローされた `data` に関する詳細は、[エラー境界](./error-boundary) を参照してください。
 

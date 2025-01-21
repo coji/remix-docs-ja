@@ -4,15 +4,15 @@ title: カスタムフレームワーク
 
 # カスタムフレームワーク
 
-`@react-router/dev` を使用する代わりに、React Router のフレームワーク機能（ローダー、アクション、フェッチャーなど）を独自のバンドラーとサーバー抽象化に統合できます。
+`@react-router/dev` を使用する代わりに、React Router のフレームワーク機能（ローダー、アクション、フェッチャーなど）を独自のバンドラーおよびサーバー抽象化に統合できます。
 
-## クライアントサイドレンダリング
+## クライアントレンダリング
 
-### 1. ルーターの作成
+### 1. ルーターを作成する
 
-ルートモジュールAPI（ローダー、アクションなど）を有効にするブラウザーランタイムAPIは`createBrowserRouter`です。
+ルートモジュール API（ローダー、アクションなど）を有効にするブラウザランタイム API は `createBrowserRouter` です。
 
-ローダー、アクション、エラーバウンダリなどをサポートするルートオブジェクトの配列を取ります。React Router Viteプラグインは`routes.ts`からこれらを生成しますが、手動で（または抽象化を使用して）作成し、独自のバンドラーを使用できます。
+これは、ローダー、アクション、エラー境界などをサポートするルートオブジェクトの配列を受け取ります。React Router Vite プラグインは `routes.ts` からこれを作成しますが、手動で（または抽象化を使用して）作成し、独自のバンドラーを使用できます。
 
 ```tsx
 import { createBrowserRouter } from "react-router";
@@ -35,9 +35,9 @@ let router = createBrowserRouter([
 ]);
 ```
 
-### 2. ルーターのレンダリング
+### 2. ルーターをレンダリングする
 
-ブラウザでルーターをレンダリングするには、`<RouterProvider>`を使用します。
+ブラウザでルーターをレンダリングするには、`<RouterProvider>` を使用します。
 
 ```tsx
 import {
@@ -53,13 +53,13 @@ createRoot(document.getElementById("root")).render(
 
 ### 3. 遅延読み込み
 
-ルートは、`lazy`プロパティを使用して定義の大部分を遅延させることができます。
+ルートは、`lazy` プロパティを使用して、定義のほとんどを遅延的に取得できます。
 
 ```tsx
 createBrowserRouter([
   {
     path: "/show/:showId",
-    lazy: () => {
+    lazy: async () => {
       let [loader, action, Component] = await Promise.all([
         import("./show.action.js"),
         import("./show.loader.js"),
@@ -71,15 +71,15 @@ createBrowserRouter([
 ]);
 ```
 
-## サーバーサイドレンダリング
+## サーバーレンダリング
 
-カスタム設定をサーバーサイドレンダリングするには、データの読み込みとレンダリングに使用できるいくつかのサーバーAPIがあります。
+カスタム設定をサーバーレンダリングするには、データ読み込みをレンダリングするために利用できるサーバー API がいくつかあります。
 
-このガイドは、それがどのように機能するかについてのいくつかのアイデアを提供するだけです。より深い理解のために、[カスタムフレームワークの例のリポジトリ](https://github.com/remix-run/custom-react-router-framework-example)を参照してください。
+このガイドでは、その仕組みに関するいくつかのアイデアを紹介します。より深く理解するには、[カスタムフレームワークのサンプルリポジトリ](https://github.com/remix-run/custom-react-router-framework-example) を参照してください。
 
-### 1. ルートの定義
+### 1. ルートを定義する
 
-ルートは、クライアント側と同様に、サーバー上でも同じ種類のオブジェクトです。
+ルートは、クライアントと同じ種類のオブジェクトです。
 
 ```tsx
 export default [
@@ -99,9 +99,9 @@ export default [
 ];
 ```
 
-### 2. 静的ハンドラーの作成
+### 2. 静的ハンドラーを作成する
 
-`createStaticHandler`を使用して、ルートをリクエストハンドラーに変換します。
+`createStaticHandler` を使用して、ルートをリクエストハンドラーに変換します。
 
 ```tsx
 import { createStaticHandler } from "react-router";
@@ -110,11 +110,11 @@ import routes from "./some-routes";
 let { query, dataRoutes } = createStaticHandler(routes);
 ```
 
-### 3. ルーティングコンテキストの取得とレンダリング
+### 3. ルーティングコンテキストを取得してレンダリングする
 
-React Router は web fetch の [リクエスト](https://developer.mozilla.org/en-US/docs/Web/API/Request) で動作するため、サーバーがそれを使用していない場合は、使用するオブジェクトを web fetch の `Request` オブジェクトに適応させる必要があります。
+React Router は Web fetch [リクエスト](https://developer.mozilla.org/en-US/docs/Web/API/Request) で動作するため、サーバーがそうでない場合は、使用するオブジェクトを Web fetch `Request` オブジェクトに適応させる必要があります。
 
-この手順では、サーバーが `Request` オブジェクトを受け取ることを前提としています。
+このステップでは、サーバーが `Request` オブジェクトを受け取ることを前提としています。
 
 ```tsx
 import { renderToString } from "react-dom/server";
@@ -129,10 +129,10 @@ import routes from "./some-routes.js";
 let { query, dataRoutes } = createStaticHandler(routes);
 
 export async function handler(request: Request) {
-  // 1. `query` を使用してルーティングコンテキストを取得するためにアクション/ローダーを実行します。
+  // 1. `query` を使用してアクション/ローダーを実行し、ルーティングコンテキストを取得します
   let context = await query(request);
 
-  // `query` が Response を返す場合、生のまま送信します（ルートはおそらくリダイレクトされています）
+  // `query` が Response を返す場合は、そのまま送信します（ルートはおそらくリダイレクトされました）
   if (context instanceof Response) {
     return context;
   }
@@ -148,7 +148,7 @@ export async function handler(request: Request) {
     />
   );
 
-  // 最も深い一致からのアクションとローダーからヘッダーを設定します
+  // 最も深い一致からアクションとローダーのヘッダーを設定します
   let leaf = context.matches[context.matches.length - 1];
   let actionHeaders = context.actionHeaders[leaf.route.id];
   let loaderHeaders = context.loaderHeaders[leaf.route.id];
@@ -169,9 +169,9 @@ export async function handler(request: Request) {
 }
 ```
 
-### 4. ブラウザでのハイドレーション
+### 4. ブラウザでハイドレートする
 
-ハイドレーションデータは `window.__staticRouterHydrationData` に埋め込まれています。それを使用してクライアント側のルーターを初期化し、`<RouterProvider>`をレンダリングします。
+ハイドレーションデータは `window.__staticRouterHydrationData` に埋め込まれます。これを使用してクライアント側のルーターを初期化し、`<RouterProvider>` をレンダリングします。
 
 ```tsx
 import { StrictMode } from "react";

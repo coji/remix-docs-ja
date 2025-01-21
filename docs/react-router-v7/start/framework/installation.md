@@ -7,7 +7,7 @@ order: 1
 
 <docs-info>
 
-React Router v7 は、以下の最小バージョンが必要です。
+React Router v7 は、以下の最小バージョンを必要とします。
 
 - `node@20`
 - `react@18`
@@ -15,7 +15,7 @@ React Router v7 は、以下の最小バージョンが必要です。
 
 </docs-info>
 
-ほとんどのプロジェクトはテンプレートから開始します。React Router がメンテナンスしている基本的なテンプレートを使用してみましょう。
+ほとんどのプロジェクトはテンプレートから始まります。React Router が管理している基本的なテンプレートを使用してみましょう。
 
 ```shellscript nonumber
 npx create-react-router@latest my-react-router-app
@@ -29,11 +29,11 @@ npm i
 npm run dev
 ```
 
-ブラウザで `http://localhost:5173` を開けるようになります。
+ブラウザで `http://localhost:5173` を開くことができます。
 
-プロジェクトを手動でセットアップする方法については、[GitHub でテンプレートを表示する][default-template]ことができます。
+プロジェクトを手動でセットアップする方法については、[GitHub でテンプレートを表示][default-template]してください。
 
-また、すぐにデプロイできる[多数のテンプレート][react-router-templates]も用意していますので、ぜひご利用ください。
+また、すぐにデプロイできる[テンプレート][react-router-templates]も多数用意しています。
 
 ```shellscript nonumber
 npx create-react-router@latest --template remix-run/react-router-templates/<template-name>

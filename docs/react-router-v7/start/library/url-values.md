@@ -1,8 +1,8 @@
 ---
-title: URL値
+title: URLの値
 ---
 
-# URL値
+# URLの値
 
 ## ルートパラメータ
 
@@ -12,7 +12,7 @@ title: URL値
 <Route path="/concerts/:city" element={<City />} />
 ```
 
-この場合、`:city` は動的なセグメントです。その都市の解析された値は、`useParams`から利用できます。
+この場合、`:city` が動的なセグメントです。その都市に対して解析された値は、`useParams` から利用できます。
 
 ```tsx
 import { useParams } from "react-router";
@@ -26,7 +26,7 @@ function City() {
 
 ## URL検索パラメータ
 
-検索パラメータは、URLの`?`の後の値です。それらは`useSearchParams`からアクセスできます。これは[`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)のインスタンスを返します。
+検索パラメータは、URL内の `?` の後の値です。これらは `useSearchParams` からアクセスでき、[`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams) のインスタンスを返します。
 
 ```tsx
 function SearchResults() {
@@ -34,7 +34,7 @@ function SearchResults() {
   return (
     <div>
       <p>
-        You searched for <i>{searchParams.get("q")}</i>
+        <i>{searchParams.get("q")}</i> で検索しました
       </p>
       <FakeSearchResults />
     </div>
@@ -44,7 +44,7 @@ function SearchResults() {
 
 ## Locationオブジェクト
 
-React Routerは、`useLocation`でアクセスできるいくつかの便利な情報を含むカスタム`location`オブジェクトを作成します。
+React Routerは、`useLocation` でアクセスできる便利な情報を持つカスタムの `location` オブジェクトを作成します。
 
 ```tsx
 function useAnalytics() {

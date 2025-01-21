@@ -4,7 +4,7 @@ title: HTTP ヘッダー
 
 # HTTP ヘッダー
 
-ヘッダーは主にルートモジュール`headers`エクスポートで定義されます。`entry.server.tsx`でもヘッダーを設定できます。
+ヘッダーは主にルートモジュールの `headers` エクスポートで定義されます。`entry.server.tsx` でヘッダーを設定することもできます。
 
 ## ルートモジュールから
 
@@ -21,13 +21,13 @@ export function headers(_: Route.HeadersArgs) {
 }
 ```
 
-[`Headers`](https://developer.mozilla.org/en-US/docs/Web/API/Headers)インスタンスまたは`HeadersInit`のいずれかを返すことができます。
+[`Headers`](https://developer.mozilla.org/en-US/docs/Web/API/Headers) インスタンスまたは `HeadersInit` のいずれかを返すことができます。
 
 ## ローダーとアクションから
 
-ヘッダーがローダーデータに依存する場合、ローダーとアクションでもヘッダーを設定できます。
+ヘッダーがローダーデータに依存する場合、ローダーとアクションもヘッダーを設定できます。
 
-### 1. 戻り値を`data`でラップする
+### 1. 戻り値を `data` でラップする
 
 ```tsx lines=[1,8]
 import { data } from "react-router";
@@ -45,9 +45,9 @@ export async function loader({ params }: LoaderArgs) {
 }
 ```
 
-### 2. `headers`エクスポートから返す
+### 2. `headers` エクスポートから返す
 
-ローダーとアクションからのヘッダーは隠れた方法では送信されません。`headers`エクスポートから返す必要があります。
+ローダーとアクションからのヘッダーは隠された方法では送信されません。`headers` エクスポートから返す必要があります。
 
 ```tsx
 export function headers({
@@ -58,9 +58,11 @@ export function headers({
 }
 ```
 
+注目すべき例外の1つは `Set-Cookie` ヘッダーです。これは、子ルートから `headers` をエクスポートしなくても、親ルートの `headers`、`loader`、および `action` から自動的に保持されます。
+
 ## 親ヘッダーとのマージ
 
-これらのネストされたルートを考えてみましょう。
+次のネストされたルートを考えてみましょう。
 
 ```ts filename=routes.ts
 route("pages", "pages-layout-with-nav.tsx", [
@@ -68,13 +70,13 @@ route("pages", "pages-layout-with-nav.tsx", [
 ]);
 ```
 
-両方のルートモジュールがヘッダーを設定する場合、最も深く一致するルートからのヘッダーが送信されます。
+両方のルートモジュールがヘッダーを設定したい場合、最も深く一致するルートからのヘッダーが送信されます。
 
-親ヘッダーと子ヘッダーの両方を保持する必要がある場合、子ルートでそれらをマージする必要があります。
+親と子の両方のヘッダーを保持する必要がある場合は、子ルートでそれらをマージする必要があります。
 
 ### 追加
 
-最も簡単な方法は、親ヘッダーに単純に追加することです。これにより、親が設定したヘッダーの上書きが避けられ、どちらも重要になります。
+最も簡単な方法は、親ヘッダーに単純に追加することです。これにより、親が設定した可能性のあるヘッダーを上書きすることを回避し、両方が重要になります。
 
 ```tsx
 export function headers({ parentHeaders }: HeadersArgs) {
@@ -87,7 +89,7 @@ export function headers({ parentHeaders }: HeadersArgs) {
 
 ### 設定
 
-場合によっては、親ヘッダーを上書きすることが重要です。これには、`append`ではなく`set`を使用します。
+親ヘッダーを上書きすることが重要な場合があります。`append` の代わりに `set` を使用してこれを行います。
 
 ```tsx
 export function headers({ parentHeaders }: HeadersArgs) {
@@ -99,11 +101,11 @@ export function headers({ parentHeaders }: HeadersArgs) {
 }
 ```
 
-「リーフルート」（インデックスルートと子を持たない子ルート）でのみヘッダーを定義し、親ルートでは定義しないことで、ヘッダーのマージの必要性を回避できます。
+ヘッダーをマージする必要性を回避するには、「リーフルート」（インデックスルートと子を持たない子ルート）でのみヘッダーを定義し、親ルートでは定義しないようにします。
 
-## `entry.server.tsx`から
+## `entry.server.tsx` から
 
-`handleRequest`エクスポートは、ルートモジュールからのヘッダーを引数として受け取ります。ここではグローバルヘッダーを追加できます。
+`handleRequest` エクスポートは、ルートモジュールからのヘッダーを引数として受け取ります。ここでグローバルヘッダーを追加できます。
 
 ```tsx
 export default function handleRequest(
@@ -113,7 +115,7 @@ export default function handleRequest(
   routerContext,
   loadContext
 ) {
-  // グローバルヘッダーの設定、追加
+  // グローバルヘッダーを設定、追加
   responseHeaders.set(
     "X-App-Version",
     routerContext.manifest.version
@@ -126,7 +128,7 @@ export default function handleRequest(
 }
 ```
 
-`entry.server.tsx`がない場合は、`reveal`コマンドを実行します。
+`entry.server.tsx` がない場合は、`reveal` コマンドを実行します。
 
 ```shellscript nonumber
 react-router reveal

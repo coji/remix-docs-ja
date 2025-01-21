@@ -1,5 +1,5 @@
 ---
-title: ライブラリ
+title: Library
 order: 2
 ---
 

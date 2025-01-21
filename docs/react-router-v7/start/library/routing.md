@@ -5,9 +5,9 @@ order: 2
 
 # ルーティング
 
-## ルートの構成
+## ルートの設定
 
-ルートは、URLセグメントとUI要素を組み合わせた`<Routes>`と`<Route>`をレンダリングすることで構成されます。
+ルートは、URLセグメントをUI要素に結びつける `<Routes>` と `<Route>` をレンダリングすることで設定します。
 
 ```tsx
 import React from "react";
@@ -26,7 +26,7 @@ ReactDOM.createRoot(root).render(
 );
 ```
 
-より大規模なサンプル構成を以下に示します。
+以下は、より大きな設定例です。
 
 ```tsx
 <Routes>
@@ -48,7 +48,7 @@ ReactDOM.createRoot(root).render(
 
 ## ネストされたルート
 
-ルートは親ルートの中にネストすることができます。
+ルートは、親ルートの中にネストすることができます。
 
 ```tsx
 <Routes>
@@ -59,9 +59,9 @@ ReactDOM.createRoot(root).render(
 </Routes>
 ```
 
-親のパスは子に自動的に含まれるため、この構成では`"/dashboard"`と`"/dashboard/settings"`の両方のURLが作成されます。
+親のパスは自動的に子に含まれるため、この設定では `"/dashboard"` と `"/dashboard/settings"` の両方のURLが作成されます。
 
-子ルートは、親ルートの`<Outlet/>`を通してレンダリングされます。
+子ルートは、親ルートの `<Outlet/>` を通してレンダリングされます。
 
 ```tsx filename=app/dashboard.tsx
 import { Outlet } from "react-router";
@@ -79,7 +79,7 @@ export default function Dashboard() {
 
 ## レイアウトルート
 
-`path`を持たないルートは、その子に対して新しいネストを作成しますが、URLにセグメントを追加しません。
+`path` _のない_ ルートは、子に対して新しいネストを作成しますが、URLにセグメントを追加しません。
 
 ```tsx lines=[2,9]
 <Routes>
@@ -100,16 +100,16 @@ export default function Dashboard() {
 
 ## インデックスルート
 
-インデックスルートは、親のURL（デフォルトの子ルートのようなもの）で親の`<Outlet/>`にレンダリングされます。`index`プロパティで設定されます。
+インデックスルートは、親のURLで親の `<Outlet/>` にレンダリングされます（デフォルトの子ルートのように）。これらは `index` プロパティで設定されます。
 
 ```tsx lines=[4,8]
 <Routes>
   <Route path="/" element={<Root />}>
-    {/* "/" で <Root> の outlet にレンダリングされます */}
+    {/* "/" で <Root> のアウトレットにレンダリングされます */}
     <Route index element={<Home />} />
 
     <Route path="dashboard" element={<Dashboard />}>
-      {/* "/dashboard" で <Dashboard> の outlet にレンダリングされます */}
+      {/* "/dashboard" で <Dashboard> のアウトレットにレンダリングされます */}
       <Route index element={<DashboardHome />} />
       <Route path="settings" element={<Settings />} />
     </Route>
@@ -117,12 +117,11 @@ export default function Dashboard() {
 </Routes>
 ```
 
-インデックスルートには子を持たせることができないことに注意してください。そのような動作を期待している場合は、おそらく[レイアウトルート](#layout-routes)を使用する必要があります。
-
+インデックスルートには子を持たせることができないことに注意してください。その動作を期待している場合は、おそらく[レイアウトルート](#layout-routes)が必要でしょう。
 
 ## ルートプレフィックス
 
-`element`プロパティのない`<Route path>`は、親レイアウトを導入することなく、その子ルートにパスプレフィックスを追加します。
+`element` プロパティ _のない_ `<Route path>` は、親レイアウトを導入することなく、子ルートにパスプレフィックスを追加します。
 
 ```tsx filename=app/routes.ts lines=[1]
 <Route path="projects">
@@ -136,7 +135,7 @@ export default function Dashboard() {
 
 ## 動的セグメント
 
-パスセグメントが`:`で始まる場合、「動的セグメント」になります。ルートがURLと一致すると、動的セグメントはURLから解析され、`useParams`などの他のルーターAPIに`params`として提供されます。
+パスセグメントが `:` で始まる場合、それは「動的セグメント」になります。ルートがURLに一致すると、動的セグメントはURLから解析され、`useParams` のような他のルーターAPIに `params` として提供されます。
 
 ```tsx
 <Route path="teams/:teamId" element={<Team />} />
@@ -169,15 +168,17 @@ export default function Team() {
 }
 ```
 
+特定のパス内のすべての動的セグメントが一意であることを確認する必要があります。そうしないと、`params` オブジェクトが設定されるにつれて、後続の動的セグメントの値が以前の値を上書きします。
+
 ## オプションセグメント
 
-セグメントの最後に`?`を追加することで、ルートセグメントをオプションにすることができます。
+セグメントの末尾に `?` を追加することで、ルートセグメントをオプションにすることができます。
 
 ```tsx
 <Route path=":lang?/categories" element={<Categories />} />
 ```
 
-オプションの静的セグメントも持つことができます。
+オプションの静的セグメントも使用できます。
 
 ```tsx
 <Route path="users/:userId/edit?" component={<User />} />
@@ -185,7 +186,7 @@ export default function Team() {
 
 ## スプラット
 
-「キャッチオール」や「スター」セグメントとも呼ばれます。ルートパスパターンが`/*`で終わる場合、`/`を含む`/`以降の文字と一致します。
+「キャッチオール」または「スター」セグメントとも呼ばれます。ルートパスパターンが `/*` で終わる場合、他の `/` 文字を含む、`/` に続く任意の文字に一致します。
 
 ```tsx
 <Route path="files/*" element={<File />} />
@@ -193,11 +194,11 @@ export default function Team() {
 
 ```tsx
 let params = useParams();
-// params["*"] は files/ の後のURL残りを含みます
+// params["*"] には files/ の後の残りのURLが含まれます
 let filePath = params["*"];
 ```
 
-`*`をデストラクチャリングできますが、新しい名前を付ける必要があります。一般的な名前は`splat`です。
+`*` を分割代入できますが、新しい名前を割り当てる必要があります。一般的な名前は `splat` です。
 
 ```tsx
 let { "*": splat } = useParams();
@@ -205,7 +206,7 @@ let { "*": splat } = useParams();
 
 ## リンク
 
-`Link`と`NavLink`を使用して、UIからルートにリンクします。
+`Link` と `NavLink` を使用して、UIからルートにリンクします。
 
 ```tsx
 import { NavLink, Link } from "react-router";
@@ -213,7 +214,7 @@ import { NavLink, Link } from "react-router";
 function Header() {
   return (
     <nav>
-      {/* NavLink はアクティブ状態を表示する簡単な方法です */}
+      {/* NavLink を使用すると、アクティブな状態を簡単に表示できます */}
       <NavLink
         to="/"
         className={({ isActive }) =>

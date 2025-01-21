@@ -1,12 +1,12 @@
 ---
 title: Webhooks
-# Webhook作成方法のクイックガイドを作成できます。これは別のドキュメントからコピー＆ペーストされたもので、最初にレビューする必要があります。
+# can make a quick how-to on creating a webhook, this was copy/pasted from another doc, needs to be reviewed first
 hidden: true
 ---
 
 # Webhooks
 
-リソースルートはWebhookを処理するために使用できます。たとえば、新しいコミットがリポジトリにプッシュされたときにGitHubから通知を受け取るWebhookを作成できます。
+リソースルートは、Webhook を処理するために使用できます。たとえば、新しいコミットがリポジトリにプッシュされたときに GitHub から通知を受け取る Webhook を作成できます。
 
 ```tsx
 import type { Route } from "./+types/github";
@@ -18,7 +18,7 @@ export const action = async ({
 }: Route.ActionArgs) => {
   if (request.method !== "POST") {
     return Response.json(
-      { message: "Method not allowed" },
+      { message: "許可されていないメソッドです" },
       {
         status: 405,
       }
@@ -26,7 +26,7 @@ export const action = async ({
   }
   const payload = await request.json();
 
-  /* Webhookの検証 */
+  /* Webhook を検証する */
   const signature = request.headers.get(
     "X-Hub-Signature-256"
   );
@@ -36,14 +36,14 @@ export const action = async ({
     .digest("hex")}`;
   if (signature !== generatedSignature) {
     return Response.json(
-      { message: "Signature mismatch" },
+      { message: "署名が一致しません" },
       {
         status: 401,
       }
     );
   }
 
-  /* Webhookを処理する（例：バックグラウンドジョブをエンキューする）*/
+  /* Webhook を処理する (例: バックグラウンドジョブをエンキューする) */
 
   return Response.json({ success: true });
 };

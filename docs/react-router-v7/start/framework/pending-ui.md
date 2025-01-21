@@ -1,16 +1,15 @@
 ---
-title: 処理中のUI
+title: ペンディング UI
 order: 7
 ---
 
-# 処理中のUI
+# ペンディング UI
 
-ユーザーが新しいルートに移動したり、アクションにデータを送信したりすると、UIはユーザーのアクションに、処理中または楽観的な状態ですぐに反応する必要があります。アプリケーションコードがこの処理を担当します。
+ユーザーが新しいルートに移動したり、アクションにデータを送信したりする場合、UI はユーザーのアクションにペンディング状態または楽観的な状態で即座に応答する必要があります。アプリケーションコードがこれを担当します。
 
+## グローバルなペンディングナビゲーション
 
-## グローバルなナビゲーション処理中
-
-ユーザーが新しいURLに移動すると、次のページのローダーは、次のページがレンダリングされる前に待機されます。`useNavigation`から処理中の状態を取得できます。
+ユーザーが新しい URL に移動すると、次のページのローダーは、次のページがレンダリングされる前に待機されます。`useNavigation` からペンディング状態を取得できます。
 
 ```tsx
 import { useNavigation } from "react-router";
@@ -30,9 +29,9 @@ export default function Root() {
 }
 ```
 
-## ローカルなナビゲーション処理中
+## ローカルなペンディングナビゲーション
 
-処理中のインジケーターは、リンクにローカライズすることもできます。NavLinkの子、className、およびstyleプロパティは、処理中の状態を受け取る関数にすることができます。
+ペンディングインジケーターは、リンクにローカライズすることもできます。NavLink の children、className、および style プロパティは、ペンディング状態を受け取る関数にすることができます。
 
 ```tsx
 import { NavLink } from "react-router";
@@ -58,9 +57,9 @@ function Navbar() {
 }
 ```
 
-## フォーム送信処理中
+## ペンディングフォーム送信
 
-フォームが送信されると、UIはユーザーのアクションに、処理中の状態で直ちに反応する必要があります。これは、[フェッチャー][use_fetcher]フォームを使用すると最も簡単です。フェッチャーフォームは独自の独立した状態を持つためです（通常のフォームはグローバルなナビゲーションを引き起こします）。
+フォームが送信されると、UI はユーザーのアクションにペンディング状態で即座に応答する必要があります。これは、独自の独立した状態を持つため（通常のフォームはグローバルナビゲーションを引き起こすのに対し）、[fetcher][use_fetcher] フォームを使用するのが最も簡単です。
 
 ```tsx filename=app/project.tsx lines=[10-12]
 import { useFetcher } from "react-router";
@@ -81,7 +80,7 @@ function NewProjectForm() {
 }
 ```
 
-フェッチャー以外のフォーム送信の場合、処理中の状態は`useNavigation`で利用できます。
+fetcher 以外のフォーム送信の場合、ペンディング状態は `useNavigation` で利用できます。
 
 ```tsx filename=app/projects/new.tsx
 import { useNavigation, Form } from "react-router";
@@ -102,9 +101,9 @@ function NewProjectForm() {
 }
 ```
 
-## 楽観的なUI
+## 楽観的な UI
 
-フォーム送信データによってUIの将来の状態がわかっている場合、インスタントUXのための楽観的なUIを実装できます。
+UI の将来の状態がフォーム送信データによってわかっている場合、即時の UX のために楽観的な UI を実装できます。
 
 ```tsx filename=app/project.tsx lines=[4-7]
 function Task({ task }) {
@@ -123,7 +122,7 @@ function Task({ task }) {
           name="status"
           value={isComplete ? "incomplete" : "complete"}
         >
-          {isComplete ? "完了解除" : "完了"}
+          {isComplete ? "未完了にする" : "完了にする"}
         </button>
       </fetcher.Form>
     </div>
@@ -133,9 +132,7 @@ function Task({ task }) {
 
 ---
 
-次へ: [テスト](./testing)
+次: [テスト](./testing)
 
 [use_fetcher]: https://api.reactrouter.com/v7/functions/react_router.useFetcher.html
-
-
 

@@ -7,7 +7,7 @@ order: 1
 
 <docs-info>
 
-React Router v7 は以下の最小バージョンを必要とします。
+React Router v7 は、以下の最小バージョンを必要とします。
 
 - `node@20`
 - `react@18`
