@@ -4,13 +4,13 @@ title: リソースルート
 
 # リソースルート
 
-サーバーサイドレンダリングにおいて、ルートはコンポーネントをレンダリングする代わりに、「リソース」を提供できます。例えば、画像、PDF、JSON ペイロード、Webhook などです。
+サーバーレンダリング時、ルートはコンポーネントをレンダリングする代わりに、画像、PDF、JSONペイロード、Webhookなどの「リソース」を提供できます。
 
 ## リソースルートの定義
 
-モジュールがデフォルトコンポーネントをエクスポートせず、ローダーまたはアクションをエクスポートする場合、慣例によりルートはリソースルートになります。
+ルートがリソースルートになるのは、そのモジュールがローダーまたはアクションをエクスポートするが、デフォルトのコンポーネントをエクスポートしない場合という規約によるものです。
 
-UIではなくPDFを提供するルートを考えてみましょう。
+UIの代わりにPDFを提供するルートを考えてみましょう。
 
 ```ts
 route("/reports/pdf/:id", "pdf-report.ts");
@@ -31,32 +31,32 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 ```
 
-デフォルトエクスポートがないことに注意してください。これにより、このルートはリソースルートになります。
+デフォルトのエクスポートがないことに注意してください。これにより、このルートはリソースルートになります。
 
 ## リソースルートへのリンク
 
-リソースルートへのリンクを作成する際は、`<a>` または `<Link reloadDocument>` を使用してください。それ以外の方法では、React Router はクライアントサイドルーティングを試み、ペイロードのフェッチを試みます（間違えると、役立つエラーメッセージが表示されます）。
+リソースルートにリンクする場合は、`<a>`または`<Link reloadDocument>`を使用してください。そうしないと、React Routerがクライアント側のルーティングとペイロードのフェッチを試みます（この間違いを犯すと、役立つエラーメッセージが表示されます）。
 
 ```tsx
 <Link reloadDocument to="/reports/pdf/123">
-  PDFで表示
+  PDFとして表示
 </Link>
 ```
 
-## 異なるリクエストメソッドの処理
+## さまざまなリクエストメソッドの処理
 
-GETリクエストは`loader`で処理され、POST、PUT、PATCH、DELETEは`action`で処理されます。
+GETリクエストは`loader`によって処理され、POST、PUT、PATCH、およびDELETEは`action`によって処理されます。
 
 ```tsx
 import type { Route } from "./+types/resource";
 
 export function loader(_: Route.LoaderArgs) {
-  return Response.json({ message: "I handle GET" });
+  return Response.json({ message: "私はGETを処理します" });
 }
 
 export function action(_: Route.ActionArgs) {
   return Response.json({
-    message: "I handle everything else",
+    message: "私はその他すべてを処理します",
   });
 }
 ```

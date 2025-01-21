@@ -1,17 +1,16 @@
 ---
-title: Fetcherの使用
+title: Fetcher の使用
 ---
 
-# Fetcherの使用
+# Fetcher の使用
 
-Fetcherは、ナビゲーションを行わずに、複数同時データのやり取りを必要とする複雑で動的なユーザーインターフェースを作成するのに役立ちます。
+Fetcher は、ナビゲーションを発生させることなく、複数の同時データ操作を必要とする複雑で動的なユーザーインターフェースを作成するのに役立ちます。
 
-Fetcherは独自の独立した状態を追跡し、データの読み込み、データの変更、フォームの送信、ローダーやアクションとの一般的なやり取りに使用できます。
-
+Fetcher は、独自の独立した状態を追跡し、データのロード、データの変更、フォームの送信、および一般的にローダーやアクションとの対話に使用できます。
 
 ## アクションの呼び出し
 
-Fetcherの最も一般的なケースは、アクションにデータを送信して、ルートデータの再検証をトリガーすることです。次のルートモジュールを考えてみましょう。
+Fetcher の最も一般的なケースは、アクションにデータを送信し、ルートデータの再検証をトリガーすることです。次のルートモジュールを考えてみましょう。
 
 ```tsx
 import { useLoaderData } from "react-router";
@@ -31,9 +30,9 @@ export default function Component() {
 }
 ```
 
-### 1. アクションの追加
+### 1. アクションを追加する
 
-まず、Fetcherが呼び出すためのアクションをルートに追加します。
+まず、Fetcher が呼び出すアクションをルートに追加します。
 
 ```tsx lines=[7-11]
 import { useLoaderData } from "react-router";
@@ -55,9 +54,9 @@ export default function Component() {
 }
 ```
 
-### 2. Fetcherの作成
+### 2. Fetcher を作成する
 
-次に、Fetcherを作成し、それを含むフォームをレンダリングします。
+次に、Fetcher を作成し、それを使用してフォームをレンダリングします。
 
 ```tsx lines=[7,12-14]
 import { useLoaderData, useFetcher } from "react-router";
@@ -79,13 +78,13 @@ export default function Component() {
 }
 ```
 
-### 3. フォームの送信
+### 3. フォームを送信する
 
-ここでフォームを送信すると、Fetcherはアクションを呼び出し、ルートデータを自動的に再検証します。
+ここでフォームを送信すると、Fetcher はアクションを呼び出し、ルートデータを自動的に再検証します。
 
-### 4. ペディング状態のレンダリング
+### 4. 保留中の状態をレンダリングする
 
-Fetcherは非同期処理中に状態を利用可能にするため、ユーザーが操作した瞬間にペディングUIをレンダリングできます。
+Fetcher は、非同期処理中にその状態を利用できるようにするため、ユーザーが操作した瞬間に保留中の UI をレンダリングできます。
 
 ```tsx lines=[10]
 export default function Component() {
@@ -104,9 +103,9 @@ export default function Component() {
 }
 ```
 
-### 5. 楽観的UI
+### 5. 楽観的な UI
 
-フォームには次の状態をすぐにレンダリングするのに十分な情報がある場合があります。`fetcher.formData`を使用してフォームデータにアクセスできます。
+フォームに次の状態をすぐにレンダリングするのに十分な情報がある場合があります。`fetcher.formData` を使用してフォームデータにアクセスできます。
 
 ```tsx lines=[3-4,8]
 export default function Component() {
@@ -127,9 +126,9 @@ export default function Component() {
 }
 ```
 
-### 6. Fetcherデータと検証
+### 6. Fetcher データと検証
 
-アクションから返されたデータは、fetcherの`data`プロパティで使用できます。これは主に、失敗した変更に対してユーザーにエラーメッセージを返すのに役立ちます。
+アクションから返されたデータは、Fetcher の `data` プロパティで利用できます。これは主に、失敗した変更のエラーメッセージをユーザーに返すのに役立ちます。
 
 ```tsx lines=[7-10,28-32]
 // ...
@@ -170,13 +169,13 @@ export default function Component() {
 }
 ```
 
-## データの読み込み
+## データのロード
 
-Fetcherのもう1つの一般的なユースケースは、コンボボックスなどに対してルートからデータを読み込むことです。
+Fetcher のもう 1 つの一般的なユースケースは、コンボボックスのようなもののためにルートからデータをロードすることです。
 
-### 1. 検索ルートの作成
+### 1. 検索ルートを作成する
 
-非常に基本的な検索を含む次のルートを考えてみましょう。
+非常に基本的な検索を備えた次のルートを考えてみましょう。
 
 ```tsx filename=./search-users.tsx
 // { path: '/search-users', filename: './search-users.tsx' }
@@ -196,7 +195,7 @@ export async function loader({ request }) {
 }
 ```
 
-### 2. コンボボックスコンポーネントへのFetcherのレンダリング
+### 2. コンボボックスコンポーネントで Fetcher をレンダリングする
 
 ```tsx
 import { useFetcher } from "react-router";
@@ -214,9 +213,9 @@ export function UserSearchCombobox() {
 ```
 
 - アクションは、上記で作成したルート "/search-users" を指します。
-- 入力の名前は、クエリパラメータと一致する "q" です。
+- 入力の名前は、クエリパラメータと一致するように "q" です。
 
-### 3. 型推論の追加
+### 3. 型推論を追加する
 
 ```tsx lines=[2,5]
 import { useFetcher } from "react-router";
@@ -228,10 +227,9 @@ export function UserSearchCombobox() {
 }
 ```
 
-型のみをインポートするために`import type`を使用してください。
+型のみをインポートするように `import type` を使用してください。
 
-
-### 4. データのレンダリング
+### 4. データをレンダリングする
 
 ```tsx lines=[10-16]
 import { useFetcher } from "react-router";
@@ -255,10 +253,9 @@ export function UserSearchCombobox() {
 }
 ```
 
-フォームを送信して結果を確認するには、「Enter」キーを押す必要があることに注意してください。
+フォームを送信して結果を表示するには、「Enter」キーを押す必要があることに注意してください。
 
-
-### 5. ペディング状態のレンダリング
+### 5. 保留中の状態をレンダリングする
 
 ```tsx lines=[12-14]
 import { useFetcher } from "react-router";
@@ -286,9 +283,9 @@ export function UserSearchCombobox() {
 }
 ```
 
-### 6. ユーザー入力での検索
+### 6. ユーザー入力で検索する
 
-Fetcherは`fetcher.submit`を使用してプログラムで送信できます。
+Fetcher は、`fetcher.submit` を使用してプログラムで送信できます。
 
 ```tsx lines=[5-7]
 <fetcher.Form method="get" action="/search-users">
@@ -302,6 +299,5 @@ Fetcherは`fetcher.submit`を使用してプログラムで送信できます。
 </fetcher.Form>
 ```
 
-入力イベントのフォームが`fetcher.submit`の最初の引数として渡されることに注意してください。Fetcherはそのフォームを使用してリクエストを送信し、その属性を読み取り、要素からデータをシリアル化します。
-
+入力イベントのフォームが `fetcher.submit` の最初の引数として渡されることに注意してください。Fetcher は、そのフォームを使用してリクエストを送信し、その属性を読み取り、その要素からデータをシリアル化します。
 

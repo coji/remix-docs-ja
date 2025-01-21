@@ -1,16 +1,16 @@
 ---
-title: ビュー遷移
+title: ビュートランジション
 ---
 
-# ビュー遷移
+# ビュートランジション
 
-[View Transitions API][view-transitions-api] を使用して、React Router アプリケーションでのページ遷移間のスムーズなアニメーションを有効にします。この機能により、クライアント側のナビゲーション中にシームレスな視覚的な遷移を作成できます。
+[View Transitions API][view-transitions-api] を使用して、React Router アプリケーションでのページ遷移間のスムーズなアニメーションを有効にします。この機能により、クライアントサイドのナビゲーション中にシームレスな視覚的トランジションを作成できます。
 
-## 基本的なビュー遷移
+## 基本的なビュートランジション
 
-### 1. ナビゲーションでのビュー遷移の有効化
+### 1. ナビゲーションでビュートランジションを有効にする
 
-ビュー遷移を有効にする最も簡単な方法は、`Link`、`NavLink`、または`Form`コンポーネントに`viewTransition`プロップを追加することです。これにより、ナビゲーション更新が`document.startViewTransition()`で自動的にラップされます。
+ビュートランジションを有効にする最も簡単な方法は、`Link`、`NavLink`、または `Form` コンポーネントに `viewTransition` プロパティを追加することです。これにより、ナビゲーションの更新が `document.startViewTransition()` で自動的にラップされます。
 
 ```tsx
 <Link to="/about" viewTransition>
@@ -18,15 +18,15 @@ title: ビュー遷移
 </Link>
 ```
 
-追加のCSSがなくても、これによりページ間の基本的なクロスフェードアニメーションが提供されます。
+追加の CSS なしで、これによりページ間の基本的なクロスフェードアニメーションが提供されます。
 
-View Transitions API の使用方法の詳細については、Google Chrome チームの[「View Transition API を使用したスムーズな遷移」ガイド][view-transitions-guide]を参照してください。
+View Transitions API の使用に関する詳細については、Google Chrome チームの ["View Transition API を使用したスムーズなトランジション" ガイド][view-transitions-guide] を参照してください。
 
 ## 画像ギャラリーの例
 
-ビュー遷移のトリガーと使用方法を示す画像ギャラリーを作成してみましょう。詳細ビューにスムーズなアニメーションで展開される画像のリストを作成します。
+ビュートランジションをトリガーして使用する方法を示す画像ギャラリーを作成しましょう。スムーズなアニメーションで詳細ビューに展開する画像のリストを作成します。
 
-### 2. 画像ギャラリールートの作成
+### 2. 画像ギャラリーのルートを作成する
 
 ```tsx filename=routes/image-gallery.tsx
 import { NavLink } from "react-router";
@@ -35,21 +35,21 @@ export const images = [
   "https://remix.run/blog-images/headers/the-future-is-now.jpg",
   "https://remix.run/blog-images/headers/waterfall.jpg",
   "https://remix.run/blog-images/headers/webpack.png",
-  // ... more images ...
+  // ... その他の画像 ...
 ];
 
 export default function ImageGalleryRoute() {
   return (
     <div className="image-list">
-      <h1>Image List</h1>
+      <h1>画像リスト</h1>
       <div>
         {images.map((src, idx) => (
           <NavLink
             key={src}
             to={`/image/${idx}`}
-            viewTransition // このリンクでビュー遷移を有効にする
+            viewTransition // このリンクでビュートランジションを有効にする
           >
-            <p>Image Number {idx}</p>
+            <p>画像番号 {idx}</p>
             <img
               className="max-w-full contain-layout"
               src={src}
@@ -62,9 +62,9 @@ export default function ImageGalleryRoute() {
 }
 ```
 
-### 3. 遷移スタイルの追加
+### 3. トランジションスタイルを追加する
 
-ルート間でスムーズに遷移する必要がある要素のビュー遷移名とアニメーションを定義します。
+ルート間でスムーズにトランジションする必要がある要素のビュートランジション名とアニメーションを定義します。
 
 ```css filename=app.css
 /* 画像グリッドのレイアウトスタイル */
@@ -88,7 +88,7 @@ export default function ImageGalleryRoute() {
   width: fit-content;
 }
 
-/* ナビゲーション中の要素に遷移名を割り当てる */
+/* ナビゲーション中に要素にトランジション名を割り当てる */
 .image-list a.transitioning img {
   view-transition-name: image-expand;
 }
@@ -98,9 +98,9 @@ export default function ImageGalleryRoute() {
 }
 ```
 
-### 4. 画像詳細ルートの作成
+### 4. 画像詳細ルートを作成する
 
-詳細ビューでは、シームレスなアニメーションを作成するために、同じビュー遷移名を使用する必要があります。
+詳細ビューでは、シームレスなアニメーションを作成するために同じビュートランジション名を使用する必要があります。
 
 ```tsx filename=routes/image-details.tsx
 import { Link } from "react-router";
@@ -113,19 +113,19 @@ export default function ImageDetailsRoute({
   return (
     <div className="image-detail">
       <Link to="/" viewTransition>
-        Back
+        戻る
       </Link>
-      <h1>Image Number {params.id}</h1>
+      <h1>画像番号 {params.id}</h1>
       <img src={images[Number(params.id)]} />
     </div>
   );
 }
 ```
 
-### 5. 詳細ビューに対する一致する遷移スタイルの追加
+### 5. 詳細ビューに一致するトランジションスタイルを追加する
 
 ```css filename=app.css
-/* リストビューからの遷移名と一致させる */
+/* リストビューからのトランジション名に一致させる */
 .image-detail h1 {
   font-size: 2rem;
   font-weight: 600;
@@ -140,11 +140,11 @@ export default function ImageDetailsRoute({
 }
 ```
 
-## 高度な使用方法
+## 高度な使用法
 
-レンダープロップまたは`useViewTransitionState`フックを使用して、ビュー遷移をより正確に制御できます。
+レンダープロパティまたは `useViewTransitionState` フックを使用して、ビュートランジションをより正確に制御できます。
 
-### 1. レンダープロップの使用
+### 1. レンダープロパティの使用
 
 ```tsx filename=routes/image-gallery.tsx
 <NavLink to={`/image/${idx}`} viewTransition>
@@ -157,7 +157,7 @@ export default function ImageDetailsRoute({
             : "none",
         }}
       >
-        Image Number {idx}
+        画像番号 {idx}
       </p>
       <img
         src={src}
@@ -172,12 +172,12 @@ export default function ImageDetailsRoute({
 </NavLink>
 ```
 
-### 2. `useViewTransitionState`フックの使用
+### 2. `useViewTransitionState` フックの使用
 
 ```tsx filename=routes/image-gallery.tsx
 function NavImage(props: { src: string; idx: number }) {
   const href = `/image/${props.idx}`;
-  // フックは特定のルートの遷移状態を提供します
+  // フックは特定のルートのトランジション状態を提供します
   const isTransitioning = useViewTransitionState(href);
 
   return (
@@ -189,7 +189,7 @@ function NavImage(props: { src: string; idx: number }) {
             : "none",
         }}
       >
-        Image Number {props.idx}
+        画像番号 {props.idx}
       </p>
       <img
         src={props.src}
@@ -206,5 +206,4 @@ function NavImage(props: { src: string; idx: number }) {
 
 [view-transitions-api]: https://developer.mozilla.org/en-US/docs/Web/API/ViewTransition
 [view-transitions-guide]: https://developer.chrome.com/docs/web-platform/view-transitions
-
 

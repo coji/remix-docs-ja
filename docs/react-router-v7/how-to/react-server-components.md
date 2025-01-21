@@ -1,14 +1,14 @@
 ---
-title: Reactサーバーコンポーネント
-# まずはリリース！
+title: React Server Components
+# need to ship it first!
 hidden: true
 ---
 
-# Reactサーバーコンポーネント
+# React Server Components
 
-<docs-info>この機能はまだ開発中で、利用できません。</docs-info>
+<docs-info>この機能はまだ開発中で、利用可能ではありません。</docs-info>
 
-将来、非同期コンポーネントは他のデータと同様にローダーでレンダリングできるようになります。
+将来的には、非同期コンポーネントは他のデータと同様にローダーでレンダリングできるようになります。
 
 ```tsx filename=app/product-page.tsx
 // route("products/:pid", "./product-page.tsx");

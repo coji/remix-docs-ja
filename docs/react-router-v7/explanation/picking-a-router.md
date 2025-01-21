@@ -1,5 +1,5 @@
 ---
-title: ルーター選び
+title: ルーターの選択
 hidden: true
 ---
 

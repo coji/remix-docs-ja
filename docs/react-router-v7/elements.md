@@ -1,15 +1,15 @@
 ---
-title: Markdown 要素
+title: Markdown Elements
 hidden: true
 ---
 
 # Markdown 要素
 
-これは、存在する可能性のあるあらゆる種類のマークダウンをテストするためのものです。スタイリングの境界ケースが見つかるたびに、このドキュメントに追加します。これは、さまざまなコンテキストでスタイルを設定する必要があるさまざまな種類の要素に対する、私のビジュアル回帰の一種です。
+これは、存在しうるさまざまな種類の Markdown をすべてテストするためのものです。スタイリングの際に見つかったエッジケースは、すべてこのドキュメントに追加しています。これは、さまざまなコンテキストでスタイルを設定する必要があるさまざまな種類の要素に対する、私の視覚的な回帰テストの形式です。
 
 ## 見出し
 
-サイズ 4、5、および 6 の見出しはすべて同じように扱われます。これらの見出しが必要な散文を書き始めたら、人生を再評価する必要があります。
+サイズ 4、5、および 6 の見出しはすべて同じように扱われます。これらの見出しが必要な散文を書き始めたら、私たちの生活を見直すべきです。
 
 # 見出し 1
 
@@ -33,25 +33,25 @@ hidden: true
 
 ## コールアウト
 
-コールアウトは、`<docs-*>`要素で使用できます。これらは、ドキュメントの通常のフローの外にある情報の断片に特別な注意を呼びかけるために、特に使用されます。
+コールアウトは `<docs-*>` 要素で使用できます。これらは、ドキュメントの通常の流れの外にある情報に特別な注意を引くためのものです。
 
 これらの要素には、3 つのサポートされているバリエーションがあります。
 
-1. `<docs-info>` - 情報の断片に関する一般的なコールアウト用。
-2. `<docs-warning>` - 読者に、彼らが知っておくべきことの警告用。
-3. `<docs-error>` - ユーザーに、何かをしてはいけないことを伝えるため。
+1. `<docs-info>` - 情報の断片への一般的なコールアウト用。
+2. `<docs-warning>` - 読者に知っておくべきことを警告するため。
+3. `<docs-error>` - ユーザーに何かをしてはいけないことを伝えるため。
 
 例：
 
-<docs-info>`<Link to>` with a `..` behaves differently from a normal `<a href>` when the current URL ends with `/`. `<Link to>` ignores the trailing slash, and removes one URL segment for each `..`. But an `<a href>` value handles `..` differently when the current URL ends with `/` vs when it does not.</docs-info>
+<docs-info>`<Link to>` と `..` は、現在の URL が `/` で終わる場合、通常の `<a href>` とは異なる動作をします。`<Link to>` は末尾のスラッシュを無視し、`..` ごとに 1 つの URL セグメントを削除します。ただし、`<a href>` 値は、現在の URL が `/` で終わる場合とそうでない場合で、`..` を異なる方法で処理します。</docs-info>
 
-<docs-warning>`useMatches` only works with a data router like [`createBrowserRouter`][createbrowserrouter], since they know the full route tree up front and can provide all of the current matches. Additionally, `useMatches` will not match down into any descendant route trees since the router isn't aware of the descendant routes.</docs-warning>
+<docs-warning>`useMatches` は、[`createBrowserRouter`][createbrowserrouter] のようなデータルーターでのみ機能します。これは、それらが完全なルートツリーを事前に把握しており、現在のすべての一致を提供できるためです。さらに、`useMatches` は、ルーターが子孫ルートを認識していないため、子孫ルートツリーに一致することはありません。</docs-warning>
 
-<docs-error>Do not do this</docs-error>
+<docs-error>これをしてはいけません</docs-error>
 
-<docs-info>The markup for this is kind of ugly, because (currently) these all have to be inside the `<docs-*>` element without any line breaks _but_ it is possible there could be an image inside these. <img src="https://picsum.photos/480/270" width="480" height="270" /></docs-info>
+<docs-info>これのマークアップは少し醜いです。なぜなら、（現在）これらはすべて、改行なしで `<docs-*>` 要素内にある必要があるからです。_しかし_、これらの内部に画像が存在する可能性があります。<img src="https://picsum.photos/480/270" width="480" height="270" /></docs-info>
 
-注：これらの意味は必ずしも正しいとは限りません。ドキュメントの場合、意味が通る名詞が他にいくつかあるかもしれません。
+注：これらのセマンティクスは、必ずしも正しいとは限りません。ドキュメントの場合に意味をなす他の名詞があるかもしれません。例：
 
 - `<docs-info>` は `<docs-tip>` になる可能性があります
 - `<docs-warning>` は `<docs-important>` になる可能性があります
@@ -59,42 +59,42 @@ hidden: true
 
 ## 引用
 
-これは、複数の行とスタイルを含む `<blockquote>` です。
+これは、複数行とスタイルを含む `<blockquote>` です。
 
 > これは私の引用です。
 >
-> [リンク]($link)、**太字テキスト**、_イタリックテキスト_、さらには `<code>` も含めることができます。これらのすべてが考慮されるはずです。そして、リストを忘れないでください。
+> [リンク]($link)、**太字テキスト**、_斜体テキスト_、さらには `<code>` を含めることができ、これらはすべて考慮する必要があります。ああ、リストも忘れないでください。
 >
 > - リスト項目 1
 > - リスト項目 2
 > - リスト項目 3
 >
-> 順序なし、または順序あり：
+> 順序なし、または順序付き：
 >
 > 1. リスト項目
 > 2. 別のリスト項目
-> 3. もう1つのリスト項目
+> 3. さらに別のリスト項目
 
 ## リスト
 
-これは、いくつかのコードがリンクされたリストです。
+これはリンクのリストで、一部はコードです。
 
 - これは私の最初のリスト項目です
-- [これはリンクになっている2番目のリスト項目です][$link]
-- これは、`<code>` と [`<LinkedCode>` がテキストと混ざっている3番目の項目です][$link]
+- [これはリンクである私の 2 番目のリスト項目です]($link)
+- これは、`<code>` と [`<LinkedCode>` がテキストと混ざった 3 番目の項目です]($link)
 
-そして、`href` がない `<a>` タグの適切なスタイリングを忘れないでください。 <a>このリンクのように</a>。
+また、`href` を持たない `<a>` タグの適切なスタイル設定も忘れないでください。<a>ここにあるこのリンクのように</a>。
 
 そして、`<dl>` リストがあります。
 
 <dl>
   <dt>React</dt>
-  <dd>何かに対して特定の方法で応答または行動する</dd>
-  <dt>Router</dt>
-  <dd>コンピューターネットワークの適切な部分にデータパケットを転送するデバイス。</dd>
-  <dt>Library</dt>
-  <dd>人々が読み、借りたり、参照したりするための本のコレクション、定期刊行物、時には映画や録音された音楽を含む建物または部屋。</dd>
-  <dd>一般に公開されているプログラムとソフトウェアパッケージのコレクション。通常は、すぐに使用できるようにディスクにロードして保存します。</dd>
+  <dd>何かに反応して、特定の方法で応答または動作する</dd>
+  <dt>ルーター</dt>
+  <dd>データパケットをコンピューターネットワークの適切な部分に転送するデバイス。</dd>
+  <dt>ライブラリ</dt>
+  <dd>人々が読んだり、借りたり、参照したりするための書籍、定期刊行物、場合によっては映画や録音された音楽のコレクションを収容する建物または部屋。</dd>
+  <dd>一般的に利用可能で、多くの場合、すぐに使用できるようにディスクにロードおよび保存されるプログラムとソフトウェアパッケージのコレクション。</dd>
 </dl>
 
 ## コード
@@ -141,7 +141,7 @@ hidden: true
 </WhateverRouter>
 ```
 
-悪いコード：
+不正なコード：
 
 ```tsx bad
 <WhateverRouter initialEntries={["/events/123"]}>
@@ -155,7 +155,7 @@ hidden: true
 </WhateverRouter>
 ```
 
-強調表示された行とファイル名を持つ悪いコード：
+強調表示された行とファイル名を含む不正なコード：
 
 ```tsx filename=src/main.jsx bad lines=[2-5]
 <WhateverRouter initialEntries={["/events/123"]}>
@@ -174,7 +174,7 @@ hidden: true
 オーバーフローする行：
 
 ```html
-<!-- Other HTML for your app goes here -->
+<!-- アプリのその他の HTML はここにあります -->
 <!-- prettier-ignore -->
 <script src="https://unpkg.com/react@>=16.8/umd/react.development.js" crossorigin></script>
 ```
@@ -183,6 +183,4 @@ hidden: true
 
 [$link]: https://www.youtube.com/watch?v=dQw4w9WgXcQ
 [createbrowserrouter]: ./routers/create-browser-router
-
-
 

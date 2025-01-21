@@ -3,12 +3,12 @@ title: メタタグとSEO
 hidden: true
 ---
 
-[ルートモジュールドキュメントからコピー]
+[ルートモジュールのドキュメントからコピーペースト]
 
-デフォルトでは、メタ記述子はほとんどの場合[`<meta>` タグ][meta-element] をレンダリングします。2つの例外があります。
+デフォルトでは、メタ記述子はほとんどの場合、[`<meta>`タグ][meta-element]をレンダリングします。2つの例外があります。
 
-- `{ title }` は `<title>` タグをレンダリングします。
-- `{ "script:ld+json" }` は `<script type="application/ld+json">` タグをレンダリングし、その値は文字列化されてタグに挿入されるシリアライズ可能なオブジェクトである必要があります。
+- `{ title }` は `<title>` タグをレンダリングします
+- `{ "script:ld+json" }` は `<script type="application/ld+json">` タグをレンダリングし、その値はシリアライズ可能なオブジェクトである必要があり、文字列化されてタグに挿入されます。
 
 ```tsx
 export function meta() {
@@ -25,7 +25,7 @@ export function meta() {
 }
 ```
 
-メタ記述子は、`tagName` プロパティを`"link"`に設定することで[`<link>` タグ][link-element] をレンダリングすることもできます。これは、`canonical` URLなど、SEOに関連付けられた`<link>`タグに役立ちます。スタイルシートやファビコンなどのアセットリンクには、代わりに[`links` エクスポート][links]を使用する必要があります。
+メタ記述子は、`tagName` プロパティを `"link"` に設定することで、[`<link>` タグ][link-element]をレンダリングすることもできます。これは、`canonical` URLのようなSEOに関連する`<link>`タグに役立ちます。スタイルシートやファビコンのようなアセットリンクには、代わりに[`links`エクスポート][links]を使用する必要があります。
 
 ```tsx
 export function meta() {
@@ -38,12 +38,4 @@ export function meta() {
   ];
 }
 ```
-
-
-[meta-element]: リンク先URL(meta要素の説明へのリンクをここに挿入)
-[link-element]: リンク先URL(link要素の説明へのリンクをここに挿入)
-[links]: リンク先URL(links exportの説明へのリンクをここに挿入)
-
-
-**注:**  `[meta-element]`、`[link-element]`、`[links]` には、それぞれの要素やエクスポートに関する適切なドキュメントへのリンクを挿入する必要があります。
 

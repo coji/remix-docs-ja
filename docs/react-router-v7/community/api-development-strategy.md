@@ -1,42 +1,42 @@
 ---
-title: API 開発戦略
+title: API開発戦略
 ---
 
-# API 開発戦略
+# API開発戦略
 
-React Router は、アプリケーションの基盤となります。新しいメジャーバージョンへのアップグレードが可能な限りスムーズに行えるように、React エコシステムの進化に合わせて動作と API を調整および強化できるようにしたいと考えています。
+React Routerはアプリケーションの基盤です。Reactのエコシステムが進化するにつれて、動作やAPIを調整・強化しながら、新しいメジャーバージョンへのアップグレードをできるだけスムーズに行えるようにしたいと考えています。
 
-当社の戦略と動機については、[Future Flags][future-flags-blog-post] ブログ記事で詳しく説明しています。
+私たちの戦略と動機については、[Future Flags][future-flags-blog-post]のブログ記事で詳しく説明しています。
 
 ## Future Flags
 
-API が破壊的な方法で変更された場合、Future Flag で導入されます。これにより、次のメジャーバージョンでデフォルトになる前に、一度に 1 つの変更を選択することができます。
+APIが破壊的な方法で変更される場合、それはfuture flagで導入されます。これにより、次のメジャーバージョンでデフォルトになる前に、一度に1つの変更をオプトインできます。
 
-- Future Flag を有効にしないと、アプリは何も変更されません
-- Flag を有効にすると、その機能の動作が変わります
+- future flagを有効にしない場合、アプリに変更はありません
+- flagを有効にすると、その機能の動作が変更されます
 
-すべての現在の Future Flag は、[Future Flags ガイド](../upgrading/future) に記載されているので、最新の状態を保つことができます。
+現在のすべてのfuture flagは、[Future Flagsガイド](../upgrading/future)に文書化されており、最新情報を把握するのに役立ちます。
 
 ## Unstable Flags
 
-Unstable Flag は、まだ設計と開発中の機能であり、ユーザーに提供することで、正しい機能を実現するのに役立ちます。
+Unstable flagは、まだ設計および開発中の機能であり、ユーザーが正しく理解できるようにするために提供されています。
 
-Unstable Flag は、本番環境では推奨されません。
+Unstable flagは本番環境での使用は推奨されません。
 
-- 警告なしに、アップグレードパスなしに変更されます
-- バグが含まれる可能性があります
+- 予告なしに、アップグレードパスなしに変更されます
+- バグが含まれます
 - ドキュメント化されていません
 - 完全に破棄される可能性があります
 
-Unstable Flag を有効にすると、ユーザーではなく、プロジェクトの貢献者になります。ご協力に感謝いたしますが、新しい役割にご注意ください。
+unstable flagをオプトインすると、ユーザーではなく、プロジェクトの貢献者になります。ご協力に感謝しますが、新しい役割にご注意ください。
 
-現在の Unstable Flag については、[CHANGELOG](../start/changelog) をご確認ください。
+現在のunstable flagについては、[CHANGELOG](../start/changelog)に注目してください。
 
-### 新機能の例
+### 新機能のフロー例
 
-新機能の決定フローは以下のようになります（この図は Remix v1/v2 に関連していますが、React Router v6/v7 にも適用されます）。
+新機能の決定フローは次のようになります（この図はRemix v1/v2に関連していますが、React Router v6/v7にも適用されます）。
 
-![新機能の導入方法に関する意思決定プロセスのフローチャート][feature-flowchart]
+![新機能を導入する方法の決定プロセスのフローチャート][feature-flowchart]
 
 [future-flags-blog-post]: https://remix.run/blog/future-flags
 [feature-flowchart]: https://remix.run/docs-images/feature-flowchart.png

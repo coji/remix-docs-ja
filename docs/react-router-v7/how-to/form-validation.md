@@ -1,14 +1,14 @@
 ---
-title: フォームバリデーション
+title: フォームのバリデーション
 ---
 
-# フォームバリデーション
+# フォームのバリデーション
 
-このガイドでは、シンプルなサインアップフォームの実装について説明します。これらの概念はサードパーティのバリデーションライブラリとエラーコンポーネントと組み合わせることをお勧めしますが、このガイドではReact Routerの動作部分のみに焦点を当てています。
+このガイドでは、簡単なサインアップフォームの実装について説明します。これらの概念は、サードパーティのバリデーションライブラリやエラーコンポーネントと組み合わせて使用することが多いと思いますが、このガイドではReact Routerの動作部分にのみ焦点を当てます。
 
 ## 1. セットアップ
 
-フォーム付きの基本的なサインアップルートを作成することから始めます。
+まず、フォーム付きの基本的なサインアップルートを作成します。
 
 ```ts filename=app/routes.ts
 import {
@@ -37,7 +37,7 @@ export default function Signup(_: Route.ComponentProps) {
         <input type="password" name="password" />
       </p>
 
-      <button type="submit">Sign Up</button>
+      <button type="submit">サインアップ</button>
     </fetcher.Form>
   );
 }
@@ -45,14 +45,14 @@ export default function Signup(_: Route.ComponentProps) {
 
 ## 2. アクションの定義
 
-このステップでは、`Signup`コンポーネントと同じファイルにサーバー側の`action`を定義します。ここでは、フォームバリデーションルールやエラーオブジェクト構造の詳細な説明ではなく、関連するメカニズムの概要を提供することを目的としています。コアコンセプトを示すために、メールとパスワードの基本的なチェックを使用します。
+このステップでは、`Signup`コンポーネントと同じファイルにサーバーの`action`を定義します。ここでの目的は、フォームのバリデーションルールやエラーオブジェクトの構造を深く掘り下げるのではなく、関連するメカニズムの概要を説明することです。メールとパスワードの基本的なチェックを使用して、コアとなる概念を説明します。
 
 ```tsx filename=signup.tsx
 import type { Route } from "./+types/signup";
 import { redirect, useFetcher, data } from "react-router";
 
 export default function Signup(_: Route.ComponentProps) {
-  // 省略
+  // 簡潔にするため省略
 }
 
 export async function action({
@@ -70,7 +70,7 @@ export async function action({
 
   if (password.length < 12) {
     errors.password =
-      "パスワードは12文字以上にする必要があります";
+      "パスワードは12文字以上である必要があります";
   }
 
   if (Object.keys(errors).length > 0) {
@@ -82,14 +82,13 @@ export async function action({
 }
 ```
 
-バリデーションエラーが見つかった場合は、`action`からフェッチャに返されます。これは、UIに何か修正が必要であることを知らせる方法です。そうでなければ、ユーザーはダッシュボードにリダイレクトされます。
+バリデーションエラーが見つかった場合、それらは`action`からフェッチャーに返されます。これは、UIに修正が必要なことを知らせるための方法です。そうでない場合、ユーザーはダッシュボードにリダイレクトされます。
 
-`data({ errors }, { status: 400 })`呼び出しに注目してください。400ステータスを設定することは、クライアントにバリデーションエラー（不正なリクエスト）があったことを知らせるWeb標準の方法です。React Routerでは、200ステータスのコードのみがページデータの再検証をトリガーするため、400はそれを防止します。
-
+`data({ errors }, { status: 400 })`の呼び出しに注目してください。400ステータスを設定することは、バリデーションエラー（不正なリクエスト）があったことをクライアントに知らせるためのWeb標準の方法です。React Routerでは、200ステータスコードのみがページデータの再検証をトリガーするため、400はそれを防ぎます。
 
 ## 3. バリデーションエラーの表示
 
-最後に、`fetcher.data`からバリデーションエラーがある場合は、それを表示するように`Signup`コンポーネントを変更します。
+最後に、`Signup`コンポーネントを修正して、`fetcher.data`からバリデーションエラー（存在する場合）を表示します。
 
 ```tsx filename=signup.tsx lines=[3,8,13-15]
 export default function Signup(_: Route.ComponentProps) {
@@ -109,7 +108,7 @@ export default function Signup(_: Route.ComponentProps) {
         ) : null}
       </p>
 
-      <button type="submit">Sign Up</button>
+      <button type="submit">サインアップ</button>
     </fetcher.Form>
   );
 }

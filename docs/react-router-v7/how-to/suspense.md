@@ -1,22 +1,22 @@
 ---
-title: Suspenseを使ったストリーミング
+title: Suspense を使ったストリーミング
 ---
 
-# Suspenseを使ったストリーミング
+# Suspense を使ったストリーミング
 
-React Suspenseを使ったストリーミングにより、重要でないデータを後回しにし、UIレンダリングをブロックしないようにすることで、アプリの初期レンダリングを高速化できます。
+React Suspense を使ったストリーミングにより、重要でないデータを遅延させ、UI レンダリングをブロック解除することで、アプリの初期レンダリングを高速化できます。
 
-React Routerは、ローダーとアクションからPromiseを返すことで、React Suspenseをサポートしています。
+React Router は、ローダーとアクションから Promise を返すことで、React Suspense をサポートします。
 
-## 1. ローダーからPromiseを返す
+## 1. ローダーから Promise を返す
 
-React Routerは、ルートコンポーネントをレンダリングする前にルートローダーを待ちます。重要でないデータのためにローダーをブロックしないようにするには、ローダーで`await`する代わりにPromiseを返します。
+React Router は、ルートコンポーネントをレンダリングする前にルートローダーを待機します。重要でないデータのローダーをブロック解除するには、ローダーで待機するのではなく、Promise を返します。
 
 ```tsx
 import type { Route } from "./+types/my-route";
 
 export async function loader({}: Route.LoaderArgs) {
-  // これはawaitされないことに注意
+  // これは待機されないことに注意してください
   let nonCriticalData = new Promise((res) =>
     setTimeout(() => res("non-critical"), 5000)
   );
@@ -29,9 +29,9 @@ export async function loader({}: Route.LoaderArgs) {
 }
 ```
 
-## 2. フォールバックと解決されたUIをレンダリングする
+## 2. フォールバックと解決された UI をレンダリングする
 
-Promiseは`loaderData`で利用可能になり、`<Await>`はPromiseを待ち、`<Suspense>`をトリガーしてフォールバックUIをレンダリングします。
+Promise は `loaderData` で利用可能になり、`<Await>` は Promise を待機し、`<Suspense>` がフォールバック UI をレンダリングするようにトリガーします。
 
 ```tsx
 import * as React from "react";
@@ -47,22 +47,21 @@ export default function MyComponent({
   return (
     <div>
       <h1>ストリーミングの例</h1>
-      <h2>クリティカルなデータの値: {criticalData}</h2>
+      <h2>重要なデータの値: {criticalData}</h2>
 
       <React.Suspense fallback={<div>読み込み中...</div>}>
         <Await resolve={nonCriticalData}>
           {(value) => <h3>重要でない値: {value}</h3>}
         </Await>
-        <NonCriticalUI p={nonCriticalData} />
       </React.Suspense>
     </div>
   );
 }
 ```
 
-## React 19の場合
+## React 19 を使用する場合
 
-React 19を試している場合、`Await`の代わりに`React.use`を使用できますが、Suspenseフォールバックをトリガーするには、新しいコンポーネントを作成してPromiseを渡す必要があります。
+React 19 を試している場合は、`Await` の代わりに `React.use` を使用できますが、新しいコンポーネントを作成し、Promise を渡してサスペンスフォールバックをトリガーする必要があります。
 
 ```tsx
 <React.Suspense fallback={<div>読み込み中...</div>}>

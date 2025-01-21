@@ -5,23 +5,23 @@ order: 3
 
 # ルートモジュール
 
-`routes.ts`で参照されるファイルは、ルートモジュールと呼ばれます。
+`routes.ts` で参照されるファイルは、ルートモジュールと呼ばれます。
 
 ```tsx filename=app/routes.ts
 route("teams/:teamId", "./team.tsx"),
 //           ルートモジュール ^^^^^^^^
 ```
 
-ルートモジュールは、React Routerのフレームワーク機能の基礎であり、以下を定義します。
+ルートモジュールは、React Router のフレームワーク機能の基礎であり、以下を定義します。
 
 - 自動コード分割
-- データ読み込み
+- データローディング
 - アクション
 - 再検証
-- エラーバウンダリ
-- その他多数
+- エラー境界
+- その他
 
-このガイドは、すべてのルートモジュール機能の概要です。残りの入門ガイドでは、これらの機能をより詳細に説明します。
+このガイドでは、すべてのルートモジュール機能の概要を簡単に説明します。残りの入門ガイドでは、これらの機能についてより詳しく説明します。
 
 ## コンポーネント (`default`)
 
@@ -31,9 +31,9 @@ route("teams/:teamId", "./team.tsx"),
 export default function MyRouteComponent() {
   return (
     <div>
-      <h1>Look ma!</h1>
+      <h1>見て！</h1>
       <p>
-        I'm still using React Router after like 10 years.
+        10年経ってもまだReact Routerを使ってるよ。
       </p>
     </div>
   );
@@ -42,11 +42,11 @@ export default function MyRouteComponent() {
 
 ## `loader`
 
-ルートローダーは、ルートコンポーネントがレンダリングされる前に、ルートコンポーネントにデータを提供します。サーバーサイドレンダリング時、またはプリレンダリングによるビルド時にのみサーバーで呼び出されます。
+ルートローダーは、ルートコンポーネントがレンダリングされる前に、ルートコンポーネントにデータを提供します。サーバーレンダリング時、またはプリレンダリングによるビルド時にのみサーバー上で呼び出されます。
 
 ```tsx
 export async function loader() {
-  return { message: "Hello, world!" };
+  return { message: "こんにちは、世界！" };
 }
 
 export default function MyRoute({ loaderData }) {
@@ -54,26 +54,26 @@ export default function MyRoute({ loaderData }) {
 }
 ```
 
-参照:
+参照：
 
 - [`loader` パラメータ][loader-params]
 
 ## `clientLoader`
 
-ブラウザでのみ呼び出され、ルートクライアントローダーは、ルートローダーに追加して、またはルートローダーの代わりに、ルートコンポーネントにデータを提供します。
+ブラウザでのみ呼び出されるルートクライアントローダーは、ルートローダーに加えて、またはルートローダーの代わりに、ルートコンポーネントにデータを提供します。
 
 ```tsx
 export async function clientLoader({ serverLoader }) {
   // サーバーローダーを呼び出す
   const serverData = await serverLoader();
-  // クライアントでデータを取得する
+  // そして/またはクライアントでデータをフェッチする
   const data = getDataFromClient();
-  // `useLoaderData()` を介して公開するデータを返す
+  // useLoaderData() を通して公開するためにデータを返す
   return data;
 }
 ```
 
-クライアントローダーは、関数の`hydrate`プロパティを設定することで、サーバーレンダリングされたページの初期ページロードハイドレーションに参加できます。
+クライアントローダーは、関数の `hydrate` プロパティを設定することで、サーバーレンダリングされたページの初期ページロードハイドレーションに参加できます。
 
 ```tsx
 export async function clientLoader() {
@@ -84,18 +84,18 @@ clientLoader.hydrate = true as const;
 
 <docs-info>
 
-`as const`を使用することで、TypeScriptは`clientLoader.hydrate`の型を`boolean`ではなく`true`として推論します。
-これにより、React Routerは`clientLoader.hydrate`の値に基づいて`loaderData`の型を導き出すことができます。
+`as const` を使用することで、TypeScript は `clientLoader.hydrate` の型を `boolean` ではなく `true` と推論します。
+これにより、React Router は `clientLoader.hydrate` の値に基づいて `loaderData` の型を導き出すことができます。
 
 </docs-info>
 
-参照:
+参照：
 
 - [`clientLoader` パラメータ][client-loader-params]
 
 ## `action`
 
-ルートアクションは、`<Form>`、`useFetcher`、`useSubmit`から呼び出されたときに、ページ上のすべてのローダーデータの自動再検証を使用して、サーバーサイドのデータ変更を可能にします。
+ルートアクションを使用すると、`<Form>`、`useFetcher`、および `useSubmit` から呼び出されたときに、ページ上のすべてのローダーデータの自動再検証を使用して、サーバー側のデータ変更を行うことができます。
 
 ```tsx
 // route("/list", "./list.tsx")
@@ -115,7 +115,7 @@ export default function Items({ loaderData }) {
       <List items={loaderData.items} />
       <Form method="post" navigate={false} action="/list">
         <input type="text" name="title" />
-        <button type="submit">Create Todo</button>
+        <button type="submit">Todoを作成</button>
       </Form>
     </div>
   );
@@ -132,7 +132,7 @@ export async function action({ request }) {
 
 ## `clientAction`
 
-ルートアクションに似ていますが、ブラウザでのみ呼び出されます。
+ルートアクションと同様ですが、ブラウザでのみ呼び出されます。
 
 ```tsx
 export async function clientAction({ serverAction }) {
@@ -143,13 +143,13 @@ export async function clientAction({ serverAction }) {
 }
 ```
 
-参照:
+参照：
 
 - [`clientAction` パラメータ][client-action-params]
 
 ## `ErrorBoundary`
 
-他のルートモジュールAPIが例外をスローした場合、ルートコンポーネントの代わりにルートモジュールの`ErrorBoundary`がレンダリングされます。
+他のルートモジュール API がスローした場合、ルートモジュールの `ErrorBoundary` がルートコンポーネントの代わりにレンダリングされます。
 
 ```tsx
 import {
@@ -172,21 +172,21 @@ export function ErrorBoundary() {
   } else if (error instanceof Error) {
     return (
       <div>
-        <h1>Error</h1>
+        <h1>エラー</h1>
         <p>{error.message}</p>
-        <p>The stack trace is:</p>
+        <p>スタックトレースは次のとおりです。</p>
         <pre>{error.stack}</pre>
       </div>
     );
   } else {
-    return <h1>Unknown Error</h1>;
+    return <h1>不明なエラー</h1>;
   }
 }
 ```
 
 ## `HydrateFallback`
 
-初期ページロード時に、ルートコンポーネントはクライアントローダーが完了した後にのみレンダリングされます。エクスポートされている場合、`HydrateFallback`はルートコンポーネントの代わりにすぐにレンダリングできます。
+初期ページロード時、ルートコンポーネントはクライアントローダーが完了した後にのみレンダリングされます。エクスポートされた場合、`HydrateFallback` はルートコンポーネントの代わりにすぐにレンダリングできます。
 
 ```tsx filename=routes/client-only-route.tsx
 export async function clientLoader() {
@@ -195,7 +195,7 @@ export async function clientLoader() {
 }
 
 export function HydrateFallback() {
-  return <p>Loading Game...</p>;
+  return <p>ゲームをロード中...</p>;
 }
 
 export default function Component({ loaderData }) {
@@ -205,12 +205,12 @@ export default function Component({ loaderData }) {
 
 ## `headers`
 
-ルートヘッダーは、サーバーサイドレンダリング時にレスポンスと共に送信されるHTTPヘッダーを定義します。
+ルートヘッダーは、サーバーレンダリング時にレスポンスとともに送信される HTTP ヘッダーを定義します。
 
 ```tsx
 export function headers() {
   return {
-    "X-Stretchy-Pants": "its for fun",
+    "X-Stretchy-Pants": "楽しいから",
     "Cache-Control": "max-age=300, s-maxage=3600",
   };
 }
@@ -218,17 +218,17 @@ export function headers() {
 
 ## `handle`
 
-ルートハンドルにより、アプリは`useMatches`でルートマッチに任意のものを追加して、抽象化（パンくずリストなど）を作成できます。
+ルートハンドルを使用すると、アプリは `useMatches` のルート一致に何かを追加して、抽象化（パンくずリストなど）を作成できます。
 
 ```tsx
 export const handle = {
-  its: "all yours",
+  its: "すべてあなたのもの",
 };
 ```
 
 ## `links`
 
-ルートリンクは、ドキュメントの`<head>`にレンダリングされる[`<link>` 要素][link-element]を定義します。
+ルートリンクは、ドキュメントの `<head>` にレンダリングされる [`<link>` 要素][link-element] を定義します。
 
 ```tsx
 export function links() {
@@ -251,7 +251,7 @@ export function links() {
 }
 ```
 
-すべてのルートリンクは集約され、`<Links />`コンポーネントを介してレンダリングされます。通常はアプリのルートでレンダリングされます。
+すべてのルートリンクは集約され、通常はアプリのルートでレンダリングされる `<Links />` コンポーネントを通じてレンダリングされます。
 
 ```tsx
 import { Links } from "react-router";
@@ -271,25 +271,25 @@ export default function Root() {
 
 ## `meta`
 
-ルートメタは、ドキュメントの`<head>`にレンダリングされるメタタグを定義します。
+ルートメタは、ドキュメントの `<head>` にレンダリングされるメタタグを定義します。
 
 ```tsx
 export function meta() {
   return [
-    { title: "Very cool app" },
+    { title: "とてもクールなアプリ" },
     {
       property: "og:title",
-      content: "Very cool app",
+      content: "とてもクールなアプリ",
     },
     {
       name: "description",
-      content: "This app is the best",
+      content: "このアプリは最高です",
     },
   ];
 }
 ```
 
-すべてのルートのメタは集約され、`<Meta />`コンポーネントを介してレンダリングされます。通常はアプリのルートでレンダリングされます。
+すべてのルートのメタは集約され、通常はアプリのルートでレンダリングされる `<Meta />` コンポーネントを通じてレンダリングされます。
 
 ```tsx
 import { Meta } from "react-router";
@@ -313,7 +313,7 @@ export default function Root() {
 
 ## `shouldRevalidate`
 
-デフォルトでは、すべてルートはアクション後に再検証されます。この関数は、データに影響を与えないアクションについて、ルートが再検証をオプトアウトすることを許可します。
+デフォルトでは、すべてのアクション後にすべてのルートが再検証されます。この関数を使用すると、ルートはデータに影響を与えないアクションの再検証をオプトアウトできます。
 
 ```tsx
 import type { ShouldRevalidateFunctionArgs } from "react-router";
@@ -327,9 +327,9 @@ export function shouldRevalidate(
 
 ---
 
-次へ: [レンダリング戦略](./rendering)
+次：[レンダリング戦略](./rendering)
 
-[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+[fetch]: https://developer.mozilla.org/ja/docs/Web/API/Fetch_API
 [loader-params]: https://api.reactrouter.com/v7/interfaces/react_router.LoaderFunctionArgs
 [client-loader-params]: https://api.reactrouter.com/v7/types/react_router.ClientLoaderFunctionArgs
 [action-params]: https://api.reactrouter.com/v7/interfaces/react_router.ActionFunctionArgs
@@ -337,12 +337,11 @@ export function shouldRevalidate(
 [error-boundaries]: https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
 [use-route-error]: https://api.reactrouter.com/v7/functions/react_router.useRouteError
 [is-route-error-response]: https://api.reactrouter.com/v7/functions/react_router.isRouteErrorResponse
-[cache-control-header]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
-[headers]: https://developer.mozilla.org/en-US/docs/Web/API/Response
+[cache-control-header]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Cache-Control
+[headers]: https://developer.mozilla.org/ja/docs/Web/API/Response
 [use-matches]: https://api.reactrouter.com/v7/functions/react_router.useMatches
-[link-element]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
-[meta-element]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+[link-element]: https://developer.mozilla.org/ja/docs/Web/HTML/Element/link
+[meta-element]: https://developer.mozilla.org/ja/docs/Web/HTML/Element/meta
 [meta-params]: https://api.reactrouter.com/v7/interfaces/react_router.MetaArgs
 [use-revalidator]: https://api.reactrouter.com/v7/functions/react_router.useRevalidator.html
-
 

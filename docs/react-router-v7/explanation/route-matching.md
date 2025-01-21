@@ -1,10 +1,8 @@
 ---
-title: ルートマッチング
+title: Route Matching
 hidden: true
-# マッチングアルゴリズムと潜在的な問題点について説明します
+# want to explain how the matching algorithm works with any potential gotchas
 ---
 
 # ルートマッチング
-
-
 

@@ -15,36 +15,36 @@ React Router v7 では、以下の最小バージョンが必要です。
 
 </docs-info>
 
-React Router v7 は、v2 以降の Remix の次のメジャーバージョンです (詳細については、["React 19 へのインクリメンタルパス" のブログ記事][incremental-path-to-react-19]を参照してください)。
+React Router v7 は、v2 以降の Remix の次のメジャーバージョンです (詳細については、["React 19 への段階的なパス" ブログ記事][incremental-path-to-react-19] を参照してください)。
 
-すべての [Remix v2 の将来のフラグ][v2-future-flags]を有効にしている場合、Remix v2 から React Router v7 へのアップグレードは、主に依存関係の更新になります。
+[Remix v2 のすべての future フラグ][v2-future-flags] を有効にしている場合、Remix v2 から React Router v7 へのアップグレードは、主に依存関係の更新になります。
 
 <docs-info>
 
-ステップ 2～8 の大部分は、コミュニティメンバーの [James Restall][jrestall] によって作成された [codemod][codemod] を使用して自動的に更新できます。
+ステップ 2～8 の大部分は、コミュニティメンバーの [James Restall][jrestall] が作成した [codemod][codemod] を使用して自動的に更新できます。
 
 </docs-info>
 
-## 1. 将来のフラグを採用する
+## 1. future フラグを採用する
 
-**👉 将来のフラグを採用する**
+**👉 future フラグを採用する**
 
-Remix v2 アプリケーションの既存のすべての[将来のフラグ][v2-future-flags]を採用します。
+Remix v2 アプリケーションで既存のすべての [future フラグ][v2-future-flags] を採用します。
 
 ## 2. 依存関係を更新する
 
-以前はランタイム固有のパッケージ (`@remix-run/node`、`@remix-run/cloudflare` など) を介して再エクスポートされていた「共有」API のほとんどは、v7 の `react-router` にすべてまとめられました。そのため、`@react-router/node` や `@react-router/cloudflare` からインポートする代わりに、`react-router` から直接インポートすることになります。
+以前はランタイム固有のパッケージ (`@remix-run/node`、`@remix-run/cloudflare` など) を介して再エクスポートされていた「共有」API のほとんどは、v7 ではすべて `react-router` にまとめられました。そのため、`@react-router/node` や `@react-router/cloudflare` からインポートする代わりに、`react-router` から直接インポートすることになります。
 
 ```diff
 -import { redirect } from "@remix-run/node";
 +import { redirect } from "react-router";
 ```
 
-v7 のランタイム固有のパッケージからインポートする必要がある API は、Node の `createFileSessionStorage` や Cloudflare の `createWorkersKVSessionStorage` など、そのランタイムに固有の API のみです。
+v7 でランタイム固有のパッケージからインポートする必要がある API は、Node の `createFileSessionStorage` や Cloudflare の `createWorkersKVSessionStorage` など、そのランタイムに固有の API のみです。
 
 **👉 codemod を実行する (自動)**
 
-次の [codemod][codemod] を使用して、パッケージとインポートを自動的に更新できます。この codemod は、すべてのパッケージとインポートを更新します。codemod を実行する前に、変更を元に戻す必要がある場合に備えて、保留中の変更をすべてコミットしてください。
+次の [codemod][codemod] を使用して、パッケージとインポートを自動的に更新できます。この codemod は、すべてのパッケージとインポートを更新します。変更を元に戻す必要がある場合に備えて、codemod を実行する前に保留中の変更をコミットしてください。
 
 ```shellscript nonumber
 npx codemod remix/2/react-router/upgrade
@@ -52,7 +52,7 @@ npx codemod remix/2/react-router/upgrade
 
 **👉 新しい依存関係をインストールする**
 
-codemod が依存関係を更新した後、依存関係をインストールして、Remix パッケージを削除し、新しい React Router パッケージを追加する必要があります。
+codemod で依存関係が更新されたら、依存関係をインストールして Remix パッケージを削除し、新しい React Router パッケージを追加する必要があります。
 
 ```shellscript nonumber
 npm install
@@ -63,9 +63,9 @@ npm install
 codemod を使用しない場合は、依存関係を手動で更新できます。
 
 <details>
-<summary>アルファベット順のパッケージ名変更表を表示するには展開してください</summary>
+<summary>アルファベット順のパッケージ名変更の表を表示するには展開してください</summary>
 
-| Remix v2 パッケージ                 |     | React Router v7 パッケージ                     |
+| Remix v2 パッケージ                   |     | React Router v7 パッケージ                     |
 | ---------------------------------- | --- | ------------------------------------------- |
 | `@remix-run/architect`             | ➡️  | `@react-router/architect`                   |
 | `@remix-run/cloudflare`            | ➡️  | `@react-router/cloudflare`                  |
@@ -86,7 +86,7 @@ codemod を使用しない場合は、依存関係を手動で更新できます
 
 <docs-info>
 
-codemod を使用した場合、このステップは自動的に完了するため、スキップできます。
+codemod を使用した場合は、自動的に完了しているため、このステップをスキップできます。
 
 </docs-info>
 
@@ -103,11 +103,11 @@ codemod を使用した場合、このステップは自動的に完了するた
 
 <docs-info>
 
-codemod _と_ Remix v2 `v3_routeConfig` フラグを使用した場合は、このステップは自動的に完了するため、スキップできます。
+codemod _と_ Remix v2 `v3_routeConfig` フラグを使用した場合は、自動的に完了しているため、このステップをスキップできます。
 
 </docs-info>
 
-React Router v7 では、`app/routes.ts` ファイルを使用してルートを定義します。詳細については、[ルーティングに関するドキュメント][routing]を参照してください。
+React Router v7 では、`app/routes.ts` ファイルを使用してルートを定義します。詳細については、[ルーティングのドキュメント][routing] を参照してください。
 
 **👉 依存関係を更新する (Remix v2 `v3_routeConfig` フラグを使用している場合)**
 
@@ -132,7 +132,7 @@ export default [
 touch app/routes.ts
 ```
 
-下位互換性と、[ファイルベースの規約][fs-routing]を好むユーザーのために、新しい `@react-router/fs-routes` パッケージを使用して、Remix v2 で使用しているのと同じ「フラットルート」規約を選択できます。
+後方互換性のため、および [ファイルベースの規約][fs-routing] を好むユーザーのために、新しい `@react-router/fs-routes` パッケージを介して、Remix v2 で使用しているのと同じ「フラットルート」規約を選択できます。
 
 ```ts filename=app/routes.ts
 import { type RouteConfig } from "@react-router/dev/routes";
@@ -141,7 +141,7 @@ import { flatRoutes } from "@react-router/fs-routes";
 export default flatRoutes() satisfies RouteConfig;
 ```
 
-または、`routes` オプションを使用して設定ベースのルートを定義していた場合は、次のようになります。
+または、`routes` オプションを使用して構成ベースのルートを定義していた場合:
 
 ```ts filename=app/routes.ts
 import { type RouteConfig } from "@react-router/dev/routes";
@@ -178,13 +178,13 @@ export default defineConfig({
 });
 ```
 
-## 5. React Router 設定を追加する
+## 5. React Router 構成を追加する
 
-**👉 プロジェクトに `react-router.config.ts` を追加する**
+**👉 `react-router.config.ts` をプロジェクトに追加する**
 
-以前 `vite.config.ts` の `remix` プラグインに渡されていた設定は、`react-router.config.ts` からエクスポートされるようになりました。
+以前は `vite.config.ts` の `remix` プラグインに渡されていた構成は、`react-router.config.ts` からエクスポートされるようになりました。
 
-注: この時点で、ステップ 1 で追加した v3 の将来のフラグを削除する必要があります。
+注: この時点で、ステップ 1 で追加した v3 future フラグを削除する必要があります。
 
 ```shellscript nonumber
 touch react-router.config.ts
@@ -210,15 +210,15 @@ export default defineConfig({
 +} satisfies Config;
 ```
 
-## 6. `vite.config` に React Router プラグインを追加する
+## 6. React Router プラグインを `vite.config` に追加する
 
 <docs-info>
 
-codemod を使用した場合、このステップは自動的に完了するため、スキップできます。
+codemod を使用した場合は、自動的に完了しているため、このステップをスキップできます。
 
 </docs-info>
 
-**👉 `vite.config` に `reactRouter` プラグインを追加する**
+**👉 `reactRouter` プラグインを `vite.config` に追加する**
 
 `vite.config.ts` を変更して、`@react-router/dev/vite` から新しい `reactRouter` プラグインをインポートして使用します。
 
@@ -245,7 +245,7 @@ TypeScript を使用していない場合は、このステップをスキップ
 
 </docs-info>
 
-React Router は、ルートモジュールの型をアプリのルートにある `.react-router/` ディレクトリに自動的に生成します。このディレクトリは React Router によって完全に管理され、gitignore にする必要があります。詳細については、[新しい型安全性機能][type-safety]を参照してください。
+React Router は、ルートモジュールの型をアプリのルートにある `.react-router/` ディレクトリに自動的に生成します。このディレクトリは React Router によって完全に管理され、gitignore にする必要があります。[新しい型安全機能][type-safety] の詳細をご覧ください。
 
 **👉 `.react-router/` を `.gitignore` に追加する**
 
@@ -276,11 +276,11 @@ React Router は、ルートモジュールの型をアプリのルートにあ�
 }
 ```
 
-## 8. エントリーファイル内のコンポーネントの名前を変更する
+## 8. エントリファイル内のコンポーネントの名前を変更する
 
 <docs-info>
 
-codemod を使用した場合、このステップは自動的に完了するため、スキップできます。
+codemod を使用した場合は、自動的に完了しているため、このステップをスキップできます。
 
 </docs-info>
 
@@ -315,7 +315,7 @@ hydrateRoot(
 
 </docs-info>
 
-React Router は、React フレームワーク _と_ スタンドアロンのルーティングライブラリの両方として使用できるため、`LoaderFunctionArgs` および `ActionFunctionArgs` の `context` 引数はオプションになり、デフォルトでは `any` として型付けされるようになりました。ロードコンテキストの型を登録して、ローダーとアクションの型安全性を確保できます。
+React Router は React フレームワーク _と_ スタンドアロンのルーティングライブラリの両方として使用できるため、`LoaderFunctionArgs` および `ActionFunctionArgs` の `context` 引数はオプションになり、デフォルトでは `any` として型付けされるようになりました。ロードコンテキストの型を登録して、ローダーとアクションの型安全性を確保できます。
 
 👉 **ロードコンテキストの型を登録する**
 
@@ -323,17 +323,17 @@ React Router は、React フレームワーク _と_ スタンドアロンのル
 
 ```ts filename=app/env.ts
 declare module "react-router" {
-  // v2 で使用されていた AppLoadContext
+  // v2 で使用される AppLoadContext
   interface AppLoadContext {
     whatever: string;
   }
 
-  // TODO: ローダーの `Route.LoaderArgs` への移行が完了したら、これを削除する
+  // TODO: ローダーで `Route.LoaderArgs` に移行したら、これを削除します
   interface LoaderFunctionArgs {
     context: AppLoadContext;
   }
 
-  // TODO: アクションの `Route.ActionArgs` への移行が完了したら、これを削除する
+  // TODO: アクションで `Route.ActionArgs` に移行したら、これを削除します
   interface ActionFunctionArgs {
     context: AppLoadContext;
   }
@@ -344,18 +344,18 @@ export {}; // これをモジュールとして扱うために TS に必要
 
 <docs-info>
 
-`declare module` を使用して型を登録することは、[モジュール拡張][ts-module-augmentation]と呼ばれる標準的な TypeScript テクニックです。
+`declare module` を使用して型を登録することは、[モジュール拡張][ts-module-augmentation] と呼ばれる標準的な TypeScript テクニックです。
 これは、`tsconfig.json` の `include` フィールドでカバーされる任意の TypeScript ファイルで実行できますが、アプリディレクトリ内の専用の `env.ts` をお勧めします。
 
 </docs-info>
 
 👉 **新しい型を使用する**
 
-[新しい型生成][type-safety]を採用すると、`LoaderFunctionArgs`/`ActionFunctionArgs` 拡張を削除し、代わりに[`Route.LoaderArgs`][server-loaders] および [`Route.ActionArgs`][server-actions] から `context` 引数を使用できるようになります。
+[新しい型生成][type-safety] を採用したら、`LoaderFunctionArgs`/`ActionFunctionArgs` の拡張を削除し、代わりに [`Route.LoaderArgs`][server-loaders] および [`Route.ActionArgs`][server-actions] から `context` 引数を使用できます。
 
 ```ts filename=app/env.ts
 declare module "react-router" {
-  // v2 で使用されていた AppLoadContext
+  // v2 で使用される AppLoadContext
   interface AppLoadContext {
     whatever: string;
   }
@@ -374,7 +374,7 @@ export function action({ context }: Route.ActionArgs) {}
 // { whatever: string }  ^^^^^^^
 ```
 
-おめでとうございます! これで React Router v7 を使用できます。アプリケーションを実行して、すべてが期待どおりに動作することを確認してください。
+おめでとうございます! これで React Router v7 を使用できるようになりました。アプリケーションを実行して、すべてが期待どおりに動作していることを確認してください。
 
 [incremental-path-to-react-19]: https://remix.run/blog/incremental-path-to-react-19
 [v2-future-flags]: https://remix.run/docs/start/future-flags

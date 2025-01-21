@@ -1,17 +1,19 @@
 ---
-title: データの読み込み
+title: データローディング
 order: 5
 ---
 
-# データの読み込み
+# データローディング
 
-データは、`loader`と`clientLoader`からルートコンポーネントに提供されます。
+データは、`loader` および `clientLoader` からルートコンポーネントに提供されます。
 
-Loaderデータは、ローダーから自動的にシリアライズされ、コンポーネントでデシリアライズされます。文字列や数値などのプリミティブ値に加えて、ローダーはPromise、Map、Set、Dateなどを返すことができます。
+ローダーデータは、ローダーから自動的にシリアライズされ、コンポーネントでデシリアライズされます。文字列や数値のようなプリミティブ値に加えて、ローダーは Promise、Map、Set、Date などを返すことができます。
 
-## クライアントデータの読み込み
+`loaderData` プロップの型は、[自動的に生成されます][type-safety]。
 
-`clientLoader`は、クライアント側でデータを取得するために使用されます。これは、ブラウザからのみデータを取得することを好むページやプロジェクト全体に役立ちます。
+## クライアントデータローディング
+
+`clientLoader` は、クライアントでデータをフェッチするために使用されます。これは、ブラウザからのみデータをフェッチしたいページやプロジェクト全体に役立ちます。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
@@ -23,6 +25,11 @@ export async function clientLoader({
   const res = await fetch(`/api/products/${params.pid}`);
   const product = await res.json();
   return product;
+}
+
+// HydrateFallback は、クライアントローダーが実行中にレンダリングされます
+export function HydrateFallback() {
+  return <div>Loading...</div>;
 }
 
 export default function Product({
@@ -38,9 +45,9 @@ export default function Product({
 }
 ```
 
-## サーバーデータの読み込み
+## サーバーデータローディング
 
-サーバーレンダリング時、`loader`は初期ページロードとクライアントナビゲーションの両方で使用されます。クライアントナビゲーションは、ブラウザからサーバーへのReact Routerによる自動`fetch`を通じてローダーを呼び出します。
+サーバーレンダリングの場合、`loader` は初期ページロードとクライアントナビゲーションの両方に使用されます。クライアントナビゲーションは、ブラウザからサーバーへの React Router による自動 `fetch` を介してローダーを呼び出します。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
@@ -65,12 +72,11 @@ export default function Product({
 }
 ```
 
-`loader`関数はクライアントバンドルから削除されるため、ブラウザに含まれることを心配することなく、サーバー専用のAPIを使用できます。
+`loader` 関数はクライアントバンドルから削除されるため、ブラウザに含まれることを心配せずにサーバー専用の API を使用できることに注意してください。
 
+## 静的データローディング
 
-## 静的データの読み込み
-
-プレレンダリング時、ローダーは本番ビルド中にデータを取得するために使用されます。
+プリレンダリングの場合、ローダーは本番ビルド中にデータをフェッチするために使用されます。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
@@ -94,7 +100,7 @@ export default function Product({
 }
 ```
 
-プレレンダリングするURLは、react-router.config.tsで指定されます。
+プリレンダリングする URL は、react-router.config.ts で指定します。
 
 ```ts filename=react-router.config.ts
 import type { Config } from "@react-router/dev/config";
@@ -109,12 +115,11 @@ export default {
 } satisfies Config;
 ```
 
-サーバーレンダリング時、プレレンダリングされていないURLは通常どおりサーバーレンダリングされることに注意してください。これにより、特定のルートで一部のデータをプレレンダリングしながら、残りの部分をサーバーレンダリングできます。
-
+サーバーレンダリングの場合、プリレンダリングされていない URL は通常どおりサーバーレンダリングされるため、単一のルートで一部のデータをプリレンダリングしながら、残りをサーバーレンダリングできることに注意してください。
 
 ## 両方のローダーの使用
 
-`loader`と`clientLoader`は同時に使用できます。`loader`はサーバー側の初期SSR（またはプレレンダリング）で使用され、`clientLoader`は後続のクライアント側のナビゲーションで使用されます。
+`loader` と `clientLoader` は一緒に使用できます。`loader` は、初期 SSR (またはプリレンダリング) のためにサーバーで使用され、`clientLoader` は後続のクライアント側のナビゲーションで使用されます。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
@@ -126,10 +131,11 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export async function clientLoader({
+  serverLoader,
   params,
-}: Route.ClientLoader) {
+}: Route.ClientLoaderArgs) {
   const res = await fetch(`/api/products/${params.pid}`);
-  return res.json();
+  return { ...serverData, ...res.json() };
 }
 
 export default function Product({
@@ -146,14 +152,40 @@ export default function Product({
 }
 ```
 
+また、関数の `hydrate` プロパティを設定することで、ハイドレーション中およびページがレンダリングされる前にクライアントローダーを強制的に実行することもできます。この状況では、クライアントローダーの実行中にフォールバック UI を表示するために `HydrateFallback` コンポーネントをレンダリングする必要があります。
+
+```tsx filename=app/product.tsx
+export async function loader() {
+  /* ... */
+}
+
+export async function clientLoader() {
+  /* ... */
+}
+
+// ハイドレーション中にクライアントローダーを強制的に実行する
+clientLoader.hydrate = true as const; // 型推論のための `as const`
+
+export function HydrateFallback() {
+  return <div>Loading...</div>;
+}
+
+export default function Product() {
+  /* ... */
+}
+```
+
 ---
 
-次へ: [アクション](./actions)
+次: [アクション](./actions)
 
-参照：
+こちらも参照してください:
 
-- [Suspenseを使ったストリーミング](../../how-to/suspense)
+- [Suspense を使用したストリーミング](../../how-to/suspense)
+- [クライアントデータ](../../how-to/client-data)
+- [フェッチャーの使用](../../how-to/fetchers#loading-data)
 
 [advanced_data_fetching]: ../tutorials/advanced-data-fetching
 [data]: ../../api/react-router/data
+[type-safety]: ../../explanation/type-safety
 

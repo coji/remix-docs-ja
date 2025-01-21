@@ -4,15 +4,15 @@ title: ファイルアップロード
 
 # ファイルアップロード
 
-React Routerアプリケーションでファイルアップロードを処理します。このガイドでは、ファイルアップロードを容易にするために、[Remix The Web][remix-the-web]プロジェクトのいくつかのパッケージを使用します。
+React Router アプリケーションでファイルアップロードを処理します。このガイドでは、ファイルアップロードを簡単にするために、[Remix The Web][remix-the-web] プロジェクトのいくつかのパッケージを使用します。
 
-_このドキュメントは、[David Adamsによるオリジナルガイド](https://programmingarehard.com/2024/09/06/remix-file-uploads-updated.html/)を基に作成されています。より多くの例については、そちらを参照してください。_
+_このドキュメントのベースとなった[オリジナルのガイド](https://programmingarehard.com/2024/09/06/remix-file-uploads-updated.html/)を執筆してくれた David Adams に感謝します。さらに多くの例については、そちらを参照してください。_
 
 ## 基本的なファイルアップロード
 
-### 1. ルートの設定
+### 1. いくつかのルートを設定する
 
-ルートは自由に設定できます。この例では、次の構造を使用します。
+ルートは好きなように設定できます。この例では、次の構造を使用します。
 
 ```ts filename=routes.ts
 import {
@@ -21,30 +21,30 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-  // ... その他のルート
+  // ... 他のルート
   route("user/:id", "pages/user-profile.tsx", [
-    route("avatar", "api/upload-avatar.tsx"),
+    route("avatar", "api/avatar.tsx"),
   ]),
 ] satisfies RouteConfig;
 ```
 
-### 2. フォームデータパーサーの追加
+### 2. フォームデータパーサーを追加する
 
-`form-data-parser`は、ファイルアップロードのストリーミングサポートを提供する`request.formData()`のラッパーです。
+`form-data-parser` は、ファイルアップロードを処理するためのストリーミングサポートを提供する `request.formData()` のラッパーです。
 
 ```shellscript
 npm i @mjackson/form-data-parser
 ```
 
-[詳しくは`form-data-parser`のドキュメントを参照してください][form-data-parser]
+[詳細については、`form-data-parser` のドキュメントを参照してください][form-data-parser]
 
-### 3. アップロードアクションを持つルートの作成
+### 3. アップロードアクション付きのルートを作成する
 
-`parseFormData`関数は、`uploadHandler`関数を引数として受け取ります。この関数は、フォーム内の各ファイルアップロードに対して呼び出されます。
+`parseFormData` 関数は、引数として `uploadHandler` 関数を取ります。この関数は、フォーム内の各ファイルアップロードに対して呼び出されます。
 
 <docs-warning>
 
-ファイルアップロードを機能させるには、フォームの`enctype`を`multipart/form-data`に設定する必要があります。
+ファイルアップロードを機能させるには、フォームの `enctype` を `multipart/form-data` に設定する必要があります。
 
 </docs-warning>
 
@@ -59,7 +59,7 @@ export async function action({
 }: ActionFunctionArgs) {
   const uploadHandler = async (fileUpload: FileUpload) => {
     if (fileUpload.fieldName === "avatar") {
-      // アップロードを処理し、Fileを返します
+      // アップロードを処理して File を返す
     }
   };
 
@@ -67,7 +67,7 @@ export async function action({
     request,
     uploadHandler
   );
-  // この時点で 'avatar' は既に処理されています
+  // 'avatar' はこの時点で既に処理済み
   const file = formData.get("avatar");
 }
 
@@ -75,7 +75,7 @@ export default function Component() {
   return (
     <form method="post" encType="multipart/form-data">
       <input type="file" name="avatar" />
-      <button>Submit</button>
+      <button>送信</button>
     </form>
   );
 }
@@ -83,19 +83,19 @@ export default function Component() {
 
 ## ローカルストレージの実装
 
-### 1. ストレージパッケージの追加
+### 1. ストレージパッケージを追加する
 
-`file-storage`は、JavaScriptで[Fileオブジェクト][file]を格納するためのキー/値インターフェースです。`localStorage`がブラウザに文字列のキー/値ペアを格納することを可能にするのと同様に、`file-storage`はサーバーにファイルのキー/値ペアを格納することを可能にします。
+`file-storage` は、JavaScript で [File オブジェクト][file] を保存するためのキー/値インターフェースです。`localStorage` がブラウザで文字列のキー/値ペアを保存できるのと同様に、file-storage ではサーバー上のファイルのキー/値ペアを保存できます。
 
 ```shellscript
 npm i @mjackson/file-storage
 ```
 
-[詳しくは`file-storage`のドキュメントを参照してください][file-storage]
+[詳細については、`file-storage` のドキュメントを参照してください][file-storage]
 
-### 2. ストレージ設定の作成
+### 2. ストレージ構成を作成する
 
-さまざまなルートで使用される`LocalFileStorage`インスタンスをエクスポートするファイルを作成します。
+異なるルートで使用される `LocalFileStorage` インスタンスをエクスポートするファイルを作成します。
 
 ```ts filename=avatar-storage.server.ts
 import { LocalFileStorage } from "@mjackson/file-storage/local";
@@ -109,13 +109,13 @@ export function getStorageKey(userId: string) {
 }
 ```
 
-### 3. アップロードハンドラの実装
+### 3. アップロードハンドラーを実装する
 
-`fileStorage`インスタンスにファイルを格納するようにフォームの`action`を更新します。
+フォームの `action` を更新して、ファイルを `fileStorage` インスタンスに保存します。
 
 ```tsx filename=pages/user-profile.tsx
 import {
-  FileUpload,
+  type FileUpload,
   parseFormData,
 } from "@mjackson/form-data-parser";
 import {
@@ -135,10 +135,10 @@ export async function action({
     ) {
       let storageKey = getStorageKey(params.id);
 
-      // FileUploadオブジェクトは、長時間保持されることを意図していません（リクエストのbodyからストリーミングデータを取得します）。できるだけ早く格納してください。
+      // FileUpload オブジェクトは、あまり長く保持することを意図していません (request.body からのストリーミングデータです)。できるだけ早く保存してください。
       await fileStorage.set(storageKey, fileUpload);
 
-      // FormDataオブジェクトに対してFileを返します。これは、必要に応じてファイルの内容にアクセスする方法（例：file.stream()）を知っているLazyFileですが、実際に読み取るまでは待ちます。
+      // FormData オブジェクトの File を返します。これは、必要に応じて (例: file.stream() を使用して) ファイルのコンテンツにアクセスする方法を知っている LazyFile ですが、実際に何かを読み取るのは要求されるまで待機します。
       return fileStorage.get(storageKey);
     }
   }
@@ -155,42 +155,42 @@ export default function UserPage({
 }: Route.ComponentProps) {
   return (
     <div>
-      <h1>User {params.id}</h1>
+      <h1>ユーザー {params.id}</h1>
       <form
         method="post"
-        // ファイルアップロードには、フォームのenctypeを「multipart/form-data」に設定する必要があります
+        // ファイルアップロードの場合、フォームの enctype は "multipart/form-data" に設定する必要があります
         encType="multipart/form-data"
       >
         <input type="file" name="avatar" accept="image/*" />
-        <button>Submit</button>
+        <button>送信</button>
       </form>
 
       <img
         src={`/user/${params.id}/avatar`}
-        alt="user avatar"
+        alt="ユーザーアバター"
       />
     </div>
   );
 }
 ```
 
-### 4. アップロードされたファイルを配信するルートの追加
+### 4. アップロードされたファイルを提供するルートを追加する
 
-ファイルをレスポンスとしてストリーミングする[リソースルート][resource-route]を作成します。
+ファイルをレスポンスとしてストリーミングする [リソースルート][resource-route] を作成します。
 
-```tsx filename=api/upload-avatar.tsx
+```tsx filename=api/avatar.tsx
 import {
   fileStorage,
   getStorageKey,
 } from "~/avatar-storage.server";
-import type { Route } from "./+types/upload-avatar";
+import type { Route } from "./+types/avatar";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const storageKey = getStorageKey(params.id);
   const file = await fileStorage.get(storageKey);
 
   if (!file) {
-    throw new Response("User avatar not found", {
+    throw new Response("ユーザーアバターが見つかりません", {
       status: 404,
     });
   }
@@ -209,5 +209,4 @@ export async function loader({ params }: Route.LoaderArgs) {
 [file-storage]: https://github.com/mjackson/remix-the-web/tree/main/packages/file-storage
 [file]: https://developer.mozilla.org/en-US/docs/Web/API/File
 [resource-route]: ../how-to/resource-routes
-
 

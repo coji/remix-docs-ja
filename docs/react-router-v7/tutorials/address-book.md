@@ -5,49 +5,52 @@ order: 1
 
 # アドレス帳
 
-連絡先を管理できる、小さくても機能豊富なアドレス帳アプリを作成します。データベースやその他の「本番環境対応」の要素は使用しないため、React Routerが提供する機能に集中できます。手順に従って進めれば約30分かかりますが、そうでなければ簡単に読めます。
+ここでは、連絡先を管理できる、小さくても機能豊富なアドレス帳アプリを構築します。データベースやその他の「本番環境対応」のものは使用しないため、React Router が提供する機能に集中できます。もし一緒に進める場合は30〜45分程度、そうでなければすぐに読み終えることができるでしょう。
+
+<docs-info>
+
+もしよろしければ、[React Routerチュートリアルのウォークスルー](https://www.youtube.com/watch?v=pw8FAg07kdo)の動画もご覧ください 🎥
+
+</docs-info>
 
 <img class="tutorial" src="/_docs/v7_address_book_tutorial/01.webp" />
 
-👉 **これが表示されたら、アプリで何か操作する必要があります！**
+👉 **このマークが表示されたら、アプリで何かをする必要があることを意味します！**
 
-残りは情報とより深い理解のためのものです。始めましょう。
+それ以外は、あなたの情報とより深い理解のためのものです。それでは始めましょう。
 
 ## セットアップ
 
-👉 **基本テンプレートの生成**
+👉 **基本的なテンプレートを生成する**
 
 ```shellscript nonumber
 npx create-react-router@latest --template remix-run/react-router/tutorials/address-book
 ```
 
-これは非常にシンプルなテンプレートを使用しますが、CSSとデータモデルが含まれているため、React Routerに集中できます。
+これは非常にシンプルなテンプレートを使用していますが、CSSとデータモデルが含まれているため、React Routerに集中できます。
 
-👉 **アプリの起動**
+👉 **アプリを起動する**
 
 ```shellscript nonumber
-# アプリのディレクトリに移動します
-cd {アプリを配置した場所}
+# アプリのディレクトリに移動
+cd {アプリを置いた場所}
 
-# まだインストールしていない場合は、依存関係をインストールします
+# まだインストールしていない場合は依存関係をインストール
 npm install
 
-# サーバーを起動します
+# サーバーを起動
 npm run dev
 ```
 
-[http://localhost:5173][http-localhost-5173] を開くと、スタイルのない次の様な画面が表示されます。
-
-
-[http-localhost-5173]: http://localhost:5173
+[http://localhost:5173][http-localhost-5173] を開くと、次のようなスタイルが適用されていない画面が表示されるはずです。
 
 ## ルートルート
 
-`app/root.tsx` のファイルに注目してください。これは私たちが「ルートルート」[root-route]と呼ぶものです。UIで最初にレンダリングされるコンポーネントであり、通常はページのグローバルレイアウトと、デフォルトのエラーバウンダリ[error-boundaries]を含みます。
+`app/root.tsx`にあるファイルに注目してください。これは、私たちが["ルートルート"][root-route]と呼ぶものです。これはUIで最初にレンダリングされるコンポーネントであり、通常はページのグローバルレイアウトと、デフォルトの[エラー境界][error-boundaries]が含まれています。
 
 <details>
 
-<summary>ルートコンポーネントのコードを見るにはここをクリック</summary>
+<summary>ルートコンポーネントのコードを表示するには、ここを展開してください</summary>
 
 ```tsx filename=app/root.tsx
 import {
@@ -99,9 +102,9 @@ export default function App() {
   );
 }
 
-// レイアウトコンポーネントは、ルートルートの特別なエクスポートです。
-// すべてのルートコンポーネント、HydrateFallback、ErrorBoundaryのドキュメントの「アプリシェル」として機能します。
-// 詳細については、https://reactrouter.com/explanation/special-files#layout-export を参照してください。
+// Layoutコンポーネントは、ルートルートの特別なエクスポートです。
+// これは、すべてのルートコンポーネント、HydrateFallback、およびErrorBoundaryのドキュメントの「アプリシェル」として機能します。
+// 詳細については、https://reactrouter.com/explanation/special-files#layout-exportを参照してください。
 export function Layout({
   children,
 }: {
@@ -126,20 +129,20 @@ export function Layout({
   );
 }
 
-// アプリの最上位エラーバウンダリ。アプリでエラーが発生したときにレンダリングされます。
-// 詳細については、https://reactrouter.com/start/framework/route-module#errorboundary を参照してください。
+// アプリケーションの最上位のエラー境界。アプリがエラーをスローしたときにレンダリングされます。
+// 詳細については、https://reactrouter.com/start/framework/route-module#errorboundaryを参照してください。
 export function ErrorBoundary({
   error,
 }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "予期せぬエラーが発生しました。";
+  let message = "おっと！";
+  let details = "予期しないエラーが発生しました。";
   let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
+    message = error.status === 404 ? "404" : "エラー";
     details =
       error.status === 404
-        ? "要求されたページは見つかりませんでした。"
+        ? "リクエストされたページが見つかりませんでした。"
         : error.statusText || details;
   } else if (
     import.meta.env.DEV &&
@@ -166,24 +169,24 @@ export function ErrorBoundary({
 
 </details>
 
-## 連絡先ルートUI
+## コンタクトルートのUI
 
-サイドバーの項目をクリックすると、デフォルトの404ページが表示されます。`/contacts/1`というURLに一致するルートを作成しましょう。
+サイドバーの項目をクリックすると、デフォルトの404ページが表示されます。URL `/contacts/1` に一致するルートを作成しましょう。
 
-👉 **連絡先ルートモジュールの作成**
+👉 **コンタクトルートモジュールを作成する**
 
 ```shellscript nonumber
 mkdir app/routes
 touch app/routes/contact.tsx
 ```
 
-このファイルはどこにでも配置できますが、整理のためにすべてのルートを`app/routes`ディレクトリに配置します。
+このファイルはどこにでも配置できますが、少し整理するために、すべてのルートを `app/routes` ディレクトリ内に配置します。
 
-[ファイルベースのルーティング][file-route-conventions]も使用できます。
+[ファイルベースルーティング][file-route-conventions]を使用することもできます。
 
-👉 **ルートの構成**
+👉 **ルートを設定する**
 
-新しいルートについてReact Routerに伝える必要があります。`routes.ts`は、すべてのルートを構成できる特別なファイルです。
+新しいルートについてReact Routerに伝える必要があります。`routes.ts` は、すべてのルートを設定できる特別なファイルです。
 
 ```tsx filename=routes.ts lines=[2,5]
 import type { RouteConfig } from "@react-router/dev/routes";
@@ -194,14 +197,14 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-React Routerでは、`:`はセグメントを動的にします。これにより、次のURLが`routes/contact.tsx`ルートモジュールに一致するようになりました。
+React Routerでは、`:` はセグメントを動的にします。これにより、次のURLが `routes/contact.tsx` ルートモジュールに一致するようになりました。
 
 * `/contacts/123`
 * `/contacts/abc`
 
-👉 **連絡先コンポーネントUIの追加**
+👉 **コンポーネントUIを追加する**
 
-いくつかの要素だけです。コピー＆ペーストしてください。
+これは単なる要素の集まりです。自由にコピー/ペーストしてください。
 
 ```tsx filename=app/routes/contact.tsx
 import { Form } from "react-router";
@@ -302,15 +305,18 @@ function Favorite({
 }
 ```
 
-リンクをクリックするか、[`/contacts/1`][contacts-1]にアクセスしても、何も変わりませんか？
+リンクをクリックするか、[`/contacts/1`][contacts-1] にアクセスすると、何も新しいものが表示されませんか？
 
 <img class="tutorial" src="/_docs/v7_address_book_tutorial/02.webp" />
 
+[file-route-conventions]: https://reactrouter.com/en/main/file-based-routing
+[contacts-1]: /contacts/1
+
 ## ネストされたルートとアウトレット
 
-React Routerはネストされたルーティングをサポートしています。子ルートを親レイアウト内にレンダリングするには、親コンポーネント内に[`Outlet`][outlet-component]をレンダリングする必要があります。これを修正するために、`app/root.tsx`を開いて、アウトレットをレンダリングしましょう。
+React Router はネストされたルーティングをサポートしています。子ルートを親レイアウト内でレンダリングするには、親に [`Outlet`][outlet-component] をレンダリングする必要があります。修正しましょう。`app/root.tsx` を開き、中にアウトレットをレンダリングします。
 
-👉 **[`<Outlet />`][outlet-component]をレンダリングする**
+👉 **[`<Outlet />`][outlet-component] をレンダリングする**
 
 ```tsx filename=app/root.tsx lines=[3,15-17]
 import {
@@ -337,15 +343,17 @@ export default function App() {
 
 これで、子ルートがアウトレットを通してレンダリングされるはずです。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/03.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/03.webp" />
+
+[outlet-component]: https://reactrouter.com/en/main/components/outlet
 
 ## クライアントサイドルーティング
 
-気づかれたかもしれませんが、サイドバーのリンクをクリックすると、ブラウザはクライアントサイドルーティングではなく、次のURLに対する完全なドキュメントリクエストを行い、アプリ全体を完全に再マウントしています。
+お気づきかもしれませんが、サイドバーのリンクをクリックすると、ブラウザはクライアントサイドルーティングではなく、次のURLに対して完全なドキュメントリクエストを行っており、アプリが完全に再マウントされています。
 
-クライアントサイドルーティングを使用すると、アプリはページ全体を再読み込みすることなくURLを更新できます。代わりに、アプリはすぐに新しいUIをレンダリングできます。[`<Link>`][link-component]を使って実現しましょう。
+クライアントサイドルーティングを使用すると、ページ全体をリロードせずにアプリのURLを更新できます。代わりに、アプリは新しいUIをすぐにレンダリングできます。[`<Link>`][link-component]を使って実現しましょう。
 
-👉 **サイドバーの`<a href>`を`<Link to>`に変更してください**
+👉 **サイドバーの `<a href>` を `<Link to>` に変更してください**
 
 ```tsx filename=app/root.tsx lines=[3,20,23]
 import {
@@ -367,10 +375,10 @@ export default function App() {
         <nav>
           <ul>
             <li>
-              <Link to={`/contacts/1`}>Your Name</Link>
+              <Link to={`/contacts/1`}>あなたの名前</Link>
             </li>
             <li>
-              <Link to={`/contacts/2`}>Your Friend</Link>
+              <Link to={`/contacts/2`}>あなたの友達</Link>
             </li>
           </ul>
         </nav>
@@ -381,24 +389,24 @@ export default function App() {
 }
 ```
 
-ブラウザの開発ツールのネットワークタブを開くと、ドキュメントがリクエストされなくなっていることがわかります。
+ブラウザの開発者ツールのネットワークタブを開くと、ドキュメントをリクエストしなくなったことがわかります。
 
-## データの読み込み
+## データのロード
 
-URL セグメント、レイアウト、データは、ほとんどの場合、密接に関連付けられています（3つ組？）。このアプリでも既に確認できます。
+URLセグメント、レイアウト、データは、多くの場合、組み合わさって（3つ組？）います。このアプリでもすでに確認できます。
 
-| URL セグメント         | コンポーネント   | データ               |
+| URLセグメント         | コンポーネント   | データ               |
 | ------------------- | ----------- | ------------------ |
-| /                   | `<App>`     | 連絡先のリスト   |
-| contacts/:contactId | `<Contact>` | 個々の連絡先 |
+| /                   | `<App>`     | コンタクトのリスト   |
+| contacts/:contactId | `<Contact>` | 個々のコンタクト |
 
-この自然な関連付けのために、React Routerには、ルートコンポーネントに簡単にデータを取得するためのデータ規則があります。
+この自然な結合のため、React Routerには、ルートコンポーネントにデータを簡単に取り込むためのデータ規約があります。
 
-まず、ルートルートに[`clientLoader`][client-loader]関数を生成してエクスポートし、データをレンダリングします。
+まず、ルートルートで[`clientLoader`][client-loader]関数を作成してエクスポートし、データをレンダリングします。
 
-👉 **`app/root.tsx`から`clientLoader`関数をエクスポートしてデータをレンダリングする**
+👉 **`app/root.tsx`から`clientLoader`関数をエクスポートし、データをレンダリングします**
 
-<docs-info>次のコードには型エラーが含まれています。次のセクションで修正します。</docs-info>
+<docs-info>次のコードには型エラーが含まれています。次のセクションで修正します</docs-info>
 
 ```tsx filename=app/root.tsx lines=[2,6-9,11-12,19-42]
 // 既存のインポート
@@ -440,7 +448,7 @@ export default function App({ loaderData }) {
             </ul>
           ) : (
             <p>
-              <i>連絡先なし</i>
+              <i>コンタクトなし</i>
             </p>
           )}
         </nav>
@@ -451,23 +459,17 @@ export default function App({ loaderData }) {
 }
 ```
 
-これで完了です！React Routerは、このデータをUIと自動的に同期状態に保ちます。サイドバーは次のようになります。
+以上です！React Routerは、このデータをUIと自動的に同期させます。サイドバーは次のようになります。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/04.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/04.webp" />
 
-サーバーサイドレンダリング（SSR）を行うためにサーバーでデータを読み込むのではなく、「クライアント」でデータを読み込んでいる理由について疑問に思われるかもしれません。現時点では、連絡先サイトは[シングルページアプリケーション][spa]なので、サーバーサイドレンダリングはありません。これにより、任意の静的ホスティングプロバイダーへの展開が非常に簡単になります。ただし、React Routerが提供するさまざまな[レンダリング戦略][rendering-strategies]について学習できるように、SSRを有効にする方法については、後で詳しく説明します。
+サーバーサイドレンダリング（SSR）を実行できるように、サーバーでデータをロードするのではなく、なぜ「クライアント」でデータをロードしているのか疑問に思うかもしれません。現在、コンタクトサイトは[シングルページアプリ][spa]であるため、サーバーサイドレンダリングはありません。これにより、静的ホスティングプロバイダーへのデプロイが非常に簡単になりますが、React Routerが提供するさまざまな[レンダリング戦略][rendering-strategies]について学ぶことができるように、SSRを有効にする方法について少し詳しく説明します。
 
+## 型安全性
 
-[client-loader]: #client-loader
-[spa]: #spa
-[rendering-strategies]: #rendering-strategies
+`loaderData` プロパティに型を割り当てていないことに気づいたかもしれません。これを修正しましょう。
 
-
-## 型安全
-
-`loaderData` プロップに型を割り当てていないことに気づかれたかもしれません。修正しましょう。
-
-👉 **`App` コンポーネントに`ComponentProps`型を追加する**
+👉 **`App` コンポーネントに `ComponentProps` 型を追加してください**
 
 ```tsx filename=app/root.tsx lines=[5-7]
 // 既存のインポート
@@ -483,18 +485,17 @@ export default function App({
 }
 ```
 
-ちょっと待ってください。これらの型はどこから来たのでしょうか？！
+ちょっと待って、これは何？これらの型はどこから来たの？！
 
-定義していませんが、`clientLoader`から返した`contacts`プロパティについて、既に知っているようです。
+私たちは定義していませんが、なぜか `clientLoader` から返した `contacts` プロパティについて既に知っています。
 
-これは、React Routerが[アプリ内の各ルートに対して型を生成する][type-safety]ため、自動的な型安全性を提供しているためです。
+これは、React Router が自動的な型安全性を実現するために、[アプリ内の各ルートの型を生成している][type-safety]からです。
 
+[type-safety]: https://reactrouter.com/en/main/guides/type-safety
 
-[type-safety]: (React Routerの型安全に関するドキュメントへのリンクをここに挿入してください。)
+## `HydrateFallback` の追加
 
-## `HydrateFallback`の追加
-
-先に述べたように、サーバーサイドレンダリングのない[シングルページアプリケーション（SPA）][spa]に取り組んでいます。[`react-router.config.ts`][react-router-config]の中身を見ると、これは単純なブール値で設定されていることがわかります。
+先ほど、サーバーサイドレンダリングを行わない[シングルページアプリケーション][spa]に取り組んでいると述べました。[`react-router.config.ts`][react-router-config]の中を見ると、これが単純なブール値で設定されていることがわかります。
 
 ```tsx filename=react-router.config.ts lines=[4]
 import { type Config } from "@react-router/dev/config";
@@ -504,11 +505,11 @@ export default {
 } satisfies Config;
 ```
 
-ページを更新するたびに、アプリがロードされる前に一瞬白くフラッシュすることに気づき始めたかもしれません。クライアント側でのみレンダリングしているため、アプリのロード中にユーザーに表示するものはありません。
+ページをリロードするたびに、アプリが読み込まれる前に白い画面が一瞬表示されることに気づき始めたかもしれません。クライアント側でのみレンダリングしているため、アプリの読み込み中にユーザーに表示するものがありません。
 
-👉 **`HydrateFallback`エクスポートを追加する**
+👉 **`HydrateFallback` エクスポートを追加する**
 
-[`HydrateFallback`][hydrate-fallback]エクスポートを使用して、アプリがハイドレートされる（クライアント側で初めてレンダリングされる）前に表示されるフォールバックを提供できます。
+[`HydrateFallback`][hydrate-fallback]エクスポートを使用すると、アプリがハイドレートされる（クライアントで初めてレンダリングされる）前に表示されるフォールバックを提供できます。
 
 ```tsx filename=app/root.tsx lines=[3-10]
 // 既存のインポートとエクスポート
@@ -517,28 +518,27 @@ export function HydrateFallback() {
   return (
     <div id="loading-splash">
       <div id="loading-splash-spinner" />
-      <p>Loading, please wait...</p>
+      <p>読み込み中、しばらくお待ちください...</p>
     </div>
   );
 }
 ```
 
-これで、ページを更新すると、アプリがハイドレートされる前に、 briefly ローディングスプラッシュが briefly 表示されます。
+これで、ページをリロードすると、アプリがハイドレートされる前に、読み込みスプラッシュが一瞬表示されるようになります。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/05.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/05.webp" />
 
-
-[spa]:  (シングルページアプリケーションへのリンク)
-[react-router-config]: (react-router.config.tsファイルへのリンク)
-[hydrate-fallback]: (HydrateFallbackの説明へのリンク)
+[spa]: https://ja.wikipedia.org/wiki/%E3%82%B7%E3%83%B3%E3%82%B0%E3%83%AB%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3
+[react-router-config]: https://github.com/remix-run/react-router/blob/main/examples/address-book/app/react-router.config.ts
+[hydrate-fallback]: https://reactrouter.com/en/main/routers/create-browser-router#hydratefallback
 
 ## インデックスルート
 
-アプリをロードして、まだ連絡先のページにいない場合、リストの右側に大きな空白ページが表示されることに気付くでしょう。
+アプリをロードしたとき、まだ連絡先ページにいない場合、リストの右側に大きな空白ページが表示されることに気づくでしょう。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/06.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/06.webp" />
 
-ルートに子ルートがあり、親ルートのパスにいる場合、`<Outlet>` は一致する子ルートがないため、何もレンダリングしません。[インデックスルート][index-route] は、その空白を埋めるデフォルトの子ルートと考えてください。
+ルートに子ルートがある場合、親ルートのパスにいるとき、子ルートが一致しないため、`<Outlet>` は何もレンダリングしません。[インデックスルート][index-route]は、そのスペースを埋めるデフォルトの子ルートと考えることができます。
 
 👉 **ルートルートのインデックスルートを作成する**
 
@@ -556,38 +556,36 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-👉 **インデックスコンポーネントの要素を入力する**
+👉 **インデックスコンポーネントの要素を埋める**
 
-コピー＆ペーストして構いません。特別なことは何もありません。
+コピー＆ペーストしても構いません。特に変わったことはありません。
 
 ```tsx filename=app/routes/home.tsx
 export default function Home() {
   return (
     <p id="index-page">
-      これはReact Routerのデモです。
+      これは React Router のデモです。
       <br />
-      reactrouter.comでドキュメントをご覧ください。
       <a href="https://reactrouter.com">
-        reactrouter.com
+        reactrouter.com のドキュメント
       </a>
-      。
+      をご覧ください。
     </p>
   );
 }
 ```
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/07.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/07.webp" />
 
-できました！空白はもうありません。インデックスルートには、ダッシュボード、統計情報、フィードなどを配置することが一般的です。データの読み込みにも参加できます。
+はい、これで空白スペースはなくなりました。ダッシュボード、統計、フィードなどをインデックスルートに配置するのが一般的です。これらはデータローディングにも参加できます。
 
+[index-route]: https://reactrouter.com/en/main/route/index-route
 
-[index-route]:  (インデックスルートへのリンクをここに挿入 -  原文にはリンクの定義がないため、適宜修正してください。)
+## Aboutルートの追加
 
-## About ルートの追加
+ユーザーが操作できる動的なデータに取り組む前に、めったに変更されない静的なコンテンツを含むページを追加しましょう。Aboutページがこれに最適です。
 
-ユーザーがインタラクトできる動的なデータの操作に移る前に、あまり変更しない静的コンテンツを含むページを追加しましょう。Aboutページが最適です。
-
-👉 **Aboutルートの作成**
+👉 **aboutルートを作成する**
 
 ```shellscript nonumber
 touch app/routes/about.tsx
@@ -603,9 +601,9 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-👉 **AboutページUIの追加**
+👉 **aboutページのUIを追加する**
 
-ここでは特に難しいことはありません。コピー＆ペーストしてください。
+特に難しいことはありません。コピー＆ペーストしてください。
 
 ```tsx filename=app/routes/about.tsx
 import { Link } from "react-router";
@@ -613,41 +611,36 @@ import { Link } from "react-router";
 export default function About() {
   return (
     <div id="about">
-      <Link to="/">← Go to demo</Link>
-      <h1>About React Router Contacts</h1>
+      <Link to="/">← デモへ移動</Link>
+      <h1>React Router Contactsについて</h1>
 
       <div>
         <p>
-          This is a demo application showing off some of the
-          powerful features of React Router, including
-          dynamic routing, nested routes, loaders, actions,
-          and more.
+          これは、動的ルーティング、ネストされたルート、ローダー、アクションなど、React Routerの強力な機能のいくつかを紹介するデモアプリケーションです。
         </p>
 
-        <h2>Features</h2>
+        <h2>機能</h2>
         <p>
-          Explore the demo to see how React Router handles:
+          React Routerがどのように処理するかをデモで確認してください。
         </p>
         <ul>
           <li>
-            Data loading and mutations with loaders and
-            actions
+            ローダーとアクションによるデータのロードと変更
           </li>
           <li>
-            Nested routing with parent/child relationships
+            親子関係によるネストされたルーティング
           </li>
-          <li>URL-based routing with dynamic segments</li>
-          <li>Pending and optimistic UI</li>
+          <li>動的なセグメントによるURLベースのルーティング</li>
+          <li>保留中および楽観的なUI</li>
         </ul>
 
-        <h2>Learn More</h2>
+        <h2>詳細</h2>
         <p>
-          Check out the official documentation at{" "}
+          React Routerで優れたWebアプリケーションを構築する方法の詳細については、公式ドキュメント（
           <a href="https://reactrouter.com">
             reactrouter.com
-          </a>{" "}
-          to learn more about building great web
-          applications with React Router.
+          </a>
+          ）をご覧ください。
         </p>
       </div>
     </div>
@@ -655,7 +648,7 @@ export default function About() {
 }
 ```
 
-👉 **サイドバーにAboutページへのリンクを追加**
+👉 **サイドバーにaboutページへのリンクを追加する**
 
 ```tsx filename=app/root.tsx lines=[5-7]
 export default function App() {
@@ -673,27 +666,24 @@ export default function App() {
 }
 ```
 
-これで、[Aboutページ][about-page] に移動すると、次のようになります。
+[aboutページ][about-page]に移動すると、次のようになります。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/08.webp" />
-
-
-[about-page]: # (Aboutページへのリンク -  実際にはこのMarkdown内で定義されていません。文脈からAboutページへのリンクを示しています。)
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/08.webp" />
 
 ## レイアウトルート
 
-アバウトページをサイドバーレイアウト内にネストする必要はありません。サイドバーをレイアウトに移動して、アバウトページでのレンダリングを回避しましょう。さらに、アバウトページですべての連絡先データを読み込むことを避けたいです。
+実際には、aboutページをサイドバーレイアウトの中にネストさせたくありません。サイドバーをレイアウトに移動して、aboutページでレンダリングされないようにしましょう。さらに、aboutページですべての連絡先データをロードするのを避けたいと考えています。
 
 👉 **サイドバーのレイアウトルートを作成する**
 
-このレイアウトルートの名前と場所は任意ですが、`layouts`ディレクトリ内に配置すると、シンプルなアプリの整理に役立ちます。
+このレイアウトルートは好きな場所に名前を付けて配置できますが、`layouts`ディレクトリ内に配置すると、シンプルなアプリの整理に役立ちます。
 
 ```shellscript nonumber
 mkdir app/layouts
 touch app/layouts/sidebar.tsx
 ```
 
-今のところ、[`<Outlet>`][outlet-component] を返すだけです。
+今のところは、[`<Outlet>`][outlet-component]を返すだけです。
 
 ```tsx filename=app/layouts/sidebar.tsx
 import { Outlet } from "react-router";
@@ -703,9 +693,9 @@ export default function SidebarLayout() {
 }
 ```
 
-👉 **サイドバーレイアウトの下にルート定義を移動する**
+👉 **ルート定義をサイドバーレイアウトの下に移動する**
 
-`layout`ルートを定義して、その中に含まれるすべてのマッチしたルートに対してサイドバーを自動的にレンダリングできます。これは基本的に私たちの`root`と同じですが、特定のルートにスコープできます。
+`layout`ルートを定義して、その中のすべてのマッチしたルートに対してサイドバーを自動的にレンダリングできます。これは基本的に以前の`root`と同じですが、特定のルートにスコープを絞ることができます。
 
 ```ts filename=app/routes.ts lines=[4,9,12]
 import type { RouteConfig } from "@react-router/dev/routes";
@@ -726,7 +716,7 @@ export default [
 
 👉 **レイアウトとデータフェッチをサイドバーレイアウトに移動する**
 
-`clientLoader`と`App`コンポーネント内のすべてをサイドバーレイアウトに移動する必要があります。次のようになります。
+`clientLoader`と`App`コンポーネント内のすべてをサイドバーレイアウトに移動します。次のようになります。
 
 ```tsx filename=app/layouts/sidebar.tsx
 import { Form, Link, Outlet } from "react-router";
@@ -803,27 +793,27 @@ export default function SidebarLayout({
 }
 ```
 
-そして`app/root.tsx`内では、`App`は[`<Outlet>`][outlet-component]を返すだけで、使用されていないインポートはすべて削除できます。`root.tsx`に`clientLoader`がないことを確認してください。
+そして、`app/root.tsx`内では、`App`は[`<Outlet>`][outlet-component]を返すだけで、未使用のインポートはすべて削除できます。`root.tsx`に`clientLoader`がないことを確認してください。
 
 ```tsx filename=app/root.tsx lines=[3-10]
-// 既存のインポートとエクスポート
+// existing imports and exports
 
 export default function App() {
   return <Outlet />;
 }
 ```
 
-これで並べ替えが完了したので、アバウトページは連絡先データを読み込まなくなり、サイドバーレイアウト内にネストされなくなりました。
+これで、シャッフルが完了し、aboutページは連絡先データをロードしなくなり、サイドバーレイアウトの中にネストされなくなりました。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/09.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/09.webp" />
 
-## 静的ルートの事前レンダリング
+## 静的ルートのプリレンダリング
 
-もしAboutページを更新すると、クライアントサイドでページがレンダリングされるほんの一瞬だけ、ローディングスピナーが表示されます。これは本当に良い体験とは言えず、ページは静的な情報だけなので、ビルド時に静的HTMLとして事前レンダリングする必要があります。
+aboutページをリロードすると、クライアントでページがレンダリングされる前に、ほんの一瞬だけローディングスピナーが表示されます。これはあまり良い体験ではありませんし、ページは静的な情報だけなので、ビルド時に静的なHTMLとしてプリレンダリングできるはずです。
 
-👉 **Aboutページを事前レンダリングする**
+👉 **aboutページをプリレンダリングする**
 
-`react-router.config.ts`内で、ビルド時に特定のURLを事前レンダリングするようにReact Routerに指示する、[`prerender`][pre-rendering]配列をconfigに追加できます。この場合、Aboutページだけを事前レンダリングします。
+`react-router.config.ts`の中で、React Routerにビルド時に特定のURLをプリレンダリングするように指示するために、設定に[`prerender`][pre-rendering]配列を追加できます。この場合、aboutページだけをプリレンダリングしたいとします。
 
 ```ts filename=app/react-router.config.ts lines=[5]
 import { type Config } from "@react-router/dev/config";
@@ -834,19 +824,24 @@ export default {
 } satisfies Config;
 ```
 
-これで、[Aboutページ][about-page]にアクセスして更新しても、ローディングスピナーが表示されなくなります！
+これで、[aboutページ][about-page]に移動してリロードしても、ローディングスピナーは表示されません！
 
+<docs-warning>
 
-[pre-rendering]: <プレレンダリングの説明へのリンクをここに挿入>
-[about-page]: <Aboutページへのリンクをここに挿入>
+リロード時にまだスピナーが表示される場合は、`root.tsx`の`clientLoader`を削除したことを確認してください。
+
+</docs-warning>
+
+[pre-rendering]: https://reactrouter.com/en/main/guides/pre-rendering
+[about-page]: /about
 
 ## サーバーサイドレンダリング
 
-React Routerは[シングルページアプリケーション (SPA)][spa]を構築するための優れたフレームワークです。多くのアプリケーションはクライアントサイドレンダリングのみで十分であり、ビルド時にいくつかのページを静的にプリレンダリングするだけで*十分かもしれません*。
+React Router は、[シングルページアプリケーション][spa]を構築するための優れたフレームワークです。多くのアプリケーションはクライアントサイドレンダリングのみで十分に機能し、*場合によっては*ビルド時にいくつかのページを静的にプリレンダリングするだけで済みます。
 
-React Routerアプリケーションにサーバーサイドレンダリングを導入したい場合、非常に簡単です（前のセクションの`ssr: false`ブール値を覚えていますか？）。
+もし React Router アプリケーションにサーバーサイドレンダリングを導入したい場合、それは非常に簡単です（以前の `ssr: false` ブール値を覚えていますか？）。
 
-👉 **サーバーサイドレンダリングを有効化**
+👉 **サーバーサイドレンダリングを有効にする**
 
 ```ts filename=app/react-router.config.ts lines=[2]
 export default {
@@ -855,13 +850,13 @@ export default {
 } satisfies Config;
 ```
 
-そして…何も変わりませんか？ページがクライアント上でレンダリングされる前に、一瞬スピナーが表示されますか？さらに、`clientLoader`を使用しているので、データは依然としてクライアント側でフェッチされているのではないでしょうか？
+そして今...何も変わっていない？ページがクライアントでレンダリングされる前に、まだ一瞬だけスピナーが表示されていますか？さらに、`clientLoader` を使用しているので、データはまだクライアントでフェッチされているのではないでしょうか？
 
-その通りです！React Routerでは、`clientLoader`（と`clientAction`）を引き続き使用して、必要に応じてクライアントサイドでデータフェッチを行うことができます。React Routerは、適切なツールを柔軟に使用できます。
+その通りです！React Router では、必要に応じてクライアントサイドのデータフェッチを行うために `clientLoader`（および `clientAction`）を依然として使用できます。React Router は、仕事に適したツールを使用するための多くの柔軟性を提供します。
 
-[`loader`][loader]を使用するように切り替えましょう。これは（予想通り）サーバーでデータを取得するために使用されます。
+サーバーでデータをフェッチするために使用される [`loader`][loader] の使用に切り替えましょう（ご想像の通り）。
 
-👉 **`loader`を使用してデータを取得するように切り替え**
+👉 **`loader` を使用してデータをフェッチするように切り替える**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[3]
 // 既存のインポート
@@ -872,29 +867,28 @@ export async function loader() {
 }
 ```
 
-`ssr`を`true`または`false`に設定するかどうかは、ユーザーのニーズによって異なります。どちらの戦略も完全に有効です。このチュートリアルの残りの部分ではサーバーサイドレンダリングを使用しますが、すべてのレンダリング戦略がReact Routerでファーストクラスシチズンであることを知っておいてください。
+`ssr` を `true` に設定するか `false` に設定するかは、あなたとユーザーのニーズによって異なります。どちらの戦略も完全に有効です。このチュートリアルの残りの部分では、サーバーサイドレンダリングを使用しますが、すべてのレンダリング戦略が React Router で第一級市民であることを知っておいてください。
 
+[spa]: https://ja.wikipedia.org/wiki/%E3%82%B7%E3%83%B3%E3%82%B0%E3%83%AB%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3
+[loader]: https://reactrouter.com/en/main/route/loader
 
-[spa]: <a href="ここにSPAの説明へのリンクを挿入">シングルページアプリケーション</a>
-[loader]: <a href="ここにloaderの説明へのリンクを挿入">loader</a>
-
-## ローダーにおけるURLパラメーター
+## ローダーにおける URL パラメータ
 
 👉 **サイドバーのリンクのいずれかをクリックしてください**
 
-以前の静的な連絡先ページが表示されますが、1点違いがあります。URLにレコードの実際のIDが含まれるようになりました。
+以前の静的な連絡先ページが再び表示されるはずですが、1つ違いがあります。URL にレコードの実際の ID が含まれるようになりました。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/10.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/10.webp" />
 
-`app/routes.ts`のルート定義における`:contactId`の部分を覚えていますか？これらの動的なセグメントは、URLのその位置にある動的な（変化する）値と一致します。これらのURL内の値を「URLパラメーター」、または単に「パラメーター」と呼びます。
+`app/routes.ts` のルート定義の `:contactId` の部分を覚えていますか？これらの動的なセグメントは、URL のその位置にある動的な（変化する）値と一致します。URL 内のこれらの値を「URL パラメータ」、または略して「パラメータ」と呼びます。
 
-これらの`params`は、動的なセグメントと一致するキーを使用してローダーに渡されます。たとえば、セグメントの名前が`:contactId`である場合、値は`params.contactId`として渡されます。
+これらの `params` は、動的なセグメントと一致するキーを持つローダーに渡されます。たとえば、セグメントの名前は `:contactId` なので、値は `params.contactId` として渡されます。
 
-これらのパラメーターは、ほとんどの場合、IDでレコードを見つけるために使用されます。試してみましょう。
+これらのパラメータは、ID でレコードを検索するためによく使用されます。試してみましょう。
 
-👉 **連絡先ページに`loader`関数を追加し、`loaderData`を使用してデータにアクセスします**
+👉 **連絡先ページに `loader` 関数を追加し、`loaderData` でデータにアクセスします**
 
-<docs-info>次のコードには型エラーが含まれています。これは次のセクションで修正します。</docs-info>
+<docs-info>次のコードには型エラーが含まれています。次のセクションで修正します</docs-info>
 
 ```tsx filename=app/routes/contact.tsx lines=[2-3,5-8,10-13]
 // 既存のインポート
@@ -917,15 +911,15 @@ export default function Contact({
 // 既存のコード
 ```
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/11.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/11.webp" />
 
-## レスポンスの送出
+## レスポンスをスローする
 
-`loaderData.contact` の型が `ContactRecord | null` であることに注目してください。自動的な型安全性の仕組みにより、TypeScript は既に `params.contactId` が文字列であることを認識していますが、それが有効なIDであることを確認する処理は行っていません。連絡先が存在しない可能性があるため、`getContact` は `null` を返す可能性があり、これが型エラーの原因となっています。
+`loaderData.contact` の型が `ContactRecord | null` であることに気づくでしょう。自動的な型安全性に基づいて、TypeScript はすでに `params.contactId` が文字列であることを認識していますが、それが有効な ID であることを確認するための処理は何もしていません。連絡先が存在しない可能性があるため、`getContact` は `null` を返す可能性があり、それが型エラーの原因となっています。
 
-コンポーネントコード内で連絡先が見つからない可能性に対処することもできますが、Webアプリケーションとして適切な方法は、適切な404エラーを送信することです。ローダー内でこれを行うことで、すべての問題を一度に解決できます。
+コンポーネントコードで連絡先が見つからない可能性を考慮することもできますが、Web 的なやり方としては適切な 404 を送信することです。ローダーでそれを行うことで、すべての問題を一度に解決できます。
 
-```tsx filename=app/routes/contacts.$contactId.tsx lines=[5-7]
+```tsx filename=app/routes/contact.tsx lines=[5-7]
 // 既存のインポート
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -939,32 +933,32 @@ export async function loader({ params }: Route.LoaderArgs) {
 // 既存のコード
 ```
 
-これで、ユーザーが見つからない場合、このパスでのコード実行が停止し、React Routerが代わりにエラーパスをレンダリングします。React Router のコンポーネントは、ハッピーパスにのみ集中できます 😁
+これで、ユーザーが見つからない場合、このパスでのコード実行は停止し、代わりに React Router がエラーパスをレンダリングします。React Router のコンポーネントは、ハッピーパスのみに集中できます 😁
 
-## データの変更
+## データミューテーション
 
-最初の連絡先をすぐに作成しますが、まずはHTMLについて説明しましょう。
+すぐに最初の連絡先を作成しますが、その前にHTMLについてお話しましょう。
 
-React Routerは、HTMLフォームのナビゲーションをデータ変更のプリミティブとしてエミュレートします。これは、JavaScriptのカンブリア爆発以前は唯一の方法でした。そのシンプルさに騙されてはいけません！React Routerのフォームは、クライアントサイドレンダリングアプリのUX機能を、「旧式の」Webモデルのシンプルさで実現します。
+React Routerは、データミューテーションのプリミティブとしてHTMLフォームのナビゲーションをエミュレートします。これは、JavaScriptのカンブリア爆発以前は唯一の方法でした。そのシンプルさに騙されないでください！React Routerのフォームは、「昔ながらの」Webモデルのシンプルさを持ちながら、クライアントレンダリングアプリのUX機能を提供します。
 
-一部のWeb開発者には馴染みがありませんが、HTMLの`form`は実際にはリンクをクリックするのと同じように、ブラウザ内でナビゲーションを引き起こします。唯一の違いはリクエストにあります。リンクはURLのみを変更できますが、`form`はリクエストメソッド（`GET`と`POST`）とリクエストボディ（`POST`フォームデータ）も変更できます。
+一部のWeb開発者には馴染みがないかもしれませんが、HTMLの`form`は、リンクをクリックするのと同じように、ブラウザでナビゲーションを引き起こします。唯一の違いはリクエストにあります。リンクはURLのみを変更できますが、`form`はリクエストメソッド（`GET` vs. `POST`）とリクエストボディ（`POST`フォームデータ）も変更できます。
 
-クライアントサイドルーティングがない場合、ブラウザは`form`のデータを自動的にシリアライズし、`POST`のリクエストボディとして、そして`GET`の[`URLSearchParams`][url-search-params]としてサーバーに送信します。React Routerも同じことを行いますが、サーバーにリクエストを送信する代わりに、クライアントサイドルーティングを使用して、ルートの[`action`][action]関数に送信します。
+クライアントサイドルーティングがない場合、ブラウザは`form`のデータを自動的にシリアライズし、`POST`の場合はリクエストボディとして、`GET`の場合は[`URLSearchParams`][url-search-params]としてサーバーに送信します。React Routerも同じことを行いますが、リクエストをサーバーに送信する代わりに、クライアントサイドルーティングを使用し、ルートの[`action`][action]関数に送信します。
 
-アプリの「新規」ボタンをクリックして、これを試すことができます。
+アプリの「新規」ボタンをクリックして、これを試してみましょう。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/12.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/12.webp" />
 
-サーバーにこのフォームナビゲーションを処理するコードがないため、React Routerは405エラーを送信します。
+React Routerは、このフォームナビゲーションを処理するサーバー側のコードがないため、405を送信します。
 
-[url-search-params]: <URL_FOR_URLSEARCHPARAMS>  (URLSearchParamsへのリンクをここに挿入してください)
-[action]: <URL_FOR_ACTION> (actionへのリンクをここに挿入してください)
+[url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+[action]: ../route/action
 
-## 連絡先の作成
+## コンタクトの作成
 
-ルートルートから`action`関数をエクスポートして、新しい連絡先を作成します。ユーザーが「新規」ボタンをクリックすると、フォームはルートルートアクションに`POST`を送信します。
+ルートルートで `action` 関数をエクスポートすることで、新しいコンタクトを作成します。ユーザーが「新規」ボタンをクリックすると、フォームはルートルートの action に `POST` します。
 
-👉 **`app/root.tsx`から`action`関数をエクスポートする**
+👉 **`app/root.tsx` から `action` 関数をエクスポートします**
 
 ```tsx filename=app/root.tsx lines=[3,5-8]
 // 既存のインポート
@@ -979,33 +973,32 @@ export async function action() {
 // 既存のコード
 ```
 
-以上です！「新規」ボタンをクリックすると、新しいレコードがリストに表示されます🥳
+以上です！「新規」ボタンをクリックすると、新しいレコードがリストに表示されるはずです 🥳
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/13.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/13.webp" />
 
-`createEmptyContact`メソッドは、名前やデータのない空の連絡先を作成するだけです。しかし、レコードは作成されます！
+`createEmptyContact` メソッドは、名前やデータなどが何もない空のコンタクトを作成するだけです。しかし、それでもレコードは作成されます、約束します！
 
-> 🧐ちょっと待って…サイドバーはどうやって更新されたの？`action`関数はどこで呼び出されたの？データを再取得するコードはどこ？`useState`、`onSubmit`、`useEffect`はどこ？
+> 🧐 ちょっと待って... サイドバーはどうやって更新されたの？`action` 関数をどこで呼び出したの？データを再取得するコードはどこにあるの？`useState`、`onSubmit`、`useEffect` はどこ？
 
-ここで「旧来のウェブ」プログラミングモデルが登場します。[`<Form>`][form-component]は、ブラウザがサーバーへのリクエストを送信するのを防ぎ、代わりに[`fetch`][fetch]を使ってルートの`action`関数に送信します。
+ここで「昔ながらのウェブ」プログラミングモデルが登場します。[`<Form>`][form-component] は、ブラウザがサーバーにリクエストを送信するのを防ぎ、代わりに [`fetch`][fetch] を使用してルートの `action` 関数に送信します。
 
-ウェブセマンティクスでは、`POST`は通常、データが変更されていることを意味します。慣例により、React Routerはこれをヒントとして使用し、`action`が完了した後にページ上のデータを自動的に再検証します。
+ウェブのセマンティクスでは、`POST` は通常、何らかのデータが変更されていることを意味します。慣例により、React Router はこれをヒントとして使用し、`action` が完了した後、ページ上のデータを自動的に再検証します。
 
-実際、すべてがHTMLとHTTPであるため、JavaScriptを無効にしても、すべて動作します。React Routerがフォームをシリアル化してサーバーに[`fetch`][fetch]リクエストを行う代わりに、ブラウザがフォームをシリアル化してドキュメントリクエストを行います。そこからReact Routerはサーバーサイドでページをレンダリングして送信します。最終的には同じUIです。
+実際、すべてが HTML と HTTP であるため、JavaScript を無効にしても、すべてが機能します。React Router がフォームをシリアライズしてサーバーに [`fetch`][fetch] リクエストを行う代わりに、ブラウザがフォームをシリアライズしてドキュメントリクエストを行います。そこから React Router はページをサーバー側でレンダリングして送信します。どちらの場合でも、最終的には同じ UI になります。
 
-しかし、ファビコンの回転や静的なドキュメントよりも優れたユーザーエクスペリエンスを作成するため、JavaScriptを使い続けます。
+ただし、JavaScript は残しておきます。なぜなら、回転するファビコンや静的なドキュメントよりも優れたユーザーエクスペリエンスを実現するつもりだからです。
 
-
-[form-component]: #
-[fetch]: #
+[form-component]: https://reactrouter.com/en/main/components/form
+[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/fetch
 
 ## データの更新
 
-新しいレコードの情報を追加する方法を追加しましょう。
+新しいレコードの情報を入力する方法を追加しましょう。
 
-データの作成と同様に、[`<Form>`][form-component] を使用してデータを更新します。`app/routes/edit-contact.tsx` の中に新しいルートモジュールを作成しましょう。
+データの作成と同様に、[`<Form>`][form-component] を使用してデータを更新します。`app/routes/edit-contact.tsx` 内に新しいルートモジュールを作成しましょう。
 
-👉 **編集用コンタクトルートの作成**
+👉 **連絡先編集ルートを作成する**
 
 ```shellscript nonumber
 touch app/routes/edit-contact.tsx
@@ -1027,9 +1020,9 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-👉 **編集ページUIの追加**
+👉 **編集ページの UI を追加する**
 
-これまでに見たことのないものはありません。コピー＆ペーストして自由に使用してください。
+これまで見てきたものと変わりません。自由にコピー/ペーストしてください。
 
 ```tsx filename=app/routes/edit-contact.tsx
 import { Form } from "react-router";
@@ -1053,19 +1046,19 @@ export default function EditContact({
   return (
     <Form key={contact.id} id="contact-form" method="post">
       <p>
-        <span>Name</span>
+        <span>名前</span>
         <input
-          aria-label="First name"
+          aria-label="名"
           defaultValue={contact.first}
           name="first"
-          placeholder="First"
+          placeholder="名"
           type="text"
         />
         <input
-          aria-label="Last name"
+          aria-label="姓"
           defaultValue={contact.last}
           name="last"
-          placeholder="Last"
+          placeholder="姓"
           type="text"
         />
       </p>
@@ -1079,9 +1072,9 @@ export default function EditContact({
         />
       </label>
       <label>
-        <span>Avatar URL</span>
+        <span>アバター URL</span>
         <input
-          aria-label="Avatar URL"
+          aria-label="アバター URL"
           defaultValue={contact.avatar}
           name="avatar"
           placeholder="https://example.com/avatar.jpg"
@@ -1089,7 +1082,7 @@ export default function EditContact({
         />
       </label>
       <label>
-        <span>Notes</span>
+        <span>メモ</span>
         <textarea
           defaultValue={contact.notes}
           name="notes"
@@ -1097,23 +1090,23 @@ export default function EditContact({
         />
       </label>
       <p>
-        <button type="submit">Save</button>
-        <button type="button">Cancel</button>
+        <button type="submit">保存</button>
+        <button type="button">キャンセル</button>
       </p>
     </Form>
   );
 }
 ```
 
-これで、新しいレコードをクリックし、「編集」ボタンをクリックすると、新しいルートが表示されます。
+新しいレコードをクリックし、「編集」ボタンをクリックしてください。新しいルートが表示されるはずです。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/14.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/14.webp" />
 
-## `FormData`を使った連絡先の更新
+## `FormData` を使った連絡先の更新
 
-作成したばかりの編集ルートはすでに`form`をレンダリングしています。必要なのは`action`関数を追加することだけです。React Routerは`form`をシリアライズし、[`fetch`][fetch]を使って`POST`し、すべてのデータを自動的に再検証します。
+先ほど作成した編集ルートは、すでに `form` をレンダリングしています。必要なのは `action` 関数を追加することだけです。React Router は `form` をシリアライズし、[`fetch`][fetch] で `POST` し、すべてのデータを自動的に再検証します。
 
-👉 **編集ルートに`action`関数を追加する**
+👉 **編集ルートに `action` 関数を追加する**
 
 ```tsx filename=app/routes/edit-contact.tsx lines=[1,4,8,6-15]
 import { Form, redirect } from "react-router";
@@ -1134,17 +1127,17 @@ export async function action({
 // 既存のコード
 ```
 
-フォームに記入して保存ボタンを押すと、このような表示になります！<small>(ただし、見やすく、スイカを切るのに根気がいるかもしれません。)</small>
+フォームに入力して保存を押すと、このような表示になるはずです！ <small>（スイカを切る忍耐力があれば、もっと見やすくなるかもしれません。）</small>
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/15.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/15.webp" />
 
-## Mutationに関する議論
+## ミューテーションに関する議論
 
-> 😑 動いたけど、何が起きているのか全く分からない…
+> 😑 うまく動いたけど、何が起こっているのか全くわからない...
 
-少し詳しく見ていきましょう…
+もう少し詳しく見ていきましょう...
 
-`app/routes/edit-contact.tsx`を開き、`form`要素を見てください。それぞれに`name`属性があることに注目してください。
+`app/routes/edit-contact.tsx` を開き、`form` 要素を見てください。それぞれに名前が付いていることに注目してください。
 
 ```tsx filename=app/routes/edit-contact.tsx lines=[4]
 <input
@@ -1156,9 +1149,9 @@ export async function action({
 />
 ```
 
-JavaScriptを使用しない場合、フォームが送信されると、ブラウザは[`FormData`][form-data]を作成し、サーバーに送信するリクエストのボディとして設定します。先に述べたように、React Routerはそれを阻止し、代わりに[`fetch`][fetch]を使って`action`関数にリクエストを送信することでブラウザをエミュレートし、[`FormData`][form-data]を含めます。
+JavaScript がない場合、フォームが送信されると、ブラウザは [`FormData`][form-data] を作成し、サーバーに送信する際にリクエストのボディとして設定します。前述したように、React Router はそれを防ぎ、代わりに [`fetch`][fetch] を使用してリクエストを `action` 関数に送信することでブラウザをエミュレートします。その際、[`FormData`][form-data] も含めます。
 
-`form`内の各フィールドは、`formData.get(name)`でアクセスできます。例えば、上記の入力フィールドの場合、名前を次のようにアクセスできます。
+`form` の各フィールドには `formData.get(name)` でアクセスできます。たとえば、上記の入力フィールドの場合、次のようにして姓と名にアクセスできます。
 
 ```tsx filename=app/routes/edit-contact.tsx  lines=[6,7] nocopy
 export const action = async ({
@@ -1172,7 +1165,7 @@ export const action = async ({
 };
 ```
 
-フォームフィールドがいくつかあるので、[`Object.fromEntries`][object-from-entries]を使ってそれらをすべてオブジェクトに収集しました。これはまさに`updateContact`関数が期待しているものです。
+フォームフィールドがいくつかあるため、[`Object.fromEntries`][object-from-entries] を使用してそれらをすべてオブジェクトに収集しました。これはまさに `updateContact` 関数が求めているものです。
 
 ```tsx filename=app/routes/edit-contact.tsx nocopy
 const updates = Object.fromEntries(formData);
@@ -1180,9 +1173,9 @@ updates.first; // "Some"
 updates.last; // "Name"
 ```
 
-`action`関数以外、ここで説明しているAPIはReact Routerによって提供されているものではありません。[`request`][request]、[`request.formData`][request-form-data]、[`Object.fromEntries`][object-from-entries]はすべてウェブプラットフォームによって提供されています。
+`action` 関数を除いて、ここで議論している API はどれも React Router によって提供されているものではありません。[`request`][request]、[`request.formData`][request-form-data]、[`Object.fromEntries`][object-from-entries] はすべて Web プラットフォームによって提供されています。
 
-`action`関数が終了した後、最後にある[`redirect`][redirect]に注目してください。
+`action` を完了した後、最後に [`redirect`][redirect] があることに注目してください。
 
 ```tsx filename=app/routes/edit-contact.tsx lines=[9]
 export async function action({
@@ -1197,27 +1190,25 @@ export async function action({
 }
 ```
 
-`action`関数と`loader`関数はどちらも`Response`を返すことができます（[`Request`][request]を受け取っているので理にかなっています！）。[`redirect`][redirect]ヘルパーは、アプリに場所の変更を指示する[`Response`][response]を返すことを容易にします。
+`action` 関数と `loader` 関数はどちらも `Response` を返すことができます（[`Request`][request] を受け取っているので当然です！）。[`redirect`][redirect] ヘルパーは、アプリに場所を変更するように指示する [`Response`][response] を返すのを簡単にするだけです。
 
-クライアントサイドルーティングがない場合、`POST`リクエスト後にサーバーがリダイレクトすると、新しいページは最新のデータを取得してレンダリングします。先に学んだように、React Routerはこのモデルをエミュレートし、`action`呼び出し後にページのデータを自動的に再検証します。そのため、フォームを保存するとサイドバーが自動的に更新されます。クライアントサイドルーティングがない場合は、追加の再検証コードは存在しないため、React Routerでのクライアントサイドルーティングでも存在する必要はありません！
+クライアントサイドルーティングがない場合、サーバーが `POST` リクエスト後にリダイレクトすると、新しいページは最新のデータをフェッチしてレンダリングします。以前に学習したように、React Router はこのモデルをエミュレートし、`action` 呼び出し後にページ上のデータを自動的に再検証します。そのため、フォームを保存するとサイドバーが自動的に更新されます。クライアントサイドルーティングがない場合、追加の再検証コードは存在しないため、React Router でクライアントサイドルーティングを使用する場合も存在する必要はありません。
 
-最後にもう一つ。JavaScriptがない場合、[`redirect`][redirect]は通常のredirectになります。しかし、JavaScriptを使用すると、クライアントサイドのリダイレクトになるため、スクロール位置やコンポーネントの状態などのクライアントの状態が失われることはありません。
-
+最後に一つ。JavaScript がない場合、[`redirect`][redirect] は通常のリダイレクトになります。ただし、JavaScript がある場合はクライアントサイドのリダイレクトになるため、ユーザーはスクロール位置やコンポーネントの状態などのクライアントの状態を失うことはありません。
 
 [form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
 [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/fetch
 [object-from-entries]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
-[request]: https://remix.run/docs/en/v1/api/remix#request
-[request-form-data]: https://remix.run/docs/en/v1/api/remix#request-formdata
-[redirect]: https://remix.run/docs/en/v1/api/remix#redirect
+[request]: https://developer.mozilla.org/en-US/docs/Web/API/Request
+[request-form-data]: https://developer.mozilla.org/en-US/docs/Web/API/Request/formData
+[redirect]: https://remix.run/api/remix#redirect
 [response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
 
+## 新規レコードを編集ページにリダイレクトする
 
-## 新規レコードを編集ページへリダイレクト
+リダイレクトの方法がわかったので、新規連絡先を作成するアクションを更新して、編集ページにリダイレクトするようにしましょう。
 
-リダイレクトの方法が分かったところで、新規連絡先を作成するアクションを編集ページへリダイレクトするように更新しましょう。
-
-👉 **新規レコードの編集ページへリダイレクト**
+👉 **新規レコードの編集ページにリダイレクトする**
 
 ```tsx filename=app/root.tsx lines=[6,12]
 import {
@@ -1237,15 +1228,15 @@ export async function action() {
 // 既存のコード
 ```
 
-これで、「新規」をクリックすると、編集ページに移動するようになります。
+これで「新規」をクリックすると、編集ページに移動するはずです。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/16.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/16.webp" />
 
-## アクティブリンクのスタイル設定
+## アクティブなリンクのスタイリング
 
-多くのレコードがあるため、サイドバーで現在見ているレコードが分かりにくくなっています。これを修正するために[`NavLink`][nav-link]を使用できます。
+レコードがたくさんある今、サイドバーでどのレコードを見ているのかが明確ではありません。[`NavLink`][nav-link] を使用してこれを修正できます。
 
-👉 **サイドバーで`<Link>`を`<NavLink>`に置き換えます**
+👉 **サイドバーの `<Link>` を `<NavLink>` に置き換えてください**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[1,17-26,28]
 import { Form, Link, NavLink, Outlet } from "react-router";
@@ -1287,17 +1278,17 @@ export default function SidebarLayout({
 }
 ```
 
-`className`に関数を渡していることに注意してください。ユーザーが`<NavLink to>`と一致するURLにいる場合、`isActive`は`true`になります。アクティブになる*直前*（データの読み込み中）の場合、`isPending`は`true`になります。これにより、ユーザーの現在位置を簡単に示し、リンクをクリックしてもデータの読み込みが必要な場合にすぐにフィードバックを提供できます。
+`className` に関数を渡していることに注意してください。ユーザーが `<NavLink to>` に一致する URL にいる場合、`isActive` は true になります。アクティブになろうとしている（データがまだ読み込まれている）場合は、`isPending` が true になります。これにより、ユーザーがどこにいるかを簡単に示すことができ、リンクがクリックされたがデータの読み込みが必要な場合に即座にフィードバックを提供できます。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/17.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/17.webp" />
 
-## グローバルな読み込み中UI
+## グローバルな保留中UI
 
-ユーザーがアプリを操作する際に、React Routerは次のページのデータを読み込んでいる間、*古いページを表示したままにします*。リスト間を移動すると、アプリが少し反応しないように感じることに気づいたかもしれません。アプリが反応しないように感じさせないように、ユーザーにフィードバックを提供しましょう。
+ユーザーがアプリ内を移動する際、React Routerは次のページのデータが読み込まれている間、*古いページを表示したまま*にします。リスト間をクリックすると、アプリが少し反応しないように感じたかもしれません。アプリが反応しないように感じさせないために、ユーザーに何らかのフィードバックを提供しましょう。
 
-React Routerは舞台裏で全ての状態を管理しており、動的なウェブアプリを構築するために必要な部品を公開します。この場合、[`useNavigation`][use-navigation]フックを使用します。
+React Routerは、舞台裏で全ての状態を管理し、動的なWebアプリを構築するために必要な要素を明らかにします。この場合、[`useNavigation`][use-navigation]フックを使用します。
 
-👉 **`useNavigation` を使用してグローバルな読み込み中UIを追加する**
+👉 **`useNavigation`を使用してグローバルな保留中UIを追加する**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[6,13,19-21]
 import {
@@ -1330,15 +1321,17 @@ export default function SidebarLayout({
 }
 ```
 
-[`useNavigation`][use-navigation] は現在のナビゲーションの状態を返します。状態は`"idle"`、`"loading"`、または`"submitting"`のいずれかになります。
+[`useNavigation`][use-navigation]は、現在のナビゲーション状態を返します。これは、`"idle"`、`"loading"`、または`"submitting"`のいずれかになります。
 
-私たちの場合、アイドル状態ではない場合、アプリの主要部分に`"loading"`クラスを追加します。(高速な読み込みでUIがちらつくのを避けるため)短い遅延後にフェードを追加するCSSを使用します。ただし、スピナーやトップバー全体にロードバーを表示するなど、何でも実行できます。
+この例では、アイドル状態でない場合に、アプリのメイン部分に`"loading"`クラスを追加します。CSSは、短い遅延の後（高速な読み込みでUIがちらつくのを避けるため）に、素敵なフェードを追加します。ただし、上部にスピナーやローディングバーを表示するなど、好きなように変更できます。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/18.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/18.webp" />
+
+[use-navigation]: https://reactrouter.com/en/main/hooks/use-navigation
 
 ## レコードの削除
 
-contact ルートのコードを確認すると、削除ボタンは次のようになっていることがわかります。
+連絡先ルートのコードを確認すると、削除ボタンは次のようになっていることがわかります。
 
 ```tsx filename=app/routes/contact.tsx lines=[2]
 <Form
@@ -1346,27 +1339,27 @@ contact ルートのコードを確認すると、削除ボタンは次のよう
   method="post"
   onSubmit={(event) => {
     const response = confirm(
-      "Please confirm you want to delete this record."
+      "このレコードを削除してもよろしいですか？"
     );
     if (!response) {
       event.preventDefault();
     }
   }}
 >
-  <button type="submit">Delete</button>
+  <button type="submit">削除</button>
 </Form>
 ```
 
-`action` が `"destroy"` を指していることに注意してください。`<Link to>` と同様に、`<Form action>` は*相対的な*値を取ることができます。フォームは `contacts/:contactId` ルートでレンダリングされるため、`destroy` という相対的なアクションは、クリックされるとフォームを `contacts/:contactId/destroy` に送信します。
+`action` が `"destroy"` を指していることに注目してください。`<Link to>` と同様に、`<Form action>` は *相対的な* 値を取ることができます。フォームが `contacts/:contactId` ルートでレンダリングされているため、`destroy` を持つ相対的なアクションは、クリック時にフォームを `contacts/:contactId/destroy` に送信します。
 
-この時点で、削除ボタンを機能させるために必要なことはすべて知っているはずです。先に進む前に、試してみてはどうでしょうか？ 次のものが必要です。
+この時点で、削除ボタンを機能させるために必要なことはすべて理解しているはずです。先に進む前に試してみませんか？必要なものは次のとおりです。
 
 1. 新しいルート
-2. そのルートのアクション
+2. そのルートでの `action`
 3. `app/data.ts` からの `deleteContact`
-4. どこかにリダイレクトする `redirect`
+4. その後のリダイレクト先
 
-👉 **"destroy" ルートモジュールの設定**
+👉 **"destroy" ルートモジュールを設定する**
 
 ```shellscript nonumber
 touch app/routes/destroy-contact.tsx
@@ -1383,7 +1376,7 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-👉 **destroy アクションの追加**
+👉 **destroy アクションを追加する**
 
 ```tsx filename=app/routes/destroy-contact.tsx
 import { redirect } from "react-router";
@@ -1397,25 +1390,25 @@ export async function action({ params }: Route.ActionArgs) {
 }
 ```
 
-さて、レコードに移動して「削除」ボタンをクリックしてみましょう。機能します！
+さて、レコードに移動して「削除」ボタンをクリックしてください。動作します！
 
-> 😅 なぜこれが機能するのかまだよく分かりません
+> 😅 なぜこれがすべて機能するのか、まだ混乱しています
 
 ユーザーが送信ボタンをクリックすると：
 
-1. `<Form>` は、サーバーに新しいドキュメント `POST` リクエストを送信するというデフォルトのブラウザの動作を阻止しますが、代わりにクライアントサイドルーティングと[`fetch`][fetch]を使用してブラウザをエミュレートし、`POST`リクエストを作成します。
+1. `<Form>` は、新しいドキュメント `POST` リクエストをサーバーに送信するというデフォルトのブラウザの動作を防ぎますが、代わりにクライアント側のルーティングと [`fetch`][fetch] を使用してブラウザをエミュレートすることにより、`POST` リクエストを作成します。
 2. `<Form action="destroy">` は `contacts/:contactId/destroy` の新しいルートと一致し、リクエストを送信します。
-3. `action` がリダイレクトした後、React Router はページ上のデータのすべての `loader` を呼び出して最新の値を取得します（これは「再検証」です）。`routes/contact.tsx` の `loaderData` には新しい値が入っており、コンポーネントが更新されます！
+3. `action` がリダイレクトした後、React Router はページのデータを取得するためにすべての `loader` を呼び出して最新の値を取得します（これが「再検証」です）。`routes/contact.tsx` の `loaderData` には新しい値が入り、コンポーネントが更新されます！
 
-`Form` を追加し、`action` を追加すると、React Router が残りの処理を行います。
+`Form` を追加し、`action` を追加すると、残りは React Router が処理します。
 
 ## キャンセルボタン
 
-編集ページには、まだ何も機能していないキャンセルボタンがあります。ブラウザの戻るボタンと同じ動作をするようにしたいです。
+編集ページには、まだ何も機能しないキャンセルボタンがあります。これをブラウザの戻るボタンと同じように機能させたいと思います。
 
-ボタンのクリックハンドラと[`useNavigate`][use-navigate]が必要です。
+ボタンのクリックハンドラーと[`useNavigate`][use-navigate]が必要です。
 
-👉 **`useNavigate` を使用してキャンセルボタンのクリックハンドラを追加する**
+👉 **`useNavigate`を使用してキャンセルボタンのクリックハンドラーを追加する**
 
 ```tsx filename=app/routes/edit-contact.tsx lines=[1,8,15]
 import { Form, redirect, useNavigate } from "react-router";
@@ -1441,33 +1434,33 @@ export default function EditContact({
 }
 ```
 
-これで、ユーザーが「キャンセル」をクリックすると、ブラウザの履歴で1つ前に戻ります。
+これで、ユーザーが「キャンセル」をクリックすると、ブラウザの履歴で1つ前のエントリに戻ります。
 
-> 🧐 なぜボタンに`event.preventDefault()`がないのですか？
+> 🧐 なぜボタンに `event.preventDefault()` がないのですか？
 
-`<button type="button">`は、一見冗長に見えますが、ボタンがフォームを送信するのを防ぐHTMLの方法です。
+`<button type="button">` は、一見冗長に見えますが、ボタンがフォームを送信するのを防ぐためのHTMLの方法です。
 
-あと2つの機能が残っています。もうすぐ完了です！
+あと2つの機能で終わりです。ゴールは目前です！
 
-## `URLSearchParams` と `GET` サブミッション
+## `URLSearchParams` と `GET` 送信
 
-これまでのインタラクティブなUIは、URLを変更するリンクか、`action`関数にデータを送信する`form`のいずれかでした。検索フィールドは、その両方の混合で興味深いものです。`form`ですが、データは変更せず、URLのみを変更します。
+これまでのインタラクティブな UI はすべて、URL を変更するリンクか、データを `action` 関数に POST する `form` のいずれかでした。検索フィールドは、両方の混合であるため興味深いものです。つまり、`form` ですが、URL を変更するだけで、データは変更しません。
 
-検索フォームを送信したときに何が起こるか見てみましょう。
+検索フォームを送信するとどうなるか見てみましょう。
 
-👉 **検索フィールドに名前を入力してEnterキーを押してください**
+👉 **検索フィールドに名前を入力して Enter キーを押してください**
 
-ブラウザのURLに、クエリが[`URLSearchParams`][url-search-params]として含まれていることに注目してください。
+ブラウザの URL に、[`URLSearchParams`][url-search-params] としてクエリが含まれるようになったことに注目してください。
 
 ```
 http://localhost:5173/?q=ryan
 ```
 
-`<Form method="post">`ではないため、React Routerはブラウザをエミュレートし、リクエストボディではなく[`FormData`][form-data]を[`URLSearchParams`][url-search-params]にシリアライズします。
+`<Form method="post">` ではないため、React Router はブラウザをエミュレートし、リクエストボディの代わりに [`FormData`][form-data] を [`URLSearchParams`][url-search-params] にシリアライズします。
 
-`loader`関数は、`request`から検索パラメータにアクセスできます。リストのフィルタリングに使用してみましょう。
+`loader` 関数は、`request` から検索パラメータにアクセスできます。これを使用してリストをフィルタリングしてみましょう。
 
-👉 **`URLSearchParams`があればリストをフィルタリングする**
+👉 **`URLSearchParams` がある場合はリストをフィルタリングする**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[3-8]
 // 既存のインポートとエクスポート
@@ -1484,27 +1477,25 @@ export async function loader({
 // 既存のコード
 ```
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/19.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/19.webp" />
 
-これは`GET`であり`POST`ではないため、React Routerは`action`関数を呼び出しません。`GET` `form`を送信することは、リンクをクリックすることと同じです。URLのみが変更されます。
+これは `POST` ではなく `GET` であるため、React Router は `action` 関数を呼び出しません。`GET` `form` を送信することは、リンクをクリックすることと同じです。URL のみが変更されます。
 
-これはまた、通常のページナビゲーションであることを意味します。戻るボタンをクリックして、以前の位置に戻ることができます。
+これは通常のページナビゲーションでもあることを意味します。戻るボタンをクリックして、元の場所に戻ることができます。
 
+[url-search-params]: https://developer.mozilla.org/ja/docs/Web/API/URLSearchParams
+[form-data]: https://developer.mozilla.org/ja/docs/Web/API/FormData
 
-[url-search-params]: <URL_SEARCH_PARAMS_LINK>  // URLSearchParamsへのリンクをここに挿入してください
-[form-data]: <FORM_DATA_LINK>  // FormDataへのリンクをここに挿入してください
+## URLとフォームの状態の同期
 
+ここでは、すぐに対応できるUX上の問題がいくつかあります。
 
-## URLとフォーム状態の同期化
+1. 検索後に「戻る」をクリックすると、リストがフィルタリングされなくなったにもかかわらず、フォームフィールドには入力した値が残っています。
+2. 検索後にページをリロードすると、リストはフィルタリングされているにもかかわらず、フォームフィールドには値がなくなっています。
 
-いくつかのUX上の問題を迅速に解決しましょう。
+言い換えれば、URLと入力の状態が同期していないのです。
 
-1. 検索後、戻るボタンをクリックしても、リストはフィルタリングされなくなっているのに、フォームフィールドには入力した値が残っています。
-2. 検索後、ページを更新すると、リストはフィルタリングされているのに、フォームフィールドには値が入っていません。
-
-つまり、URLと入力の状態が同期していません。
-
-(2)を先に解決し、URLの値で入力を開始しましょう。
+まず(2)を解決し、URLの値で入力を開始しましょう。
 
 👉 **`loader`から`q`を返し、それを入力のデフォルト値として設定します**
 
@@ -1533,11 +1524,11 @@ export default function SidebarLayout({
         <div>
           <Form id="search-form" role="search">
             <input
-              aria-label="Search contacts"
+              aria-label="連絡先を検索"
               defaultValue={q || ""}
               id="q"
               name="q"
-              placeholder="Search"
+              placeholder="検索"
               type="search"
             />
             {/* 既存の要素 */}
@@ -1552,11 +1543,11 @@ export default function SidebarLayout({
 }
 ```
 
-これで、検索後にページを更新した場合、入力フィールドにクエリが表示されます。
+これで、検索後にページをリロードすると、入力フィールドにクエリが表示されるようになります。
 
-次に、問題(1)、戻るボタンをクリックして入力を更新する方法です。DOMの入力値を直接操作するために、Reactから`useEffect`を取り込みます。
+次に、(1)の問題、つまり「戻る」ボタンをクリックして入力を更新する問題です。Reactから`useEffect`を導入して、DOM内の入力値を直接操作することができます。
 
-👉 **`URLSearchParams`と入力値を同期します**
+👉 **入力値を`URLSearchParams`と同期させます**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[2,12-17]
 // 既存のインポート
@@ -1581,15 +1572,15 @@ export default function SidebarLayout({
 }
 ```
 
-> 🤔 コントロールされたコンポーネントとReactの状態を使うべきではないでしょうか？
+> 🤔 このために制御されたコンポーネントとReact Stateを使うべきではないでしょうか？
 
-コントロールされたコンポーネントとしてこれを行うこともできます。同期ポイントは増えますが、それはあなた次第です。
+確かに、これを制御されたコンポーネントとして行うこともできます。同期ポイントが増えますが、それはあなた次第です。
 
 <details>
 
-<summary>展開して、どのようなものになるかを確認する</summary>
+<summary>展開して、どのようなものかを確認してください</summary>
 
-```tsx filename=app/root.tsx lines=[2,11-12,14-18,30-33,36-37]
+```tsx filename=app/layouts/sidebar.tsx lines=[2,11-12,14-18,30-33,36-37]
 // 既存のインポート
 import { useEffect, useState } from "react";
 
@@ -1600,10 +1591,11 @@ export default function SidebarLayout({
 }: Route.ComponentProps) {
   const { contacts, q } = loaderData;
   const navigation = useNavigation();
-  // クエリは状態に保持する必要があります
+  // クエリは状態に保持する必要がある
   const [query, setQuery] = useState(q || "");
 
-  // 戻る/進むボタンをクリックしたときにクエリをコンポーネントの状態に同期するための`useEffect`は依然として存在します
+  // クエリを同期させるための`useEffect`はまだある
+  // 「戻る/進む」ボタンのクリック時にコンポーネントの状態に同期させる
   useEffect(() => {
     setQuery(q || "");
   }, [q]);
@@ -1615,16 +1607,16 @@ export default function SidebarLayout({
         <div>
           <Form id="search-form" role="search">
             <input
-              aria-label="Search contacts"
+              aria-label="連絡先を検索"
               id="q"
               name="q"
-              // ユーザーの入力をコンポーネントの状態に同期
+              // ユーザーの入力をコンポーネントの状態に同期させる
               onChange={(event) =>
                 setQuery(event.currentTarget.value)
               }
-              placeholder="Search"
+              placeholder="検索"
               type="search"
-              // `defaultValue`から`value`に変更
+              // `defaultValue`から`value`に切り替え
               value={query}
             />
             {/* 既存の要素 */}
@@ -1641,13 +1633,13 @@ export default function SidebarLayout({
 
 </details>
 
-これで、戻る/進む/更新ボタンをクリックしても、入力値はURLと結果と同期するはずです。
+これで、「戻る/進む/リロード」ボタンをクリックすると、入力値がURLと結果と同期するはずです。
 
-## `Form`の`onChange`の送信
+## `Form` の `onChange` を送信する
 
-ここで製品に関する決定を下す必要があります。ユーザーに`form`を送信して結果をフィルタリングさせたい場合と、ユーザーが入力する際にフィルタリングしたい場合があります。前者は既に実装しているので、後者の様子を見てみましょう。
+ここで製品に関する意思決定を行う必要があります。ユーザーに `form` を送信させて結果をフィルタリングしたい場合もあれば、ユーザーが入力するにつれてフィルタリングしたい場合もあります。最初のケースはすでに実装済みなので、2番目のケースがどのようなものか見てみましょう。
 
-`useNavigate`は既に見てきましたが、今回はその仲間である[`useSubmit`][use-submit]を使用します。
+`useNavigate` はすでに見てきたので、その仲間である [`useSubmit`][use-submit] を使用します。
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[7,16,27-29]
 import {
@@ -1693,22 +1685,19 @@ export default function SidebarLayout({
 }
 ```
 
-入力するたびに、`form`が自動的に送信されるようになりました！
+入力すると、`form` が自動的に送信されるようになりました。
 
-[`submit`][use-submit]への引数に注目してください。`submit`関数は、渡されたフォームをシリアライズして送信します。ここでは`event.currentTarget`を渡しています。`currentTarget`は、イベントがアタッチされたDOMノード（`form`）です。
-
-
-[use-submit]: <リンクをここに挿入>
+[`submit`][use-submit] への引数に注目してください。`submit` 関数は、渡されたフォームをシリアライズして送信します。ここでは `event.currentTarget` を渡しています。`currentTarget` は、イベントがアタッチされている DOM ノード（`form`）です。
 
 ## 検索スピナーの追加
 
-本番アプリでは、この検索は一度にすべてを送信してクライアント側でフィルタリングするには大きすぎるデータベース内のレコードを検索している可能性があります。そのため、このデモではネットワーク遅延を偽装しています。
+本番アプリでは、この検索は、一度にすべてを送信してクライアント側でフィルタリングするには大きすぎるデータベース内のレコードを検索する可能性が高くなります。そのため、このデモにはフェイクのネットワーク遅延が含まれています。
 
-ローディングインジケーターがないと、検索は少し遅く感じられます。データベースを高速化できたとしても、ユーザーのネットワーク遅延は常に存在し、制御できません。
+ローディングインジケーターがないと、検索が少し遅く感じられます。データベースを高速化できたとしても、常にユーザーのネットワーク遅延が邪魔になり、制御できません。
 
-より良いユーザーエクスペリエンスのために、検索に対する即時のUIフィードバックを追加しましょう。[`useNavigation`][use-navigation]を再び使用します。
+より良いユーザーエクスペリエンスのために、検索に対する即時のUIフィードバックを追加しましょう。ここでも[`useNavigation`][use-navigation]を使用します。
 
-👉 **検索中かどうかを知るための変数の追加**
+👉 **検索中かどうかを判断する変数を追加します**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[9-13]
 // 既存のインポートとエクスポート
@@ -1729,10 +1718,9 @@ export default function SidebarLayout({
 }
 ```
 
-何も起こっていない場合、`navigation.location`は`undefined`になりますが、ユーザーが移動すると、データの読み込み中に次の場所が設定されます。その後、`location.search`を使用して検索中かどうかを確認します。
+何も起こっていない場合、`navigation.location`は`undefined`になりますが、ユーザーがナビゲートすると、データがロードされている間、次のロケーションが設定されます。次に、`location.search`で検索しているかどうかを確認します。
 
-
-👉 **新しい`searching`状態を使用して検索フォーム要素にクラスを追加**
+👉 **新しい`searching`状態を使用して、検索フォーム要素にクラスを追加します**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[22,31]
 // 既存のインポートとエクスポート
@@ -1755,12 +1743,12 @@ export default function SidebarLayout({
             role="search"
           >
             <input
-              aria-label="Search contacts"
+              aria-label="連絡先を検索"
               className={searching ? "loading" : ""}
               defaultValue={q || ""}
               id="q"
               name="q"
-              placeholder="Search"
+              placeholder="検索"
               type="search"
             />
             <div
@@ -1779,7 +1767,7 @@ export default function SidebarLayout({
 }
 ```
 
-ボーナスポイントとして、検索時にメイン画面をフェードアウトしないようにします。
+ボーナスポイントとして、検索時にメイン画面がフェードアウトしないようにします。
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[13]
 // 既存のインポートとエクスポート
@@ -1810,17 +1798,17 @@ export default function SidebarLayout({
 
 これで、検索入力の左側に素敵なスピナーが表示されるはずです。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/20.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/20.webp" />
 
-## ヒストリスタックの管理
+## 履歴スタックの管理
 
-フォームはキーストロークごとに送信されるため、「alex」と入力してからバックスペースで削除すると、膨大なヒストリスタックが生成されます😂。これは明らかに避けなければなりません。
+フォームはキー入力ごとに送信されるため、「alex」と入力してバックスペースで削除すると、巨大な履歴スタックができてしまいます 😂。これは絶対に避けたいです。
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/21.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/21.webp" />
 
-ヒストリスタックにプッシュするのではなく、現在のエントリを次のページで*置き換える*ことで、これを回避できます。
+これを避けるには、履歴スタックにプッシュするのではなく、次のページで現在のエントリを*置き換える*ことで対応できます。
 
-👉 **`submit` で `replace` を使用**
+👉 **`submit` で `replace` を使用する**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[16-19]
 // 既存のインポートとエクスポート
@@ -1857,17 +1845,17 @@ export default function SidebarLayout({
 }
 ```
 
-これが最初の検索かどうかを簡単に確認した後、置き換えるかどうかを決定します。最初の検索では新しいエントリが追加されますが、それ以降のキーストロークでは現在のエントリが置き換えられます。検索を削除するために7回戻るボタンをクリックする代わりに、ユーザーは1回戻るボタンをクリックするだけで済みます。
+これが最初の検索かどうかを簡単に確認した後、置き換えるかどうかを決定します。これで、最初の検索は新しいエントリを追加しますが、それ以降のすべてのキー入力は現在のエントリを置き換えます。検索を削除するために7回戻るボタンをクリックする代わりに、ユーザーは1回だけ戻るボタンをクリックすればよくなります。
 
-## ナビゲーションのない`Form`
+## ナビゲーションなしの`Form`
 
-これまでのフォームはすべてURLを変更していました。これらのユーザーフローは一般的ですが、ナビゲーションを引き起こさずにフォームを送信したい場合も同様に一般的です。
+これまでのところ、すべてのフォームはURLを変更していました。これらのユーザーフローは一般的ですが、ナビゲーションを引き起こさずにフォームを送信したい場合も同様に一般的です。
 
-このような場合、[`useFetcher`][use-fetcher]を使用します。これにより、ナビゲーションを引き起こすことなく`action`と`loader`と通信できます。
+このような場合のために、[`useFetcher`][use-fetcher]があります。これにより、ナビゲーションを引き起こすことなく、`action`と`loader`と通信できます。
 
-連絡先ページの★ボタンはこれに適しています。新しいレコードを作成または削除するわけではなく、ページを変更する必要もありません。単に見ているページのデータを変更したいだけです。
+連絡先ページの★ボタンはこれに適しています。新しいレコードを作成または削除するわけではなく、ページを変更したくもありません。単に表示しているページのデータを変更したいだけです。
 
-👉 **`<Favorite>`フォームをfetcherフォームに変更する**
+👉 **`<Favorite>`フォームをフェッチャーフォームに変更する**
 
 ```tsx filename=app/routes/contact.tsx lines=[1,10,14,26]
 import { Form, useFetcher } from "react-router";
@@ -1887,8 +1875,8 @@ function Favorite({
       <button
         aria-label={
           favorite
-            ? "お気に入りを削除する"
-            : "お気に入りに追加する"
+            ? "お気に入りから削除"
+            : "お気に入りに追加"
         }
         name="favorite"
         value={favorite ? "false" : "true"}
@@ -1900,7 +1888,7 @@ function Favorite({
 }
 ```
 
-このフォームはもはやナビゲーションを引き起こさず、単に`action`にフェッチします。それについては…`action`を作成するまで動作しません。
+このフォームはナビゲーションを引き起こさなくなり、単に`action`をフェッチするだけになります。ところで...これは`action`を作成するまで機能しません。
 
 👉 **`action`を作成する**
 
@@ -1922,25 +1910,23 @@ export async function action({
 // 既存のコード
 ```
 
-さあ、ユーザーの名前の横にある星をクリックする準備ができました！
+さて、ユーザー名の横にある星をクリックする準備ができました！
 
-<img class="tutorial" src="/_docs/v7_address_book_tutorial/22.webp" />
+<img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/22.webp" />
 
-見てください、両方の星が自動的に更新されます。新しい`<fetcher.Form method="post">`は、これまで使用してきた`<Form>`とほぼ同じように機能します。アクションを呼び出し、その後すべてのデータが自動的に再検証されます—エラーも同様にキャッチされます。
+見てください、両方の星が自動的に更新されます。新しい`<fetcher.Form method="post">`は、これまで使用してきた`<Form>`とほぼ同じように機能します。アクションを呼び出し、すべてのデータが自動的に再検証されます。エラーも同じようにキャッチされます。
 
-ただし、重要な違いが1つあります。ナビゲーションではないため、URLは変更されず、履歴スタックは影響を受けません。
+ただし、1つ重要な違いがあります。ナビゲーションではないため、URLは変更されず、履歴スタックも影響を受けません。
 
+## オプティミスティック UI
 
+前のセクションで、お気に入りボタンをクリックしたときにアプリの反応が少し鈍く感じたかもしれません。現実世界で発生するであろうネットワーク遅延を再び追加しました。
 
-## 楽観的UI
+ユーザーに何らかのフィードバックを与えるために、以前の `navigation.state` とよく似た `fetcher.state` を使って、星をローディング状態にすることができますが、今回はさらに良い方法があります。「オプティミスティック UI」と呼ばれる戦略を使用できます。
 
-前のセクションのお気に入りボタンをクリックしたときに、アプリが反応しにくいと感じたかもしれません。もう一度、現実世界でも発生するネットワーク遅延を追加しました。
+fetcher は `action` に送信される [`FormData`][form-data] を認識しているため、`fetcher.formData` で利用できます。これを使用して、ネットワークが完了していなくても、星の状態をすぐに更新します。更新が最終的に失敗した場合、UI は実際のデータに戻ります。
 
-ユーザーにフィードバックを与えるために、`fetcher.state`（以前の`navigation.state`と非常によく似ています）を使用して星をローディング状態にすることもできますが、今回はさらに優れた方法があります。「楽観的UI」と呼ばれる戦略を使用できます。
-
-fetcherは`action`に送信される[`FormData`][form-data]を知っているので、`fetcher.formData`で利用できます。ネットワークが終了する前でも、星の状態をすぐに更新するためにそれを使用します。更新が最終的に失敗した場合、UIは実際のデータに戻ります。
-
-👉 **`fetcher.formData`から楽観的な値を読み取る**
+👉 **`fetcher.formData` からオプティミスティックな値を読み取る**
 
 ```tsx filename=app/routes/contact.tsx lines=[9-11]
 // 既存のコード
@@ -1973,11 +1959,11 @@ function Favorite({
 }
 ```
 
-これで、星はクリックするとすぐに新しい状態に*即座に*変わります。
+これで、星をクリックすると、*すぐに*新しい状態に変わります。
 
 ***
 
-以上です！React Routerを試していただきありがとうございます。このチュートリアルが、優れたユーザーエクスペリエンスを構築するための堅実なスタートになることを願っています。できることは他にもたくさんあるので、すべての[API][react-router-apis]を確認してください 😀
+以上です！React Router を試していただきありがとうございます。このチュートリアルが、優れたユーザーエクスペリエンスを構築するための確かなスタートとなることを願っています。他にもできることはたくさんあるので、必ずすべての [API][react-router-apis] を確認してください 😀
 
 [http-localhost-5173]: http://localhost:5173
 

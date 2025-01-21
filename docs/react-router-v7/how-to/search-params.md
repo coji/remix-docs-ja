@@ -1,5 +1,5 @@
 ---
-title: 検索パラメータの使用
+title: Using Search Params
 hidden: true
 ---
 
