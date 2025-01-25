@@ -11,7 +11,7 @@
     "format": "prettier --cache -c .",
     "test": "vitest run",
     "typecheck": "react-router typegen && tsc",
-    "validate": "run-s lint format typecheck build"
+    "validate": "run-s lint format typecheck"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "catalog:",
