@@ -23,7 +23,7 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
       <Button
         type="button"
         variant="ghost"
-        className="flex flex-1 justify-between whitespace-normal px-4 py-1 text-base text-muted-foreground transition-all hover:bg-muted [&[data-state=open]>svg]:rotate-180"
+        className="text-muted-foreground hover:bg-muted flex flex-1 justify-between px-4 py-1 text-base whitespace-normal transition-all [&[data-state=open]>svg]:rotate-180"
         data-state={isOpen ? 'open' : 'closed'}
         onClick={() => setIsOpen((prev) => !prev)}
       >
@@ -42,7 +42,7 @@ export const MobileMenu = ({ menu, currentMenuItem }: MobileMenuProps) => {
               >
                 <CollapsibleTrigger
                   className={cn(
-                    'w-full px-4 py-1 text-left text-base text-muted-foreground',
+                    'text-muted-foreground w-full px-4 py-1 text-left text-base',
                   )}
                 >
                   {category.attrs.title}

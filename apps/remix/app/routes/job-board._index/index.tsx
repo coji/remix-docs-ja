@@ -84,7 +84,7 @@ export default function JobBoardIndex({
                   <Badge key={tag}>{tag}</Badge>
                 ))}
               </div>
-              <ReactMarkdown className="prose max-w-none dark:prose-invert">
+              <ReactMarkdown className="prose dark:prose-invert max-w-none">
                 {job.description}
               </ReactMarkdown>
             </Stack>
@@ -95,7 +95,7 @@ export default function JobBoardIndex({
                 詳細を見る <ExternalLinkIcon size="16" className="ml-2" />
               </a>
             </Button>
-            <HStack className="text-xs text-muted-foreground">
+            <HStack className="text-muted-foreground text-xs">
               <div>掲載期間</div>
               <div>2024年7月~2024年12月</div>
             </HStack>

@@ -8,7 +8,7 @@ export const SearchTrigger = twc(({ className, ...rest }: ButtonProps) => {
     <Button
       variant="outline"
       className={cn(
-        'md:inline-flex md:w-48 md:gap-2 md:bg-muted md:px-3 md:text-muted-foreground',
+        'md:bg-muted md:text-muted-foreground md:inline-flex md:w-48 md:gap-2 md:px-3',
         className,
       )}
       size="icon"

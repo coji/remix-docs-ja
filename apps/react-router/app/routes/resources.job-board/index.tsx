@@ -51,15 +51,15 @@ export const JobBoard = ({ className }: JobBoardProps) => {
 
   return (
     <div
-      className={cn('rounded-md border-2 border-primary md:block', className)}
+      className={cn('border-primary rounded-md border-2 md:block', className)}
     >
-      <div className="rounded-md px-2 py-1 text-sm hover:bg-secondary">
+      <div className="hover:bg-secondary rounded-md px-2 py-1 text-sm">
         <Stack className="gap-1" asChild>
           <a href={job.href} target="_blank" rel="noreferrer">
             <HStack className="flex-wrap gap-0">
               <div className="font-bold">{job.title}</div>
               <div className="flex-1" />
-              <div className="break-all text-xs text-primary/50">
+              <div className="text-primary/50 text-xs break-all">
                 {job.company}
               </div>
             </HStack>

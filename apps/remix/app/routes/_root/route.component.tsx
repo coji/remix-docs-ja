@@ -19,10 +19,10 @@ export default function Layout({
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr_auto] overflow-hidden lg:container">
       {/* header */}
-      <header className="w-full bg-background text-foreground">
+      <header className="bg-background text-foreground w-full">
         <div className="flex items-center px-4 py-2">
           <div className="flex items-center gap-2">
-            <h1 className="break-keep text-xl font-bold">
+            <h1 className="text-xl font-bold break-keep">
               <Link to="/" prefetch="intent">
                 {product.title}
               </Link>
@@ -56,7 +56,7 @@ export default function Layout({
       </div>
 
       {/* footer */}
-      <footer className="flex border-t px-4 py-1 text-sm text-muted-foreground">
+      <footer className="text-muted-foreground flex border-t px-4 py-1 text-sm">
         <div className="flex-1">
           Docs and examples{' '}
           <a

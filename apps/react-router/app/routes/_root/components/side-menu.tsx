@@ -7,11 +7,11 @@ interface SideMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 export const SideMenu = ({ menu }: SideMenuProps) => {
   return (
-    <div className="mx-2 hidden flex-col gap-4 overflow-auto whitespace-normal break-words bg-background pb-8 text-sm text-muted-foreground md:flex">
+    <div className="bg-background text-muted-foreground mx-2 hidden flex-col gap-4 overflow-auto pb-8 text-sm break-words whitespace-normal md:flex">
       {menu.map((category) => {
         return (
           <SideMenuCategory key={category.slug}>
-            <SideMenuCategoryTitle className="rounded-md group-has-[.active]:bg-muted group-has-[.active]:font-bold">
+            <SideMenuCategoryTitle className="group-has-[.active]:bg-muted rounded-md group-has-[.active]:font-bold">
               {category.attrs.title}
             </SideMenuCategoryTitle>
 

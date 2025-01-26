@@ -20,7 +20,7 @@ export const MobileToc = ({ headings, className }: MobileTocProps) => {
       <Button
         type="button"
         variant="ghost"
-        className="flex h-auto w-full flex-1 justify-between whitespace-normal px-4 py-1 text-base text-muted-foreground transition-all hover:bg-muted [&[data-state=open]>svg]:rotate-180"
+        className="text-muted-foreground hover:bg-muted flex h-auto w-full flex-1 justify-between px-4 py-1 text-base whitespace-normal transition-all [&[data-state=open]>svg]:rotate-180"
         data-state={isOpen ? 'open' : 'closed'}
         onClick={() => setIsOpen((prev) => !prev)}
       >
