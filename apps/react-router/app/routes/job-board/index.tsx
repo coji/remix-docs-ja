@@ -3,7 +3,7 @@ import { Link, Outlet } from 'react-router'
 export default function JobBoardLayout() {
   return (
     <div className="grid min-h-dvh grid-cols-1 grid-rows-[auto_1fr_auto] gap-2 bg-slate-100 dark:bg-slate-900">
-      <header className="border-b bg-card">
+      <header className="bg-card border-b">
         <div className="flex items-center px-4 py-2 md:container">
           <h2 className="flex-1 text-xl font-bold">
             <Link to="/job-board">Remix のお仕事あります</Link>
@@ -21,7 +21,7 @@ export default function JobBoardLayout() {
         <Outlet />
       </main>
 
-      <footer className="border-t bg-card px-4 py-2 text-center">
+      <footer className="bg-card border-t px-4 py-2 text-center">
         Copyright &copy; {new Date().getFullYear()} TechTalk Inc.
       </footer>
     </div>

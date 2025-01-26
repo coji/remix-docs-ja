@@ -19,6 +19,7 @@ catalog:
   '@rehype-pretty/transformers': 0.13.2
   '@shikijs/transformers': 2.1.0
   '@tailwindcss/typography': 0.5.16
+  '@tailwindcss/vite': 4.0.0
   '@types/nprogress': 0.2.3
   '@types/react': 19.0.8
   '@types/react-dom': 19.0.3
@@ -37,7 +38,6 @@ catalog:
   npm-run-all: 4.1.5
   nprogress: 0.2.0
   pagefind: 1.3.0
-  postcss: 8.5.1
   prettier: 3.4.2
   prettier-plugin-organize-imports: 4.1.0
   prettier-plugin-tailwindcss: 0.6.11
@@ -59,7 +59,7 @@ catalog:
   remark-rehype: 11.1.1
   shiki: 2.1.0
   tailwind-merge: 2.6.0
-  tailwindcss: 3.4.17
+  tailwindcss: 4.0.0
   tailwindcss-animate: 1.0.7
   ts-pattern: 5.6.2
   tsx: 4.19.2
