@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "@rehype-pretty/transformers": "catalog:",
-    "@remix-docs-ja/base": "workspace:*",
     "@shikijs/transformers": "catalog:",
     "@vercel/og": "catalog:",
     "cheerio": "catalog:",

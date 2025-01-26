@@ -1,9 +1,9 @@
-import { getProductById } from '@remix-docs-ja/base/features/product'
 import { ImageResponse } from '@vercel/og'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import React from 'react'
 import { getDocJson } from './document'
+import { getProductById } from './product'
 
 const __filename = new URL(import.meta.url).pathname
 const __dirname = __filename.substring(0, __filename.lastIndexOf('/'))

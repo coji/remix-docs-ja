@@ -21,6 +21,9 @@ catalogs:
     '@radix-ui/react-avatar':
       specifier: 1.1.2
       version: 1.1.2
+    '@radix-ui/react-collapsible':
+      specifier: 1.1.2
+      version: 1.1.2
     '@radix-ui/react-dialog':
       specifier: 1.1.5
       version: 1.1.5
@@ -135,9 +138,6 @@ catalogs:
     react-twc:
       specifier: 1.4.2
       version: 1.4.2
-    rehype:
-      specifier: 13.0.2
-      version: 13.0.2
     rehype-autolink-headings:
       specifier: 7.1.0
       version: 7.1.0
@@ -168,9 +168,6 @@ catalogs:
     remark-rehype:
       specifier: 11.1.1
       version: 11.1.1
-    shiki:
-      specifier: 2.1.0
-      version: 2.1.0
     tailwind-merge:
       specifier: 2.6.0
       version: 2.6.0
@@ -235,6 +232,27 @@ importers:
 
   apps/react-router:
     dependencies:
+      '@radix-ui/react-accordion':
+        specifier: 'catalog:'
+        version: 1.2.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-avatar':
+        specifier: 'catalog:'
+        version: 1.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-collapsible':
+        specifier: 'catalog:'
+        version: 1.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-dialog':
+        specifier: 'catalog:'
+        version: 1.1.5(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-dropdown-menu':
+        specifier: 'catalog:'
+        version: 2.1.5(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-label':
+        specifier: 'catalog:'
+        version: 2.1.1(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-slot':
+        specifier: 'catalog:'
+        version: 1.1.1(@types/react@19.0.8)(react@19.0.0)
       '@react-router/fs-routes':
         specifier: 'catalog:'
         version: 7.1.3(@react-router/dev@7.1.3(@react-router/serve@7.1.3(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(@types/node@22.10.2)(jiti@1.21.7)(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(tsx@4.19.2)(typescript@5.7.3)(vite@6.0.11(@types/node@22.10.2)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))(wrangler@3.105.1(@cloudflare/workers-types@4.20250124.3))(yaml@2.7.0))(typescript@5.7.3)
@@ -244,24 +262,48 @@ importers:
       '@react-router/serve':
         specifier: 'catalog:'
         version: 7.1.3(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3)
-      '@remix-docs-ja/base':
-        specifier: workspace:*
-        version: link:../../packages/base
       '@remix-docs-ja/scripts':
         specifier: workspace:*
         version: link:../../packages/scripts
+      class-variance-authority:
+        specifier: 'catalog:'
+        version: 0.7.1
+      clsx:
+        specifier: 'catalog:'
+        version: 2.1.1
       isbot:
         specifier: 'catalog:'
         version: 5.1.21
+      lucide-react:
+        specifier: 'catalog:'
+        version: 0.474.0(react@19.0.0)
+      next-themes:
+        specifier: 'catalog:'
+        version: 0.4.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      nprogress:
+        specifier: 'catalog:'
+        version: 0.2.0
       react:
         specifier: 'catalog:'
         version: 19.0.0
       react-dom:
         specifier: 'catalog:'
         version: 19.0.0(react@19.0.0)
+      react-markdown:
+        specifier: 'catalog:'
+        version: 9.0.3(@types/react@19.0.8)(react@19.0.0)
       react-router:
         specifier: 'catalog:'
         version: 7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react-twc:
+        specifier: 'catalog:'
+        version: 1.4.2(@types/react@19.0.8)(react@19.0.0)
+      tailwind-merge:
+        specifier: 'catalog:'
+        version: 2.6.0
+      ts-pattern:
+        specifier: 'catalog:'
+        version: 5.6.2
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
@@ -278,6 +320,9 @@ importers:
       '@tailwindcss/typography':
         specifier: 'catalog:'
         version: 0.5.16(tailwindcss@3.4.17)
+      '@types/nprogress':
+        specifier: 'catalog:'
+        version: 0.2.3
       '@types/react':
         specifier: 'catalog:'
         version: 19.0.8
@@ -332,6 +377,27 @@ importers:
 
   apps/remix:
     dependencies:
+      '@radix-ui/react-accordion':
+        specifier: 'catalog:'
+        version: 1.2.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-avatar':
+        specifier: 'catalog:'
+        version: 1.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-collapsible':
+        specifier: 'catalog:'
+        version: 1.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-dialog':
+        specifier: 'catalog:'
+        version: 1.1.5(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-dropdown-menu':
+        specifier: 'catalog:'
+        version: 2.1.5(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-label':
+        specifier: 'catalog:'
+        version: 2.1.1(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@radix-ui/react-slot':
+        specifier: 'catalog:'
+        version: 1.1.1(@types/react@19.0.8)(react@19.0.0)
       '@react-router/fs-routes':
         specifier: 'catalog:'
         version: 7.1.3(@react-router/dev@7.1.3(@react-router/serve@7.1.3(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(@types/node@22.10.2)(jiti@1.21.7)(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(tsx@4.19.2)(typescript@5.7.3)(vite@6.0.11(@types/node@22.10.2)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))(wrangler@3.105.1(@cloudflare/workers-types@4.20250124.3))(yaml@2.7.0))(typescript@5.7.3)
@@ -341,24 +407,48 @@ importers:
       '@react-router/serve':
         specifier: 'catalog:'
         version: 7.1.3(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3)
-      '@remix-docs-ja/base':
-        specifier: workspace:*
-        version: link:../../packages/base
       '@remix-docs-ja/scripts':
         specifier: workspace:*
         version: link:../../packages/scripts
+      class-variance-authority:
+        specifier: 'catalog:'
+        version: 0.7.1
+      clsx:
+        specifier: 'catalog:'
+        version: 2.1.1
       isbot:
         specifier: 'catalog:'
         version: 5.1.21
+      lucide-react:
+        specifier: 'catalog:'
+        version: 0.474.0(react@19.0.0)
+      next-themes:
+        specifier: 'catalog:'
+        version: 0.4.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      nprogress:
+        specifier: 'catalog:'
+        version: 0.2.0
       react:
         specifier: 'catalog:'
         version: 19.0.0
       react-dom:
         specifier: 'catalog:'
         version: 19.0.0(react@19.0.0)
+      react-markdown:
+        specifier: 'catalog:'
+        version: 9.0.3(@types/react@19.0.8)(react@19.0.0)
       react-router:
         specifier: 'catalog:'
         version: 7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react-twc:
+        specifier: 'catalog:'
+        version: 1.4.2(@types/react@19.0.8)(react@19.0.0)
+      tailwind-merge:
+        specifier: 'catalog:'
+        version: 2.6.0
+      ts-pattern:
+        specifier: 'catalog:'
+        version: 5.6.2
     devDependencies:
       '@biomejs/biome':
         specifier: 'catalog:'
@@ -375,6 +465,9 @@ importers:
       '@tailwindcss/typography':
         specifier: 'catalog:'
         version: 0.5.16(tailwindcss@3.4.17)
+      '@types/nprogress':
+        specifier: 'catalog:'
+        version: 0.2.3
       '@types/react':
         specifier: 'catalog:'
         version: 19.0.8
@@ -427,216 +520,11 @@ importers:
         specifier: 'catalog:'
         version: 3.105.1(@cloudflare/workers-types@4.20250124.3)
 
-  packages/base:
-    dependencies:
-      '@radix-ui/react-accordion':
-        specifier: 'catalog:'
-        version: 1.2.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@radix-ui/react-avatar':
-        specifier: 'catalog:'
-        version: 1.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@radix-ui/react-collapsible':
-        specifier: 1.1.2
-        version: 1.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@radix-ui/react-dialog':
-        specifier: 'catalog:'
-        version: 1.1.5(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@radix-ui/react-dropdown-menu':
-        specifier: 'catalog:'
-        version: 2.1.5(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@radix-ui/react-label':
-        specifier: 'catalog:'
-        version: 2.1.1(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@radix-ui/react-slot':
-        specifier: 'catalog:'
-        version: 1.1.1(@types/react@19.0.8)(react@19.0.0)
-      '@react-router/fs-routes':
-        specifier: 'catalog:'
-        version: 7.1.3(@react-router/dev@7.1.3(@react-router/serve@7.1.3(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(@types/node@22.10.2)(jiti@1.21.7)(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(tsx@4.19.2)(typescript@5.7.3)(vite@6.0.11(@types/node@22.10.2)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))(wrangler@3.105.1(@cloudflare/workers-types@4.20250124.3))(yaml@2.7.0))(typescript@5.7.3)
-      '@react-router/node':
-        specifier: 'catalog:'
-        version: 7.1.3(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3)
-      '@react-router/serve':
-        specifier: 'catalog:'
-        version: 7.1.3(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3)
-      class-variance-authority:
-        specifier: 'catalog:'
-        version: 0.7.1
-      clsx:
-        specifier: 'catalog:'
-        version: 2.1.1
-      isbot:
-        specifier: 'catalog:'
-        version: 5.1.21
-      lucide-react:
-        specifier: 'catalog:'
-        version: 0.474.0(react@19.0.0)
-      next-themes:
-        specifier: 'catalog:'
-        version: 0.4.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      nprogress:
-        specifier: 'catalog:'
-        version: 0.2.0
-      react:
-        specifier: 'catalog:'
-        version: 19.0.0
-      react-dom:
-        specifier: 'catalog:'
-        version: 19.0.0(react@19.0.0)
-      react-markdown:
-        specifier: 'catalog:'
-        version: 9.0.3(@types/react@19.0.8)(react@19.0.0)
-      react-router:
-        specifier: 'catalog:'
-        version: 7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      react-twc:
-        specifier: 'catalog:'
-        version: 1.4.2(@types/react@19.0.8)(react@19.0.0)
-      tailwind-merge:
-        specifier: 'catalog:'
-        version: 2.6.0
-      ts-pattern:
-        specifier: 'catalog:'
-        version: 5.6.2
-    devDependencies:
-      '@biomejs/biome':
-        specifier: 'catalog:'
-        version: 1.9.4
-      '@mdx-js/rollup':
-        specifier: 'catalog:'
-        version: 3.1.0(acorn@8.14.0)(rollup@4.29.1)
-      '@react-router/dev':
-        specifier: 'catalog:'
-        version: 7.1.3(@react-router/serve@7.1.3(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3))(@types/node@22.10.2)(jiti@1.21.7)(react-router@7.1.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(tsx@4.19.2)(typescript@5.7.3)(vite@6.0.11(@types/node@22.10.2)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))(wrangler@3.105.1(@cloudflare/workers-types@4.20250124.3))(yaml@2.7.0)
-      '@rehype-pretty/transformers':
-        specifier: 'catalog:'
-        version: 0.13.2
-      '@shikijs/transformers':
-        specifier: 'catalog:'
-        version: 2.1.0
-      '@tailwindcss/typography':
-        specifier: 'catalog:'
-        version: 0.5.16(tailwindcss@3.4.17)
-      '@types/nprogress':
-        specifier: 'catalog:'
-        version: 0.2.3
-      '@types/react':
-        specifier: 'catalog:'
-        version: 19.0.8
-      '@types/react-dom':
-        specifier: 'catalog:'
-        version: 19.0.3(@types/react@19.0.8)
-      '@types/unist':
-        specifier: 'catalog:'
-        version: 3.0.3
-      '@vercel/og':
-        specifier: 'catalog:'
-        version: 0.6.5
-      autoprefixer:
-        specifier: 'catalog:'
-        version: 10.4.20(postcss@8.5.1)
-      cheerio:
-        specifier: 'catalog:'
-        version: 1.0.0
-      fast-glob:
-        specifier: 'catalog:'
-        version: 3.3.3
-      front-matter:
-        specifier: 'catalog:'
-        version: 4.0.2
-      gray-matter:
-        specifier: 'catalog:'
-        version: 4.0.3
-      npm-run-all:
-        specifier: 'catalog:'
-        version: 4.1.5
-      pagefind:
-        specifier: 'catalog:'
-        version: 1.3.0
-      postcss:
-        specifier: 'catalog:'
-        version: 8.5.1
-      prettier:
-        specifier: 'catalog:'
-        version: 3.4.2
-      prettier-plugin-organize-imports:
-        specifier: 'catalog:'
-        version: 4.1.0(prettier@3.4.2)(typescript@5.7.3)
-      prettier-plugin-tailwindcss:
-        specifier: 'catalog:'
-        version: 0.6.11(prettier-plugin-organize-imports@4.1.0(prettier@3.4.2)(typescript@5.7.3))(prettier@3.4.2)
-      rehype:
-        specifier: 'catalog:'
-        version: 13.0.2
-      rehype-autolink-headings:
-        specifier: 'catalog:'
-        version: 7.1.0
-      rehype-pretty-code:
-        specifier: 'catalog:'
-        version: 0.14.0(patch_hash=mxgmv5fs75o2zpzq6vnwybdxye)(shiki@2.1.0)
-      rehype-raw:
-        specifier: 'catalog:'
-        version: 7.0.0
-      rehype-slug:
-        specifier: 'catalog:'
-        version: 6.0.0
-      rehype-stringify:
-        specifier: 'catalog:'
-        version: 10.0.1
-      remark-frontmatter:
-        specifier: 'catalog:'
-        version: 5.0.0
-      remark-gfm:
-        specifier: 'catalog:'
-        version: 4.0.0
-      remark-mdx-frontmatter:
-        specifier: 'catalog:'
-        version: 5.0.0
-      remark-parse:
-        specifier: 'catalog:'
-        version: 11.0.0
-      remark-rehype:
-        specifier: 'catalog:'
-        version: 11.1.1
-      shiki:
-        specifier: 'catalog:'
-        version: 2.1.0
-      tailwindcss:
-        specifier: 'catalog:'
-        version: 3.4.17
-      tailwindcss-animate:
-        specifier: 'catalog:'
-        version: 1.0.7(tailwindcss@3.4.17)
-      tsx:
-        specifier: 'catalog:'
-        version: 4.19.2
-      typescript:
-        specifier: 'catalog:'
-        version: 5.7.3
-      unified:
-        specifier: 'catalog:'
-        version: 11.0.5
-      unist-util-visit:
-        specifier: 'catalog:'
-        version: 5.0.0
-      vite:
-        specifier: 'catalog:'
-        version: 6.0.11(@types/node@22.10.2)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 5.1.4(typescript@5.7.3)(vite@6.0.11(@types/node@22.10.2)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0))
-      vitest:
-        specifier: 'catalog:'
-        version: 3.0.4(@types/debug@4.1.12)(@types/node@22.10.2)(jiti@1.21.7)(tsx@4.19.2)(yaml@2.7.0)
-
   packages/scripts:
     dependencies:
       '@rehype-pretty/transformers':
         specifier: 'catalog:'
         version: 0.13.2
-      '@remix-docs-ja/base':
-        specifier: workspace:*
-        version: link:../base
       '@shikijs/transformers':
         specifier: 'catalog:'
         version: 2.1.0
@@ -4018,9 +3906,6 @@ packages:
 
   rehype-stringify@10.0.1:
     resolution: {integrity: sha512-k9ecfXHmIPuFVI61B9DeLPN0qFHfawM6RsuX48hoqlaKSF61RskNjSm1lI8PhBEM0MRdLxVVm4WmTqJQccH9mA==}
-
-  rehype@13.0.2:
-    resolution: {integrity: sha512-j31mdaRFrwFRUIlxGeuPXXKWQxet52RBQRvCmzl5eCefn/KGbomK5GMHNMsOJf55fgo3qw5tST5neDuarDYR2A==}
 
   remark-frontmatter@5.0.0:
     resolution: {integrity: sha512-XTFYvNASMe5iPN0719nPrdItC9aU0ssC4v14mH1BCi1u0n1gAocqcujWUrByftZTbLhRtiKRyjYTSIOcr69UVQ==}
@@ -8465,13 +8350,6 @@ snapshots:
     dependencies:
       '@types/hast': 3.0.4
       hast-util-to-html: 9.0.3
-      unified: 11.0.5
-
-  rehype@13.0.2:
-    dependencies:
-      '@types/hast': 3.0.4
-      rehype-parse: 9.0.1
-      rehype-stringify: 10.0.1
       unified: 11.0.5
 
   remark-frontmatter@5.0.0:

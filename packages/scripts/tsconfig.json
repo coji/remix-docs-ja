@@ -15,8 +15,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "~/*": ["./src/*"],
-      "@remix-docs-ja/base/*": ["../base/app/*"]
+      "~/*": ["./src/*"]
     },
 
     // Vite takes care of building everything, not tsc.
