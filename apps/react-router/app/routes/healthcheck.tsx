@@ -1,1 +1,5 @@
-export { loader } from '@remix-docs-ja/base/routes/healthcheck'
+import type { Route } from './+types/healthcheck'
+
+export const loader = ({ request }: Route.LoaderArgs) => {
+  return new Response('OK')
+}

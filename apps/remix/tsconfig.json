@@ -24,7 +24,6 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "~/*": ["./app/*"],
-      "@remix-docs-ja/base/*": ["../../packages/base/app/*"],
       "@remix-docs-ja/scripts/*": ["../../packages/scripts/src/*"]
     },
 
