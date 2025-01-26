@@ -1,10 +1,8 @@
 import { useEffect, useRef } from 'react'
-import type { LinksFunction } from 'react-router'
 import { useLocation } from 'react-router'
 import { Stack } from '~/components/ui'
 import { buildPageMeta } from '~/libs/seo'
 import { cn } from '~/libs/utils'
-import markdownStyles from '~/styles/md.css?url'
 import type { Route } from './+types'
 import { MobileToc } from './components/mobile-toc'
 import {
@@ -24,10 +22,6 @@ export const meta = ({ location, data }: Route.MetaArgs) => {
     productId: data.product.id,
   })
 }
-
-export const links: LinksFunction = () => [
-  { rel: 'stylesheet', href: markdownStyles },
-]
 
 export default function Docs({ loaderData: { doc } }: Route.ComponentProps) {
   const { hash, pathname } = useLocation()
@@ -54,7 +48,7 @@ export default function Docs({ loaderData: { doc } }: Route.ComponentProps) {
       <div
         ref={mainRef}
         className={cn(
-          'md-prose prose order-2 overflow-auto scroll-smooth px-4 pb-32 pt-8 dark:prose-invert md:order-1 md:pt-2',
+          'md-prose prose dark:prose-invert order-2 overflow-auto scroll-smooth px-4 pt-8 pb-32 md:order-1 md:pt-2',
           'max-w-none',
         )}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>

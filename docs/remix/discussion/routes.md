@@ -13,7 +13,7 @@ Remix のルーティングシステムの基本的な概念の1つは、Ember.j
 
 ネストされたルーティングの特徴は、ネストされたルートツリー内の複数のルートが単一の URL に一致できることです。この粒度により、各ルートが特定の URL セグメントと関連する UI のスライスに主に焦点を当てることが保証されます。このアプローチは、モジュール性と関心の分離の原則を支持し、各ルートがそのコアな責任に焦点を当て続けることを保証します。
 
-<iframe src="/_docs/routing" class="w-full aspect-[1/1] rounded-lg overflow-hidden pb-4"></iframe>
+<iframe src="/_docs/routing" class="w-full aspect-1/1 rounded-lg overflow-hidden pb-4"></iframe>
 
 ## 並列ロード
 
