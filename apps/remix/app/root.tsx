@@ -1,5 +1,4 @@
 import { getProductById } from '@remix-docs-ja/scripts/services/product'
-import type { LinksFunction } from 'react-router'
 import {
   data,
   Links,
@@ -12,7 +11,7 @@ import type { Route } from './+types/root'
 import { PageLoadingProgress } from './components/page-loading-progress'
 import { ThemeProvider } from './components/theme-provider'
 import { buildPageMeta } from './libs/seo'
-import globalStyles from './styles/globals.css?url'
+import './styles/globals.css'
 
 export const meta = ({ data }: Route.MetaArgs) => {
   return buildPageMeta({
@@ -29,10 +28,6 @@ export const loader = ({ request }: Route.LoaderArgs) => {
   }
   return { product }
 }
-
-export const links: LinksFunction = () => [
-  { rel: 'stylesheet', href: globalStyles },
-]
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
