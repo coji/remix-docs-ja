@@ -47,7 +47,7 @@ export async function loader({ params }: LoaderArgs) {
 
 ### 2. `headers` エクスポートから返す
 
-ローダーとアクションからのヘッダーは隠された方法では送信されません。`headers` エクスポートから返す必要があります。
+ローダーとアクションからのヘッダーは自動的に送信されません。`headers` エクスポートから明示的に返す必要があります。
 
 ```tsx
 export function headers({
@@ -58,11 +58,11 @@ export function headers({
 }
 ```
 
-注目すべき例外の1つは `Set-Cookie` ヘッダーです。これは、子ルートから `headers` をエクスポートしなくても、親ルートの `headers`、`loader`、および `action` から自動的に保持されます。
+注目すべき例外は `Set-Cookie` ヘッダーで、これは子ルートから `headers` をエクスポートしなくても、親ルートの `headers`、`loader`、および `action` から自動的に保持されます。
 
 ## 親ヘッダーとのマージ
 
-次のネストされたルートを考えてみましょう。
+次のネストされたルートを検討してください。
 
 ```ts filename=routes.ts
 route("pages", "pages-layout-with-nav.tsx", [
@@ -76,7 +76,7 @@ route("pages", "pages-layout-with-nav.tsx", [
 
 ### 追加
 
-最も簡単な方法は、親ヘッダーに単純に追加することです。これにより、親が設定した可能性のあるヘッダーを上書きすることを回避し、両方が重要になります。
+最も簡単な方法は、親ヘッダーに追加することです。これにより、親が設定した可能性のあるヘッダーを上書きすることを回避し、両方が重要になります。
 
 ```tsx
 export function headers({ parentHeaders }: HeadersArgs) {
@@ -89,7 +89,7 @@ export function headers({ parentHeaders }: HeadersArgs) {
 
 ### 設定
 
-親ヘッダーを上書きすることが重要な場合があります。`append` の代わりに `set` を使用してこれを行います。
+親ヘッダーを上書きすることが重要な場合があります。`append` の代わりに `set` でこれを行います。
 
 ```tsx
 export function headers({ parentHeaders }: HeadersArgs) {
@@ -133,4 +133,3 @@ export default function handleRequest(
 ```shellscript nonumber
 react-router reveal
 ```
-

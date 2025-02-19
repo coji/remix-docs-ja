@@ -5,13 +5,13 @@ order: 6
 
 # アクション
 
-データの変更は、ルートアクションを通じて行われます。アクションが完了すると、ページ上のすべてのローダーデータが再検証され、UIを同期させるためのコードを記述することなく、データとUIが同期されます。
+データの変更は、ルートアクションを通じて行われます。アクションが完了すると、ページ上のすべてのローダーデータが再検証され、UIを最新の状態に保つためにコードを書く必要はありません。
 
 `action` で定義されたルートアクションはサーバーでのみ呼び出され、`clientAction` で定義されたアクションはブラウザで実行されます。
 
 ## クライアントアクション
 
-クライアントアクションはブラウザでのみ実行され、両方が定義されている場合はサーバーアクションよりも優先されます。
+クライアントアクションはブラウザでのみ実行され、サーバーアクションと両方が定義されている場合は、サーバーアクションよりも優先されます。
 
 ```tsx filename=app/project.tsx
 // route('/projects/:projectId', './project.tsx')
@@ -23,7 +23,7 @@ export async function clientAction({
   request,
 }: Route.ClientActionArgs) {
   let formData = await request.formData();
-  let title = await formData.get("title");
+  let title = formData.get("title");
   let project = await someApi.updateProject({ title });
   return project;
 }
@@ -60,7 +60,7 @@ export async function action({
   request,
 }: Route.ActionArgs) {
   let formData = await request.formData();
-  let title = await formData.get("title");
+  let title = formData.get("title");
   let project = await fakeDb.updateProject({ title });
   return project;
 }
@@ -85,7 +85,7 @@ export default function Project({
 
 ## アクションの呼び出し
 
-アクションは、`<Form>` を介して宣言的に、および `useSubmit` (または `<fetcher.Form>` および `fetcher.submit`) を介して命令的に、ルートのパスと "post" メソッドを参照して呼び出されます。
+アクションは、ルートのパスと "post" メソッドを参照することにより、`<Form>` を通じて宣言的に、また `useSubmit` (または `<fetcher.Form>` と `fetcher.submit`) を通じて命令的に呼び出されます。
 
 ### Form を使用したアクションの呼び出し
 
@@ -102,7 +102,7 @@ function SomeComponent() {
 }
 ```
 
-これにより、ナビゲーションが発生し、ブラウザの履歴に新しいエントリが追加されます。
+これによりナビゲーションが発生し、ブラウザの履歴に新しいエントリが追加されます。
 
 ### useSubmit を使用したアクションの呼び出し
 
@@ -128,11 +128,11 @@ function useQuizTimer() {
 }
 ```
 
-これにより、ナビゲーションが発生し、ブラウザの履歴に新しいエントリが追加されます。
+これによりナビゲーションが発生し、ブラウザの履歴に新しいエントリが追加されます。
 
 ### fetcher を使用したアクションの呼び出し
 
-Fetcher を使用すると、ナビゲーションを引き起こすことなく (ブラウザの履歴に新しいエントリを追加することなく)、アクション (およびローダー) にデータを送信できます。
+Fetcher を使用すると、ナビゲーションを引き起こすことなく (ブラウザの履歴に新しいエントリを追加せずに)、アクション (およびローダー) にデータを送信できます。
 
 ```tsx
 import { useFetcher } from "react-router";
