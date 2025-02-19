@@ -1,6 +1,6 @@
+import type { ProductId } from '@remix-docs-ja/scripts/services/product' // Adjust the import path as needed
 import { describe, expect, it } from 'vitest'
 import { getDomain } from './get-domain'
-import type { ProductId } from './products' // Adjust the import path as needed
 
 describe('getDomain', () => {
   const testCases: Array<{

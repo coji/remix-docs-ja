@@ -13,7 +13,6 @@
     "typecheck": "turbo typecheck",
     "validate": "turbo validate"
   },
-  "dependencies": {},
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "npm-run-all": "catalog:",
@@ -26,7 +25,11 @@
   "pnpm": {
     "patchedDependencies": {
       "rehype-pretty-code": "patches/rehype-pretty-code.patch"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "sharp",
+      "workerd"
+    ]
   },
-  "packageManager": "pnpm@9.14.1"
+  "packageManager": "pnpm@10.4.1"
 }
