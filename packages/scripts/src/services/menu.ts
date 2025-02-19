@@ -1,8 +1,23 @@
-import type { MenuDoc } from '@remix-docs-ja/base/services/menu.server'
 import fg from 'fast-glob'
 import parseYamlHeader from 'gray-matter'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+
+export interface MenuDocAttributes {
+  title: string
+  order?: number
+  new?: boolean
+  [key: string]: unknown
+}
+
+export interface MenuDoc {
+  attrs: MenuDocAttributes
+  parentSlug?: string
+  children: MenuDoc[]
+  filename: string
+  hasContent: boolean
+  slug: string
+}
 
 const makeSlug = (filepath: string) => {
   const regexp = /^(.+\/)?docs/
