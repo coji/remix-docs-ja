@@ -5,7 +5,7 @@ order: 5
 
 # データローディング
 
-データは、`loader` および `clientLoader` からルートコンポーネントに提供されます。
+データは、`loader` と `clientLoader` からルートコンポーネントに提供されます。
 
 ローダーデータは、ローダーから自動的にシリアライズされ、コンポーネントでデシリアライズされます。文字列や数値のようなプリミティブ値に加えて、ローダーは Promise、Map、Set、Date などを返すことができます。
 
@@ -47,7 +47,7 @@ export default function Product({
 
 ## サーバーデータローディング
 
-サーバーレンダリングの場合、`loader` は初期ページロードとクライアントナビゲーションの両方に使用されます。クライアントナビゲーションは、ブラウザからサーバーへの React Router による自動 `fetch` を介してローダーを呼び出します。
+サーバーレンダリングの場合、`loader` は初期ページロードとクライアントナビゲーションの両方に使用されます。クライアントナビゲーションは、ブラウザからサーバーへの React Router による自動 `fetch` を通じてローダーを呼び出します。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
@@ -72,11 +72,11 @@ export default function Product({
 }
 ```
 
-`loader` 関数はクライアントバンドルから削除されるため、ブラウザに含まれることを心配せずにサーバー専用の API を使用できることに注意してください。
+`loader` 関数はクライアントバンドルから削除されるため、ブラウザに含まれることを心配せずにサーバー専用の API を使用できます。
 
 ## 静的データローディング
 
-プリレンダリングの場合、ローダーは本番ビルド中にデータをフェッチするために使用されます。
+プリレンダリングの場合、ローダーはプロダクションビルド中にデータをフェッチするために使用されます。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
@@ -115,11 +115,11 @@ export default {
 } satisfies Config;
 ```
 
-サーバーレンダリングの場合、プリレンダリングされていない URL は通常どおりサーバーレンダリングされるため、単一のルートで一部のデータをプリレンダリングしながら、残りをサーバーレンダリングできることに注意してください。
+サーバーレンダリングの場合、プリレンダリングされていない URL は通常どおりサーバーレンダリングされるため、単一のルートで一部のデータをプリレンダリングしながら、残りをサーバーレンダリングできます。
 
 ## 両方のローダーの使用
 
-`loader` と `clientLoader` は一緒に使用できます。`loader` は、初期 SSR (またはプリレンダリング) のためにサーバーで使用され、`clientLoader` は後続のクライアント側のナビゲーションで使用されます。
+`loader` と `clientLoader` は一緒に使用できます。`loader` は、初期 SSR (またはプリレンダリング) のためにサーバーで使用され、`clientLoader` は、後続のクライアント側のナビゲーションで使用されます。
 
 ```tsx filename=app/product.tsx
 // route("products/:pid", "./product.tsx");
@@ -135,6 +135,7 @@ export async function clientLoader({
   params,
 }: Route.ClientLoaderArgs) {
   const res = await fetch(`/api/products/${params.pid}`);
+  const serverData = await serverLoader();
   return { ...serverData, ...res.json() };
 }
 
@@ -152,7 +153,7 @@ export default function Product({
 }
 ```
 
-また、関数の `hydrate` プロパティを設定することで、ハイドレーション中およびページがレンダリングされる前にクライアントローダーを強制的に実行することもできます。この状況では、クライアントローダーの実行中にフォールバック UI を表示するために `HydrateFallback` コンポーネントをレンダリングする必要があります。
+関数の `hydrate` プロパティを設定して、ハイドレーション中およびページがレンダリングされる前にクライアントローダーを強制的に実行することもできます。この状況では、クライアントローダーの実行中にフォールバック UI を表示するために `HydrateFallback` コンポーネントをレンダリングする必要があります。
 
 ```tsx filename=app/product.tsx
 export async function loader() {
@@ -163,7 +164,7 @@ export async function clientLoader() {
   /* ... */
 }
 
-// ハイドレーション中にクライアントローダーを強制的に実行する
+// ハイドレーション中にクライアントローダーを強制的に実行します
 clientLoader.hydrate = true as const; // 型推論のための `as const`
 
 export function HydrateFallback() {
@@ -179,11 +180,11 @@ export default function Product() {
 
 次: [アクション](./actions)
 
-こちらも参照してください:
+参照:
 
 - [Suspense を使用したストリーミング](../../how-to/suspense)
 - [クライアントデータ](../../how-to/client-data)
-- [フェッチャーの使用](../../how-to/fetchers#loading-data)
+- [Fetcher の使用](../../how-to/fetchers#loading-data)
 
 [advanced_data_fetching]: ../tutorials/advanced-data-fetching
 [data]: ../../api/react-router/data

@@ -4,36 +4,45 @@ title: プリレンダリング
 
 # プリレンダリング
 
-プリレンダリングを使用すると、静的コンテンツのページ読み込みを高速化するために、サーバーではなくビルド時にページをレンダリングできます。
+プリレンダリングを使用すると、ページをランタイムではなくビルド時にレンダリングすることで、静的コンテンツのページロードを高速化できます。プリレンダリングは、`react-router.config.ts` の `prerender` 設定で有効になり、`ssr` 設定値に基づいて次の 2 つの方法で使用できます。
 
-## 設定
+- ランタイム SSR サーバーと組み合わせて `ssr:true` (デフォルト値)
+- 静的ファイルサーバーにデプロイして `ssr:false`
 
-`prerender` オプションを構成に追加します。3つのシグネチャがあります。
+## `ssr:true` でのプリレンダリング
 
-```ts filename=react-router.config.ts
+### 設定
+
+`prerender` オプションを構成に追加します。3 つのシグネチャがあります。
+
+```ts filename=react-router.config.ts lines=[7-8,10-11,13-21]
 import type { Config } from "@react-router/dev/config";
 
 export default {
-  // すべての静的ルートパス
-  // (「/post/:slug」のような動的セグメントはなし)
+  // 省略可能 - デフォルトは true
+  ssr: true,
+
+  // すべての静的パス ( "/post/:slug" のような動的セグメントなし)
   prerender: true,
 
-  // 任意のURL
+  // 特定のパス
   prerender: ["/", "/blog", "/blog/popular-post"],
 
-  // CMSのような依存関係のための非同期関数
+  // CMS のような依存関係のための非同期関数
   async prerender({ getStaticPaths }) {
     let posts = await fakeGetPostsFromCMS();
-    return ["/", "/blog"].concat(
-      posts.map((post) => post.href)
-    );
+    return [
+      "/",
+      "/blog",
+      ...posts.map((post) => post.href),
+    ];
   },
 } satisfies Config;
 ```
 
-## データローディングとプリレンダリング
+### データローディングとプリレンダリング
 
-プリレンダリングのための特別なアプリケーションAPIはありません。プリレンダリングは、サーバーレンダリングと同じルートローダーを使用します。
+プリレンダリングのための特別なアプリケーション API はありません。プリレンダリングされるルートは、サーバーレンダリングと同じルート `loader` 関数を使用します。
 
 ```tsx
 export async function loader({ request, params }) {
@@ -46,16 +55,16 @@ export function Post({ loaderData }) {
 }
 ```
 
-デプロイされたサーバーへのリクエストの代わりに、ビルドは `new Request()` を作成し、サーバーと同じようにアプリを通じて実行します。
+デプロイされたサーバー上のルートへのリクエストの代わりに、ビルドは `new Request()` を作成し、サーバーと同じようにアプリを通して実行します。
 
 サーバーレンダリングの場合、プリレンダリングされていないパスへのリクエストは、通常どおりサーバーレンダリングされます。
 
-## 静的ファイル出力
+### 静的ファイル出力
 
-レンダリングされた結果は、`build/client` ディレクトリに書き込まれます。各パスに対して2つのファイルがあることに気づくでしょう。
+レンダリングされた結果は、`build/client` ディレクトリに書き出されます。各パスに対して 2 つのファイルが表示されます。
 
-- `[url].html` 初期ドキュメントリクエスト用のHTMLファイル
-- `[url].data` クライアント側のナビゲーションブラウザリクエスト用のファイル
+- 初期ドキュメントリクエスト用の `[url].html` HTML ファイル
+- クライアント側のナビゲーションブラウザリクエスト用の `[url].data` ファイル
 
 ビルドの出力には、プリレンダリングされたファイルが示されます。
 
@@ -73,5 +82,82 @@ Prerender: Generated build/client/blog/my-first-post/index.html
 ...
 ```
 
-開発中、プリレンダリングはレンダリングされた結果をパブリックディレクトリに保存しません。これは `react-router build` の場合にのみ発生します。
+開発中、プリレンダリングはレンダリングされた結果をパブリックディレクトリに保存しません。これは `react-router build` でのみ発生します。
+
+## `ssr:false` でのプリレンダリング
+
+上記の例では、ランタイムサーバーをデプロイすることを前提としていますが、一部の静的ページをより高速に提供し、サーバーへのアクセスを回避するためにプリレンダリングしています。
+
+ランタイム SSR を無効にし、静的ファイルサーバーから提供されるようにプリレンダリングを構成するには、`ssr:false` 構成フラグを設定します。
+
+```ts filename=react-router.config.ts
+import type { Config } from "@react-router/dev/config";
+
+export default {
+  ssr: false, // ランタイムサーバーレンダリングを無効にする
+  prerender: true, // すべての静的ルートをプリレンダリングする
+} satisfies Config;
+```
+
+`prerender` 構成なしで `ssr:false` を指定すると、React Router はそれを [SPA モード](./spa) と呼びます。SPA モードでは、アプリケーションパスの _いずれか_ に対してハイドレーションできる単一の HTML ファイルをレンダリングします。これは、`root` ルートのみを HTML ファイルにレンダリングし、ハイドレーション中にブラウザの URL に基づいてロードする子ルートを決定するためです。つまり、ルートルートで `loader` を使用できますが、他のルートでは使用できません。これは、ブラウザでのハイドレーションまでどのルートをロードするか分からないためです。
+
+`ssr:false` でパスをプリレンダリングする場合、一致するルートは、ルートだけでなく、それらのパスに一致するすべてのルートをプリレンダリングするため、ローダーを持つ _ことができます_。`ssr:false` が設定されている場合、`actions` または `headers` 関数を含めることはできません。これは、それらを実行するランタイムサーバーがないためです。
+
+### SPA フォールバックを使用したプリレンダリング
+
+`ssr:false` が必要だが、ルートの _すべて_ をプリレンダリングしたくない場合でも問題ありません。プリレンダリングのパフォーマンス/SEO の利点が必要なパスもあれば、SPA で問題ないページもあるかもしれません。
+
+構成オプションの組み合わせを使用してこれを行うこともできます。`prerender` 構成をプリレンダリングするパスに制限するだけで、React Router は他のパスをハイドレーションするために提供できる「SPA フォールバック」HTML ファイルも出力します ([SPA モード](./spa) と同じアプローチを使用)。
+
+これは、次のいずれかのパスに書き込まれます。
+
+- `build/client/index.html` - `/` パスがプリレンダリングされていない場合
+- `build/client/__spa-fallback.html` - `/` パスがプリレンダリングされている場合
+
+```ts filename=react-router.config.ts
+import type { Config } from "@react-router/dev/config";
+
+export default {
+  ssr: false,
+
+  // SPA フォールバックは build/client/index.html に書き込まれます
+  prerender: ["/about-us"],
+
+  // SPA フォールバックは build/client/__spa-fallback.html に書き込まれます
+  prerender: ["/", "/about-us"],
+} satisfies Config;
+```
+
+デプロイサーバーが、それ以外の場合は 404 になるパスに対してこのファイルを提供するように構成できます。一部のホストはデフォルトでこれを行いますが、そうでないホストもあります。例として、ホストはこれを実行するために `_redirects` ファイルをサポートする場合があります。
+
+```
+# `/` ルートをプリレンダリングしなかった場合
+/*    /index.html   200
+
+# `/` ルートをプリレンダリングした場合
+/*    /__spa-fallback.html   200
+```
+
+アプリの有効なルートで 404 エラーが発生する場合は、ホストを構成する必要がある可能性があります。
+
+[`sirv-cli`](https://www.npmjs.com/package/sirv-cli#user-content-single-page-applications) ツールでこれを行う方法の別の例を次に示します。
+
+```sh
+# `/` ルートをプリレンダリングしなかった場合
+sirv-cli build/client --single index.html
+
+# `/` ルートをプリレンダリングした場合
+sirv-cli build/client --single __spa-fallback.html
+```
+
+### 無効なエクスポート
+
+`ssr:false` でプリレンダリングする場合、React Router はビルド時に無効なエクスポートがある場合にエラーを発生させ、見落としやすい間違いを防ぎます。
+
+- `headers`/`action` 関数は、それらを実行するランタイムサーバーがないため、すべてのルートで禁止されています
+- `prerender` 構成なしで `ssr:false` を使用する場合 (SPA モード)、`loader` はルートルートでのみ許可されます
+- `prerender` 構成で `ssr:false` を使用する場合、`loader` は `prerender` パスによって一致するすべてのルートで許可されます
+  - 子ルートを持つプリレンダリングされたルートで `loader` を使用している場合は、次のいずれかの方法で、親 `loaderData` をランタイムで適切に決定できることを確認する必要があります。
+    - すべての子ルートをプリレンダリングして、各子ルートパスのビルド時に親 `loader` を呼び出して `.data` ファイルにレンダリングできるようにするか、
+    - プリレンダリングされていない子パスに対してランタイムで呼び出すことができる親で `clientLoader` を使用します
 

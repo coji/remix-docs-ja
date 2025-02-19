@@ -9,7 +9,7 @@ order: 6
 
 ## NavLink
 
-このコンポーネントは、アクティブ状態と保留状態をレンダリングする必要があるナビゲーションリンクに使用します。
+このコンポーネントは、アクティブ状態と保留状態をレンダリングする必要があるナビゲーションリンク用です。
 
 ```tsx
 import { NavLink } from "react-router";
@@ -42,11 +42,11 @@ a.pending {
 }
 
 a.transitioning {
-  /* CSS トランジションが実行中 */
+  /* css transition is running */
 }
 ```
 
-また、インラインスタイルや条件付きレンダリングのために、`className`、`style`、および `children` に状態を持つコールバックプロパティがあります。
+また、インラインスタイルや条件付きレンダリングのために、状態を持つ `className`、`style`、および `children` にコールバックプロパティがあります。
 
 ```tsx
 // className
@@ -91,7 +91,7 @@ a.transitioning {
 
 ## Link
 
-リンクにアクティブなスタイルを設定する必要がない場合は、`<Link>` を使用します。
+リンクにアクティブなスタイルが必要ない場合は、`<Link>` を使用します。
 
 ```tsx
 import { Link } from "react-router";
@@ -122,11 +122,11 @@ export function LoggedOutMessage() {
 /search?q=journey
 ```
 
-`<Form method="post" />` を使用したフォームも、action プロパティに移動しますが、データを `URLSearchParams` の代わりに `FormData` として送信します。ただし、フォームデータを POST するには `useFetcher()` を使用するのが一般的です。[フェッチャーの使用](../../how-to/fetchers) を参照してください。
+`<Form method="post" />` を使用したフォームも、action プロパティに移動しますが、データを `URLSearchParams` の代わりに `FormData` として送信します。ただし、`useFetcher()` を使用してフォームデータを POST する方が一般的です。[Fetcher の使用](../../how-to/fetchers) を参照してください。
 
 ## redirect
 
-ルートローダーとアクション内で、別の URL に `redirect` することができます。
+ルートローダーとアクション内で、別の URL への `redirect` を返すことができます。
 
 ```tsx
 import { redirect } from "react-router";
@@ -156,9 +156,9 @@ export async function action({ request }) {
 
 このフックを使用すると、プログラマーはユーザーの操作なしにユーザーを新しいページに移動させることができます。このフックの使用は一般的ではありません。可能な場合は、このガイドの他の API を使用することをお勧めします。
 
-`useNavigate` の使用は、ユーザーが操作していないが、ナビゲートする必要がある状況に限定してください。たとえば、
+`useNavigate` の使用は、ユーザーが操作していないが、ナビゲートする必要がある状況のために予約してください。例：
 
-- 非アクティブ後にログアウトさせる
+- 非アクティブ後にログアウトする
 - クイズなどの時間制限付き UI
 
 ```tsx
