@@ -2,6 +2,6 @@
 
 export default {
   async fetch(request, env, ctx) {
-    return await new Response('Hello!')
+    return await new Response('{}')
   },
 } satisfies ExportedHandler<Env>

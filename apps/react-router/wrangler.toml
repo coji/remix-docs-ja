@@ -13,6 +13,3 @@ assets = { directory = "./build/client", binding = 'ASSETS', html_handling = 'dr
 
 [observability]
 enabled = true
-
-[build]
-command = "pnpm run build"
