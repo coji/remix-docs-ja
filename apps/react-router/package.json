@@ -44,11 +44,11 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
-    "@cloudflare/workers-types": "catalog:",
     "@mdx-js/rollup": "catalog:",
     "@react-router/dev": "catalog:",
     "@tailwindcss/typography": "catalog:",
     "@tailwindcss/vite": "catalog:",
+    "@types/node": "22.13.10",
     "@types/nprogress": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
