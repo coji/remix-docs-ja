@@ -10,6 +10,7 @@
   },
   "linter": {
     "enabled": true,
+    "ignore": ["worker-configuration.d.ts"],
     "rules": {
       "recommended": true,
       "style": {
