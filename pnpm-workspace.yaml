@@ -19,6 +19,7 @@ catalog:
   '@shikijs/transformers': 2.1.0
   '@tailwindcss/typography': 0.5.16
   '@tailwindcss/vite': 4.0.14
+  '@types/node': 22.13.10
   '@types/nprogress': 0.2.3
   '@types/react': 19.0.11
   '@types/react-dom': 19.0.4
