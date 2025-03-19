@@ -2,7 +2,7 @@ import type { Config } from '@react-router/dev/config'
 import { buildMenu } from '@remix-docs-ja/scripts/services/menu'
 
 export default {
-  ssr: true,
+  ssr: false,
   prerender: async () => {
     const paths = ['/', '/sitemap.xml', '/resources/search']
     const categories = await buildMenu()
