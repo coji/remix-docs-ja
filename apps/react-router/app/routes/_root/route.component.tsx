@@ -13,8 +13,8 @@ export default function Layout({
   const rootLoaderData = useRouteLoaderData('root') as Awaited<
     ReturnType<typeof rootLoader>
   >
-
   const product = rootLoaderData.product
+  const editUrl = `https://github.com/coji/remix-docs-ja/edit/main/docs/${__PRODUCT_ID__}${pathname === '/' ? '/index' : pathname}.md`
 
   return (
     <div className="grid h-dvh grid-rows-[auto_1fr_auto] overflow-hidden lg:container">
@@ -70,7 +70,7 @@ export default function Layout({
         </div>
         <div>
           <a
-            href={`https://github.com/coji/remix-docs-ja/edit/main/docs${pathname}.md`}
+            href={editUrl}
             target="_blank"
             rel="noreferrer"
             className="underline"
