@@ -1,5 +1,5 @@
 ---
-title: リンク
+title: Links
 ---
 
 # リンク

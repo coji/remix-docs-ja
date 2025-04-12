@@ -103,7 +103,7 @@ import { Link } from "react-router";
 export function LoggedOutMessage() {
   return (
     <p>
-      ログアウトしました。{" "}
+      ログアウトしました。{" "しました。{" "}
       <Link to="/login">再度ログイン</Link>
     </p>
   );
