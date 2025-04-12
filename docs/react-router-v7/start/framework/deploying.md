@@ -5,9 +5,9 @@ hidden: true
 
 # デプロイ
 
-<docs-warning>
-  このドキュメントは作成中のものであり、デプロイガイドに移動されます。
-</docs-warning>
+[MODES: framework]
+
+## はじめに
 
 React Router は次の2つの方法でデプロイできます。
 
@@ -149,4 +149,3 @@ npx vite build
 [cloudflare_button]: https://deploy.workers.cloudflare.com/button
 [cloudflare_spa]: https://deploy.workers.cloudflare.com/?url=https://github.com/ryanflorence/templates/tree/main/cloudflare-spa
 [cloudflare]: https://deploy.workers.cloudflare.com/?url=https://github.com/ryanflorence/templates/tree/main/cloudflare
-

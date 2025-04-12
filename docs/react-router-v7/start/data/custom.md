@@ -1,10 +1,15 @@
 ---
 title: カスタムフレームワーク
+order: 8
 ---
 
 # カスタムフレームワーク
 
-`@react-router/dev` を使用する代わりに、React Router のフレームワーク機能（ローダー、アクション、フェッチャーなど）を独自のバンドラーおよびサーバー抽象化に統合できます。
+[MODES: data]
+
+## はじめに
+
+`@react-router/dev` を使用する代わりに、データモードを使用して、React Router のフレームワーク機能（ローダー、アクション、フェッチャーなど）を独自のバンドラーおよびサーバー抽象化に統合できます。
 
 ## クライアントレンダリング
 
@@ -59,13 +64,13 @@ createRoot(document.getElementById("root")).render(
 createBrowserRouter([
   {
     path: "/show/:showId",
-    lazy: () => {
-      let [loader, action, Component] = await Promise.all([
-        import("./show.action.js"),
-        import("./show.loader.js"),
-        import("./show.component.js"),
-      ]);
-      return { loader, action, Component };
+    lazy: {
+      loader: async () =>
+        (await import("./show.loader.js")).loader,
+      action: async () =>
+        (await import("./show.action.js")).action,
+      Component: async () =>
+        (await import("./show.component.js")).Component,
     },
   },
 ]);

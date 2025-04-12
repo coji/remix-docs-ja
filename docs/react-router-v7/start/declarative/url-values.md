@@ -4,6 +4,8 @@ title: URLの値
 
 # URLの値
 
+[MODES: declarative]
+
 ## ルートパラメータ
 
 ルートパラメータは、動的セグメントから解析された値です。
@@ -34,7 +36,7 @@ function SearchResults() {
   return (
     <div>
       <p>
-        検索ワードは <i>{searchParams.get("q")}</i> です
+        検索したのは <i>{searchParams.get("q")}</i> です
       </p>
       <FakeSearchResults />
     </div>

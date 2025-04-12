@@ -67,8 +67,25 @@ import { index, route } from "@react-router/dev/routes";
 
 export default [
   index("./home.tsx"),
-  route("about", "./about.tsx"),
+  route("products/:pid", "./product.tsx"),
 ];
+```
+
+これにより、型安全なパラメータ、loaderData、コード分割、SPA/SSR/SSG戦略などを備えたRoute Module APIにアクセスできるようになります。
+
+```ts filename=product.tsx
+import { Route } from "+./types/product.tsx";
+
+export async function loader({ params }: Route.LoaderArgs) {
+  let product = await getProduct(params.pid);
+  return { product };
+}
+
+export default function Product({
+  loaderData,
+}: Route.ComponentProps) {
+  return <div>{loaderData.product.name}</div>;
+}
 ```
 
 ## 選択のアドバイス
@@ -109,7 +126,7 @@ export default [
 | API                            | Framework | Data | Declarative |
 | ------------------------------ | --------- | ---- | ----------- |
 | Await                          | ✅        | ✅   |             |
-| Form                           | ✅        | ✅   |
+| Form                           | ✅        | ✅   |             |
 | Link                           | ✅        | ✅   | ✅          |
 | `<Link discover>`              | ✅        |      |             |
 | `<Link prefetch>`              | ✅        |      |             |
@@ -181,4 +198,3 @@ export default [
 | renderMatches                  | ✅        | ✅   | ✅          |
 | replace                        | ✅        | ✅   |             |
 | resolvePath                    | ✅        | ✅   | ✅          |
-

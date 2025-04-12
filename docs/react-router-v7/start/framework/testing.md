@@ -5,6 +5,10 @@ order: 9
 
 # テスト
 
+[MODES: framework]
+
+## はじめに
+
 コンポーネントが `useLoaderData` や `<Link>` などを利用する場合、React Router アプリのコンテキスト内でレンダリングされる必要があります。`createRoutesStub` 関数は、コンポーネントを分離してテストするためのコンテキストを作成します。
 
 `useActionData` に依存するログインフォームコンポーネントを考えてみましょう。

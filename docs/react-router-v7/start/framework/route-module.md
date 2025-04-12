@@ -5,6 +5,10 @@ order: 3
 
 # ルートモジュール
 
+[MODES: framework]
+
+## はじめに
+
 `routes.ts` で参照されるファイルは、ルートモジュールと呼ばれます。
 
 ```tsx filename=app/routes.ts
@@ -65,8 +69,8 @@ export default function MyRouteComponent({
   return (
     <div>
       <h1>Props 付きのマイルートへようこそ！</h1>
-      <p>Loader Data: {JSON.stringify(loaderData)}</p>
-      <p>Action Data: {JSON.stringify(actionData)}</p>
+      <p>ローダーデータ: {JSON.stringify(loaderData)}</p>
+      <p>アクションデータ: {JSON.stringify(actionData)}</p>
       <p>ルートパラメータ: {JSON.stringify(params)}</p>
       <p>一致したルート: {JSON.stringify(matches)}</p>
     </div>
@@ -149,7 +153,7 @@ export default function Items({ loaderData }) {
       <List items={loaderData.items} />
       <Form method="post" navigate={false} action="/list">
         <input type="text" name="title" />
-        <button type="submit">Create Todo</button>
+        <button type="submit">Todo を作成</button>
       </Form>
     </div>
   );
@@ -378,4 +382,3 @@ export function shouldRevalidate(
 [meta-element]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
 [meta-params]: https://api.reactrouter.com/v7/interfaces/react_router.MetaArgs
 [use-revalidator]: https://api.reactrouter.com/v7/functions/react_router.useRevalidator.html
-

@@ -5,6 +5,10 @@ order: 5
 
 # データローディング
 
+[MODES: framework]
+
+## はじめに
+
 データは、`loader` と `clientLoader` からルートコンポーネントに提供されます。
 
 ローダーデータは、ローダーから自動的にシリアライズされ、コンポーネントでデシリアライズされます。文字列や数値のようなプリミティブ値に加えて、ローダーは Promise、Map、Set、Date などを返すことができます。
@@ -189,4 +193,3 @@ export default function Product() {
 [advanced_data_fetching]: ../tutorials/advanced-data-fetching
 [data]: ../../api/react-router/data
 [type-safety]: ../../explanation/type-safety
-

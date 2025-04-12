@@ -5,6 +5,10 @@ order: 6
 
 # ナビゲーション
 
+[MODES: framework]
+
+## はじめに
+
 ユーザーは、`<Link>`、`<NavLink>`、`<Form>`、`redirect`、および `useNavigate` を使用してアプリケーション内を移動します。
 
 ## NavLink
@@ -176,4 +180,3 @@ export function useLogoutAfterInactivity() {
 ---
 
 次: [保留中の UI](./pending-ui)
-
