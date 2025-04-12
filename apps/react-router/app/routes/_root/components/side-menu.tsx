@@ -1,4 +1,3 @@
-import { ChevronRight } from 'lucide-react'
 import { NavLink } from 'react-router'
 import { twc } from 'react-twc'
 import type { MenuDoc } from '~/services/menu.server'
@@ -21,10 +20,7 @@ export const SideMenu = ({ menu }: SideMenuProps) => {
                 return (
                   <SideMenuItem key={menuItem.slug}>
                     {menuItem.children.length > 0 ? (
-                      <div>
-                        <span>{menuItem.attrs.title}</span>
-                        <ChevronRight className="inline size-4" />
-                      </div>
+                      <div>{menuItem.attrs.title}</div>
                     ) : (
                       <SideMenuNavLink
                         to={`${menuItem.slug}`}
