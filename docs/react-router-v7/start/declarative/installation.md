@@ -5,17 +5,11 @@ order: 1
 
 # インストール
 
-<docs-info>
+[MODES: declarative]
 
-React Router v7 は、以下の最小バージョンを必要とします。
+## はじめに
 
-- `node@20`
-- `react@18`
-- `react-dom@18`
-
-</docs-info>
-
-Vite の React テンプレートから始めるか、お好みの方法でアプリケーションをブートストラップできます。
+Vite の React テンプレートから始めて「React」を選択するか、お好みの方法でアプリケーションをブートストラップできます。
 
 ```shellscript nonumber
 npx create-vite@latest
@@ -47,4 +41,3 @@ ReactDOM.createRoot(root).render(
 ---
 
 次: [ルーティング](./routing)
-

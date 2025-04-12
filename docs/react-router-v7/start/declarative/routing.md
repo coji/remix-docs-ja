@@ -5,6 +5,8 @@ order: 2
 
 # ルーティング
 
+[MODES: declarative]
+
 ## ルートの設定
 
 ルートは、URLセグメントとUI要素を関連付ける `<Routes>` と `<Route>` をレンダリングすることで設定されます。

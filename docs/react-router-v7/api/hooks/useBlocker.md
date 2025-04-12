@@ -4,7 +4,7 @@ title: useBlocker
 
 # useBlocker
 
-[MODES: framework, data, declarative]
+[MODES: framework, data]
 
 ## 概要
 
@@ -22,7 +22,6 @@ useBlocker(shouldBlock): Blocker
 
 ### shouldBlock
 
-[modes: framework, data, declarative]
+[modes: framework, data]
 
 _ドキュメントはありません_
-

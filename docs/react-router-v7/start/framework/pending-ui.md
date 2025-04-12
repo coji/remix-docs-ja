@@ -5,6 +5,10 @@ order: 7
 
 # 保留中の UI
 
+[MODES: framework]
+
+## はじめに
+
 ユーザーが新しいルートに移動したり、アクションにデータを送信したりすると、UI は保留中または楽観的な状態でユーザーの操作に即座に応答する必要があります。アプリケーションコードがこれを行います。
 
 ## グローバルな保留中のナビゲーション
@@ -123,7 +127,7 @@ function Task({ task }) {
           name="status"
           value={isComplete ? "incomplete" : "complete"}
         >
-          {isComplete ? "未完了にする" : "完了にする"}
+          {isComplete ? "未完了としてマーク" : "完了としてマーク"}
         </button>
       </fetcher.Form>
     </div>
@@ -136,4 +140,3 @@ function Task({ task }) {
 次: [テスト](./testing)
 
 [use_fetcher]: https://api.reactrouter.com/v7/functions/react_router.useFetcher.html
-

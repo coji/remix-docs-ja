@@ -5,6 +5,10 @@ order: 3
 
 # ナビゲーション
 
+[MODES: declarative]
+
+## はじめに
+
 ユーザーは、`<Link>`、`<NavLink>`、および `useNavigate` を使用してアプリケーション内を移動します。
 
 ## NavLink

@@ -5,15 +5,7 @@ order: 1
 
 # インストール
 
-<docs-info>
-
-React Router v7 は、以下の最小バージョンを必要とします。
-
-- `node@20`
-- `react@18`
-- `react-dom@18`
-
-</docs-info>
+## はじめに
 
 ほとんどのプロジェクトはテンプレートから始まります。React Router が管理している基本的なテンプレートを使用してみましょう。
 
@@ -46,4 +38,3 @@ npx create-react-router@latest --template remix-run/react-router-templates/<temp
 [manual_usage]: ../how-to/manual-usage
 [default-template]: https://github.com/remix-run/react-router-templates/tree/main/default
 [react-router-templates]: https://github.com/remix-run/react-router-templates
-

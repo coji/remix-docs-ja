@@ -1,10 +1,10 @@
 ---
-title: usePrompt
+title: unstable_usePrompt
 ---
 
-# usePrompt
+# unstable_usePrompt
 
-[MODES: framework, data, declarative]
+[MODES: framework, data]
 
 ## 概要
 
@@ -53,4 +53,3 @@ unstable_usePrompt(options): void
 ### options
 
 _ドキュメントはありません_
-

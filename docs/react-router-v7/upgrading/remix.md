@@ -198,7 +198,7 @@ export default defineConfig({
 -     ssr: true,
 -     future: {/* すべての v3 フラグ */}
 -   }),
-+   remix(),
++   reactRouter(),
     tsconfigPaths(),
   ],
 });
@@ -387,4 +387,3 @@ export function action({ context }: Route.ActionArgs) {}
 [type-safety]: ../explanation/type-safety
 [codemod]: https://codemod.com/registry/remix-2-react-router-upgrade
 [jrestall]: https://github.com/jrestall
-

@@ -5,6 +5,10 @@ order: 6
 
 # ナビゲーション
 
+[MODES: framework]
+
+## はじめに
+
 ユーザーは、`<Link>`、`<NavLink>`、`<Form>`、`redirect`、および `useNavigate` を使用してアプリケーション内を移動します。
 
 ## NavLink
@@ -99,7 +103,7 @@ import { Link } from "react-router";
 export function LoggedOutMessage() {
   return (
     <p>
-      ログアウトしました。{" "}
+      ログアウトしました。{" "しました。{" "}
       <Link to="/login">再度ログイン</Link>
     </p>
   );
@@ -176,4 +180,3 @@ export function useLogoutAfterInactivity() {
 ---
 
 次: [保留中の UI](./pending-ui)
-

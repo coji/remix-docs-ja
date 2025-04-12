@@ -10,7 +10,7 @@ title: Meta
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.Meta.html)
 
-ルートモジュールの [MetaFunction](../Other/MetaFunction) エクスポートによって作成されたすべての `<meta>` タグをレンダリングします。HTML の `<head>` 内にレンダリングする必要があります。
+ルートモジュールの [`meta`](../../start/framework/route-module#meta) エクスポートによって作成されたすべての `<meta>` タグをレンダリングします。HTML の `<head>` 内にレンダリングする必要があります。
 
 ```tsx
 import { Meta } from "react-router";
@@ -29,4 +29,3 @@ export default function Root() {
 ## Props
 
 なし
-

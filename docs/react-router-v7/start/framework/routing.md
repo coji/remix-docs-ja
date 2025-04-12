@@ -1,9 +1,10 @@
----
 title: ルーティング
 order: 2
 ---
 
 # ルーティング
+
+[MODES: framework]
 
 ## ルートの設定
 
@@ -167,22 +168,10 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-`projects/home.tsx` をレイアウトに表示するには、アウトレットが必要です。
+注意:
 
-```tsx filename=./projects/project-layout.tsx lines=[8]
-import { Outlet } from "react-router";
-
-export default function ProjectLayout() {
-  return (
-    <div>
-      <aside>サイドバーの例</aside>
-      <main>
-        <Outlet />
-      </main>
-    </div>
-  );
-}
-```
+- `home.tsx` と `contact.tsx` は、新しい URL パスを作成せずに `marketing/layout.tsx` のアウトレットにレンダリングされます
+- `project.tsx` と `edit-project.tsx` は `/projects/:pid` と `/projects/:pid/edit` で `projects/project-layout.tsx` のアウトレットにレンダリングされますが、`projects/home.tsx` はレンダリングされません。
 
 ## インデックスルート
 
@@ -277,8 +266,6 @@ async function loader({ params }: LoaderArgs) {
 }
 ```
 
-特定のパス内のすべての動的セグメントが一意であることを確認する必要があります。そうしないと、`params` オブジェクトが入力されるときに、後続の動的セグメントの値が以前の値を上書きします。
-
 ## オプションのセグメント
 
 セグメントの最後に `?` を追加すると、ルートセグメントをオプションにすることができます。
@@ -342,4 +329,3 @@ function Wizard() {
 
 [file-route-conventions]: ../../how-to/file-route-conventions
 [outlet]: https://api.reactrouter.com/v7/functions/react_router.Outlet.html
-

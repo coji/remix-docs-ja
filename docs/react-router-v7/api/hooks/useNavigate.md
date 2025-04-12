@@ -27,11 +27,10 @@ function SomeComponent() {
 }
 ```
 
-このフックよりも、[ActionFunction](../Other/ActionFunction) および [LoaderFunction](../Other/LoaderFunction) で [redirect](../Utils/redirect) を使用する方が良い場合が多いです。
+このフックよりも、[ActionFunction](../Other/ActionFunction) および [LoaderFunction](../Other/LoaderFunction) で [redirect](../utils/redirect) を使用する方が良い場合が多いです。
 
 ## シグネチャ
 
 ```tsx
 useNavigate(): NavigateFunction
 ```
-
