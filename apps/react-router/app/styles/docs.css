@@ -1,0 +1,50 @@
+@import 'tailwindcss';
+
+.availability-small {
+  @apply relative -top-10 z-10 float-right m-0 flex list-none items-center gap-1 rounded-full bg-gray-50 px-2 dark:bg-gray-800;
+
+  li {
+    @apply m-0 flex p-0;
+  }
+
+  li a {
+    @apply p-1 no-underline shadow-none;
+  }
+
+  li a.yes {
+    @apply text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-200;
+  }
+
+  li a.no {
+    @apply opacity-20 hover:opacity-40;
+  }
+
+  svg {
+    @apply h-4 w-4;
+  }
+}
+
+.availability-main {
+  @apply m-0 inline-flex list-none items-center gap-2 rounded-full bg-gray-50 p-1 text-sm dark:bg-gray-800;
+
+  li {
+    @apply m-0 p-0;
+  }
+
+  li a {
+    @apply flex items-center gap-2 px-3 py-1;
+    @apply no-underline shadow-none;
+  }
+
+  li a.yes {
+    @apply text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-200;
+  }
+
+  li a.no {
+    @apply opacity-20 hover:opacity-40;
+  }
+
+  svg {
+    @apply h-5 w-5;
+  }
+}

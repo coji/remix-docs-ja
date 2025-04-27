@@ -13,6 +13,7 @@ import { unified } from 'unified'
 import parseFrontMatter from 'front-matter'
 
 import { addBaseUrlFn } from './md-plugins/add-base-url'
+import createCompatList from './md-plugins/compat-tokens'
 import { stripLinkExtPlugin } from './md-plugins/strip-link-ext'
 import type { ProcessorOptions } from './md-plugins/types'
 
@@ -34,6 +35,7 @@ export function getProcessor(options?: ProcessorOptions) {
     .use(remarkParse)
     .use(stripLinkExtPlugin, options)
     .use(remarkGfm)
+    .use(createCompatList)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypePrettyCode, {
       transformers: [
