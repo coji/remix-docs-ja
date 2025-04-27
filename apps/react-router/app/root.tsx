@@ -11,6 +11,7 @@ import type { Route } from './+types/root'
 import { PageLoadingProgress } from './components/page-loading-progress'
 import { ThemeProvider } from './components/theme-provider'
 import { buildPageMeta } from './libs/seo'
+import './styles/docs.css'
 import './styles/globals.css'
 
 export const meta = ({ data }: Route.MetaArgs) => {
