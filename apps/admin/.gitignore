@@ -1,0 +1,12 @@
+node_modules
+
+/.cache
+/build
+.env
+
+/prisma/dev.db
+/prisma/dev.db-journal
+
+/projects
+exports
+.react-router

@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`getRepositoryFileContent > should return an error if the file does not exist 1`] = `[Error: ENOENT: no such file or directory, open 'test/fixtures/projects/projectA/docs/non-existent.md']`;
+
+exports[`getRepositoryFileContent > should return the content of the file 1`] = `
+{
+  "content": "---
+title: Getting Started with Task Management Application
+---
+
+This document will guide you through the initial setup and basic usage of our Task Management Application. We will cover topics such as creating an account, logging in, creating and managing tasks, and collaborating with your team. By the end of this guide, you should have a good understanding of how to use the application to effectively manage your tasks and projects.
+",
+  "filename": "index.md",
+  "md5": "b6ea662901a38626e3c5f45e532082ad",
+}
+`;

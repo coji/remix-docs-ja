@@ -27,6 +27,9 @@
       "rehype-pretty-code": "patches/rehype-pretty-code.patch"
     },
     "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma",
       "sharp",
       "workerd"
     ]
