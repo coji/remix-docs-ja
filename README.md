@@ -90,7 +90,7 @@ pnpm dev
 
 * **Admin:** `http://localhost:5170` (デフォルト)
 * **React Router Docs:** `http://localhost:5175` (デフォルト)
-* **Remix Docs:** (vite.config.ts を参照)
+* **Remix Docs:** `http://localhost:5173` (デフォルト)
 
 特定のアプリのみ起動する場合:
 
