@@ -4,7 +4,7 @@
 
 **ドキュメントサイト:**
 
-* **Remix 日本語ドキュメント:** [https://remix-docs-ja.techtalk.jp](https://react-router-docs-ja.techtalk.jp)
+* **Remix 日本語ドキュメント:** [https://remix-docs-ja.techtalk.jp](https://remix-docs-ja.techtalk.jp)
 * **React Router 日本語ドキュメント:** [https://react-router-docs-ja.techtalk.jp](https://react-router-docs-ja.techtalk.jp)
 
 ## ✨ 特徴
