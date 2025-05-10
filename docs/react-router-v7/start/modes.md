@@ -31,7 +31,7 @@ ReactDOM.createRoot(root).render(
 
 **Data**
 
-Dataモードでは、ルート構成をReactのレンダリングの外に移動することで、`loader`、`action`、`useFetcher`などのAPIを使用して、データローディング、アクション、保留状態などを追加します。
+ルート構成をReactのレンダリングの外に移動することで、Dataモードでは、`loader`、`action`、`useFetcher`などのAPIを使用して、データローディング、アクション、保留状態などを追加します。
 
 ```tsx
 import {
@@ -56,8 +56,8 @@ ReactDOM.createRoot(root).render(
 
 Frameworkモードは、DataモードをViteプラグインでラップし、次の機能を追加して、完全なReact Routerエクスペリエンスを実現します。
 
-- typesafe `href`
-- typesafe Route Module API
+- 型安全な `href`
+- 型安全な Route Module API
 - インテリジェントなコード分割
 - SPA、SSR、静的レンダリング戦略
 - その他
@@ -117,7 +117,7 @@ export default function Product({
 - 保留状態をスキップする（ローカルファースト、バックグラウンドデータレプリケーション/同期など）か、独自の抽象化を持つデータレイヤーがある
 - Create React Appから移行する場合（ただし、フレームワークモードを検討することをお勧めします）
 
-[→ Declarativeモードの開始](./library/installation)。
+[→ Declarativeモードの開始](./declarative/installation)。
 
 ## API + モードの可用性テーブル
 
@@ -151,7 +151,7 @@ export default function Product({
 | useAsyncError                  | ✅        | ✅   |             |
 | useAsyncValue                  | ✅        | ✅   |             |
 | useBeforeUnload                | ✅        | ✅   | ✅          |
-| useBlocker                     | ✅        | ✅   | ✅          |
+| useBlocker                     | ✅        | ✅   |             |
 | useFetcher                     | ✅        | ✅   |             |
 | useFetchers                    | ✅        | ✅   |             |
 | useFormAction                  | ✅        | ✅   |             |
@@ -175,7 +175,7 @@ export default function Product({
 | useRoutes                      | ✅        | ✅   | ✅          |
 | useSearchParams                | ✅        | ✅   | ✅          |
 | useSubmit                      | ✅        | ✅   |             |
-| useViewTransitionState         | ✅        | ✅   | ✅          |
+| useViewTransitionState         | ✅        | ✅   |             |
 | isCookieFunction               | ✅        | ✅   |             |
 | isSessionFunction              | ✅        | ✅   |             |
 | createCookie                   | ✅        | ✅   |             |

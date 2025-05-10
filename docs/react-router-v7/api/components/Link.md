@@ -93,6 +93,8 @@ import { Link } from "react-router";
 - **route** - デフォルト。ルートパターンを基準にしてリンクを解決します。上記の例では、`".."` の相対リンクは、`:slug/edit` セグメントの両方を削除して "/blog" に戻ります。
 - **path** - パスを基準にするため、`..` は1つのURLセグメントのみを削除して "/blog/:slug" に戻ります。
 
+インデックスルートとレイアウト ルートにはパスがないため、相対パスの計算には含まれないことに注意してください。
+
 ### reloadDocument
 
 [modes: framework, data, declarative]
@@ -176,4 +178,3 @@ function SomeComp() {
 ```
 
 トランジションに特定のスタイルを適用するには、[useViewTransitionState](../hooks/useViewTransitionState) を参照してください。
-

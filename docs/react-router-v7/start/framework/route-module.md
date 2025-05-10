@@ -351,7 +351,9 @@ export default function Root() {
 
 ## `shouldRevalidate`
 
-デフォルトでは、すべてのアクションの後にすべてのルートが再検証されます。この関数を使用すると、ルートはデータに影響を与えないアクションの再検証をオプトアウトできます。
+フレームワークモードでは、ルートローダーはすべてのナビゲーションとフォーム送信後に自動的に再検証されます（これは[データモード](../data/route-object#shouldrevalidate)とは異なります）。これにより、ミドルウェアとローダーはリクエストコンテキストを共有し、データモードの場合とは異なる方法で最適化できます。
+
+この関数を定義すると、ナビゲーションとフォーム送信に対するルートローダーの再検証をオプトアウトできます。
 
 ```tsx
 import type { ShouldRevalidateFunctionArgs } from "react-router";
@@ -362,6 +364,8 @@ export function shouldRevalidate(
   return true;
 }
 ```
+
+[`ShouldRevalidateFunctionArgs` リファレンスドキュメント ↗](https://api.reactrouter.com/v7/interfaces/react_router.ShouldRevalidateFunctionArgs.html)
 
 ---
 

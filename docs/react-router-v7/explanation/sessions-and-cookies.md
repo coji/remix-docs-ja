@@ -461,4 +461,3 @@ export async function loader({
 [cookie-attrs]: https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Set-Cookie#attributes
 [is-cookie]: https://api.reactrouter.com/v7/functions/react_router.isCookie
 [create-cookie]: https://api.reactrouter.com/v7/functions/react_router.createCookie
-

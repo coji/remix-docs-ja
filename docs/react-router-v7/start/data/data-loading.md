@@ -15,7 +15,7 @@ order: 4
 createBrowserRouter([
   {
     path: "/",
-    loader: () => {
+    loader: async () => {
       // ここからデータを返す
       return { records: await getSomeRecords() };
     },
@@ -38,3 +38,7 @@ function MyRoute() {
 ```
 
 ユーザーがルート間を移動すると、ルートコンポーネントがレンダリングされる前にローダーが呼び出されます。
+
+---
+
+次へ: [アクション](./actions)

@@ -29,6 +29,8 @@ export async function loader({}: Route.LoaderArgs) {
 }
 ```
 
+単一の Promise を返すことはできず、キーを持つオブジェクトである必要があることに注意してください。
+
 ## 2. フォールバックと解決された UI をレンダリングする
 
 Promise は `loaderData` で利用可能になり、`<Await>` は Promise を待機し、`<Suspense>` がフォールバック UI をレンダリングするようにトリガーします。
@@ -76,3 +78,11 @@ function NonCriticalUI({ p }: { p: Promise<string> }) {
 }
 ```
 
+## タイムアウト
+
+デフォルトでは、ローダーとアクションは 4950ms 後に未解決の Promise をすべて拒否します。これは、`entry.server.tsx` から数値の `streamTimeout` 値をエクスポートすることで制御できます。
+
+```ts filename=entry.server.tsx
+// ハンドラー関数からのすべての保留中の Promise を 10 秒後に拒否します
+export const streamTimeout = 10_000;
+```
