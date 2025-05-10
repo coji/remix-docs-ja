@@ -69,7 +69,6 @@
     "@biomejs/biome": "catalog:",
     "@react-router/dev": "catalog:",
     "@react-router/remix-routes-option-adapter": "catalog:",
-    "@tailwindcss/postcss": "catalog:",
     "@types/debug": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
@@ -89,6 +88,6 @@
     "vitest": "catalog:"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   }
 }

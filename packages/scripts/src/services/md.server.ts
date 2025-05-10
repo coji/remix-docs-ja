@@ -31,24 +31,27 @@ export async function processMarkdown(
 }
 
 export function getProcessor(options?: ProcessorOptions) {
-  return unified()
-    .use(remarkParse)
-    .use(stripLinkExtPlugin, options)
-    .use(remarkGfm)
-    .use(createCompatList)
-    .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypePrettyCode, {
-      transformers: [
-        transformerNotationDiff(),
-        transformerCopyButton({
-          visibility: 'always',
-          feedbackDuration: 3_000,
-        }),
-      ],
-    })
-    .use(rehypeSlug)
-    .use(rehypeAutolinkHeadings)
-    .use(rehypeRaw)
-    .use(addBaseUrlFn(options?.productId))
-    .use(rehypeStringify, { allowDangerousHtml: true })
+  return (
+    unified()
+      .use(remarkParse)
+      .use(stripLinkExtPlugin, options)
+      .use(remarkGfm)
+      .use(createCompatList)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      // @ts-ignore
+      .use(rehypePrettyCode, {
+        transformers: [
+          transformerNotationDiff(),
+          transformerCopyButton({
+            visibility: 'always',
+            feedbackDuration: 3_000,
+          }),
+        ],
+      })
+      .use(rehypeSlug)
+      .use(rehypeAutolinkHeadings)
+      .use(rehypeRaw)
+      .use(addBaseUrlFn(options?.productId))
+      .use(rehypeStringify, { allowDangerousHtml: true })
+  )
 }
