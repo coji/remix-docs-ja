@@ -1,6 +1,6 @@
 ---
 title: デプロイ
-hidden: true
+order: 10
 ---
 
 # デプロイ
@@ -14,138 +14,104 @@ React Router は次の2つの方法でデプロイできます。
 - フルスタックホスティング
 - 静的ホスティング
 
-React と React Router のメリットを最大限に活用するには、フルスタックホスティングをお勧めします。
+公式の [React Router テンプレート](https://github.com/remix-run/react-router-templates) は、アプリケーションのブートストラップに役立つか、独自のアプリケーションのリファレンスとして使用できます。
 
-## フルスタックホスティング
+静的ホスティングにデプロイする場合、React Router は他の React シングルページアプリケーションと同様にデプロイできます。
 
-フルスタックホスティングプロバイダーにデプロイすることで、React と React Router を最大限に活用できます。
+## テンプレート
 
-### Cloudflare
+`create-react-router` コマンドを実行した後、README の指示に従ってください。
 
-このボタンをクリックして、GitHubアカウントでスタータープロジェクトを自動的にデプロイします。
-
-[![Cloudflare にデプロイ][cloudflare_button]][cloudflare]
-
-このテンプレートには以下が含まれます。
-
-- Cloudflare D1 を使用した SQL データベース
-- Cloudflare KV を使用したキーバリューストレージ
-- Cloudflare R2 を使用したアセットのアップロードとストレージ
-- Cloudflare Images を使用した画像のアップロード、ストレージ、最適化された `<Image/>` コンポーネント
-
-[ライブで見る →](https://react-router-template.pages.dev)
-
-### Epic Stack (Fly.io)
-
-Epic Stack テンプレートから開始し、README の指示に従ってください。
+### Node.js と Docker
 
 ```
-npx degit @epicweb-dev/template my-app
+npx create-react-router@latest --template remix-run/react-router-templates/default
 ```
 
-このマキシマリストテンプレートには、以下を含む多くのものが含まれています。
+- サーバーレンダリング
+- Tailwind CSS
 
-- Fly.io でのリージョンホスティング
-- LiteFS と Prisma を使用したマルチリージョン分散 SQLite データベース
-- 画像ホスティング
-- Sentry によるエラー監視
-- 実行中のアプリの Grafana ダッシュボード
-- GitHub actions を使用した CI
-- 権限による認証
-- 完全なユニット/統合テスト設定
-- Resend を使用したトランザクションメール
+コンテナ化されたアプリケーションは、以下を含む Docker をサポートする任意のプラットフォームにデプロイできます。
 
-[ライブで見る →](https://react-router-template.fly.dev)
+- AWS ECS
+- Google Cloud Run
+- Azure Container Apps
+- Digital Ocean App Platform
+- Fly.io
+- Railway
 
-### Ion (AWS)
-
-ion テンプレートから開始し、README の指示に従ってください。
+### Node と Docker (カスタムサーバー)
 
 ```
-npx degit @sst/react-template my-app
+npx create-react-router@latest --template remix-run/react-router-templates/node-custom-server
 ```
 
-このテンプレートには以下が含まれます。
+- サーバーレンダリング
+- Tailwind CSS
+- より詳細な制御のためのカスタム Express サーバー
 
-- DynamoDB を使用したデータ永続化
-- Amazon SQS を使用した遅延ジョブ
-- S3 を使用した画像のアップロード、ストレージ、最適化された `<Image/>` コンポーネント
-- S3 を使用したアセットのアップロードとストレージ
+コンテナ化されたアプリケーションは、以下を含む Docker をサポートする任意のプラットフォームにデプロイできます。
 
-[ライブで見る →](#TODO)
+- AWS ECS
+- Google Cloud Run
+- Azure Container Apps
+- Digital Ocean App Platform
+- Fly.io
+- Railway
 
-### Netlify
+### Node と Docker と Postgres
 
-このボタンをクリックして、GitHubアカウントでスタータープロジェクトを自動的にデプロイします。
+```
+npx create-react-router@latest --template remix-run/react-router-templates/node-postgres
+```
 
-[![Netlify にデプロイ][netlify_button]][netlify_spa]
+- サーバーレンダリング
+- Drizzle を使用した Postgres データベース
+- Tailwind CSS
+- より詳細な制御のためのカスタム Express サーバー
 
-このテンプレートには以下が含まれます。
+コンテナ化されたアプリケーションは、以下を含む Docker をサポートする任意のプラットフォームにデプロイできます。
 
-- Supabase との統合
-- `<Image/>` と Netlify Image CDN を使用した最適化された画像変換
-
-[ライブで見る →](#TODO)
+- AWS ECS
+- Google Cloud Run
+- Azure Container Apps
+- Digital Ocean App Platform
+- Fly.io
+- Railway
 
 ### Vercel
 
-このボタンをクリックして、GitHubアカウントでスタータープロジェクトを自動的にデプロイします。
-
-[![Vercel にデプロイ][vercel_button]][vercel_spa]
-
-このテンプレートには以下が含まれます。
-
-- Vercel Postgres を使用した Postgres データベース統合
-- `<Image/>` と Vercel images を使用した最適化された画像変換
-- 静的に事前レンダリングされたルートの ISR
-
-[ライブで見る →](#TODO)
-
-### 手動フルスタックデプロイ
-
-独自のサーバーまたは別のホスティングプロバイダーにデプロイする場合は、[手動デプロイ](../how-to/manual-deployment)ガイドを参照してください。
-
-## 静的ホスティング
-
-React Router はサーバーを必要とせず、任意の静的ホスティングプロバイダーで実行できます。
-
-### 人気のある静的ホスティングプロバイダー
-
-次の「今すぐデプロイ」ボタンから開始できます。
-
-[![SPA Cloudflare にデプロイ][cloudflare_button]][cloudflare_spa]
-
-[![Netlify SPA にデプロイ][netlify_button]][netlify_spa]
-
-[![Vercel SPA にデプロイ][vercel_button]][vercel_spa]
-
-### 手動静的ホスティング
-
-Vite 設定で `ssr` フラグが `false` であることを確認してください。
-
-```ts
-import react from "@react-router/dev/vite";
-import { defineConfig } from "vite";
-export default defineConfig({
-  plugins: [react({ ssr: false })],
-});
+```
+npx create-react-router@latest --template remix-run/react-router-templates/vercel
 ```
 
-アプリをビルドします。
+- サーバーレンダリング
+- Tailwind CSS
 
-```shellscript
-npx vite build
+### Cloudflare Workers と D1
+
+```
+npx create-react-router@latest --template remix-run/react-router-templates/cloudflare-d1
 ```
 
-次に、`build/client` フォルダーを任意の静的ホストにデプロイします。
+- サーバーレンダリング
+- Drizzle ORM を使用した D1 データベース
+- Tailwind CSS
 
-すべてのリクエストが `index.html` にルーティングされるようにする必要があります。これはホスト/サーバーごとに異なるため、ホスト/サーバーでその方法を見つける必要があります。
+### Cloudflare Workers
 
-[netlify_button]: https://www.netlify.com/img/deploy/button.svg
-[netlify_spa]: https://app.netlify.com/start/deploy?repository=https://github.com/ryanflorence/templates&create_from_path=netlify-spa
-[netlify_spa]: https://app.netlify.com/start/deploy?repository=https://github.com/ryanflorence/templates&create_from_path=netlify
-[vercel_button]: https://vercel.com/button
-[vercel_spa]: https://vercel.com/new/clone?repository-url=https://github.com/ryanflorence/templates/tree/main/vercel-spa
-[cloudflare_button]: https://deploy.workers.cloudflare.com/button
-[cloudflare_spa]: https://deploy.workers.cloudflare.com/?url=https://github.com/ryanflorence/templates/tree/main/cloudflare-spa
-[cloudflare]: https://deploy.workers.cloudflare.com/?url=https://github.com/ryanflorence/templates/tree/main/cloudflare
+```
+npx create-react-router@latest --template remix-run/react-router-templates/cloudflare
+```
+
+- サーバーレンダリング
+- Tailwind CSS
+
+### Netlify
+
+```
+npx create-react-router@latest --template remix-run/react-router-templates/netlify
+```
+
+- サーバーレンダリング
+- Tailwind CSS

@@ -309,9 +309,6 @@ function Favorite({
 
 <img class="tutorial" src="/_docs/v7_address_book_tutorial/02.webp" />
 
-[file-route-conventions]: https://reactrouter.com/en/main/file-based-routing
-[contacts-1]: /contacts/1
-
 ## ネストされたルートとアウトレット
 
 React Router はネストされたルーティングをサポートしています。子ルートを親レイアウト内でレンダリングするには、親に [`Outlet`][outlet-component] をレンダリングする必要があります。修正しましょう。`app/root.tsx` を開き、中にアウトレットをレンダリングします。
@@ -344,8 +341,6 @@ export default function App() {
 これで、子ルートがアウトレットを通してレンダリングされるはずです。
 
 <img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/03.webp" />
-
-[outlet-component]: https://reactrouter.com/en/main/components/outlet
 
 ## クライアントサイドルーティング
 
@@ -491,8 +486,6 @@ export default function App({
 
 これは、React Router が自動的な型安全性を実現するために、[アプリ内の各ルートの型を生成している][type-safety]からです。
 
-[type-safety]: https://reactrouter.com/en/main/guides/type-safety
-
 ## `HydrateFallback` の追加
 
 先ほど、サーバーサイドレンダリングを行わない[シングルページアプリケーション][spa]に取り組んでいると述べました。[`react-router.config.ts`][react-router-config]の中を見ると、これが単純なブール値で設定されていることがわかります。
@@ -527,10 +520,6 @@ export function HydrateFallback() {
 これで、ページをリロードすると、アプリがハイドレートされる前に、読み込みスプラッシュが一瞬表示されるようになります。
 
 <img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/05.webp" />
-
-[spa]: https://ja.wikipedia.org/wiki/%E3%82%B7%E3%83%B3%E3%82%B0%E3%83%AB%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3
-[react-router-config]: https://github.com/remix-run/react-router/blob/main/examples/address-book/app/react-router.config.ts
-[hydrate-fallback]: https://reactrouter.com/en/main/routers/create-browser-router#hydratefallback
 
 ## インデックスルート
 
@@ -578,8 +567,6 @@ export default function Home() {
 <img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/07.webp" />
 
 はい、これで空白スペースはなくなりました。ダッシュボード、統計、フィードなどをインデックスルートに配置するのが一般的です。これらはデータローディングにも参加できます。
-
-[index-route]: https://reactrouter.com/en/main/route/index-route
 
 ## Aboutルートの追加
 
@@ -832,9 +819,6 @@ export default {
 
 </docs-warning>
 
-[pre-rendering]: https://reactrouter.com/en/main/guides/pre-rendering
-[about-page]: /about
-
 ## サーバーサイドレンダリング
 
 React Router は、[シングルページアプリケーション][spa]を構築するための優れたフレームワークです。多くのアプリケーションはクライアントサイドレンダリングのみで十分に機能し、*場合によっては*ビルド時にいくつかのページを静的にプリレンダリングするだけで済みます。
@@ -868,9 +852,6 @@ export async function loader() {
 ```
 
 `ssr` を `true` に設定するか `false` に設定するかは、あなたとユーザーのニーズによって異なります。どちらの戦略も完全に有効です。このチュートリアルの残りの部分では、サーバーサイドレンダリングを使用しますが、すべてのレンダリング戦略が React Router で第一級市民であることを知っておいてください。
-
-[spa]: https://ja.wikipedia.org/wiki/%E3%82%B7%E3%83%B3%E3%82%B0%E3%83%AB%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3
-[loader]: https://reactrouter.com/en/main/route/loader
 
 ## ローダーにおける URL パラメータ
 
@@ -951,9 +932,6 @@ React Routerは、データミューテーションのプリミティブとし�
 
 React Routerは、このフォームナビゲーションを処理するサーバー側のコードがないため、405を送信します。
 
-[url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-[action]: ../route/action
-
 ## コンタクトの作成
 
 ルートルートで `action` 関数をエクスポートすることで、新しいコンタクトを作成します。ユーザーが「新規」ボタンをクリックすると、フォームはルートルートの action に `POST` します。
@@ -988,9 +966,6 @@ export async function action() {
 実際、すべてが HTML と HTTP であるため、JavaScript を無効にしても、すべてが機能します。React Router がフォームをシリアライズしてサーバーに [`fetch`][fetch] リクエストを行う代わりに、ブラウザがフォームをシリアライズしてドキュメントリクエストを行います。そこから React Router はページをサーバー側でレンダリングして送信します。どちらの場合でも、最終的には同じ UI になります。
 
 ただし、JavaScript は残しておきます。なぜなら、回転するファビコンや静的なドキュメントよりも優れたユーザーエクスペリエンスを実現するつもりだからです。
-
-[form-component]: https://reactrouter.com/en/main/components/form
-[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/fetch
 
 ## データの更新
 
@@ -1196,14 +1171,6 @@ export async function action({
 
 最後に一つ。JavaScript がない場合、[`redirect`][redirect] は通常のリダイレクトになります。ただし、JavaScript がある場合はクライアントサイドのリダイレクトになるため、ユーザーはスクロール位置やコンポーネントの状態などのクライアントの状態を失うことはありません。
 
-[form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
-[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/fetch
-[object-from-entries]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
-[request]: https://developer.mozilla.org/en-US/docs/Web/API/Request
-[request-form-data]: https://developer.mozilla.org/en-US/docs/Web/API/Request/formData
-[redirect]: https://remix.run/api/remix#redirect
-[response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
-
 ## 新規レコードを編集ページにリダイレクトする
 
 リダイレクトの方法がわかったので、新規連絡先を作成するアクションを更新して、編集ページにリダイレクトするようにしましょう。
@@ -1326,8 +1293,6 @@ export default function SidebarLayout({
 この例では、アイドル状態でない場合に、アプリのメイン部分に`"loading"`クラスを追加します。CSSは、短い遅延の後（高速な読み込みでUIがちらつくのを避けるため）に、素敵なフェードを追加します。ただし、上部にスピナーやローディングバーを表示するなど、好きなように変更できます。
 
 <img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/18.webp" />
-
-[use-navigation]: https://reactrouter.com/en/main/hooks/use-navigation
 
 ## レコードの削除
 
@@ -1482,9 +1447,6 @@ export async function loader({
 これは `POST` ではなく `GET` であるため、React Router は `action` 関数を呼び出しません。`GET` `form` を送信することは、リンクをクリックすることと同じです。URL のみが変更されます。
 
 これは通常のページナビゲーションでもあることを意味します。戻るボタンをクリックして、元の場所に戻ることができます。
-
-[url-search-params]: https://developer.mozilla.org/ja/docs/Web/API/URLSearchParams
-[form-data]: https://developer.mozilla.org/ja/docs/Web/API/FormData
 
 ## URLとフォームの状態の同期
 
@@ -1961,77 +1923,42 @@ function Favorite({
 
 これで、星をクリックすると、*すぐに*新しい状態に変わります。
 
-***
+---
 
 以上です！React Router を試していただきありがとうございます。このチュートリアルが、優れたユーザーエクスペリエンスを構築するための確かなスタートとなることを願っています。他にもできることはたくさんあるので、必ずすべての [API][react-router-apis] を確認してください 😀
 
 [http-localhost-5173]: http://localhost:5173
-
 [root-route]: ../explanation/special-files#roottsx
-
 [error-boundaries]: ../how-to/error-boundary
-
 [links]: ../start/framework/route-module#links
-
 [outlet-component]: https://api.reactrouter.com/v7/functions/react_router.Outlet
-
 [file-route-conventions]: ../how-to/file-route-conventions
-
 [contacts-1]: http://localhost:5173/contacts/1
-
 [link-component]: https://api.reactrouter.com/v7/functions/react_router.Link
-
 [client-loader]: ../start/framework/route-module#clientloader
-
 [spa]: ../how-to/spa
-
 [type-safety]: ../explanation/type-safety
-
 [react-router-config]: ../explanation/special-files#react-routerconfigts
-
 [rendering-strategies]: ../start/framework/rendering
-
 [index-route]: ../start/framework/routing#index-routes
-
 [layout-route]: ../start/framework/routing#layout-routes
-
 [hydrate-fallback]: ../start/framework/route-module#hydratefallback
-
 [about-page]: http://localhost:5173/about
-
 [pre-rendering]: ../how-to/pre-rendering
-
 [url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-
 [loader]: ../start/framework/route-module#loader
-
 [action]: ../start/framework/route-module#action
-
 [form-component]: https://api.reactrouter.com/v7/functions/react_router.Form
-
 [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/fetch
-
 [form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
-
 [object-from-entries]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
-
 [request-form-data]: https://developer.mozilla.org/en-US/docs/Web/API/Request/formData
-
 [request]: https://developer.mozilla.org/en-US/docs/Web/API/Request
-
 [redirect]: https://api.reactrouter.com/v7/functions/react_router.redirect
-
 [response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
-
 [nav-link]: https://api.reactrouter.com/v7/functions/react_router.NavLink
-
 [use-navigation]: https://api.reactrouter.com/v7/functions/react_router.useNavigation
-
 [use-navigate]: https://api.reactrouter.com/v7/functions/react_router.useNavigate
-
 [use-submit]: https://api.reactrouter.com/v7/functions/react_router.useSubmit
-
 [use-fetcher]: https://api.reactrouter.com/v7/functions/react_router.useFetcher
-
 [react-router-apis]: https://api.reactrouter.com/v7/modules/react_router
-

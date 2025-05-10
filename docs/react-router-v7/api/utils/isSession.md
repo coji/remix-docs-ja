@@ -10,5 +10,4 @@ title: isSession
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.isSession.html)
 
-オブジェクトが Remix セッションである場合に true を返します。
-
+オブジェクトが React Router セッションである場合に true を返します。

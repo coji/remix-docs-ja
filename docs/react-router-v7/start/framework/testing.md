@@ -5,7 +5,7 @@ order: 9
 
 # テスト
 
-[MODES: framework]
+[MODES: framework, data]
 
 ## はじめに
 

@@ -22,7 +22,8 @@ const root = document.getElementById("root");
 ReactDOM.createRoot(root).render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} />
+      <Route path=
+"/" element={<App />} />
     </Routes>
   </BrowserRouter>
 );
@@ -196,8 +197,8 @@ export default function CategoryProduct() {
 
 ```tsx
 let params = useParams();
-// params["*"] には、files/ の後の残りのURLが含まれます
-let filePath = params["*"];
+// params[\"*\"] には、files/ の後の残りのURLが含まれます
+let filePath = params[\"*\"];
 ```
 
 `*` を分割できます。新しい名前を割り当てる必要があります。一般的な名前は `splat` です。
@@ -231,3 +232,7 @@ function Header() {
   );
 }
 ```
+
+---
+
+次へ: [ナビゲーション](./navigating)

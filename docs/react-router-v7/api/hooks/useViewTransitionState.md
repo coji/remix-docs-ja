@@ -4,7 +4,7 @@ title: useViewTransitionState
 
 # useViewTransitionState
 
-[MODES: framework, data, declarative]
+[MODES: framework, data]
 
 ## 概要
 
@@ -31,4 +31,3 @@ _ドキュメントなし_
 [modes: framework, data, declarative]
 
 _ドキュメントなし_
-
