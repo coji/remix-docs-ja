@@ -11,3 +11,4 @@ prisma/dev.db-journal
 exports
 .react-router
 
+app/generated
