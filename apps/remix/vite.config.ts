@@ -14,7 +14,9 @@ export default defineConfig({
     tailwindcss(),
     mdx({ remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter] }),
     reactRouter(),
-    tsconfigPaths(),
+    tsconfigPaths({
+      skip: (dir) => dir.includes('projects') || dir.includes('node_modules'),
+    }),
   ],
   build: {
     rollupOptions: {
