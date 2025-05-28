@@ -51,7 +51,7 @@ export const translateByGemini = async ({
 
   try {
     const ret = await generateObject({
-      model: google('gemini-2.5-pro-exp-03-25'),
+      model: google('gemini-2.5-flash-preview-05-20'),
       messages,
       schema: outputSchema,
       temperature: 0,

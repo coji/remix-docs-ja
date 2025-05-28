@@ -1,10 +1,10 @@
 import { getFormProps, getTextareaProps, useForm } from '@conform-to/react'
 import { parseWithZod } from '@conform-to/zod'
-import type { File, Project } from '@prisma/client'
 import { Form, useNavigation, useOutletContext } from 'react-router'
 import { z } from 'zod'
 import { zx } from 'zodix'
 import { Button, Label, Stack, Textarea } from '~/components/ui'
+import type { File, Project } from '~/generated/prisma'
 import type { Route } from './+types/route'
 import { updateFileOutput } from './mutations.server'
 
