@@ -1,5 +1,5 @@
-import { PrismaClient } from '~/generated/prisma'
 import createDebug from 'debug'
+import { PrismaClient } from '~/generated/prisma'
 
 const debug = createDebug('app:db')
 

@@ -1,4 +1,4 @@
-import type { Prisma, Project } from '@prisma/client'
+import type { Prisma, Project } from '~/generated/prisma'
 import { prisma } from '~/services/db.server'
 import type { RepositoryFile } from '~/services/repository/types'
 

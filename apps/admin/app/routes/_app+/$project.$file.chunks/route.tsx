@@ -1,6 +1,6 @@
-import type { File, Project } from '@prisma/client'
 import { useOutletContext } from 'react-router'
 import { Label, Textarea } from '~/components/ui'
+import type { File, Project } from '~/generated/prisma'
 import { splitMarkdownByHeaders } from '~/libs/split-markdown'
 
 export default function TestPage() {
