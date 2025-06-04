@@ -85,11 +85,46 @@ const STOP_WORDS = new Set([
 ])
 
 /**
+ * Extract API terms from text (React Router API names, camelCase, etc.)
+ */
+function extractApiTerms(text: string): string[] {
+  const apiTerms = []
+  
+  // Extract camelCase terms (e.g., useNavigate, createBrowserRouter)
+  const camelCaseRegex = /[a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*/g
+  const camelCaseMatches = text.match(camelCaseRegex) || []
+  apiTerms.push(...camelCaseMatches.map(term => term.toLowerCase()))
+  
+  // Extract common React Router patterns
+  const reactRouterPatterns = [
+    /use[A-Z][a-zA-Z0-9]*/g,  // useNavigate, useLocation, etc.
+    /create[A-Z][a-zA-Z0-9]*/g, // createBrowserRouter, etc.
+    /[a-z]+Router/g, // BrowserRouter, MemoryRouter, etc.
+  ]
+  
+  for (const pattern of reactRouterPatterns) {
+    const matches = text.match(pattern) || []
+    apiTerms.push(...matches.map(term => term.toLowerCase()))
+  }
+  
+  // Extract code-like terms (alphanumeric with underscores)
+  const codeTermRegex = /[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]/g
+  const codeMatches = text.match(codeTermRegex) || []
+  apiTerms.push(...codeMatches.map(term => term.toLowerCase()))
+  
+  return [...new Set(apiTerms)] // Remove duplicates
+}
+
+/**
  * Simple tokenizer for client-side use (without kuromoji)
- * This is a fallback until we implement proper Japanese tokenization
+ * Enhanced with API term extraction for React Router API names
  */
 function simpleTokenize(text: string): string[] {
-  return text
+  // Extract API terms first
+  const apiTerms = extractApiTerms(text)
+  
+  // Regular tokenization
+  const regularTokens = text
     .toLowerCase()
     .replace(/[^\w\s\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/g, ' ')
     .split(/\s+/)
@@ -97,6 +132,10 @@ function simpleTokenize(text: string): string[] {
       (token) =>
         token.length > 1 && !STOP_WORDS.has(token) && !/^[0-9]+$/.test(token),
     )
+  
+  // Combine and deduplicate
+  const allTokens = [...regularTokens, ...apiTerms]
+  return [...new Set(allTokens)].filter(token => token.length > 0)
 }
 
 /**
