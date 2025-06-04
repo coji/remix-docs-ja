@@ -43,10 +43,14 @@ function extractTextFromHtml(html: string): string {
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function generateDocumentSections(doc: any): Document[] {
   const documents: Document[] = []
+  
+  // Remove product prefix from path (e.g., react-router-v7/ or remix/)
+  const cleanPath = doc.attributes.slug.replace(/^(react-router-v7|remix)\//, '')
+  
   const baseDoc = {
     id: doc.attributes.slug,
     title: doc.attributes.title,
-    path: `/${doc.attributes.slug}`,
+    path: `/${cleanPath}`,
     section: undefined,
   }
 
@@ -80,7 +84,7 @@ function generateDocumentSections(doc: any): Document[] {
         documents.push({
           ...baseDoc,
           id: `${doc.attributes.slug}#${id}`,
-          path: `/${doc.attributes.slug}#${id}`,
+          path: `/${cleanPath}#${id}`,
           section: title,
           content: `${title} ${sectionContent}`,
           tokens: [],

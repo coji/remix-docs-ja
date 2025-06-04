@@ -179,7 +179,7 @@ function calculateBM25Score(
  */
 function generateExcerpt(
   title: string,
-  queryTerms: string[],
+  _queryTerms: string[],
   maxLength = 150,
 ): string {
   // For now, just return the title as excerpt
