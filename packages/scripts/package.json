@@ -52,6 +52,7 @@
     "rehype-stringify": "catalog:",
     "remark-gfm": "catalog:",
     "remark-parse": "catalog:",
-    "remark-rehype": "catalog:"
+    "remark-rehype": "catalog:",
+    "kuromoji": "^0.1.2"
   }
 }
