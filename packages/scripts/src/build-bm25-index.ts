@@ -48,7 +48,7 @@ function generateDocumentSections(doc: any): Document[] {
   const cleanPath = doc.attributes.slug.replace(/^(react-router-v7|remix)\//, '')
   
   const baseDoc = {
-    id: doc.attributes.slug,
+    id: cleanPath,
     title: doc.attributes.title,
     path: `/${cleanPath}`,
     section: undefined,
@@ -71,7 +71,7 @@ function generateDocumentSections(doc: any): Document[] {
 
   // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
   while ((match = sectionRegex.exec(doc.html)) !== null) {
-    const [fullMatch, level, id, title] = match
+    const [fullMatch, _level, id, title] = match
     const sectionStart = match.index
 
     // Extract content between sections
@@ -83,7 +83,7 @@ function generateDocumentSections(doc: any): Document[] {
         // Only include substantial content
         documents.push({
           ...baseDoc,
-          id: `${doc.attributes.slug}#${id}`,
+          id: `${cleanPath}#${id}`,
           path: `/${cleanPath}#${id}`,
           section: title,
           content: `${title} ${sectionContent}`,
