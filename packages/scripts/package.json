@@ -16,6 +16,7 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@types/hast": "catalog:",
+    "@types/kuromoji": "catalog:",
     "@types/mdast": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
@@ -42,6 +43,7 @@
     "hast": "catalog:",
     "hast-util-from-html": "catalog:",
     "hast-util-to-html": "catalog:",
+    "kuromoji": "catalog:",
     "mdast": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
@@ -52,7 +54,6 @@
     "rehype-stringify": "catalog:",
     "remark-gfm": "catalog:",
     "remark-parse": "catalog:",
-    "remark-rehype": "catalog:",
-    "kuromoji": "^0.1.2"
+    "remark-rehype": "catalog:"
   }
 }

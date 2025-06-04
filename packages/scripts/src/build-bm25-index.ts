@@ -4,17 +4,17 @@
  * Build BM25 search index from documentation markdown files
  */
 
-import { readFileSync, writeFileSync } from 'node:fs';
-import { mkdir } from 'node:fs/promises';
-import { join } from 'node:path';
-import glob from 'fast-glob';
-import { BM25SearchEngine, type Document } from './services/bm25.js';
-import { processMarkdown } from './services/md.server.js';
+import glob from 'fast-glob'
+import { readFileSync, writeFileSync } from 'node:fs'
+import { mkdir } from 'node:fs/promises'
+import { join } from 'node:path'
+import { BM25SearchEngine, type Document } from './services/bm25.js'
+import { processMarkdown } from './services/md.server.js'
 
 interface BuildOptions {
-  docsPath: string;
-  outputPath: string;
-  product: 'react-router-v7' | 'remix';
+  docsPath: string
+  outputPath: string
+  product: 'react-router-v7' | 'remix'
 }
 
 /**
@@ -33,45 +33,50 @@ function extractTextFromHtml(html: string): string {
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
     .replace(/\s+/g, ' ')
-    .trim();
+    .trim()
 }
 
 /**
  * Generate document sections for better granular search
  */
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function generateDocumentSections(doc: any): Document[] {
-  const documents: Document[] = [];
+  const documents: Document[] = []
   const baseDoc = {
     id: doc.attributes.slug,
     title: doc.attributes.title,
     path: `/${doc.attributes.slug}`,
     section: undefined,
-  };
+  }
 
   // Main document
-  const mainContent = extractTextFromHtml(doc.html);
+  const mainContent = extractTextFromHtml(doc.html)
   documents.push({
     ...baseDoc,
     content: `${doc.attributes.title} ${mainContent}`,
     tokens: [],
-    length: 0
-  });
+    length: 0,
+  })
 
   // If the document has sections (h2, h3), create separate documents for them
-  const sectionRegex = /<h([23])[^>]*id="([^"]*)"[^>]*>([^<]*)<\/h[23]>/g;
-  let match;
-  let lastIndex = 0;
+  const sectionRegex = /<h([23])[^>]*id="([^"]*)"[^>]*>([^<]*)<\/h[23]>/g
+  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
+  let match
+  let lastIndex = 0
 
+  // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
   while ((match = sectionRegex.exec(doc.html)) !== null) {
-    const [fullMatch, level, id, title] = match;
-    const sectionStart = match.index;
-    
+    const [fullMatch, level, id, title] = match
+    const sectionStart = match.index
+
     // Extract content between sections
     if (lastIndex < sectionStart) {
-      const sectionHtml = doc.html.slice(lastIndex, sectionStart);
-      const sectionContent = extractTextFromHtml(sectionHtml);
-      
-      if (sectionContent.length > 50) { // Only include substantial content
+      const sectionHtml = doc.html.slice(lastIndex, sectionStart)
+      const sectionContent = extractTextFromHtml(sectionHtml)
+
+      if (sectionContent.length > 50) {
+        // Only include substantial content
         documents.push({
           ...baseDoc,
           id: `${doc.attributes.slug}#${id}`,
@@ -79,74 +84,76 @@ function generateDocumentSections(doc: any): Document[] {
           section: title,
           content: `${title} ${sectionContent}`,
           tokens: [],
-          length: 0
-        });
+          length: 0,
+        })
       }
     }
-    
-    lastIndex = match.index + fullMatch.length;
+
+    lastIndex = match.index + fullMatch.length
   }
 
-  return documents;
+  return documents
 }
 
 /**
  * Build BM25 index for a specific product
  */
 export async function buildBM25Index(options: BuildOptions): Promise<void> {
-  console.log(`🔍 Building BM25 index for ${options.product}...`);
-  
-  const engine = new BM25SearchEngine();
-  await engine.initialize();
+  console.log(`🔍 Building BM25 index for ${options.product}...`)
+
+  const engine = new BM25SearchEngine()
+  await engine.initialize()
 
   // Collect all markdown files
-  const pattern = join(options.docsPath, '**/*.md');
-  const files = await glob(pattern);
-  
-  console.log(`📚 Found ${files.length} documentation files`);
+  const pattern = join(options.docsPath, '**/*.md')
+  const files = await glob(pattern)
 
-  const allDocuments: Document[] = [];
+  console.log(`📚 Found ${files.length} documentation files`)
+
+  const allDocuments: Document[] = []
 
   // Process each file
   for (const file of files) {
     try {
-      const content = readFileSync(file, 'utf-8');
-      const slug = file.replace(/^.*\/docs\//, '').replace(/\.md$/, '');
-      const doc = await processMarkdown(content);
-      
+      const content = readFileSync(file, 'utf-8')
+      const slug = file.replace(/^.*\/docs\//, '').replace(/\.md$/, '')
+      const doc = await processMarkdown(content)
+
       // Add slug to attributes for compatibility
-      doc.attributes.slug = slug;
+      doc.attributes.slug = slug
 
       // Skip hidden documents
       if (doc.attributes.hidden) {
-        continue;
+        continue
       }
 
       // Generate document sections
-      const documents = generateDocumentSections(doc);
-      allDocuments.push(...documents);
+      const documents = generateDocumentSections(doc)
+      allDocuments.push(...documents)
 
-      console.log(`📄 Processed: ${doc.attributes.title} (${documents.length} sections)`);
+      console.log(
+        `📄 Processed: ${doc.attributes.title} (${documents.length} sections)`,
+      )
     } catch (error) {
-      console.warn(`⚠️  Failed to process ${file}:`, error);
+      console.warn(`⚠️  Failed to process ${file}:`, error)
     }
   }
 
-  console.log(`🏗️  Building index for ${allDocuments.length} documents...`);
+  console.log(`🏗️  Building index for ${allDocuments.length} documents...`)
 
   // Build the index
-  const index = engine.buildIndex(allDocuments);
-  
+  const index = engine.buildIndex(allDocuments)
+
   // Create output directory
-  await mkdir(join(options.outputPath, 'bm25'), { recursive: true });
+  await mkdir(join(options.outputPath, 'bm25'), { recursive: true })
 
   // Save index
-  const indexData = engine.serializeIndex();
+  const indexData = engine.serializeIndex()
   writeFileSync(
     join(options.outputPath, 'bm25', 'index.json'),
     indexData,
-    'utf-8'
-  );
+    'utf-8',
+  )
 
   // Save metadata separately for faster loading
   const metadata = {
@@ -154,51 +161,55 @@ export async function buildBM25Index(options: BuildOptions): Promise<void> {
     averageDocumentLength: index.averageDocumentLength,
     buildTime: new Date().toISOString(),
     product: options.product,
-    version: '1.0.0'
-  };
+    version: '1.0.0',
+  }
 
   writeFileSync(
     join(options.outputPath, 'bm25', 'metadata.json'),
     JSON.stringify(metadata, null, 2),
-    'utf-8'
-  );
+    'utf-8',
+  )
 
-  console.log(`✅ BM25 index built successfully!`);
-  console.log(`   📊 Total documents: ${index.totalDocuments}`);
-  console.log(`   📏 Average length: ${Math.round(index.averageDocumentLength)} tokens`);
-  console.log(`   💾 Output: ${options.outputPath}/bm25/`);
+  console.log('✅ BM25 index built successfully!')
+  console.log(`   📊 Total documents: ${index.totalDocuments}`)
+  console.log(
+    `   📏 Average length: ${Math.round(index.averageDocumentLength)} tokens`,
+  )
+  console.log(`   💾 Output: ${options.outputPath}/bm25/`)
 }
 
 /**
  * CLI entry point
  */
 async function main() {
-  const product = process.argv[2] as 'react-router-v7' | 'remix';
-  
+  const product = process.argv[2] as 'react-router-v7' | 'remix'
+
   if (!product || !['react-router-v7', 'remix'].includes(product)) {
-    console.error('Usage: tsx build-bm25-index.ts <react-router-v7|remix>');
-    process.exit(1);
+    console.error('Usage: tsx build-bm25-index.ts <react-router-v7|remix>')
+    process.exit(1)
   }
 
-  const docsPath = join(process.cwd(), '../../docs', product);
-  const outputPath = join(process.cwd(), '../../apps', 
-    product === 'react-router-v7' ? 'react-router' : 'remix', 
-    'public/search-index'
-  );
+  const docsPath = join(process.cwd(), '../../docs', product)
+  const outputPath = join(
+    process.cwd(),
+    '../../apps',
+    product === 'react-router-v7' ? 'react-router' : 'remix',
+    'public/search-index',
+  )
 
   try {
     await buildBM25Index({
       docsPath,
       outputPath,
-      product
-    });
+      product,
+    })
   } catch (error) {
-    console.error('❌ Failed to build BM25 index:', error);
-    process.exit(1);
+    console.error('❌ Failed to build BM25 index:', error)
+    process.exit(1)
   }
 }
 
 // Run if called directly
 if (import.meta.url === new URL(process.argv[1], 'file:').href) {
-  main();
+  main()
 }

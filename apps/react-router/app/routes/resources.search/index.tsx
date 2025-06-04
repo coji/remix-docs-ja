@@ -11,7 +11,6 @@ import {
   HStack,
   Input,
 } from '~/components/ui'
-import type { Pagefind } from '~/services/pagefind.types'
 import type { Route } from './+types'
 import {
   SearchLoading,
@@ -23,6 +22,41 @@ import {
   SearchTrigger,
 } from './components'
 import { useHotkey } from './hooks'
+import { search } from './search-bm25'
+
+// BM25 search types (compatible with Pagefind for UI)
+interface BM25SearchResult {
+  id: string
+  title: string
+  path: string
+  excerpt: string
+  score: {
+    bm25: number
+    vector: number
+    combined: number
+  }
+  highlights: string[]
+}
+
+interface BM25SearchResponse {
+  results: BM25SearchResult[]
+  query: string
+  total: number
+  metadata?: {
+    algorithm: string
+    totalDocuments: number
+    averageDocumentLength: number
+    queryTerms: string[]
+  }
+}
+
+// Compatibility interface for existing UI
+interface CompatibleSearchResult {
+  url: string
+  meta: {
+    title: string
+  }
+}
 
 export const loader = () => {
   return Response.json({})
@@ -37,13 +71,26 @@ export const clientLoader = async ({ request }: Route.ClientLoaderArgs) => {
   const query = url.searchParams.get('q')
   if (!query) return { results: [] }
 
-  const pagefind = (await import(
-    /* @vite-ignore */ '/pagefind/pagefind.js?url'
-  )) as unknown as Pagefind
-  await pagefind.init()
-  const ret = await pagefind.search(query)
-  const results = await Promise.all(ret.results.map((result) => result.data()))
-  return { results }
+  try {
+    // Call our BM25 search API
+    const data = await search({ query, limit: 10 })
+
+    // Convert BM25 results to Pagefind-compatible format for existing UI
+    const compatibleResults: CompatibleSearchResult[] = data.results.map(
+      (result) => ({
+        url: result.path,
+        meta: {
+          title: result.title,
+        },
+      }),
+    )
+
+    return { results: compatibleResults }
+  } catch (error) {
+    console.error('Search error:', error)
+    // Fallback to empty results
+    return { results: [] }
+  }
 }
 clientLoader.hydrate = true
 
