@@ -8,3 +8,4 @@ docs/
 .wrangler
 prebuild
 .react-router
+public/search-index
