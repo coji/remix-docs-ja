@@ -169,29 +169,29 @@ export class BM25SearchEngine {
    */
   private extractApiTerms(text: string): string[] {
     const apiTerms = []
-    
+
     // Extract camelCase terms (e.g., useNavigate, createBrowserRouter)
     const camelCaseRegex = /[a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*/g
     const camelCaseMatches = text.match(camelCaseRegex) || []
-    apiTerms.push(...camelCaseMatches.map(term => term.toLowerCase()))
-    
+    apiTerms.push(...camelCaseMatches.map((term) => term.toLowerCase()))
+
     // Extract common React Router patterns
     const reactRouterPatterns = [
-      /use[A-Z][a-zA-Z0-9]*/g,  // useNavigate, useLocation, etc.
+      /use[A-Z][a-zA-Z0-9]*/g, // useNavigate, useLocation, etc.
       /create[A-Z][a-zA-Z0-9]*/g, // createBrowserRouter, etc.
       /[a-z]+Router/g, // BrowserRouter, MemoryRouter, etc.
     ]
-    
+
     for (const pattern of reactRouterPatterns) {
       const matches = text.match(pattern) || []
-      apiTerms.push(...matches.map(term => term.toLowerCase()))
+      apiTerms.push(...matches.map((term) => term.toLowerCase()))
     }
-    
+
     // Extract code-like terms (alphanumeric with underscores)
     const codeTermRegex = /[a-zA-Z][a-zA-Z0-9_]*[a-zA-Z0-9]/g
     const codeMatches = text.match(codeTermRegex) || []
-    apiTerms.push(...codeMatches.map(term => term.toLowerCase()))
-    
+    apiTerms.push(...codeMatches.map((term) => term.toLowerCase()))
+
     return [...new Set(apiTerms)] // Remove duplicates
   }
 
@@ -206,7 +206,7 @@ export class BM25SearchEngine {
 
     // Extract API terms from title if provided
     const apiTerms = title ? this.extractApiTerms(title) : []
-    
+
     // Also extract API terms from the text itself
     apiTerms.push(...this.extractApiTerms(text))
 
@@ -223,9 +223,9 @@ export class BM25SearchEngine {
 
     // Combine regular tokens with API terms
     const allTokens = [...regularTokens, ...apiTerms]
-    
+
     // Remove duplicates and filter out empty strings
-    return [...new Set(allTokens)].filter(token => token.length > 0)
+    return [...new Set(allTokens)].filter((token) => token.length > 0)
   }
 
   /**

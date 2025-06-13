@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "biome lint .",
     "format": "prettier --cache -c .",
+    "format:fix": "prettier --write .",
     "test": "vitest run",
     "typecheck": "tsc",
     "validate": "run-s lint format typecheck"
