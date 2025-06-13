@@ -9,6 +9,7 @@
     "start": "react-router-serve ./build/server/index.js",
     "lint": "biome lint .",
     "format": "prettier --cache -c .",
+    "format:fix": "prettier --write .",
     "test": "vitest --run",
     "typecheck": "react-router typegen && tsc",
     "validate": "run-s lint format typecheck test"
