@@ -19,7 +19,6 @@
     "@conform-to/react": "catalog:",
     "@conform-to/zod": "catalog:",
     "@prisma/client": "catalog:",
-    "@radix-ui/react-icons": "catalog:",
     "@react-router/fs-routes": "catalog:",
     "@react-router/node": "catalog:",
     "@react-router/serve": "catalog:",
