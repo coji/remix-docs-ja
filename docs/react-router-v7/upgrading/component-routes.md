@@ -201,7 +201,7 @@ ReactDOM.hydrateRoot(
 
 ## 5. 色々なものの配置先を入れ替える
 
-`root.tsx` と `entry.client.tsx` の間で、いくつかのものの配置先を入れ替えしたい場合があります。
+`root.tsx` と `entry.client.tsx` の間で、いくつかのものの配置先を入れ替えたい場合があります。
 
 一般的に:
 
