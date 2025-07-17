@@ -1,5 +1,4 @@
 import { google } from '@ai-sdk/google'
-import type { CoreMessage } from 'ai'
 import { generateObject } from 'ai'
 import { z } from 'zod'
 
@@ -29,30 +28,23 @@ export const translateByGemini = async ({
   extraPrompt,
   prevTranslatedText,
 }: TranslateProps): Promise<TranslateSuccess | TranslateError> => {
-  const systemPrompt =
-    'Translate the following text to Japanese. Markdowns should be left intact. If previous translated text is provided, try to keep the existing translation as much as possible and only translate the changed parts.'
-  const messages: CoreMessage[] = [
-    {
-      role: 'system',
-      content: systemPrompt,
-    },
-    {
-      role: 'user',
-      content: `Previous translated text: ${prevTranslatedText ?? ''}\n\nSource text: ${source}`,
-    },
-  ]
+  const system = `
+Translate the following text to Japanese.
+Frontmatter and Markdowns should be left intact.
 
-  if (extraPrompt) {
-    messages.push({
-      role: 'user',
-      content: extraPrompt,
-    })
-  }
+If previous translated text is provided, try to keep the existing translation as much as possible and only translate the changed parts.`
+
+  const prompt = `
+${prevTranslatedText ? `<PreviousTranslated>\n${prevTranslatedText}\n</PreviousTranslated>\n\n` : ''}
+<Source>\n${source}\n</Source>\n\n
+${extraPrompt ? `<ExtraPrompt>\n${extraPrompt}\n</ExtraPrompt>\n\n` : ''}
+`
 
   try {
     const ret = await generateObject({
-      model: google('gemini-2.5-flash-preview-05-20'),
-      messages,
+      model: google('gemini-2.5-flash'),
+      system,
+      prompt,
       schema: outputSchema,
       temperature: 0,
     })
