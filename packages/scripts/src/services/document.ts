@@ -15,6 +15,7 @@ export const getDoc = async (file: string, options: GetDocOptions) => {
     const headings = createTableOfContentsFromHeadings(doc.html)
     return { ...doc, headings }
   } catch (e) {
+    console.error(`Error reading file ${filepath}:`, e)
     return null
   }
 }
@@ -30,6 +31,7 @@ export const getDocJson = async (file: string) => {
       headings: { headingLevel: string; html: string; slug: string }[]
     }
   } catch (e) {
+    console.error(`Error reading file ${filepath}:`, e)
     return null
   }
 }

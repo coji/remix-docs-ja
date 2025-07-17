@@ -18,7 +18,7 @@ type PagefindIndexOptions = {
    * Only applies in multisite setups.
    */
 
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
+  // biome-ignore lint/complexity/noBannedTypes: mergeFilter is an object that can be used to filter results
   mergeFilter?: Object
   /**
    * If set, will ass the search term as a query parameter under this key, for use with Pagefind's highlighting script.
@@ -75,10 +75,10 @@ type PagefindSearchOptions = {
   /** Add more verbose console logging for this search query */
   verbose?: boolean
   /** The set of filters to execute with this search. Input type is extremely flexible, see the filtering docs for details */
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
+  // biome-ignore lint/complexity/noBannedTypes: filters is an object that can be used to filter results
   filters?: Object
   /** The set of sorts to use for this search, instead of relevancy */
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
+  // biome-ignore lint/complexity/noBannedTypes: sort is an object that can be used to sort results
   sort?: Object
 }
 

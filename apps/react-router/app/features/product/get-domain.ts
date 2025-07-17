@@ -17,8 +17,6 @@ const handleSpecialDomain = (hostname: string, productId?: string): string => {
   const baseDomain = getBaseDomain(hostname)
   if (!baseDomain) return hostname
 
-  const parts = hostname.split('.')
-
   if (productId) {
     return `${productId}.${baseDomain}`
   }

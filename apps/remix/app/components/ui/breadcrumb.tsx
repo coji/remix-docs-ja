@@ -61,7 +61,7 @@ const BreadcrumbPage = React.forwardRef<
   HTMLSpanElement,
   React.ComponentPropsWithoutRef<'span'>
 >(({ className, ...props }, ref) => (
-  // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
+  // biome-ignore lint/a11y/useFocusableInteractive: This is a static page
   <span
     ref={ref}
     role="link"

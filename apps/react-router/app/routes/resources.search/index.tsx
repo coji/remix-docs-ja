@@ -24,32 +24,6 @@ import {
 import { useHotkey } from './hooks'
 import { search } from './search-bm25'
 
-// BM25 search types (compatible with Pagefind for UI)
-interface BM25SearchResult {
-  id: string
-  title: string
-  path: string
-  excerpt: string
-  score: {
-    bm25: number
-    vector: number
-    combined: number
-  }
-  highlights: string[]
-}
-
-interface BM25SearchResponse {
-  results: BM25SearchResult[]
-  query: string
-  total: number
-  metadata?: {
-    algorithm: string
-    totalDocuments: number
-    averageDocumentLength: number
-    queryTerms: string[]
-  }
-}
-
 // Compatibility interface for existing UI
 interface CompatibleSearchResult {
   url: string
