@@ -4,6 +4,11 @@ title: HTTP ヘッダー
 
 # HTTP ヘッダー
 
+[MODES: framework]
+
+<br/>
+<br/>
+
 ヘッダーは主にルートモジュールの `headers` エクスポートで定義されます。`entry.server.tsx` でヘッダーを設定することもできます。
 
 ## ルートモジュールから

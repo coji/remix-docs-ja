@@ -4,6 +4,11 @@ title: ファイルアップロード
 
 # ファイルアップロード
 
+[モード: フレームワーク]
+
+<br/>
+<br/>
+
 React Router アプリケーションでファイルアップロードを処理します。このガイドでは、ファイルアップロードを簡単にするために、[Remix The Web][remix-the-web] プロジェクトのいくつかのパッケージを使用します。
 
 _このドキュメントのベースとなった[オリジナルのガイド](https://programmingarehard.com/2024/09/06/remix-file-uploads-updated.html/)を執筆してくれた David Adams に感謝します。さらに多くの例については、そちらを参照してください。_
@@ -209,4 +214,3 @@ export async function loader({ params }: Route.LoaderArgs) {
 [file-storage]: https://github.com/mjackson/remix-the-web/tree/main/packages/file-storage
 [file]: https://developer.mozilla.org/en-US/docs/Web/API/File
 [resource-route]: ../how-to/resource-routes
-

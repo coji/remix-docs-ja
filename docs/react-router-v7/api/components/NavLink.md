@@ -20,7 +20,7 @@ import { NavLink } from "react-router";
 <NavLink to="/message" />;
 ```
 
-状態は、className、style、および children のレンダー props を通じて利用できます。[NavLinkRenderProps](../Other/NavLinkRenderProps) を参照してください。
+状態は、className、style、および children のレンダー props を通じて利用できます。[NavLinkRenderProps](https://api.reactrouter.com/v7/types/react_router.NavLinkRenderProps) を参照してください。
 
 ```tsx
 <NavLink
@@ -78,7 +78,7 @@ a.transitioning {
 }
 ```
 
-`pending` は Framework および Data モードでのみ利用可能です。
+なお、`pending` は Framework および Data モードでのみ利用可能です。
 
 ### discover
 
@@ -227,13 +227,13 @@ function SomeComp() {
 })} />
 ```
 
-`pending` は Framework および Data モードでのみ利用可能です。
+なお、`pending` は Framework および Data モードでのみ利用可能です。
 
 ### to
 
 [modes: framework, data, declarative]
 
-文字列または部分的な [Path](../Other/Path) にすることができます。
+文字列または部分的な [Path](https://api.reactrouter.com/v7/interfaces/react_router.Path) にすることができます。
 
 ```tsx
 <Link to="/some/path" />
@@ -260,4 +260,3 @@ function SomeComp() {
 ```
 
 トランジションに特定のスタイルを適用するには、[useViewTransitionState](../hooks/useViewTransitionState) を参照してください。
-

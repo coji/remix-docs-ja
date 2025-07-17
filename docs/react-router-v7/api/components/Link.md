@@ -151,7 +151,7 @@ function SomeComp() {
 
 [modes: framework, data, declarative]
 
-文字列または部分的な [Path](../Other/Path) にすることができます。
+文字列または部分的な [Path](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) にすることができます。
 
 ```tsx
 <Link to="/some/path" />

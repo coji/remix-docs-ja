@@ -219,10 +219,10 @@ export function UserSearchCombobox() {
 
 ```tsx lines=[2,5]
 import { useFetcher } from "react-router";
-import type { Search } from "./search-users";
+import type { loader } from "./search-users";
 
 export function UserSearchCombobox() {
-  let fetcher = useFetcher<typeof Search.action>();
+  let fetcher = useFetcher<typeof loader>();
   // ...
 }
 ```
@@ -235,7 +235,7 @@ export function UserSearchCombobox() {
 import { useFetcher } from "react-router";
 
 export function UserSearchCombobox() {
-  let fetcher = useFetcher<typeof Search.action>();
+  let fetcher = useFetcher<typeof loader>();
   return (
     <div>
       <fetcher.Form method="get" action="/search-users">
@@ -261,7 +261,7 @@ export function UserSearchCombobox() {
 import { useFetcher } from "react-router";
 
 export function UserSearchCombobox() {
-  let fetcher = useFetcher<typeof Search.action>();
+  let fetcher = useFetcher<typeof loader>();
   return (
     <div>
       <fetcher.Form method="get" action="/search-users">
@@ -300,4 +300,3 @@ Fetcher は、`fetcher.submit` を使用してプログラムで送信できま�
 ```
 
 入力イベントのフォームが `fetcher.submit` の最初の引数として渡されることに注意してください。Fetcher は、そのフォームを使用してリクエストを送信し、その属性を読み取り、その要素からデータをシリアル化します。
-

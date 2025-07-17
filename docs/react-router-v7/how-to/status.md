@@ -4,6 +4,8 @@ title: ステータスコード
 
 # ステータスコード
 
+[MODES: framework ,data]
+
 ローダーとアクションから `data` でステータスコードを設定します。
 
 ```tsx filename=app/project.tsx lines=[3,12-15,20,23]
@@ -56,4 +58,3 @@ export async function loader({ params }: Route.ActionArgs) {
 ```
 
 `data` の throw に関する詳細は、[エラー境界](./error-boundary)を参照してください。
-

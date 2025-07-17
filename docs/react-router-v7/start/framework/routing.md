@@ -301,6 +301,18 @@ export async function loader({ params }: Route.LoaderArgs) {
 const { "*": splat } = params;
 ```
 
+スプラットを使用して、どのルートにも一致しないリクエストをキャッチすることもできます。
+
+```ts filename=app/routes.ts
+route("*", "./catchall.tsx"); // キャッチオールルート
+```
+
+```tsx filename=app/catchall.tsx
+export function loader() {
+  throw new Response("Page not found", { status: 404 });
+}
+```
+
 ## コンポーネントルート
 
 URL に一致するコンポーネントを、コンポーネントツリー内の任意の要素に使用することもできます。

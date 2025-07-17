@@ -10,7 +10,7 @@ title: useLoaderData
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useLoaderData.html)
 
-最も近いルートの[LoaderFunction](../Other/LoaderFunction)または[ClientLoaderFunction](../Other/ClientLoaderFunction)からのデータを返します。
+最も近いルートの[LoaderFunction](https://api.reactrouter.com/v7/types/react_router.LoaderFunction.html)または[ClientLoaderFunction](https://api.reactrouter.com/v7/types/react_router.ClientLoaderFunction.html)からのデータを返します。
 
 ```tsx
 import { useLoaderData } from "react-router";

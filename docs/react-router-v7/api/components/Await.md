@@ -15,7 +15,7 @@ title: Await
 ```tsx
 import { Await, useLoaderData } from "react-router";
 
-export function loader() {
+export async function loader() {
   // await されない
   const reviews = getReviews();
   // await される (トランジションをブロックする)
@@ -113,7 +113,7 @@ errorElement を提供しない場合、リジェクトされた値は最も近�
 
 [modes: framework, data]
 
-解決してレンダリングする [LoaderFunction](../Other/LoaderFunction) から返された Promise を受け取ります。
+解決してレンダリングする [LoaderFunction](https://api.reactrouter.com/v7/types/react_router.LoaderFunction.html) から返された Promise を受け取ります。
 
 ```jsx
 import { useLoaderData, Await } from "react-router";

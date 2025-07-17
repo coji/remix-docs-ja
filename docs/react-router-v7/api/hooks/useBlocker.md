@@ -15,7 +15,7 @@ title: useBlocker
 ## シグネチャ
 
 ```tsx
-useBlocker(shouldBlock): Blocker
+useBlocker(shouldBlock: boolean | BlockerFunction): Blocker
 ```
 
 ## パラメータ
@@ -24,7 +24,43 @@ useBlocker(shouldBlock): Blocker
 
 [modes: framework, data]
 
-_ドキュメントはありません_
+**boolean**
+
+ナビゲーションをブロックするかどうか。`true`の場合、ブロッカーはナビゲーションを阻止します。`false`の場合、ブロッカーはナビゲーションを阻止しません。
+
+[**BlockerFunction**](https://api.reactrouter.com/v7/types/react_router.BlockerFunction.html)
+
+ナビゲーションをブロックすべきかどうかを示すブール値を返す関数。
+
+```tsx
+const blocker = useBlocker(
+  ({ currentLocation, nextLocation, historyAction }) =>
+    value !== "" &&
+    currentLocation.pathname !== nextLocation.pathname
+);
+```
+
+## Blocker
+
+フックによって返される[Blocker](https://api.reactrouter.com/v7/types/react_router.Blocker.html)オブジェクト。以下のプロパティを持ちます。
+
+### `state`
+
+- `unblocked` - ブロッカーはアイドル状態であり、ナビゲーションを阻止していません
+- `blocked` - ブロッカーがナビゲーションを阻止しました
+- `proceeding` - ブロッカーはブロックされたナビゲーションを続行中です
+
+### `location`
+
+`blocked`状態の場合、これはナビゲーションを阻止した先の[`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html)を表します。`proceeding`状態の場合、これは`blocker.proceed()`呼び出し後にナビゲートされるロケーションです。
+
+### `proceed()`
+
+`blocked`状態の場合、`blocker.proceed()`を呼び出してブロックされたロケーションへ進むことができます。
+
+### `reset()`
+
+`blocked`状態の場合、`blocker.reset()`を呼び出してブロッカーを`unblocked`状態に戻し、ユーザーを現在のロケーションに留めることができます。
 
 ## 使用例
 

@@ -4,6 +4,11 @@ title: クライアントデータ
 
 # クライアントデータ
 
+[MODES: framework]
+
+<br/>
+<br/>
+
 `clientLoader` および `clientAction` 関数を使用して、ブラウザで直接データを取得および変更できます。
 
 これらの関数は、[SPA モード][spa] を使用する場合のデータ処理の主要なメカニズムです。このガイドでは、サーバーサイドレンダリング (SSR) でクライアントデータを活用するための一般的なユースケースを示します。
@@ -192,4 +197,3 @@ export async function clientAction({
 
 [spa]: ../how-to/spa
 [hydratefallback]: ../start/framework/route-module#hydratefallback
-

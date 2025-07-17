@@ -10,7 +10,7 @@ title: ServerRouter
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.ServerRouter.html)
 
-カスタムの entry.server.tsx でアプリの最上位にレンダリングされます。
+カスタムの [entry.server.tsx][entry-server] でアプリの最上位にレンダリングされます。
 
 ## Props
 
@@ -32,3 +32,4 @@ _ドキュメントなし_
 
 _ドキュメントなし_
 
+[entry-server]: ../framework-conventions/entry.server.tsx

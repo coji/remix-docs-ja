@@ -6,7 +6,8 @@ title: ナビゲーションブロッキング
 
 [MODES: framework, data]
 
-## 概要
+<br/>
+<br/>
 
 ユーザーが重要なフォームの入力など、ワークフローの途中にいる場合、ページからの離脱を防ぎたい場合があります。
 
@@ -146,7 +147,7 @@ export default function Contact() {
               onClick={() => blocker.proceed()}
             >
               離れる
-            </button>{" "}
+            </button>{" "button"> 
             <button
               type="button"
               onClick={() => blocker.reset()}

@@ -117,7 +117,7 @@ app/
 値は URL から解析され、さまざまな API に渡されます。これらの値を「URL パラメータ」と呼びます。URL パラメータにアクセスする最も便利な場所は、[ローダー]と[アクション]です。
 
 ```tsx
-export async function serverLoader({ params }) {
+export async function loader({ params }) {
   return fakeDb.getAllConcertsForCity(params.city);
 }
 ```
@@ -127,7 +127,7 @@ export async function serverLoader({ params }) {
 ルートには、`concerts.$city.$date` のように複数の動的セグメントを含めることができ、両方とも名前で params オブジェクトにアクセスできます。
 
 ```tsx
-export async function serverLoader({ params }) {
+export async function loader({ params }) {
   return fake.db.getConcerts({
     date: params.date,
     city: params.city,
@@ -285,9 +285,27 @@ URL にパスセグメントを追加せずに、ルートのグループとレ�
 動的ルートパラメータと同様に、スプラットルートの `params` で `"*"` キーを使用して、一致したパスの値にアクセスできます。
 
 ```tsx filename=app/routes/files.$.tsx
-export async function serverLoader({ params }) {
+export async function loader({ params }) {
   const filePath = params["*"];
   return fake.getFileInfo(filePath);
+}
+```
+
+## キャッチオールルート
+
+他の定義されたルートに一致しないリクエスト（404ページなど）に一致するルートを作成するには、ルートディレクトリ内に `$.tsx` という名前のファイルを作成します。
+
+| URL                            | マッチするルート            |
+| ------------------------------ | ------------------------ |
+| `/`                            | `app/routes/_index.tsx`  |
+| `/about`                       | `app/routes/about.tsx`   |
+| `/any-invalid-path-will-match` | `app/routes/$.tsx`       |
+
+デフォルトでは、一致したルートは200応答を返します。そのため、キャッチオールルートを404を返すように変更してください。
+
+```tsx filename=app/routes/$.tsx
+export async function loader() {
+  return data({}, 404);
 }
 ```
 
@@ -385,4 +403,3 @@ app/routes/app._index/route.tsx
 [dot_delimiters]: #dot-delimiters
 [dynamic_segments]: #dynamic-segments
 [resource_routes]: ../how-to/resource-routes
-

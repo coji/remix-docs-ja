@@ -218,7 +218,7 @@ export function ErrorBoundary() {
     );
   } else {
     return <h1>不明なエラー</h1>;
-  }
+  n}
 }
 ```
 
@@ -309,13 +309,37 @@ export default function Root() {
 
 ## `meta`
 
-ルートメタは、ドキュメントの `<head>` にレンダリングされるメタタグを定義します。
+ルートメタは、通常 `<head>` 内に配置される `<Meta />` コンポーネントにレンダリングされるメタタグを定義します。
+
+<docs-warning>
+
+React 19以降、ルートモジュールの`meta`エクスポートを使用するよりも、[組み込みの`<meta>`要素](https://react.dev/reference/react-dom/components/meta)を使用することが推奨されます。
+
+以下に、その使用方法と`<title>`要素の例を示します。
 
 ```tsx
+export default function MyRoute() {
+  return (
+    <div>
+      <title>Very cool app</title>
+      <meta property="og:title" content="Very cool app" />
+      <meta
+        name="description"
+        content="This app is the best"
+      />
+      {/* ルートの残りのコンテンツ... */}
+    </div>
+  );
+}
+```
+
+</docs-warning>
+
+```tsx filename=app/product.tsx
 export function meta() {
   return [
     { title: "非常にクールなアプリ" },
-    {
+    { 
       property: "og:title",
       content: "非常にクールなアプリ",
     },
@@ -327,9 +351,7 @@ export function meta() {
 }
 ```
 
-すべてのルートのメタが集約され、通常はアプリのルートでレンダリングされる `<Meta />` コンポーネントを介してレンダリングされます。
-
-```tsx
+```tsx filename=app/root.tsx
 import { Meta } from "react-router";
 
 export default function Root() {
@@ -345,9 +367,12 @@ export default function Root() {
 }
 ```
 
+最後のマッチングルートのメタが使用され、親ルートのメタを上書きできます。メタ記述子配列全体がマージされるのではなく、置き換えられることに注意することが重要です。これにより、異なるレベルのページ間で独自のメタ構成ロジックを構築する柔軟性が得られます。
+
 **参照**
 
 - [`meta` params][meta-params]
+- [`meta` function return types][meta-function]
 
 ## `shouldRevalidate`
 
@@ -365,7 +390,7 @@ export function shouldRevalidate(
 }
 ```
 
-[`ShouldRevalidateFunctionArgs` リファレンスドキュメント ↗](https://api.reactrouter.com/v7/interfaces/react_router.ShouldRevalidateFunctionArgs.html)
+[`ShouldRevalidateFunctionArgs` Reference Documentation ↗](https://api.reactrouter.com/v7/interfaces/react_router.ShouldRevalidateFunctionArgs.html)
 
 ---
 
@@ -385,4 +410,5 @@ export function shouldRevalidate(
 [link-element]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
 [meta-element]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
 [meta-params]: https://api.reactrouter.com/v7/interfaces/react_router.MetaArgs
+[meta-function]: https://api.reactrouter.com/v7/types/react_router.MetaDescriptor.html
 [use-revalidator]: https://api.reactrouter.com/v7/functions/react_router.useRevalidator.html
