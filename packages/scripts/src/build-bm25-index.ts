@@ -40,7 +40,7 @@ function extractTextFromHtml(html: string): string {
  * Generate document sections for better granular search
  */
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: document structure is dynamic
 function generateDocumentSections(doc: any): Document[] {
   const documents: Document[] = []
 
@@ -68,11 +68,11 @@ function generateDocumentSections(doc: any): Document[] {
 
   // If the document has sections (h2, h3), create separate documents for them
   const sectionRegex = /<h([23])[^>]*id="([^"]*)"[^>]*>([^<]*)<\/h[23]>/g
-  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
+  // biome-ignore lint/suspicious/noImplicitAnyLet: match is used in a loop
   let match
   let lastIndex = 0
 
-  // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+  // biome-ignore lint/suspicious/noAssignInExpressions: match is used in a loop
   while ((match = sectionRegex.exec(doc.html)) !== null) {
     const [fullMatch, _level, id, title] = match
     const sectionStart = match.index

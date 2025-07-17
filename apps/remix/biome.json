@@ -1,24 +1,12 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.2/schema.json",
-  "organizeImports": {
-    "enabled": false
-  },
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
-  },
-  "linter": {
-    "enabled": true,
-    "ignore": ["worker-configuration.d.ts"],
-    "rules": {
-      "recommended": true,
-      "style": {
-        "noParameterAssign": "off"
-      },
-      "suspicious": {
-        "useAwait": "error"
-      }
-    }
+  "root": false,
+  "extends": "//",
+  "$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!**/worker-configuration.d.ts",
+      "!app/styles/globals.css"
+    ]
   }
 }

@@ -138,7 +138,7 @@ export class BM25SearchEngine {
   private index: BM25Index | null = null
 
   async initialize(tokenizerPath?: string): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
       // Dynamic import for kuromoji in ESM
       import('kuromoji')
         .then((kuromojiModule) => {
@@ -218,7 +218,7 @@ export class BM25SearchEngine {
           token.length > 1 && // Remove single characters
           !STOP_WORDS.has(token) && // Remove stop words
           !/^[0-9]+$/.test(token) && // Remove pure numbers
-          !/^[!-/:-@\[-`{-~]+$/.test(token), // Remove punctuation
+          !/^[!-/:-@[-`{-~]+$/.test(token), // Remove punctuation
       )
 
     // Combine regular tokens with API terms
