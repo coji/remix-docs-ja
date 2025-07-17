@@ -8,6 +8,7 @@
     "dev": "turbo dev",
     "deploy": "turbo deploy",
     "format": "turbo format",
+    "format:fix": "turbo format:fix",
     "lint": "turbo lint",
     "test": "turbo test",
     "typecheck": "turbo typecheck",

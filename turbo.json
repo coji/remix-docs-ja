@@ -20,6 +20,10 @@
       "dependsOn": ["^format"],
       "cache": false
     },
+    "format:fix": {
+      "dependsOn": ["^format:fix"],
+      "cache": false
+    },
     "lint": {
       "dependsOn": ["^lint"],
       "cache": false
