@@ -137,8 +137,8 @@ export class BM25SearchEngine {
   private tokenizer: Tokenizer | null = null
   private index: BM25Index | null = null
 
-  async initialize(tokenizerPath?: string): Promise<void> {
-    return await new Promise((resolve, reject) => {
+  initialize(tokenizerPath?: string): Promise<void> {
+    return new Promise((resolve, reject) => {
       // Dynamic import for kuromoji in ESM
       import('kuromoji')
         .then((kuromojiModule) => {
