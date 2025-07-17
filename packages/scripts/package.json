@@ -8,8 +8,8 @@
   },
   "scripts": {
     "lint": "biome lint .",
-    "format": "prettier --cache -c .",
-    "format:fix": "prettier --write .",
+    "format": "prettier --cache -c . --experimental-cli",
+    "format:fix": "prettier --write . --experimental-cli",
     "test": "vitest run",
     "typecheck": "tsc",
     "validate": "run-s lint format typecheck"
