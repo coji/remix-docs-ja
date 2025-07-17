@@ -4,6 +4,11 @@ title: リソースルート
 
 # リソースルート
 
+[MODES: framework, data]
+
+<br/>
+<br/>
+
 サーバーレンダリング時、ルートはコンポーネントをレンダリングする代わりに、画像、PDF、JSONペイロード、Webhookなどの「リソース」を提供できます。
 
 ## リソースルートの定義
@@ -60,4 +65,3 @@ export function action(_: Route.ActionArgs) {
   });
 }
 ```
-

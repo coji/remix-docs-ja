@@ -4,6 +4,11 @@ title: 自動コード分割
 
 # 自動コード分割
 
+[MODES: framework]
+
+<br/>
+<br/>
+
 React Routerのフレームワーク機能を使用すると、アプリケーションが自動的にコード分割され、ユーザーがアプリケーションにアクセスした際の初期ロード時間のパフォーマンスが向上します。
 
 ## ルートによるコード分割
@@ -54,4 +59,3 @@ export default function Component({ loaderData }) {
 ブラウザ用にビルドした後、`Component`のみがバンドルに残るため、他のモジュールエクスポートでサーバー専用のコードを使用できます。
 
 [route-module]: ../../start/framework/route-module
-

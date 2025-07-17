@@ -1,6 +1,6 @@
 ---
 title: Remix からのアップグレード
-order: 2
+order: 3
 ---
 
 # Remix からのアップグレード
@@ -111,8 +111,7 @@ React Router v7 では、`app/routes.ts` ファイルを使用してルートを
 
 **👉 依存関係を更新する (Remix v2 `v3_routeConfig` フラグを使用している場合)**
 
-```diff
-// app/routes.ts
+```diff filename=app/routes.ts
 -import { type RouteConfig } from "@remix-run/route-config";
 -import { flatRoutes } from "@remix-run/fs-routes";
 -import { remixRoutesOptionAdapter } from "@remix-run/routes-option-adapter";
@@ -121,9 +120,8 @@ React Router v7 では、`app/routes.ts` ファイルを使用してルートを
 +import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adapter";
 
 export default [
-  // ルートがどのように定義されているか
+  // however your routes are defined
 ] satisfies RouteConfig;
-
 ```
 
 **👉 `routes.ts` ファイルを追加する (Remix v2 `v3_routeConfig` フラグを _使用していない_ 場合)**
@@ -132,51 +130,67 @@ export default [
 touch app/routes.ts
 ```
 
-後方互換性のため、および [ファイルベースの規約][fs-routing] を好むユーザーのために、新しい `@react-router/fs-routes` パッケージを介して、Remix v2 で使用しているのと同じ「フラットルート」規約を選択できます。
+後方互換性のため、Remix v2 でのルート設定に合わせて `routes.ts` を採用する方法がいくつかあります。
 
-```ts filename=app/routes.ts
-import { type RouteConfig } from "@react-router/dev/routes";
-import { flatRoutes } from "@react-router/fs-routes";
+1. 「フラットルート」の[ファイルベースの規約][fs-routing]を使用していた場合は、新しい `@react-router/fs-routes` パッケージを介して引き続きそれを使用できます。
 
-export default flatRoutes() satisfies RouteConfig;
-```
+   ```ts filename=app/routes.ts
+   import { type RouteConfig } from "@react-router/dev/routes";
+   import { flatRoutes } from "@react-router/fs-routes";
 
-または、`routes` オプションを使用して構成ベースのルートを定義していた場合:
+   export default flatRoutes() satisfies RouteConfig;
+   ```
 
-```ts filename=app/routes.ts
-import { type RouteConfig } from "@react-router/dev/routes";
-import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adapter";
+2. `@remix-run/v1-route-convention` パッケージを介して Remix v1 の「ネストされた」規約を使用していた場合は、`@react-router/remix-routes-option-adapter` と組み合わせて引き続きそれを使用できます。
 
-export default remixRoutesOptionAdapter((defineRoutes) => {
-  return defineRoutes((route) => {
-    route("/", "home/route.tsx", { index: true });
-    route("about", "about/route.tsx");
-    route("", "concerts/layout.tsx", () => {
-      route("trending", "concerts/trending.tsx");
-      route(":city", "concerts/city.tsx");
-    });
-  });
-}) satisfies RouteConfig;
-```
+   ```ts filename=app/routes.ts
+   import { type RouteConfig } from "@react-router/dev/routes";
+   import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adapter";
+   import { createRoutesFromFolders } from "@remix-run/v1-route-convention";
 
-`vite.config.ts` で `routes` オプションを使用していた場合は、必ず削除してください。
+   export default remixRoutesOptionAdapter(
+     createRoutesFromFolders
+   ) satisfies RouteConfig;
+   ```
 
-```diff
-export default defineConfig({
-  plugins: [
-    remix({
-      ssr: true,
--     ignoredRouteFiles: ['**/*'],
--     routes(defineRoutes) {
--       return defineRoutes((route) => {
--         route("/somewhere/cool/*", "catchall.tsx");
--       });
--     },
-    })
-    tsconfigPaths(),
-  ],
-});
-```
+3. `routes` オプションを使用して構成ベースのルートを定義していた場合は、`@react-router/remix-routes-option-adapter` を介してその構成を維持できます。
+
+   ```ts filename=app/routes.ts
+   import { type RouteConfig } from "@react-router/dev/routes";
+   import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adapter";
+
+   export default remixRoutesOptionAdapter(
+     (defineRoutes) => {
+       return defineRoutes((route) => {
+         route("/", "home/route.tsx", { index: true });
+         route("about", "about/route.tsx");
+         route("", "concerts/layout.tsx", () => {
+           route("trending", "concerts/trending.tsx");
+           route(":city", "concerts/city.tsx");
+         });
+       });
+     }
+   ) satisfies RouteConfig;
+   ```
+
+   - `vite.config.ts` の `routes` オプションも必ず削除してください。
+
+     ```diff filename=vite.config.ts
+     export default defineConfig({
+       plugins: [
+         remix({
+           ssr: true,
+     -     ignoredRouteFiles: ['**/*'],
+     -     routes(defineRoutes) {
+     -       return defineRoutes((route) => {
+     -         route("/somewhere/cool/*", "catchall.tsx");
+     -       });
+     -     },
+         })
+         tsconfigPaths(),
+       ],
+     });
+     ```
 
 ## 5. React Router 構成を追加する
 
@@ -190,20 +204,20 @@ export default defineConfig({
 touch react-router.config.ts
 ```
 
-```diff
-// vite.config.ts
+```diff filename=vite.config.ts
 export default defineConfig({
   plugins: [
 -   remix({
 -     ssr: true,
--     future: {/* すべての v3 フラグ */}
+-     future: {/* all the v3 flags */}
 -   }),
 +   reactRouter(),
     tsconfigPaths(),
   ],
 });
+```
 
-// react-router.config.ts
+```diff filename=react-router.config.ts
 +import type { Config } from "@react-router/dev/config";
 +export default {
 +  ssr: true,
@@ -222,7 +236,7 @@ codemod を使用した場合は、自動的に完了しているため、この
 
 `vite.config.ts` を変更して、`@react-router/dev/vite` から新しい `reactRouter` プラグインをインポートして使用します。
 
-```diff
+```diff filename=vite.config.ts
 -import { vitePlugin as remix } from "@remix-run/dev";
 +import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
@@ -261,7 +275,7 @@ React Router は、ルートモジュールの型をアプリのルートにあ�
 - `types` フィールドの適切な `@react-router/*` パッケージ
 - 相対インポートを簡略化するための `rootDirs`
 
-```diff
+```diff filename=tsconfig.json
 {
   "include": [
     /* ... */
@@ -323,7 +337,7 @@ React Router は React フレームワーク _と_ スタンドアロンのル�
 
 ```ts filename=app/env.ts
 declare module "react-router" {
-  // v2 で使用される AppLoadContext
+  // v2 で使用していた AppLoadContext
   interface AppLoadContext {
     whatever: string;
   }
@@ -355,7 +369,7 @@ export {}; // これをモジュールとして扱うために TS に必要
 
 ```ts filename=app/env.ts
 declare module "react-router" {
-  // v2 で使用される AppLoadContext
+  // v2 で使用していた AppLoadContext
   interface AppLoadContext {
     whatever: string;
   }
@@ -380,7 +394,7 @@ export function action({ context }: Route.ActionArgs) {}
 [v2-future-flags]: https://remix.run/docs/start/future-flags
 [routing]: ../start/framework/routing
 [fs-routing]: ../how-to/file-route-conventions
-[v7-changelog-types]: https://github.com/remix-run/react-router/blob/release-next/CHANGELOG.md#typesafety-improvements
+[v7-changelog-types]: https://github.com/remix-run/react-router/blob/release-next/CHANGELOG.md#type-safety-improvements
 [server-loaders]: ../start/framework/data-loading#server-data-loading
 [server-actions]: ../start/framework/actions#server-actions
 [ts-module-augmentation]: https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation

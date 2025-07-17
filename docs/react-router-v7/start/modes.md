@@ -15,7 +15,7 @@ React Routerは、Reactのためのマルチストラテジーなルーターで
 
 モードは、使用している「トップレベル」のルーターAPIによって異なります。
 
-**Declarative**
+## Declarative
 
 Declarativeモードでは、URLとコンポーネントのマッチング、アプリ内のナビゲーション、`<Link>`、`useNavigate`、`useLocation`などのAPIによるアクティブな状態の提供など、基本的なルーティング機能が有効になります。
 
@@ -29,7 +29,7 @@ ReactDOM.createRoot(root).render(
 );
 ```
 
-**Data**
+## Data
 
 ルート構成をReactのレンダリングの外に移動することで、Dataモードでは、`loader`、`action`、`useFetcher`などのAPIを使用して、データローディング、アクション、保留状態などを追加します。
 
@@ -52,7 +52,7 @@ ReactDOM.createRoot(root).render(
 );
 ```
 
-**Framework**
+## Framework
 
 Frameworkモードは、DataモードをViteプラグインでラップし、次の機能を追加して、完全なReact Routerエクスペリエンスを実現します。
 
@@ -121,7 +121,7 @@ export default function Product({
 
 ## API + モードの可用性テーブル
 
-これは主にLLM向けですが、自由に活用してください。
+これは主にLLM向けですが、ご自由にお使いください。
 
 | API                            | Framework | Data | Declarative |
 | ------------------------------ | --------- | ---- | ----------- |
@@ -182,6 +182,7 @@ export default function Product({
 | createCookieSessionStorage     | ✅        | ✅   |             |
 | createMemorySessionStorage     | ✅        | ✅   |             |
 | createPath                     | ✅        | ✅   | ✅          |
+| createRoutesFromElements       |           | ✅   |             |
 | createRoutesStub               | ✅        | ✅   |             |
 | createSearchParams             | ✅        | ✅   | ✅          |
 | data                           | ✅        | ✅   |             |

@@ -8,6 +8,10 @@ title: 貢献
 
 オープンソースにおいては、さまざまな種類の貢献が可能であり、そのすべてが価値のあるものです。貢献を準備する際に役立ついくつかのガイドラインを以下に示します。
 
+## オープンガバナンスモデル
+
+さらに進む前に、React Router でのバグ/イシュー/機能提案の取り扱いに関する情報について、オープンガバナンスの[ブログ投稿](https://remix.run/blog/rr-governance)と[ドキュメント](https://github.com/remix-run/react-router/blob/main/GOVERNANCE.md)をお読みください。
+
 ## セットアップ
 
 コードベースに貢献する前に、リポジトリをフォークする必要があります。これは、どのような種類の貢献をするかによって少し異なります。
@@ -33,21 +37,23 @@ title: 貢献
 
 ## バグを見つけたと思いますか？
 
-issue テンプレートに従い、コード例を用いて再現手順を明確に示してください。最も良いのは、[失敗するテスト](https://github.com/remix-run/react-router/blob/dev/integration/bug-report-test.ts) を含むプルリクエストです。次に良いのは、バグを示す [StackBlitz](https://reactrouter.com/new) またはリポジトリへのリンクです。
-
-## 例を追加しますか？
-
-例は、main ブランチに直接追加できます。ローカルにクローンした main からブランチを作成します。完了したら、プルリクエストを作成し、例の概要を説明します。
-
-## 新しい API または変更された API を提案しますか？
-
-React Router をアプリでどのように使用したいかを示す、思慮深いコメントとサンプルコードを提供してください。変更または追加する必要があるものについて結論を急ぐ前に、現在の API によってどのように制限されているかを示すことができれば、議論がしやすくなります。
-
-私たちは経験から、小さな API の方が通常は優れていることを学んだので、現在の API に明らかな制限がない限り、何か新しいものを追加することには少し抵抗があるかもしれません。とは言え、私たちがこれまで考慮していなかったケースについてお聞きするのはいつでも大歓迎ですので、遠慮なくお申し付けください！ :)
+issue テンプレートに従い、**最小限で実行可能な**再現方法を提供してください。最も良いのは、[失敗するテスト](https://github.com/remix-run/react-router/blob/dev/integration/bug-report-test.ts) を含むプルリクエストです。次に良いのは、バグを示す [StackBlitz](https://reactrouter.com/new)、CodeSandbox、または GitHub リポジトリへのリンクです。
 
 ## Issue が注目されていない？
 
 バグを修正する必要があるのに、誰も修正していない場合は、自分で修正して [プルリクエスト](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) を作成するのが最善です。オープンソースコードは私たち全員のものであり、それを前進させるのは私たち全員の責任です。
+
+## 新しい API または変更された API を提案しますか？
+
+⚠️ _新機能のプルリクエストから始めないでください。_
+
+新機能は、[オープンガバナンスモデル](https://github.com/remix-run/react-router/blob/main/GOVERNANCE.md#new-feature-process)に概説されているプロセスを経る必要があり、GitHub で[提案ディスカッション](https://github.com/remix-run/react-router/discussions/new?category=proposals)を開くことから始めることができます。React Router をアプリでどのように使用したいかを示す、思慮深いコメントとサンプルコードを提供してください。変更または追加する必要があるものについて結論を急ぐ前に、現在の API によってどのように制限されているかを示すことができれば、議論がしやすくなります。
+
+私たちは経験から、小さな API の方が通常は優れていることを学んだので、現在の API に明らかな制限がない限り、何か新しいものを追加することには少し抵抗があるかもしれません。とは言え、私たちがこれまで考慮していなかったケースについてお聞きするのはいつでも大歓迎ですので、遠慮なくお申し付けください！ :)
+
+## 例を追加しますか？
+
+例は、main ブランチに直接追加できます。ローカルにクローンした main からブランチを作成します。完了したら、プルリクエストを作成し、例の概要を説明します。
 
 ## プルリクエストを作成しますか？
 
@@ -83,14 +89,14 @@ React Router は、複数のパッケージのコードをホストするため�
 
 ### テスト
 
-テストを実行する前に、ビルドを実行する必要があります。ビルド後、ルートディレクトリから `pnpm test` を実行すると、**すべての** パッケージのテストが実行されます。特定のパッケージのテストを実行する場合は、`pnpm test --projects packages/<package-name>` を使用します。
+テストを実行する前に、ビルドを実行する必要があります。ビルド後、ルートディレクトリから `pnpm test` を実行すると、**すべての** パッケージのテストが実行されます。特定のパッケージのテストを実行する場合は、`pnpm test packages/<package-name>/` を使用します。
 
 ```bash
 # すべてのパッケージをテストする
 pnpm test
 
-# react-router-dom のみをテストする
-pnpm test --projects packages/react-router-dom
+# @react-router/dev のみをテストする
+pnpm test packages/react-router-dev/
 ```
 
 ## リポジトリのブランチ
@@ -100,83 +106,11 @@ pnpm test --projects packages/react-router-dom
 ```
 - main   > 最新のリリースと現在のドキュメント
 - dev    > 安定版リリース間のアクティブな開発中のコード
-- v5     > 特定のメジャーリリースの最新コード
+- v6     > 特定のメジャーリリースの最新コード
 ```
 
 さまざまな機能や実験のための他のブランチがあるかもしれませんが、すべての魔法はこれらのブランチから起こります。
 
-## 新しいリリース
+## リリース
 
-新しいリリースを作成する時期が来たら、リリースの種類に応じて、ブランチ戦略に基づいたプロセスに従います。
-
-### `react-router@next` リリース
-
-`dev` ブランチの現在の状態から実験的なリリースを作成します。これらは `@next` タグを使用してインストールできます。
-
-```bash
-pnpm add react-router-dom@next
-# または
-npm install react-router-dom@next
-```
-
-これらのリリースは、PR が `dev` ブランチにマージされると自動化されます。
-
-### 最新のメジャーリリース
-
-```bash
-# dev ブランチから開始します。
-git checkout dev
-
-# ホットフィックスとドキュメントの更新がリリースで利用できるように、
-# main ブランチを dev にマージします。
-git merge main
-
-# dev から新しいリリースブランチを作成します。
-git checkout -b release/v6.1.0
-
-# 新しいタグを作成し、コードベース全体のバージョン参照を更新します。
-pnpm run version [nextVersion]
-
-# 新しいリリースタグとともにリリースブランチをプッシュします。
-git push origin release/v6.1.0 --follow-tags
-
-# GitHub アクションがすべてのテストを実行するのを待ちます。テストに合格した場合、
-# リリースは準備完了です！リリースブランチを main と dev にマージします。
-git checkout main
-git merge release/v6.1.0
-git checkout dev
-git merge release/v6.1.0
-
-# リリースブランチは削除できるようになりました。
-git branch -D release/v6.1.0
-git push origin --delete release/v6.1.0
-
-# 次に、GitHub に移動して、新しいタグからリリースを作成します。
-# GitHub Actions に残りの処理を任せましょう！
-```
-
-### ホットフィックスリリース
-
-すぐに修正する必要がある重大なバグが発生することがあります。バグが最新のリリースに影響を与える場合は、`main`（またはバグが存在する関連するメジャーリリースブランチ）から直接新しいバージョンを作成できます。
-
-```bash
-# main ブランチから、新しいリリースを作成する前に、
-# ビルドとすべてのテストを実行してください。
-pnpm install && pnpm build && pnpm test
-
-# テストに合格したと仮定して、リリースタグを作成し、
-# コードベース全体のバージョン参照を更新します。
-pnpm run version [nextVersion]
-
-# 新しいリリースタグとともに変更をプッシュします。
-git push origin main --follow-tags
-
-# GitHub で、新しいタグからリリースを作成すると、
-# GitHub アクションを介して公開されます
-
-# ホットフィックスが完了したら、変更を dev にマージし、
-# 必要に応じて競合をクリーンアップします。
-git checkout dev
-git merge main
-git push origin dev
-```
+リリースプロセスのアウトラインについては、[DEVELOPMENT.md](https://github.com/remix-run/react-router/blob/main/DEVELOPMENT.md)を参照してください。

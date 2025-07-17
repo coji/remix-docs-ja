@@ -4,6 +4,10 @@ title: ステート管理
 
 # ステート管理
 
+[MODES: framework, data]
+<br/>
+<br/>
+
 React におけるステート管理は、通常、サーバーデータの同期されたキャッシュをクライアント側で維持することを含みます。ただし、React Router をフレームワークとして使用する場合、その本質的なデータ同期の処理方法により、従来のキャッシュソリューションのほとんどが冗長になります。
 
 ## React におけるステート管理の理解
@@ -516,4 +520,3 @@ export function Signup({
 [window_global]: https://developer.mozilla.org/en-US/docs/Web/API/Window/window
 [local_storage_global]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
 [progressive_enhancement]: ./progressive-enhancement
-

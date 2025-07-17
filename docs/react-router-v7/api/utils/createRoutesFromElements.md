@@ -4,7 +4,7 @@ title: createRoutesFromElements
 
 # createRoutesFromElements
 
-[MODES: framework, data, declarative]
+[MODES: data]
 
 ## 概要
 
@@ -22,13 +22,12 @@ createRoutesFromElements(children, parentPath): undefined
 
 ### children
 
-[modes: framework, data, declarative]
+[modes: data]
 
 _ドキュメントなし_
 
 ### parentPath
 
-[modes: framework, data, declarative]
+[modes: data]
 
 _ドキュメントなし_
-

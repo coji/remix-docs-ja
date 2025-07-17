@@ -75,4 +75,3 @@ react-router typegen
 ```sh
 react-router typegen --watch
 ```
-

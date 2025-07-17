@@ -199,9 +199,9 @@ ReactDOM.hydrateRoot(
 - `<App/>` コンポーネントの代わりに `<HydratedRouter>` をレンダリングする
 - 注: `<App/>` コンポーネントのレンダリングを停止しました。後のステップで元に戻しますが、まず新しいエントリポイントでアプリを起動できるようにします。
 
-## 5. 色々なものの配置先を入れ替える
+## 5. 色々なものをシャッフルする
 
-`root.tsx` と `entry.client.tsx` の間で、いくつかのものの配置先を入れ替えたい場合があります。
+`root.tsx` と `entry.client.tsx` の間で、それらの間でいくつかのものをシャッフルしたい場合があります。
 
 一般的に:
 
@@ -343,7 +343,7 @@ export default function Component({ loaderData }) {
 
 ## SSR および/またはプリレンダリングを有効にする
 
-サーバーレンダリングと静的プリレンダリングを有効にする場合は、バンドラープラグインの `ssr` および `prerender` オプションを使用して有効にできます。SSR の場合は、サーバービルドをサーバーにデプロイする必要もあります。詳細については、[デプロイ][deploying] を参照してください。
+サーバーレンダリングと静的プリレンダリングを有効にする場合は、バンドラープラグインの `ssr` および `prerender` オプションを使用して有効にできます。SSR の場合は、サーバービルドをサーバーにデプロイする必要もあります。
 
 ```ts filename=react-router.config.ts
 import type { Config } from "@react-router/dev/config";
@@ -357,7 +357,6 @@ export default {
 ```
 
 [upgrade-router-provider]: ./router-provider
-[deploying]: ../start/deploying
 [configuring-routes]: ../start/framework/routing
 [route-modules]: ../start/framework/route-module
 [type-safety]: ../how-to/route-module-type-safety

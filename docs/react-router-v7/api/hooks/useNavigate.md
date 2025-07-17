@@ -27,7 +27,7 @@ function SomeComponent() {
 }
 ```
 
-このフックよりも、[ActionFunction](../Other/ActionFunction) および [LoaderFunction](../Other/LoaderFunction) で [redirect](../utils/redirect) を使用する方が良い場合が多いです。
+このフックよりも、[ActionFunction](https://api.reactrouter.com/v7/interfaces/react_router.ActionFunction.html) および [LoaderFunction](https://api.reactrouter.com/v7/types/react_router.LoaderFunction.html) で [redirect](../utils/redirect) を使用する方が良い場合が多いです。
 
 ## シグネチャ
 

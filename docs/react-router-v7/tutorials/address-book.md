@@ -1,9 +1,14 @@
 ---
 title: アドレス帳
-order: 1
+order: 2
 ---
 
 # アドレス帳
+
+[MODES: framework]
+
+<br />
+<br />
 
 ここでは、連絡先を管理できる、小さくても機能豊富なアドレス帳アプリを構築します。データベースやその他の「本番環境対応」のものは使用しないため、React Router が提供する機能に集中できます。もし一緒に進める場合は30〜45分程度、そうでなければすぐに読み終えることができるでしょう。
 
@@ -851,7 +856,7 @@ export async function loader() {
 }
 ```
 
-`ssr` を `true` に設定するか `false` に設定するかは、あなたとユーザーのニーズによって異なります。どちらの戦略も完全に有効です。このチュートリアルの残りの部分では、サーバーサイドレンダリングを使用しますが、すべてのレンダリング戦略が React Router で第一級市民であることを知っておいてください。
+Whether you set `ssr` to `true` or `false` depends on you and your users needs. Both strategies are perfectly valid. For the remainder of this tutorial we're going to use server-side rendering, but know that all rendering strategies are first class citizens in React Router.
 
 ## ローダーにおける URL パラメータ
 
@@ -1203,7 +1208,7 @@ export async function action() {
 
 レコードがたくさんある今、サイドバーでどのレコードを見ているのかが明確ではありません。[`NavLink`][nav-link] を使用してこれを修正できます。
 
-👉 **サイドバーの `<Link>` を `<NavLink>` に置き換えてください**
+👉 **サイドバーの `<a href>` を `<Link to>` に置き換えてください**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[1,17-26,28]
 import { Form, Link, NavLink, Outlet } from "react-router";

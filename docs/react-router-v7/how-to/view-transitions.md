@@ -4,6 +4,11 @@ title: ビュートランジション
 
 # ビュートランジション
 
+[MODES: framework, data]
+
+<br/>
+<br/>
+
 [View Transitions API][view-transitions-api] を使用して、React Router アプリケーションでのページ遷移間のスムーズなアニメーションを有効にします。この機能により、クライアントサイドのナビゲーション中にシームレスな視覚的トランジションを作成できます。
 
 ## 基本的なビュートランジション
@@ -20,13 +25,37 @@ title: ビュートランジション
 
 追加の CSS なしで、これによりページ間の基本的なクロスフェードアニメーションが提供されます。
 
+### 2. プログラムによるナビゲーションでビュートランジションを有効にする
+
+`useNavigate` フックを使用したプログラムによるナビゲーションを使用する場合、`viewTransition: true` オプションを渡すことでビュートランジションを有効にできます。
+
+```tsx
+import { useNavigate } from "react-router";
+
+function NavigationButton() {
+  const navigate = useNavigate();
+
+  return (
+    <button
+      onClick={() =>
+        navigate("/about", { viewTransition: true })
+      }
+    >
+      About
+    </button>
+  );
+}
+```
+
+これにより、Link コンポーネントで `viewTransition` プロパティを使用した場合と同じクロスフェードアニメーションが提供されます。
+
 View Transitions API の使用に関する詳細については、Google Chrome チームの ["View Transition API を使用したスムーズなトランジション" ガイド][view-transitions-guide] を参照してください。
 
 ## 画像ギャラリーの例
 
 ビュートランジションをトリガーして使用する方法を示す画像ギャラリーを作成しましょう。スムーズなアニメーションで詳細ビューに展開する画像のリストを作成します。
 
-### 2. 画像ギャラリーのルートを作成する
+### 1. 画像ギャラリーのルートを作成する
 
 ```tsx filename=routes/image-gallery.tsx
 import { NavLink } from "react-router";
@@ -62,7 +91,7 @@ export default function ImageGalleryRoute() {
 }
 ```
 
-### 3. トランジションスタイルを追加する
+### 2. トランジションスタイルを追加する
 
 ルート間でスムーズにトランジションする必要がある要素のビュートランジション名とアニメーションを定義します。
 
@@ -98,7 +127,7 @@ export default function ImageGalleryRoute() {
 }
 ```
 
-### 4. 画像詳細ルートを作成する
+### 3. 画像詳細ルートを作成する
 
 詳細ビューでは、シームレスなアニメーションを作成するために同じビュートランジション名を使用する必要があります。
 
@@ -122,7 +151,7 @@ export default function ImageDetailsRoute({
 }
 ```
 
-### 5. 詳細ビューに一致するトランジションスタイルを追加する
+### 4. 詳細ビューに一致するトランジションスタイルを追加する
 
 ```css filename=app.css
 /* リストビューからのトランジション名に一致させる */
@@ -206,4 +235,3 @@ function NavImage(props: { src: string; idx: number }) {
 
 [view-transitions-api]: https://developer.mozilla.org/en-US/docs/Web/API/ViewTransition
 [view-transitions-guide]: https://developer.chrome.com/docs/web-platform/view-transitions
-

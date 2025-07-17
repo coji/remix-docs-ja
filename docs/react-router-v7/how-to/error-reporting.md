@@ -4,6 +4,11 @@ title: エラー報告
 
 # エラー報告
 
+[MODES: framework]
+
+<br/>
+<br/>
+
 React Router は、ルートモジュールで発生したエラーをキャッチし、エラーが発生した際に空白ページが表示されるのを防ぐために、[エラー境界](./error-boundary)に送信します。ただし、ErrorBoundary はエラーのログ記録や報告には十分ではありません。キャッチされたこれらのエラーにアクセスするには、サーバーエントリモジュールの `handleError` エクスポートを使用します。
 
 ## 1. サーバーエントリを明らかにする
@@ -34,4 +39,3 @@ export const handleError: HandleErrorFunction = (
   }
 };
 ```
-
