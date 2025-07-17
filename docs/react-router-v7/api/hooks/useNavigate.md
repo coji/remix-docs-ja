@@ -1,4 +1,6 @@
----title: useNavigate---
+---
+title: useNavigate
+---
 
 # useNavigate
 
