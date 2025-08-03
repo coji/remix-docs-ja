@@ -1,9 +1,8 @@
 import { getProductById } from '@remix-docs-ja/scripts/services/product'
 import { data } from 'react-router'
 import { getMenu } from '~/services/menu.server'
-import type { Route } from './+types/sitemap[.]xml'
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
+export const loader = async () => {
   const product = getProductById(__PRODUCT_ID__)
   if (!product) {
     throw data('Product not found', { status: 404 })

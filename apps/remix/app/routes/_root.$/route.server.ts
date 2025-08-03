@@ -3,7 +3,7 @@ import { data } from 'react-router'
 import { getDocJson } from '~/services/document.server'
 import type { Route } from './+types'
 
-export const loader = async ({ request, params }: Route.LoaderArgs) => {
+export const loader = async ({ params }: Route.LoaderArgs) => {
   const filename = params['*'] ?? 'index'
   const product = getProductById(__PRODUCT_ID__)
   if (!product) {

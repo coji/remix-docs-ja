@@ -19,11 +19,11 @@ export const splitMarkdownByHeaders = (markdownText: string): string[] => {
       if (currentChunk) {
         chunks.push(currentChunk.trim())
       }
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      // biome-ignore lint/suspicious/noExplicitAny: node is a heading
       currentChunk = processor.stringify(node as any)
     } else {
       currentChunk += `\n${
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        // biome-ignore lint/suspicious/noExplicitAny: node is a text or paragraph
         processor.stringify(node as any)
       }`
     }

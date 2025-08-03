@@ -13,7 +13,7 @@ import { listProjects } from './queries.server'
 
 export const meta: Route.MetaFunction = () => [{ title: 'Projects' }]
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
+export const loader = async () => {
   const projects = await listProjects()
   return { projects }
 }

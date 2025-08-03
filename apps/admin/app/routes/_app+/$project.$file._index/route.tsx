@@ -1,5 +1,5 @@
 import { getFormProps, getTextareaProps, useForm } from '@conform-to/react'
-import { parseWithZod } from '@conform-to/zod'
+import { parseWithZod } from '@conform-to/zod/v4'
 import { Form, useNavigation, useOutletContext } from 'react-router'
 import { z } from 'zod'
 import { zx } from 'zodix'
