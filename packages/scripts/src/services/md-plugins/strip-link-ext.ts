@@ -9,7 +9,7 @@ export const stripLinkExtPlugin: InternalPlugin<
   UnistNode.Root,
   UnistNode.Root
 > = (options: StripLinkExtOptions = {}) => {
-  return async function transformer(tree: UnistNode.Root) {
+  return function transformer(tree: UnistNode.Root) {
     visit(tree, 'link', (node, index, parent) => {
       if (
         options.resolveHref &&

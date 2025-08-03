@@ -14,7 +14,7 @@ export const getDoc = async (file: string, options: GetDocOptions) => {
     const doc = await processMarkdown(content, { productId: options.productId })
     const headings = createTableOfContentsFromHeadings(doc.html)
     return { ...doc, headings }
-  } catch (e) {
+  } catch (_e) {
     return null
   }
 }
@@ -29,7 +29,7 @@ export const getDocJson = async (file: string) => {
       html: string
       headings: { headingLevel: string; html: string; slug: string }[]
     }
-  } catch (e) {
+  } catch (_e) {
     return null
   }
 }

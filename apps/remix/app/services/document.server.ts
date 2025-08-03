@@ -11,7 +11,7 @@ export const getDocJson = async (file: string) => {
       html: string
       headings: { headingLevel: string; html: string; slug: string }[]
     }
-  } catch (e) {
+  } catch (_e) {
     return null
   }
 }

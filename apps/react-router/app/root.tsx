@@ -22,7 +22,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
   })
 }
 
-export const loader = ({ request }: Route.LoaderArgs) => {
+export const loader = () => {
   const product = getProductById(__PRODUCT_ID__)
   if (!product) {
     throw data('Product not found: __PRODUCT_ID__', { status: 404 })

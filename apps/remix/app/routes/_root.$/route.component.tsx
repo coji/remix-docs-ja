@@ -27,7 +27,6 @@ export default function Docs({ loaderData: { doc } }: Route.ComponentProps) {
   const { hash, pathname } = useLocation()
   const mainRef = useRef<HTMLDivElement>(null)
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (hash) {
       setTimeout(() => {
@@ -51,7 +50,7 @@ export default function Docs({ loaderData: { doc } }: Route.ComponentProps) {
           'md-prose prose dark:prose-invert order-2 overflow-auto scroll-smooth px-4 pt-8 pb-32 md:order-1 md:pt-2',
           'max-w-none',
         )}
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: markdown content is sanitized
         dangerouslySetInnerHTML={{ __html: doc.html }}
       />
 

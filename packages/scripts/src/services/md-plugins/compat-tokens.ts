@@ -78,7 +78,7 @@ const remarkCompatLists: Plugin<[CompatOptions?], Root> = () => {
       const matchSmall = text.match(MODES_SMALL_REGEX)
 
       if (matchBig || matchSmall) {
-        // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        // biome-ignore lint/style/noNonNullAssertion: modes will always match
         const modes = (matchBig || matchSmall)![1]
           .split(',')
           .map((mode) => mode.trim())

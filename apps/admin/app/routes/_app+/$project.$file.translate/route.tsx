@@ -1,5 +1,5 @@
 import { getFormProps, getTextareaProps, useForm } from '@conform-to/react'
-import { parseWithZod } from '@conform-to/zod'
+import { parseWithZod } from '@conform-to/zod/v4'
 import { LoaderCircleIcon } from 'lucide-react'
 import { data, Form, useNavigation, useOutletContext } from 'react-router'
 import { dataWithSuccess } from 'remix-toast'

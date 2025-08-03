@@ -90,7 +90,7 @@ export const getOgpImageResponse = async (
       fonts: [
         {
           name: 'NotoSansJP',
-          data: fontData,
+          data: fontData as ArrayBuffer,
           style: 'normal',
         },
       ],
