@@ -4,31 +4,48 @@ title: redirect
 
 # redirect
 
+<!--
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
+
+Thank you for helping improve our documentation!
+
+This file is auto-generated from the JSDoc comments in the source
+code, so please edit the JSDoc comments in the file below and this
+file will be re-generated once those changes are merged.
+
+https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/router/utils.ts
+-->
+
 [MODES: framework, data]
 
 ## 概要
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.redirect.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/variables/react_router.redirect.html)
 
-リダイレクトレスポンス。ステータスコードと `Location` ヘッダーを設定します。デフォルトは "302 Found" です。
-
-## シグネチャ
+リダイレクト [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) です。ステータスコードと [`Location`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Location) ヘッダーを設定します。デフォルトは [`302 Found`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302) です。
 
 ```tsx
-redirect(url, init): Response
+import { redirect } from "react-router";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  if (!isLoggedIn(request))
+    throw redirect("/login");
+  }
+
+  // ...
+}
 ```
 
 ## パラメータ
 
 ### url
 
-[modes: framework, data]
-
-_ドキュメントはありません_
+リダイレクト先のURL。
 
 ### init
 
-[modes: framework, data]
+レスポンスに含めるステータスコード、または `ResponseInit` オブジェクト。
 
-_ドキュメントはありません_
+## 戻り値
 
+リダイレクトステータスと [`Location`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Location) ヘッダーを含む [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) オブジェクト。

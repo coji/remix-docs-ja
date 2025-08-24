@@ -5,29 +5,36 @@ unstable: true
 
 # ミドルウェア
 
+[MODES: framework, data]
+
+<br/>
+<br/>
+
 <docs-warning>ミドルウェア機能は現在実験段階であり、破壊的変更の可能性があります。有効にするには、`future.unstable_middleware`フラグを使用してください。</docs-warning>
 
-ミドルウェアを使用すると、ルートハンドラー（ローダー、アクション、コンポーネント）が実行される前後にコードを実行できます。これにより、認証、ロギング、エラー処理、データ前処理などの一般的なパターンを再利用可能な方法で実現できます。
+ミドルウェアを使用すると、一致したパスの[`Response`][Response]生成の前後にコードを実行できます。これにより、認証、ロギング、エラー処理、データ前処理などの[一般的なパターン][common-patterns]を再利用可能な方法で実現できます。
 
-ミドルウェアはネストされたチェーンで実行され、ルートハンドラーへの「下り」の途中で親ルートから子ルートへ、そしてハンドラーが完了した後の「上り」の途中で子ルートから親ルートへと実行されます。
+ミドルウェアはネストされたチェーンで実行され、ルートハンドラーへの「下り」の途中で親ルートから子ルートへ、そして[`Response`][Response]が生成された後の「上り」の途中で子ルートから親ルートへと実行されます。
 
 例えば、`GET /parent/child`リクエストでは、ミドルウェアは以下の順序で実行されます。
 
 ```text
-- ルートミドルウェア開始
-  - 親ミドルウェア開始
-    - 子ミドルウェア開始
-      - ローダーを実行
-    - 子ミドルウェア終了
-  - 親ミドルウェア終了
-- ルートミドルウェア終了
+- Root middleware start
+  - Parent middleware start
+    - Child middleware start
+      - Run loaders, generate HTML Response
+    - Child middleware end
+  - Parent middleware end
+- Root middleware end
 ```
 
-## クイックスタート
+<docs-info>サーバー（フレームワークモード）とクライアント（フレームワーク/データモード）でのミドルウェアには、いくつかのわずかな違いがあります。このドキュメントでは、過去に他のHTTPサーバーでミドルウェアを使用したことがあるユーザーにとって最も馴染み深いため、ほとんどの例でサーバーミドルウェアについて言及します。詳細については、以下の[サーバーミドルウェアとクライアントミドルウェア][server-client]セクションを参照してください。</docs-info>
+
+## クイックスタート (フレームワークモード)
 
 ### 1. ミドルウェアフラグを有効にする
 
-まず、React Routerの設定でミドルウェアを有効にします。
+まず、[React Routerの設定][rr-config]でミドルウェアを有効にします。
 
 ```ts filename=react-router.config.ts
 import type { Config } from "@react-router/dev/config";
@@ -39,25 +46,12 @@ export default {
 } satisfies Config;
 ```
 
-<docs-warning>ミドルウェア機能を有効にすると、ローダーとアクションの`context`パラメーターの型が変更されます。現在`context`を積極的に使用している場合は、以下の[getLoadContext](#custom-server-with-getloadcontext)セクションに注意してください。</docs-warning>
+<docs-warning>ミドルウェア機能を有効にすると、`action`と`loader`の`context`パラメーターの型が変更されます。現在`context`を積極的に使用している場合は、以下の[`getLoadContext`][getloadcontext]セクションに注意してください。</docs-warning>
 
-### 2. 型サポートを追加する
+### 2. コンテキストを作成する
 
-ミドルウェアの型を有効にするために、`app/types/global.d.ts`を更新します。
-
-```ts filename=app/types/global.d.ts
-declare module "@react-router/dev/routes" {
-  interface AppConfig {
-    future: {
-      unstable_middleware: true;
-    };
-  }
-}
-```
-
-### 3. コンテキストを作成する
-
-`unstable_createContext`を使用して型安全なコンテキストオブジェクトを作成します。
+ミドルウェアは、ミドルウェアチェーンにデータを供給するために`context`プロバイダーインスタンスを使用します。
+[`unstable_createContext`][createContext]を使用して型安全なコンテキストオブジェクトを作成できます。
 
 ```ts filename=app/context.ts
 import { unstable_createContext } from "react-router";
@@ -67,36 +61,34 @@ export const userContext =
   unstable_createContext<User | null>(null);
 ```
 
-### 4. ルートからミドルウェアをエクスポートする
+### 3. ルートからミドルウェアをエクスポートする
 
 ```tsx filename=app/routes/dashboard.tsx
 import { redirect } from "react-router";
 import { userContext } from "~/context";
 
 // サーバーサイド認証ミドルウェア
+async function authMiddleware({ request, context }) {
+  const user = await getUserFromSession(request);
+  if (!user) {
+    throw redirect("/login");
+  }
+  context.set(userContext, user);
+}
+
 export const unstable_middleware: Route.unstable_MiddlewareFunction[] =
-  [
-    async ({ request, context }) => {
-      const user = await getUserFromSession(request);
-      if (!user) {
-        throw redirect("/login");
-      }
-      context.set(userContext, user);
-    },
-  ];
+  [authMiddleware];
 
 // クライアントサイドタイミングミドルウェア
+async function timingMiddleware({ context }, next) {
+  const start = performance.now();
+  await next();
+  const duration = performance.now() - start;
+  console.log(`Navigation took ${duration}ms`);
+}
+
 export const unstable_clientMiddleware: Route.unstable_ClientMiddlewareFunction[] =
-  [
-    async ({ context }, next) => {
-      const start = performance.now();
-
-      await next();
-
-      const duration = performance.now() - start;
-      console.log(`Navigation took ${duration}ms`);
-    },
-  ];
+  [timingMiddleware];
 
 export async function loader({
   context,
@@ -118,22 +110,323 @@ export default function Dashboard({
 }
 ```
 
+### 4. `getLoadContext`関数を更新する（該当する場合）
+
+カスタムサーバーと`getLoadContext`関数を使用している場合、実装を更新して、JavaScriptオブジェクトの代わりに[`unstable_RouterContextProvider`][RouterContextProvider]のインスタンスを返す必要があります。
+
+```diff
++import {
++  unstable_createContext,
++  unstable_RouterContextProvider,
++} from "react-router";
+import { createDb } from "./db";
+
++const dbContext = unstable_createContext<Database>();
+
+function getLoadContext(req, res) {
+-  return { db: createDb() };
++  const context = new unstable_RouterContextProvider();
++  context.set(dbContext, createDb());
++  return context;
+}
+```
+
+## クイックスタート (データモード)
+
+<docs-info>データモードには将来のフラグがないことに注意してください。これは、ルートにミドルウェアを追加することでオプトインでき、将来のフラグを必要とする破壊的変更が存在しないためです。</docs-info>
+
+### 1. コンテキストを作成する
+
+ミドルウェアは、ミドルウェアチェーンにデータを供給するために`context`プロバイダーインスタンスを使用します。
+[`unstable_createContext`][createContext]を使用して型安全なコンテキストオブジェクトを作成できます。
+
+```ts
+import { unstable_createContext } from "react-router";
+import type { User } from "~/types";
+
+export const userContext =
+  unstable_createContext<User | null>(null);
+```
+
+### 2. ルートにミドルウェアを追加する
+
+```tsx
+import { redirect } from "react-router";
+import { userContext } from "~/context";
+
+const routes = [
+  {
+    path: "/",
+    unstable_middleware: [timingMiddleware], // 👈
+    Component: Root,
+    children: [
+      {
+        path: "profile",
+        unstable_middleware: [authMiddleware], // 👈
+        loader: profileLoader,
+        Component: Profile,
+      },
+      {
+        path: "login",
+        Component: Login,
+      },
+    ],
+  },
+];
+
+async function timingMiddleware({ context }, next) {
+  const start = performance.now();
+  await next();
+  const duration = performance.now() - start;
+  console.log(`Navigation took ${duration}ms`);
+}
+
+async function authMiddleware({ context }) {
+  const user = await getUser();
+  if (!user) {
+    throw redirect("/login");
+  }
+  context.set(userContext, user);
+}
+
+export async function profileLoader({
+  context,
+}: Route.LoaderArgs) {
+  const user = context.get(userContext);
+  const profile = await getProfile(user);
+  return { profile };
+}
+
+export default function Profile() {
+  let loaderData = useLoaderData();
+  return (
+    <div>
+      <h1>Welcome {loaderData.profile.fullName}!</h1>
+      <Profile profile={loaderData.profile} />
+    </div>
+  );
+}
+```
+
+### 3. `unstable_getContext`関数を追加する（オプション）
+
+すべてのナビゲーション/フェッチにベースコンテキストを含めたい場合は、ルーターに[`unstable_getContext`][getContext]関数を追加できます。これは、すべてのナビゲーション/フェッチで新しいコンテキストを生成するために呼び出されます。
+
+```tsx
+let sessionContext = unstable_createContext();
+
+const router = createBrowserRouter(routes, {
+  unstable_getContext() {
+    let context = new unstable_RouterContextProvider();
+    context.set(sessionContext, getSession());
+    return context;
+  },
+});
+```
+
+<docs-info>このAPIは、フレームワークモードのサーバーにおける`getLoadContext` APIをミラーリングするために存在します。これは、HTTPサーバーからReact Routerハンドラーに値を渡す方法として存在します。この[`unstable_getContext`][getContext] APIは、[`window`][window]/[`document`][document]からReact Routerにグローバルな値を渡すために使用できますが、これらはすべて同じコンテキスト（ブラウザ）で実行されるため、ルートミドルウェアを使用しても実質的に同じ動作を実現できます。したがって、サーバーと同じ方法でこのAPIが必要ない場合もありますが、一貫性のために提供されています。</docs-info>
+
 ## コアコンセプト
 
 ### サーバーミドルウェア vs クライアントミドルウェア
 
-**サーバーミドルウェア** (`unstable_middleware`) は、サーバーで以下の場合に実行されます。
+サーバーミドルウェアは、フレームワークモードのサーバーで、HTMLドキュメントリクエストおよび後続のナビゲーションとフェッチャー呼び出しのための`.data`リクエストに対して実行されます。サーバーミドルウェアはHTTP [`Request`][request]に応答してサーバーで実行されるため、`next`関数を介してHTTP [`Response`][Response]をミドルウェアチェーンに返します。
 
-- HTMLドキュメントリクエスト
-- 後続のナビゲーションとフェッチャー呼び出しのための`.data`リクエスト
+```ts
+async function serverMiddleware({ request }, next) {
+  console.log(request.method, request.url);
+  let response = await next();
+  console.log(response.status, request.method, request.url);
+  return response;
+}
 
-**クライアントミドルウェア** (`unstable_clientMiddleware`) は、ブラウザで以下の場合に実行されます。
+// Framework mode only
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] =
+  [serverMiddleware];
+```
 
-- クライアントサイドのナビゲーションとフェッチャー呼び出し
+クライアントミドルウェアは、クライアントサイドのナビゲーションとフェッチャー呼び出しのために、フレームワークモードとデータモードのブラウザで実行されます。クライアントミドルウェアは、HTTPリクエストがないため、`Response`をバブルアップしない点でサーバーミドルウェアとは異なります。ほとんどの場合、`next`からの戻り値を無視し、クライアントのミドルウェアから何も返さないことができます。
+
+```ts
+async function clientMiddleware({ request }, next) {
+  console.log(request.method, request.url);
+  await next();
+  console.log(response.status, request.method, request.url);
+}
+
+// Framework mode
+export const unstable_clientMiddleware: Route.unstable_MiddlewareFunction[] =
+  [clientMiddleware];
+
+// Or, Data mode
+const route = {
+  path: "/",
+  unstable_middleware: [clientMiddleware],
+  loader: rootLoader,
+  Component: Root,
+};
+```
+
+ローダー/アクションの結果に基づいて何らかの後処理を行いたい場合があるかもしれません。`Response`の代わりに、クライアントミドルウェアはアクティブな[`dataStrategy`][datastrategy]から返された値（ルートIDでキー付けされた`Record<string, DataStrategyResult>`）をバブルアップします。これにより、実行された`loader`/`action`関数の結果に基づいて、ミドルウェアで条件付きアクションを実行できます。
+
+以下は、クライアントサイドミドルウェアとして実装された[404でのCMSリダイレクト][cms-redirect]のユースケースの例です。
+
+```tsx
+async function cmsFallbackMiddleware({ request }, next) {
+  const results = await next();
+
+  // Check if we got a 404 from any of our routes and if so, look for a
+  // redirect in our CMS
+  const found404 = Object.values(results).some(
+    (r) =>
+      isRouteErrorResponse(r.result) &&
+      r.result.status === 404,
+  );
+  if (found404) {
+    const cmsRedirect = await checkCMSRedirects(
+      request.url,
+    );
+    if (cmsRedirect) {
+      throw redirect(cmsRedirect, 302);
+    }
+  }
+}
+```
+
+<docs-warning>サーバーミドルウェアでは、`Response`ボディをいじるべきではなく、ステータス/ヘッダーの読み取りとヘッダーの設定のみを行うべきです。同様に、この値はクライアントミドルウェアでは読み取り専用と見なされるべきです。なぜなら、それは結果のナビゲーションの「ボディ」または「データ」を表し、ミドルウェアではなくローダー/アクションによって駆動されるべきだからです。これはまた、クライアントミドルウェアでは、`await next()`から結果をキャプチャする必要があったとしても、通常は結果を返す必要がないことを意味します。</docs-warning>
+
+### ミドルウェアの実行タイミング
+
+アプリケーションが意図したとおりに動作するように、ミドルウェアが_いつ_実行されるかを理解することは非常に重要です。
+
+#### サーバーミドルウェア
+
+ハイドレートされたフレームワークモードのアプリでは、サーバーミドルウェアはSPAの動作を優先し、デフォルトでは新しいネットワークアクティビティを作成しないように設計されています。ミドルウェアは_既存の_リクエストをラップし、サーバーにアクセスする必要がある場合にのみ実行されます。
+
+これにより、React Routerにおける「ハンドラー」とは何かという疑問が生じます。それはルートでしょうか？それとも`loader`でしょうか？私たちは「場合による」と考えています。
+
+- ドキュメントリクエスト（`GET /route`）では、ハンドラーはルートです。なぜなら、レスポンスには`loader`とルートコンポーネントの両方が含まれるからです。
+- クライアントサイドナビゲーションのデータリクエスト（`GET /route.data`）では、ハンドラーは[`action`][data-action]/[`loader`][data-loader]です。なぜなら、レスポンスに含まれるのはそれだけだからです。
+
+したがって:
+
+- ドキュメントリクエストは、`loader`が存在するかどうかにかかわらずサーバーミドルウェアを実行します。なぜなら、UIをレンダリングするための「ハンドラー」の中にまだいるからです。
+- クライアントサイドナビゲーションは、[`action`][framework-action]/[`loader`][framework-loader]のためにサーバーに`.data`リクエストが行われた場合にのみ、サーバーミドルウェアを実行します。
+
+これは、リクエスト期間のロギング、セッションのチェック/設定、送信キャッシュヘッダーの設定などのリクエストアノテーションミドルウェアにとって重要な動作です。そもそもサーバーにアクセスする理由がないのに、サーバーにアクセスしてこれらの種類のミドルウェアを実行しても無意味でしょう。これにより、サーバーの負荷が増加し、サーバーログが煩雑になります。
+
+```tsx filename=app/root.tsx
+// This middleware won't run on client-side navigations without a `.data` request
+async function loggingMiddleware({ request }, next) {
+  console.log(`Request: ${request.method} ${request.url}`);
+  let response = await next();
+  console.log(
+    `Response: ${response.status} ${request.method} ${request.url}`,
+  );
+  return response;
+}
+
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] =
+  [loggingMiddleware];
+```
+
+しかし、`loader`が存在しない場合でも、_すべての_クライアントナビゲーションで特定のサーバーミドルウェアを実行したい場合があります。例えば、サイトの認証済みセクションにあるフォームで、`loader`は必要ないが、ユーザーがフォームに入力する前に認証ミドルウェアを使用してリダイレクトしたい場合などです。`action`に送信するときではなく。ミドルウェアがこれらの基準を満たす場合、そのルートを含むルートに`loader`を配置することで、そのルートが関与するクライアントサイドナビゲーションに対して常にサーバーを呼び出すように強制できます。
+
+```tsx filename=app/_auth.tsx
+function authMiddleware({ request }, next) {
+  if (!isLoggedIn(request)) {
+    throw redirect("/login");
+  }
+}
+
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] =
+  [authMiddleware];
+
+// By adding a `loader`, we force the `authMiddleware` to run on every
+// client-side navigation involving this route.
+export async function loader() {
+  return null;
+}
+```
+
+#### クライアントミドルウェア
+
+クライアントミドルウェアはよりシンプルです。なぜなら、私たちはすでにクライアント上にいて、ナビゲーション時に常にルーターに「リクエスト」を行っているからです。クライアントミドルウェアは、実行する`loader`があるかどうかにかかわらず、すべてのクライアントナビゲーションで実行されます。
+
+### コンテキストAPI
+
+新しいコンテキストシステムは、型安全を提供し、名前の衝突を防ぎ、ネストされたミドルウェアや`action`/`loader`関数にデータを提供できるようにします。フレームワークモードでは、これは以前の`AppLoadContext` APIを置き換えます。
+
+```ts
+// ✅ 型安全
+import { unstable_createContext } from "react-router";
+const userContext = unstable_createContext<User>();
+
+// 後でミドルウェア/`loader`s
+context.set(userContext, user); // User型である必要があります
+const user = context.get(userContext); // User型を返します
+
+// ❌ 古い方法（型安全なし）
+context.user = user; // 何でもあり得る
+```
+
+#### `Context`と`AsyncLocalStorage`
+
+Nodeは、非同期実行コンテキストを通じて値を提供する[`AsyncLocalStorage`][asynclocalstorage] APIを提供します。これはNode APIですが、ほとんどのモダンなランタイムで（ほとんど）利用可能になっています（例：[Cloudflare][cloudflare]、[Bun][bun]、[Deno][deno]）。
+
+理論的には、ミドルウェアから子ルートに値を渡す方法として[`AsyncLocalStorage`][asynclocalstorage]を直接活用することもできましたが、100%のクロスプラットフォーム互換性がないことが懸念され、ランタイムに依存しない方法で再利用可能なミドルウェアパッケージを公開できるように、ファーストクラスの`context` APIを引き続き提供したいと考えました。
+
+とはいえ、このAPIはReact Routerミドルウェアと非常によく連携し、`context` APIの代わりとして、またはそれと並行して使用できます。
+
+<docs-info>[React Server Components](../how-to/react-server-components)を使用する場合、[`AsyncLocalStorage`][asynclocalstorage]は_特に_強力です。なぜなら、`middleware`からServer ComponentsやServer Actionsに情報を提供できるからです。これらは同じサーバー実行コンテキストで実行されるためです🤯</docs-info>
+
+```tsx filename=app/user-context.ts
+import { AsyncLocalStorage } from "node:async_hooks";
+
+const USER = new AsyncLocalStorage<User>();
+
+export async function provideUser(
+  request: Request,
+  cb: () => Promise<Response>,
+) {
+  let user = await getUser(request);
+  return USER.run(user, cb);
+}
+
+export function getUser() {
+  return USER.getStore();
+}
+```
+
+```tsx filename=app/root.tsx
+import { provideUser } from "./user-context";
+
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] =
+  [
+    async ({ request, context }, next) => {
+      return provideUser(request, async () => {
+        let res = await next();
+        return res;
+      });
+    },
+  ];
+```
+
+```tsx filename=app/routes/_index.tsx
+import { getUser } from "../user-context";
+
+export async function loader() {
+  let user = getUser();
+  //...
+}
+```
 
 ### `next`関数
 
-`next`関数は、チェーン内の次のミドルウェア、またはリーフルートミドルウェアの場合はルートハンドラーを実行します。
+`next`関数のロジックは、それが呼び出されているルートミドルウェアによって異なります。
+
+- リーフではないミドルウェアから呼び出された場合、チェーン内の次のミドルウェアを実行します。
+- リーフミドルウェアから呼び出された場合、ルートハンドラーを実行し、リクエストに対する結果の[`Response`][Response]を生成します。
 
 ```ts
 const middleware = async ({ context }, next) => {
@@ -166,22 +459,101 @@ const authMiddleware = async ({ request, context }) => {
 };
 ```
 
-### コンテキストAPI
+### `next()`とエラーハンドリング
 
-新しいコンテキストシステムは、型安全を提供し、名前の衝突を防ぎます。
+React Routerには、ルートの[`ErrorBoundary`][ErrorBoundary]エクスポートを介した組み込みのエラーハンドリングが含まれています。`action`/`loader`がスローした場合と同様に、`middleware`がスローした場合、適切な[`ErrorBoundary`][ErrorBoundary]で捕捉および処理され、祖先の`next()`呼び出しを通じて[`Response`][Response]が返されます。これは、`next()`関数は決してスローせず、常に[`Response`][Response]を返す必要があることを意味するため、try/catchでラップすることを心配する必要はありません。
+
+この動作は、ルート`middleware`から送信されるレスポンスに必須ヘッダーを自動的に設定する（つまり、セッションをコミットする）などのミドルウェアパターンを可能にするために重要です。もし`middleware`からのエラーが`next()`を`throw`させた場合、終了時の祖先ミドルウェアの実行を見逃し、必要なヘッダーが設定されなくなります。
+
+```tsx filename=routes/parent.tsx
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] =
+  [
+    async (_, next) => {
+      let res = await next();
+      //  ^ res.status = 500
+      // This response contains the ErrorBoundary
+      return res;
+    },
+  ];
+```
+
+```tsx filename=routes/parent.child.tsx
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] =
+  [
+    async (_, next) => {
+      let res = await next();
+      //  ^ res.status = 200
+      // This response contains the successful UI render
+      throw new Error("Uh oh, something went wrong!");
+    },
+  ];
+```
+
+## `getLoadContext`/`AppLoadContext`の変更点
+
+<docs-info>これは、カスタムサーバーとカスタム`getLoadContext`関数を使用している場合にのみ適用されます。</docs-info>
+
+ミドルウェアは、`getLoadContext`によって生成され、`action`と`loader`に渡される`context`パラメーターに破壊的変更を導入します。モジュール拡張された`AppLoadContext`の現在の方法は、実際には型安全ではなく、TypeScriptに「私を信じて」と伝えるようなものです。
+
+ミドルウェアは`clientMiddleware`のためにクライアント上で同等の`context`を必要としますが、すでに不満があったサーバーからのこのパターンを複製したくなかったため、型安全に取り組める新しいAPIを導入することにしました。
+
+ミドルウェアをオプトインすると、`context`パラメーターは[`unstable_RouterContextProvider`][RouterContextProvider]のインスタンスに変更されます。
 
 ```ts
-// ✅ 型安全
-import { unstable_createContext } from "react-router";
-const userContext = unstable_createContext<User>();
-
-// 後でミドルウェア/ローダーで
-context.set(userContext, user); // User型である必要があります
-const user = context.get(userContext); // User型を返します
-
-// ❌ 古い方法（型安全なし）
-// context.user = user; // 何でもあり得る
+let dbContext = unstable_createContext<Database>();
+let context = new unstable_RouterContextProvider();
+context.set(dbContext, getDb());
+//                     ^ type-safe
+let db = context.get(dbContext);
+//  ^ Database
 ```
+
+カスタムサーバーと`getLoadContext`関数を使用している場合、実装を更新して、プレーンなJavaScriptオブジェクトの代わりに[`unstable_RouterContextProvider`][RouterContextProvider]のインスタンスを返す必要があります。
+
+```diff
++import {
++  unstable_createContext,
++  unstable_RouterContextProvider,
++} from "react-router";
+import { createDb } from "./db";
+
++const dbContext = unstable_createContext<Database>();
+
+function getLoadContext(req, res) {
+-  return { db: createDb() };
++  const context = new unstable_RouterContextProvider();
++  context.set(dbContext, createDb());
++  return context;
+}
+```
+
+### `AppLoadContext`からの移行
+
+現在`AppLoadContext`を使用している場合、既存のモジュール拡張を使用して`AppLoadContext`の代わりに[`unstable_RouterContextProvider`][RouterContextProvider]を拡張することで、段階的に移行できます。次に、`getLoadContext`関数を更新して、[`unstable_RouterContextProvider`][RouterContextProvider]のインスタンスを返すようにします。
+
+```diff
+declare module "react-router" {
+-  interface AppLoadContext {
++  interface unstable_RouterContextProvider {
+    db: Database;
+    user: User;
+  }
+}
+
+function getLoadContext() {
+  const loadContext = {...};
+-  return loadContext;
++  let context = new unstable_RouterContextProvider();
++  Object.assign(context, loadContext);
++  return context;
+}
+```
+
+これにより、`action`/`loader`は値を直接読み取ることができる（例：`context.db`）ため、ミドルウェアの初期導入時に`action`/`loader`をそのままにしておくことができます。
+
+<docs-warning>このアプローチは、React Router v7でミドルウェアを導入する際の移行戦略としてのみ意図されており、`context.set`/`context.get`への段階的な移行を可能にします。このアプローチがReact Routerの次のメジャーバージョンで機能すると仮定するのは安全ではありません。</docs-warning>
+
+<docs-warning>[`unstable_RouterContextProvider`][RouterContextProvider]クラスは、`<HydratedRouter unstable_getContext>`および`<RouterProvider unstable_getContext>`を介したクライアントサイドの`context`パラメーターにも使用されます。`AppLoadContext`は主にHTTPサーバーからReact Routerハンドラーへの引き渡しとして意図されているため、これらの拡張フィールドは`clientMiddleware`、`clientLoader`、または`clientAction`関数では利用できないことに注意する必要があります（もちろん、クライアントで`unstable_getContext`を介してフィールドを提供しない限り、TypeScriptはそれらが利用可能であると示しますが）。</docs-warning>
 
 ## 一般的なパターン
 
@@ -211,9 +583,12 @@ export const authMiddleware = async ({
 ```tsx filename=app/routes/protected.tsx
 import { authMiddleware } from "~/middleware/auth";
 
-export const unstable_middleware = [authMiddleware];
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] =
+  [authMiddleware];
 
-export function loader({ context }: Route.LoaderArgs) {
+export async function loader({
+  context,
+}: Route.LoaderArgs) {
   const user = context.get(userContext); // 存在が保証されます
   return { user };
 }
@@ -226,13 +601,13 @@ import { requestIdContext } from "~/context";
 
 export const loggingMiddleware = async (
   { request, context },
-  next
+  next,
 ) => {
   const requestId = crypto.randomUUID();
   context.set(requestIdContext, requestId);
 
   console.log(
-    `[${requestId}] ${request.method} ${request.url}`
+    `[${requestId}] ${request.method} ${request.url}`,
   );
 
   const start = performance.now();
@@ -240,38 +615,19 @@ export const loggingMiddleware = async (
   const duration = performance.now() - start;
 
   console.log(
-    `[${requestId}] Response ${response.status} (${duration}ms)`
+    `[${requestId}] Response ${response.status} (${duration}ms)`,
   );
 
   return response;
 };
 ```
 
-### エラーハンドリング
-
-```tsx filename=app/middleware/error-handling.ts
-export const errorMiddleware = async (
-  { context },
-  next
-) => {
-  try {
-    return await next();
-  } catch (error) {
-    // エラーをログに記録
-    console.error("Route error:", error);
-
-    // React Routerに処理させるために再スロー
-    throw error;
-  }
-};
-```
-
-### 404からCMSへのリダイレクト
+### 404でのCMSリダイレクト
 
 ```tsx filename=app/middleware/cms-fallback.ts
 export const cmsFallbackMiddleware = async (
   { request },
-  next
+  next,
 ) => {
   const response = await next();
 
@@ -279,7 +635,7 @@ export const cmsFallbackMiddleware = async (
   if (response.status === 404) {
     // CMSでリダイレクトを確認
     const cmsRedirect = await checkCMSRedirects(
-      request.url
+      request.url,
     );
     if (cmsRedirect) {
       throw redirect(cmsRedirect, 302);
@@ -295,7 +651,7 @@ export const cmsFallbackMiddleware = async (
 ```tsx filename=app/middleware/headers.ts
 export const headersMiddleware = async (
   { context },
-  next
+  next,
 ) => {
   const response = await next();
 
@@ -307,68 +663,39 @@ export const headersMiddleware = async (
 };
 ```
 
-## クライアントサイドミドルウェア
-
-クライアントミドルウェアも同様に機能しますが、レスポンスを返しません。
-
-```tsx filename=app/routes/dashboard.tsx
-import { userContext } from "~/context";
-
-export const unstable_clientMiddleware = [
-  ({ context }) => {
-    // クライアントサイドのユーザーデータを設定
-    const user = getLocalUser();
-    context.set(userContext, user);
-  },
-
-  async ({ context }, next) => {
-    console.log("Starting client navigation");
-    await next();
-    console.log("Client navigation complete");
-  },
-];
-
-export async function clientLoader({
-  context,
-}: Route.ClientLoaderArgs) {
-  const user = context.get(userContext);
-  return { user };
-}
-```
-
-## 高度な使用法
-
 ### 条件付きミドルウェア
 
 ```tsx
-export const unstable_middleware = [
-  async ({ request, context }, next) => {
-    // POSTリクエストの場合のみ認証を実行
-    if (request.method === "POST") {
-      await ensureAuthenticated(request, context);
-    }
-    return next();
-  },
-];
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] =
+  [
+    async ({ request, context }, next) => {
+      // POSTリクエストの場合のみ認証を実行
+      if (request.method === "POST") {
+        await ensureAuthenticated(request, context);
+      }
+      return next();
+    },
+  ];
 ```
 
-### アクションとローダー間でのコンテキスト共有
+### `action`と`loader`間でのコンテキスト共有
 
 ```tsx
 const sharedDataContext = unstable_createContext<any>();
 
-export const unstable_middleware = [
-  async ({ request, context }, next) => {
-    if (request.method === "POST") {
-      // アクションフェーズ中にデータを設定
-      context.set(
-        sharedDataContext,
-        await getExpensiveData()
-      );
-    }
-    return next();
-  },
-];
+export const unstable_middleware: Route.unstable_MiddlewareFunction[] =
+  [
+    async ({ request, context }, next) => {
+      if (request.method === "POST") {
+        // アクションフェーズ中にデータを設定
+        context.set(
+          sharedDataContext,
+          await getExpensiveData(),
+        );
+      }
+      return next();
+    },
+  ];
 
 export async function action({
   context,
@@ -385,58 +712,25 @@ export async function loader({
 }
 ```
 
-### getLoadContextを使用したカスタムサーバー
-
-カスタムサーバーを使用している場合は、`getLoadContext`関数を更新してください。
-
-```ts filename=app/entry.server.tsx
-import { unstable_createContext } from "react-router";
-import type { unstable_InitialContext } from "react-router";
-
-const dbContext = unstable_createContext<Database>();
-
-function getLoadContext(req, res): unstable_InitialContext {
-  const map = new Map();
-  map.set(dbContext, database);
-  return map;
-}
-```
-
-### AppLoadContextからの移行
-
-現在`AppLoadContext`を使用している場合、既存のオブジェクトのコンテキストを作成することで最も簡単に移行できます。
-
-```ts filename=app/context.ts
-import { unstable_createContext } from "react-router";
-
-declare module "@react-router/server-runtime" {
-  interface AppLoadContext {
-    db: Database;
-    user: User;
-  }
-}
-
-const myLoadContext =
-  unstable_createContext<AppLoadContext>();
-```
-
-`getLoadContext`関数を更新して、コンテキストの初期値を持つMapを返すようにします。
-
-```diff filename=app/entry.server.tsx
-function getLoadContext() {
-  const loadContext = {...};
--  return loadContext;
-+  return new Map([
-+    [myLoadContext, appLoadContextInstance]]
-+  );
-}
-```
-
-ローダー/アクションを更新して、新しいコンテキストインスタンスから読み込むようにします。
-
-```diff filename=app/routes/example.tsx
-export function loader({ context }: Route.LoaderArgs) {
--  const { db, user } = context;
-+  const { db, user } = context.get(myLoadContext);
-}
-```
+[Response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
+[common-patterns]: #common-patterns
+[server-client]: #server-vs-client-middleware
+[rr-config]: ../api/framework-conventions/react-router.config.ts
+[framework-action]: ../start/framework/route-module#action
+[framework-loader]: ../start/framework/route-module#loader
+[getloadcontext]: #changes-to-getloadcontextapploadcontext
+[datastrategy]: ../api/data-routers/createBrowserRouter#optsdatastrategy
+[cms-redirect]: #cms-redirect-on-404
+[createContext]: ../api/utils/createContext
+[RouterContextProvider]: ../api/utils/RouterContextProvider
+[getContext]: ../api/data-routers/createBrowserRouter#optsunstable_getContext
+[window]: https://developer.mozilla.org/en-US/docs/Web/API/Window
+[document]: https://developer.mozilla.org/en-US/docs/Web/API/Document
+[request]: https://developer.mozilla.org/en-US/docs/Web/API/Request
+[data-action]: ../start/data/route-object#action
+[data-loader]: ../start/data/route-object#loader
+[asynclocalstorage]: https://nodejs.org/api/async_context.html#class-asynclocalstorage
+[cloudflare]: https://developers.cloudflare.com/workers/runtime-apis/nodejs/asynclocalstorage/
+[bun]: https://bun.sh/blog/bun-v0.7.0#asynclocalstorage-support
+[deno]: https://docs.deno.com/api/node/async_hooks/~/AsyncLocalStorage
+[ErrorBoundary]: ../start/framework/route-module#errorboundary

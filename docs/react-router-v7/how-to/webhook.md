@@ -21,14 +21,14 @@ export const action = async ({
       { message: "許可されていないメソッドです" },
       {
         status: 405,
-      }
+      },
     );
   }
   const payload = await request.json();
 
   /* Webhook を検証する */
   const signature = request.headers.get(
-    "X-Hub-Signature-256"
+    "X-Hub-Signature-256",
   );
   const generatedSignature = `sha256=${crypto
     .createHmac("sha256", process.env.GITHUB_WEBHOOK_SECRET)
@@ -39,7 +39,7 @@ export const action = async ({
       { message: "署名が一致しません" },
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -48,4 +48,3 @@ export const action = async ({
   return Response.json({ success: true });
 };
 ```
-

@@ -254,7 +254,7 @@ React Routerは、RSC互換のバンドラーと簡単に統合できるいく�
 
 以下の各エントリーポイントの具体的なコード例については、関連するバンドラーのドキュメントを参照してください。
 
-これらの例はすべて、サーバーとリクエスト処理に[express][express]と[@mjackson/node-fetch-server][node-fetch-server]を使用しています。
+これらの例はすべて、サーバーとリクエスト処理に[express][express]と[@remix-run/node-fetch-server][node-fetch-server]を使用しています。
 
 **ルート**
 
@@ -330,7 +330,7 @@ Parcelを設定するには、`package.json`に以下を追加します。
       "source": "src/entry.rsc.tsx",
       "scopeHoist": false,
       "includeNodeModules": {
-        "@mjackson/node-fetch-server": false,
+        "@remix-run/node-fetch-server": false,
         "compression": false,
         "express": false
       }
@@ -423,7 +423,7 @@ export async function generateHTML(
 以下は、Parcel RSCサーバーの簡略化された例です。
 
 ```tsx filename=src/entry.rsc.tsx
-import { createRequestListener } from "@mjackson/node-fetch-server";
+import { createRequestListener } from "@remix-run/node-fetch-server";
 import express from "express";
 import { unstable_matchRSCServerRequest as matchRSCServerRequest } from "react-router";
 import {
@@ -775,6 +775,6 @@ createFromReadableStream<RSCServerPayload>(
 [get-rsc-stream]: ../api/rsc/getRSCStream
 [rsc-hydrated-router]: ../api/rsc/RSCHydratedRouter
 [express]: https://expressjs.com/
-[node-fetch-server]: https://github.com/mjackson/remix-the-web/tree/main/packages/node-fetch-server
+[node-fetch-server]: https://www.npmjs.com/package/@remix-run/node-fetch-server
 [parcel-rsc-template]: https://github.com/remix-run/react-router-templates/tree/main/unstable_rsc-parcel
 [vite-rsc-template]: https://github.com/remix-run/react-router-templates/tree/main/unstable_rsc-vite

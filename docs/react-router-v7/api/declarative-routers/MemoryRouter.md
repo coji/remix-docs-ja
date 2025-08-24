@@ -10,31 +10,33 @@ title: MemoryRouter
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.MemoryRouter.html)
 
-すべてのエントリをメモリに保存する `<Router>` です。
+すべてのエントリをメモリに保存する宣言的な[`<Router>`](../declarative-routers/Router)です。
+
+## シグネチャ
+
+```tsx
+function MemoryRouter({
+  basename,
+  children,
+  initialEntries,
+  initialIndex,
+}: MemoryRouterProps): React.ReactElement
+```
 
 ## Props
 
 ### basename
 
-[modes: declarative]
-
-_ドキュメントなし_
+アプリケーションのベース名
 
 ### children
 
-[modes: declarative]
-
-_ドキュメントなし_
+ルートツリーを記述するネストされた[`Route`](../components/Route)要素
 
 ### initialEntries
 
-[modes: declarative]
-
-_ドキュメントなし_
+メモリ内の履歴スタックの初期エントリ
 
 ### initialIndex
 
-[modes: declarative]
-
-_ドキュメントなし_
-
+アプリケーションが初期化されるべき`initialEntries`のインデックス

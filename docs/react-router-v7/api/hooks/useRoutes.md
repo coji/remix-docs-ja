@@ -10,12 +10,9 @@ title: useRoutes
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useRoutes.html)
 
-コンポーネントの代わりにオブジェクトを使用する [Routes](../components/Routes) のフック版です。これらのオブジェクトは、コンポーネントの props と同じプロパティを持ちます。
-
-`useRoutes` の戻り値は、ルートツリーのレンダリングに使用できる有効な React 要素、または一致するものが何もない場合は `null` です。
+コンポーネントの代わりにオブジェクトを使用する [Routes](../components/Routes) のフック版です。これらのオブジェクトは、コンポーネントの props と同じプロパティを持ちます。`useRoutes` の戻り値は、ルートツリーのレンダリングに使用できる有効な React 要素、または一致するものが何もない場合は `null` です。
 
 ```tsx
-import * as React from "react";
 import { useRoutes } from "react-router";
 
 function App() {
@@ -41,20 +38,22 @@ function App() {
 ## シグネチャ
 
 ```tsx
-useRoutes(routes, locationArg): undefined
+function useRoutes(
+  routes: RouteObject[],
+  locationArg?: Partial<Location> | string,
+): React.ReactElement | null
 ```
 
 ## パラメータ
 
 ### routes
 
-[modes: framework, data, declarative]
-
-_ドキュメントはありません_
+ルート階層を定義する [`RouteObject`](https://api.reactrouter.com/v7/types/react_router.RouteObject.html) の配列
 
 ### locationArg
 
-[modes: framework, data, declarative]
+現在の [`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html) の代わりに使用する、オプションの [`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html) オブジェクトまたはパス名文字列
 
-_ドキュメントはありません_
+## 戻り値
 
+一致したルートをレンダリングするための React 要素。ルートが一致しない場合は `null`。

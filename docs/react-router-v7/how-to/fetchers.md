@@ -4,6 +4,9 @@ title: Fetcher の使用
 
 # Fetcher の使用
 
+<br/>
+<br/>
+
 Fetcher は、ナビゲーションを発生させることなく、複数の同時データ操作を必要とする複雑で動的なユーザーインターフェースを作成するのに役立ちます。
 
 Fetcher は、独自の独立した状態を追跡し、データのロード、データの変更、フォームの送信、および一般的にローダーやアクションとの対話に使用できます。
@@ -190,7 +193,7 @@ export async function loader({ request }) {
   let url = new URL(request.url);
   let query = url.searchParams.get("q");
   return users.filter((user) =>
-    user.name.toLowerCase().includes(query.toLowerCase())
+    user.name.toLowerCase().includes(query.toLowerCase()),
   );
 }
 ```

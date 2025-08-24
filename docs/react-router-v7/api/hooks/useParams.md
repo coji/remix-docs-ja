@@ -4,6 +4,18 @@ title: useParams
 
 # useParams
 
+<!--
+⚠️ ⚠️ 重要 ⚠️ ⚠️
+
+ドキュメントの改善にご協力いただきありがとうございます！
+
+このファイルはソースコードのJSDocコメントから自動生成されています。
+そのため、以下のファイルのJSDocコメントを編集してください。
+変更がマージされると、このファイルは再生成されます。
+
+https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/hooks.tsx
+-->
+
 [MODES: framework, data, declarative]
 
 ## 概要
@@ -11,6 +23,8 @@ title: useParams
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useParams.html)
 
 現在のURLから、ルートによってマッチした動的なパラメータのキーと値のペアのオブジェクトを返します。子ルートは、親ルートからすべてのパラメータを継承します。
+
+`/posts/:postId` のようなルートパターンが `/posts/123` にマッチした場合、`params.postId` は `"123"` になります。
 
 ```tsx
 import { useParams } from "react-router";
@@ -21,7 +35,19 @@ function SomeComponent() {
 }
 ```
 
-`/posts/:postId` のようなルートパターンが `/posts/123` にマッチした場合、`params.postId` は `"123"` になります。
+## シグネチャ
+
+```tsx
+function useParams<
+  ParamsOrKey extends string | Record<string, string | undefined> = string,
+>(): Readonly<
+  [ParamsOrKey] extends [string] ? Params<ParamsOrKey> : Partial<ParamsOrKey>
+>
+```
+
+## 戻り値
+
+動的なルートパラメータを含むオブジェクト
 
 ## 使用例
 

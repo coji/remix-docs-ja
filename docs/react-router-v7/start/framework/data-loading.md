@@ -15,6 +15,8 @@ order: 5
 
 `loaderData` プロップの型は、[自動的に生成されます][type-safety]。
 
+<docs-info>Reactがサーバーコンポーネントからクライアントコンポーネントにpropsとして渡すことを許可している[シリアライズ可能な型][serializable-types]と同じセットをサポートするよう努めています。これにより、将来的に[RSC][rsc]への移行が発生した場合でも、アプリケーションの将来性が保証されます。</docs-info>
+
 ## クライアントデータローディング
 
 `clientLoader` は、クライアントでデータをフェッチするために使用されます。これは、ブラウザからのみデータをフェッチしたいページやプロジェクト全体に役立ちます。
@@ -113,7 +115,7 @@ export default {
   async prerender() {
     let products = await readProductsFromCSVFile();
     return products.map(
-      (product) => `/products/${product.id}`
+      (product) => `/products/${product.id}`,
     );
   },
 } satisfies Config;
@@ -169,7 +171,7 @@ export async function clientLoader() {
 }
 
 // ハイドレーション中にクライアントローダーを強制的に実行します
-clientLoader.hydrate = true as const; // 型推論のための `as const`
+clientLoader.hydrate = true as const; // `as const` for type inference
 
 export function HydrateFallback() {
   return <div>Loading...</div>;
@@ -182,14 +184,18 @@ export default function Product() {
 
 ---
 
-次: [アクション](./actions)
+次: [アクション][actions]
 
 参照:
 
-- [Suspense を使用したストリーミング](../../how-to/suspense)
-- [クライアントデータ](../../how-to/client-data)
-- [Fetcher の使用](../../how-to/fetchers#loading-data)
+- [Suspense を使用したストリーミング][streaming]
+- [クライアントデータ][client-data]
+- [Fetcher の使用][fetchers]
 
-[advanced_data_fetching]: ../tutorials/advanced-data-fetching
-[data]: ../../api/react-router/data
 [type-safety]: ../../explanation/type-safety
+[serializable-types]: https://react.dev/reference/rsc/use-client#serializable-types
+[rsc]: ../../how-to/react-server-components
+[actions]: ./actions
+[streaming]: ../../how-to/suspense
+[client-data]: ../../how-to/client-data
+[fetchers]: ../../how-to/fetchers#loading-data

@@ -10,25 +10,24 @@ title: BrowserRouter
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.BrowserRouter.html)
 
-クライアントサイドルーティングにブラウザの履歴APIを使用する宣言的なルーター。
+クライアントサイドルーティングのためにブラウザの[`History`](https://developer.mozilla.org/en-US/docs/Web/API/History) APIを使用する宣言的な[`<Router>`](../declarative-routers/Router)です。
+
+## シグネチャ
+
+```tsx
+function BrowserRouter({ basename, children, window }: BrowserRouterProps)
+```
 
 ## Props
 
 ### basename
 
-[modes: 宣言的]
-
-_ドキュメントなし_
+アプリケーションのベースネーム
 
 ### children
 
-[modes: 宣言的]
-
-_ドキュメントなし_
+ルート設定を記述する``<Route>``コンポーネント
 
 ### window
 
-[modes: 宣言的]
-
-_ドキュメントなし_
-
+[`Window`](https://developer.mozilla.org/en-US/docs/Web/API/Window)オブジェクトのオーバーライド。デフォルトはグローバルな`window`インスタンスです。

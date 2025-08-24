@@ -5,54 +5,48 @@ unstable: true
 
 # unstable_createContext
 
+<!--
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
+
+Thank you for helping improve our documentation!
+
+This file is auto-generated from the JSDoc comments in the source
+code, so please edit the JSDoc comments in the file below and this
+file will be re-generated once those changes are merged.
+
+https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/router/utils.ts
+-->
+
 [MODES: framework, data]
 
-<br/>
-<br/>
+<br />
+<br />
 
-<docs-warning>このAPIは実験的なものであり、破壊的な変更が行われる可能性があります。`future.unstable_middleware`フラグを有効にして使用してください。</docs-warning>
+<docs-warning>このAPIは実験的なものであり、マイナー/パッチリリースで破壊的な変更が行われる可能性があります。注意して使用し、関連する変更についてはリリースノートに**細心の**注意を払ってください。</docs-warning>
 
-## 概要
+## Summary
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.unstable_createContext.html)
+[Reference Documentation ↗](https://api.reactrouter.com/v7/functions/react_router.unstable_createContext.html)
 
-ミドルウェア、ローダー、アクションで値を保存および取得するために使用できる、型安全なコンテキストオブジェクトを作成します。Reactの`createContext`に似ていますが、React Routerのリクエスト/レスポンスライフサイクル向けに設計されています。
+型安全な[`unstable_RouterContext`](https://api.reactrouter.com/v7/interfaces/react_router.unstable_RouterContext.html)オブジェクトを作成します。これは、[`action`](../../start/framework/route-module#action)s、[`loader`](../../start/framework/route-module#loader)s、および[ミドルウェア](../../how-to/middleware)で任意の値を保存および取得するために使用できます。Reactの[`createContext`](https://react.dev/reference/react/createContext)に似ていますが、React Routerのリクエスト/レスポンスライフサイクル向けに特別に設計されています。
 
-## シグネチャ
-
-```tsx
-unstable_createContext<T>(defaultValue?: T): RouterContext<T>
-```
-
-## パラメータ
-
-### defaultValue
-
-コンテキストのオプションのデフォルト値です。このコンテキストに値が設定されていない場合、この値が返されます。
-
-## 戻り値
-
-ミドルウェア、ローダー、アクションで`context.get()`および`context.set()`と共に使用できる`RouterContext<T>`オブジェクトです。
-
-## 例
-
-### 基本的な使用法
+`defaultValue`が提供された場合、コンテキストに値が設定されていないときに`context.get()`からその値が返されます。それ以外の場合、値が設定されていないときにこのコンテキストを読み取るとエラーがスローされます。
 
 ```tsx filename=app/context.ts
 import { unstable_createContext } from "react-router";
 
-// ユーザーデータ用のコンテキストを作成
+// Create a context for user data
 export const userContext =
   unstable_createContext<User | null>(null);
 ```
 
 ```tsx filename=app/middleware/auth.ts
-import { userContext } from "~/context";
 import { getUserFromSession } from "~/auth.server";
+import { userContext } from "~/context";
 
 export const authMiddleware = async ({
-  request,
   context,
+  request,
 }) => {
   const user = await getUserFromSession(request);
   context.set(userContext, user);
@@ -75,6 +69,20 @@ export async function loader({
 }
 ```
 
-## 関連項目
+## Signature
 
-- [ミドルウェアガイド](../../how-to/middleware)
+```tsx
+function unstable_createContext<T>(
+  defaultValue?: T,
+): unstable_RouterContext<T>
+```
+
+## Params
+
+### defaultValue
+
+コンテキストのオプションのデフォルト値です。このコンテキストに値が設定されていない場合、この値が返されます。
+
+## Returns
+
+[`unstable_RouterContext`](https://api.reactrouter.com/v7/interfaces/react_router.unstable_RouterContext.html)オブジェクトです。これは、[`action`](../../start/framework/route-module#action)s、[`loader`](../../start/framework/route-module#loader)s、および[ミドルウェア](../../how-to/middleware)で`context.get()`および`context.set()`と共に使用できます。

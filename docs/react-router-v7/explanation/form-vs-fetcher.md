@@ -1,8 +1,8 @@
 ---
-title: Form と fetcher
+title: Form vs. fetcher
 ---
 
-# Form と fetcher
+# Form vs. fetcher
 
 [MODES: framework, data]
 
@@ -56,10 +56,10 @@ React Routerでの開発では、機能が重複しているように見える�
 
 ご覧のとおり、2つのAPIセットには多くの類似点があります。
 
-| ナビゲーション/URL API        | フェッチャーAPI          |
+| Navigation/URL API            | Fetcher API          |
 | ----------------------------- | -------------------- |
 | `<Form>`                      | `<fetcher.Form>`     |
-| `actionData` (コンポーネントプロパティ) | `fetcher.data`       |
+| `actionData` (component prop) | `fetcher.data`       |
 | `navigation.state`            | `fetcher.state`      |
 | `navigation.formAction`       | `fetcher.formAction` |
 | `navigation.formData`         | `fetcher.formData`   |
@@ -228,7 +228,7 @@ function useMarkAsRead({ articleId, userId }) {
       {
         action: `/article/${articleId}/mark-as-read`,
         method: "post",
-      }
+      },
     );
   });
 }

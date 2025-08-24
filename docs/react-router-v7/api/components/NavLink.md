@@ -4,25 +4,35 @@ title: NavLink
 
 # NavLink
 
+<!--
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
+
+Thank you for helping improve our documentation!
+
+This file is auto-generated from the JSDoc comments in the source
+code, so please edit the JSDoc comments in the file below and this
+file will be re-generated once those changes are merged.
+
+https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/dom/lib.tsx
+-->
+
 [MODES: framework, data, declarative]
 
-## 概要
+## Summary
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.NavLink.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/variables/react_router.NavLink.html)
 
 [Link](../components/Link) をラップし、アクティブおよび保留状態のスタイル設定のための追加の props を提供します。
 
-- アクティブおよび保留状態に基づいて、クラスがリンクに自動的に適用されます。NavLinkProps.className を参照してください。
+- アクティブおよび保留状態に基づいて、クラスがリンクに自動的に適用されます。[NavLinkProps.className](https://api.reactrouter.com/v7/interfaces/react_router.NavLinkProps.html#className) を参照してください。
+  - なお、`pending` は Framework および Data モードでのみ利用可能です。
 - リンクがアクティブな場合、`aria-current="page"` がリンクに自動的に適用されます。MDN の [`aria-current`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current) を参照してください。
+- 状態は、className、style、および children のレンダー props を通じて利用できます。[NavLinkRenderProps](https://api.reactrouter.com/v7/types/react_router.NavLinkRenderProps.html) を参照してください。
 
 ```tsx
-import { NavLink } from "react-router";
-<NavLink to="/message" />;
-```
+<NavLink to="/message">Messages</NavLink>
 
-状態は、className、style、および children のレンダー props を通じて利用できます。[NavLinkRenderProps](https://api.reactrouter.com/v7/types/react_router.NavLinkRenderProps) を参照してください。
-
-```tsx
+// Using render props
 <NavLink
   to="/messages"
   className={({ isActive, isPending }) =>
@@ -52,13 +62,13 @@ import { NavLink } from "react-router";
 
 通常の React children または、リンクのアクティブおよび保留状態を持つオブジェクトを受け取る関数にすることができます。
 
-```tsx
-<NavLink to="/tasks">
-  {({ isActive }) => (
-    <span className={isActive ? "active" : ""}>Tasks</span>
-  )}
-</NavLink>
-```
+ ```tsx
+ <NavLink to="/tasks">
+   {({ isActive }) => (
+     <span className={isActive ? "active" : ""}>Tasks</span>
+   )}
+ </NavLink>
+ ```
 
 ### className
 
@@ -78,7 +88,15 @@ a.transitioning {
 }
 ```
 
-なお、`pending` は Framework および Data モードでのみ利用可能です。
+または、[`NavLinkRenderProps`](https://api.reactrouter.com/v7/types/react_router.NavLinkRenderProps.html) を受け取り、`className` を返す関数を指定することもできます。
+
+```tsx
+<NavLink className={({ isActive, isPending }) => (
+  isActive ? "my-active-class" :
+  isPending ? "my-pending-class" :
+  ""
+)} />
+```
 
 ### discover
 
@@ -87,7 +105,9 @@ a.transitioning {
 リンクの検出動作を定義します。
 
 ```tsx
+<Link /> // default ("render")
 <Link discover="render" />
+<Link discover="none" />
 ```
 
 - **render** - デフォルト、リンクがレンダリングされるときにルートを検出します。
@@ -97,7 +117,7 @@ a.transitioning {
 
 [modes: framework, data, declarative]
 
-`active` および `pending` 状態のマッチングロジックを、NavLinkProps.to の「末尾」のみに一致するように変更します。URL が長い場合、アクティブとは見なされなくなります。
+`active` および `pending` 状態のマッチングロジックを、[`NavLinkProps.to`](https://api.reactrouter.com/v7/interfaces/react_router.NavLinkProps.html#to) の「末尾」のみに一致するように変更します。URL が長い場合、アクティブとは見なされなくなります。
 
 | Link                          | URL          | isActive |
 | ----------------------------- | ------------ | -------- |
@@ -115,7 +135,11 @@ a.transitioning {
 リンクのデータとモジュールのプリフェッチ動作を定義します。
 
 ```tsx
+<Link /> // default
+<Link prefetch="none" />
 <Link prefetch="intent" />
+<Link prefetch="render" />
+<Link prefetch="viewport" />
 ```
 
 - **none** - デフォルト、プリフェッチなし
@@ -123,7 +147,7 @@ a.transitioning {
 - **render** - リンクがレンダリングされるときにプリフェッチします。
 - **viewport** - リンクがビューポート内にあるときにプリフェッチします。モバイルに非常に便利です。
 
-プリフェッチは HTML `<link rel="prefetch">` タグを使用して行われます。これらはリンクの後に挿入されます。
+プリフェッチは HTML [`<link rel="prefetch">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link) タグを使用して行われます。これらはリンクの後に挿入されます。
 
 ```tsx
 <a href="..." />
@@ -137,7 +161,7 @@ a.transitioning {
 
 [modes: framework, data]
 
-リンクがクリックされたときに、スクロール位置がウィンドウの上部にリセットされるのを防ぎます。アプリが [ScrollRestoration](../components/ScrollRestoration) を使用している場合に限ります。これは、新しい場所でスクロールが上部にリセットされるのを防ぐだけであり、戻る/進むボタンのナビゲーションではスクロール位置が復元されます。
+リンクがクリックされたときに、スクロール位置がウィンドウの上部にリセットされるのを防ぎます。アプリが [`ScrollRestoration`](../components/ScrollRestoration) を使用している場合に限ります。これは、新しい場所でスクロールが上部にリセットされるのを防ぐだけであり、戻る/進むボタンのナビゲーションではスクロール位置が復元されます。
 
 ```tsx
 <Link to="?tab=one" preventScrollReset />
@@ -150,21 +174,23 @@ a.transitioning {
 リンクの相対パスの動作を定義します。
 
 ```tsx
-<Link to=".." /> // デフォルト: "route"
+<Link to=".." /> // default: "route"
 <Link relative="route" />
 <Link relative="path" />
 ```
 
 親ルートパターンが "blog" で、子ルートパターンが "blog/:slug/edit" であるルート階層を考えてみましょう。
 
-- **route** - デフォルト、ルートパターンを基準にしてリンクを解決します。上記の例では、`".."` の相対リンクは、`:slug/edit` セグメントを "/blog" まで削除します。
-- **path** - パスを基準にするため、`..` は "/blog/:slug" まで 1 つの URL セグメントのみを削除します。
+- **route** - デフォルト、ルートパターンを基準にしてリンクを解決します。上記の例では、`"..."` の相対リンクは、`:slug/edit` セグメントを "/blog" まで削除します。
+- **path** - パスを基準にするため、`"..."` は "/blog/:slug" まで 1 つの URL セグメントのみを削除します。
+
+なお、インデックスルートとレイアウトルートにはパスがないため、相対パスの計算には含まれません。
 
 ### reloadDocument
 
 [modes: framework, data, declarative]
 
-リンクがクリックされたときに、クライアント側のルーティングではなくドキュメントナビゲーションを使用します。ブラウザは、通常どおりにトランジションを処理します（`<a href>` のように）。
+リンクがクリックされたときに、クライアント側のルーティングではなくドキュメントナビゲーションを使用します。ブラウザは、通常どおりにトランジションを処理します（[`<a href>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) のように）。
 
 ```tsx
 <Link to="/logout" reloadDocument />
@@ -174,7 +200,7 @@ a.transitioning {
 
 [modes: framework, data, declarative]
 
-履歴スタックに新しいエントリをプッシュする代わりに、履歴スタック内の現在のエントリを置き換えます。
+履歴スタックに新しいエントリをプッシュする代わりに、[`History`](https://developer.mozilla.org/en-US/docs/Web/API/History) スタック内の現在のエントリを置き換えます。
 
 ```tsx
 <Link replace />
@@ -216,7 +242,7 @@ function SomeComp() {
 
 [modes: framework, data, declarative]
 
-通常の React スタイルオブジェクト、またはリンクのアクティブおよび保留状態を持つオブジェクトを受け取る関数。
+スタイルは、[`NavLinkRenderProps`](https://api.reactrouter.com/v7/types/react_router.NavLinkRenderProps.html) を受け取り、スタイルを返す関数を介して動的に適用することもできます。
 
 ```tsx
 <NavLink to="/tasks" style={{ color: "red" }} />
@@ -227,13 +253,11 @@ function SomeComp() {
 })} />
 ```
 
-なお、`pending` は Framework および Data モードでのみ利用可能です。
-
 ### to
 
 [modes: framework, data, declarative]
 
-文字列または部分的な [Path](https://api.reactrouter.com/v7/interfaces/react_router.Path) にすることができます。
+文字列または部分的な [`Path`](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) にすることができます。
 
 ```tsx
 <Link to="/some/path" />
@@ -249,7 +273,7 @@ function SomeComp() {
 
 ### viewTransition
 
-[modes: framework, data, declarative]
+[modes: framework, data]
 
 このナビゲーションの [View Transition](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API) を有効にします。
 
@@ -259,4 +283,4 @@ function SomeComp() {
 </Link>
 ```
 
-トランジションに特定のスタイルを適用するには、[useViewTransitionState](../hooks/useViewTransitionState) を参照してください。
+トランジションに特定のスタイルを適用するには、[`useViewTransitionState`](../hooks/useViewTransitionState) を参照してください。

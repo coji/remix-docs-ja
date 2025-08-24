@@ -10,7 +10,7 @@ title: useResolvedPath
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useResolvedPath.html)
 
-指定された `to` 値のパス名を現在のロケーションに対して解決します。[useHref](../hooks/useHref) と似ていますが、文字列ではなく [Path](https://api.reactrouter.com/v7/interfaces/react_router.Path) を返します。
+指定された `to` 値のパス名を現在の [`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html) に対して解決します。[useHref](../hooks/useHref) と似ていますが、文字列ではなく [`Path`](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) を返します。
 
 ```tsx
 import { useResolvedPath } from "react-router";
@@ -27,19 +27,26 @@ function SomeComponent() {
 ## シグネチャ
 
 ```tsx
-useResolvedPath(to, __namedParameters): Path
+function useResolvedPath(
+  to: To,
+  {
+    relative,
+  }: {
+    relative?: RelativeRoutingType;
+  } = {},
+): Path {}
 ```
 
 ## パラメータ
 
 ### to
 
-[modes: framework, data, declarative]
+解決するパス
 
-_ドキュメントなし_
+### options.relative
 
-### __namedParameters
+デフォルトは`"route"`で、ルーティングはルートツリーに対して相対的になります。相対ルーティングをパスセグメントに対して動作させるには、`"path"`に設定します。
 
-[modes: framework, data, declarative]
+## 戻り値
 
-_ドキュメントなし_
+解決された [`Path`](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) オブジェクト（`pathname`、`search`、`hash` を含む）

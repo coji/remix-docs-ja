@@ -11,7 +11,7 @@ title: .server modules
 クライアントバンドルから除外され、サーバー上でのみ実行されるサーバー専用モジュールです。
 
 ```ts filename=auth.server.ts
-// これはクライアントにシークレットを公開してしまいます
+// サーバー専用モジュールからエクスポートしない場合、これはクライアントにシークレットを公開してしまいます
 export const JWT_SECRET = process.env.JWT_SECRET;
 
 export function validateToken(token: string) {
@@ -20,6 +20,12 @@ export function validateToken(token: string) {
 ```
 
 `.server` モジュールは、モジュール全体をサーバー専用として明示的にマークするのに適した方法です。`.server` ファイルまたは `.server` ディレクトリ内のコードが誤ってクライアントモジュールグラフに含まれてしまった場合、ビルドは失敗します。
+
+<docs-warning>
+
+ルートモジュールは特別な処理が必要であり、サーバーとクライアントの両方のモジュールグラフで参照される必要があるため、`.server` または `.client` としてマークすべきではありません。そうしようとすると、ビルドエラーが発生します。
+
+</docs-warning>
 
 <docs-info>
 

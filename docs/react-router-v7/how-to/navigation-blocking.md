@@ -106,7 +106,7 @@ export default function Contact() {
   let [isDirty, setIsDirty] = useState(false);
   let fetcher = useFetcher();
   let blocker = useBlocker(
-    useCallback(() => isDirty, [isDirty])
+    useCallback(() => isDirty, [isDirty]),
   );
 
   // ... 既存のコード
@@ -124,7 +124,7 @@ export default function Contact() {
   let [isDirty, setIsDirty] = useState(false);
   let fetcher = useFetcher();
   let blocker = useBlocker(
-    useCallback(() => isDirty, [isDirty])
+    useCallback(() => isDirty, [isDirty]),
   );
 
   return (
@@ -147,7 +147,7 @@ export default function Contact() {
               onClick={() => blocker.proceed()}
             >
               離れる
-            </button>{" "button"> 
+            </button>{" "}
             <button
               type="button"
               onClick={() => blocker.reset()}

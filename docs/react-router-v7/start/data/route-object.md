@@ -54,6 +54,53 @@ function MyRouteComponent() {
 }
 ```
 
+## `unstable_middleware`
+
+ルート[ミドルウェア][middleware]は、ナビゲーションの前後に順次実行されます。これにより、ロギングや認証などの処理を一箇所で行うことができます。`next` 関数はチェーンを続行し、リーフルートでは `next` 関数がナビゲーションのローダー/アクションを実行します。
+
+```tsx
+createBrowserRouter([
+  {
+    path: "/",
+    unstable_middleware: [loggingMiddleware],
+    loader: rootLoader,
+    Component: Root,
+    children: [{
+      path: 'auth',
+      unstable_middleware: [authMiddleware],
+      loader: authLoader,
+      Component: Auth,
+      children: [...]
+    }]
+  },
+]);
+
+async function loggingMiddleware({ request }, next) {
+  let url = new URL(request.url);
+  console.log(`Starting navigation: ${url.pathname}${url.search}`);
+  const start = performance.now();
+  await next();
+  const duration = performance.now() - start;
+  console.log(`Navigation completed in ${duration}ms`);
+}
+
+const userContext = unstable_createContext<User>();
+
+async function authMiddleware ({ context }) {
+  const userId = getUserId();
+
+  if (!userId) {
+    throw redirect("/login");
+  }
+
+  context.set(userContext, await getUserById(userId));
+};
+```
+
+参照：
+
+- [ミドルウェア][middleware]
+
 ## `loader`
 
 ルートローダーは、ルートコンポーネントがレンダリングされる前にデータを提供します。
@@ -147,7 +194,7 @@ export default function Items() {
 
 - 独自のルートパラメータが変更された場合
 - URL検索パラメータが変更された場合
-- アクションが呼び出された後
+- アクションが呼び出され、エラーではないステータスコードを返した後
 
 この関数を定義することにより、デフォルトの動作を完全にオプトアウトし、ナビゲーションやフォーム送信に対するローダーデータの再検証をいつ行うかをを手動で制御できます。
 
@@ -155,7 +202,7 @@ export default function Items() {
 import type { ShouldRevalidateFunctionArgs } from "react-router";
 
 function shouldRevalidate(
-  arg: ShouldRevalidateFunctionArgs
+  arg: ShouldRevalidateFunctionArgs,
 ) {
   return true; // false
 }
@@ -198,3 +245,4 @@ createBrowserRouter([
 次へ: [データローディング](./data-loading)
 
 [loader-params]: https://api.reactrouter.com/v7/interfaces/react_router.LoaderFunctionArgs
+[middleware]: ../../how-to/middleware
