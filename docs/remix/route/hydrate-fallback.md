@@ -77,4 +77,3 @@ export default function Component() {
 
 [hydrate-true]: ./client-loader#clientloaderhydrate
 [clientloader]: ./client-loader
-

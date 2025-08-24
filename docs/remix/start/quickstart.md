@@ -5,6 +5,8 @@ order: 1
 
 # クイックスタート
 
+<docs-warning>Remix を始めたばかりですか？Remix の最新バージョンは [React Router v7][remix-now-react-router] です。最新機能を使用したい場合は、[React Router のドキュメント][react-router-get-started] を参照して開始してください。</docs-warning>
+
 このガイドでは、Remix アプリをできるだけ早く実行するために必要な基本的な仕組みについて説明します。さまざまなランタイム、デプロイターゲット、データベースを備えた多くのスターターテンプレートがありますが、ここでは、ゼロから必要最低限のプロジェクトを作成します。
 
 Remix プロジェクトに本格的に取り組む準備ができたら、コミュニティテンプレートから始めることを検討するとよいでしょう。これらには、TypeScript の設定、データベース、テストハーネス、認証などが含まれています。コミュニティテンプレートのリストは、[Remix リソース][templates]ページで確認できます。
@@ -25,7 +27,7 @@ cd my-remix-app
 npm init -y
 
 # ランタイム依存関係をインストール
-npm i @remix-run/node @remix-run/react @remix-run/serve isbot@4 react react-dom
+npm i @remix-run/node @remix-run/react @remix-run/serve isbot@4 react@18 react-dom@18
 
 # 開発依存関係をインストール
 npm i -D @remix-run/dev vite
@@ -89,7 +91,16 @@ export default function App() {
 
 ## ビルドと実行
 
-まず、本番環境用にアプリをビルドします。
+まず、`package.json` で `type` を `module` として指定し、`remix-run` および将来のバージョンの `vite` の esmodule 要件を満たす必要があります。
+
+```jsonc filename=package.json lines=[2] nocopy
+{
+  "type": "module"
+  // ...
+}
+```
+
+次に、本番環境用にアプリをビルドします。
 
 ```shellscript nonumber
 npx remix vite:build
@@ -98,15 +109,6 @@ npx remix vite:build
 これで、`build` フォルダーに、`server` フォルダー（アプリのサーバーバージョン）と、いくつかのビルド成果物を含む `client` フォルダー（ブラウザーバージョン）が表示されるはずです。（これはすべて[設定可能][vite_config]です。）
 
 👉 **`remix-serve` でアプリを実行する**
-
-まず、`remix-serve` がアプリを実行できるように、`package.json` で型をモジュールとして指定する必要があります。
-
-```jsonc filename=package.json lines=[2] nocopy
-{
-  "type": "module"
-  // ...
-}
-```
 
 これで、`remix-serve` でアプリを実行できます。
 
@@ -117,12 +119,12 @@ npx remix-serve build/server/index.js
 
 [http://localhost:3000][http-localhost-3000] を開いて、「hello world」ページが表示されるはずです。
 
-`node_modules` にある膨大な量のコードを除けば、Remix アプリは 1 つのファイルだけです。
+`node_modules` にある膨大な量のコードを除けば、Remix アプリは次の3つのファイルだけです。
 
 ```
 ├── app/
 │   └── root.jsx
-└── package.json
+├── package.json
 └── vite.config.js
 ```
 
@@ -137,7 +139,7 @@ npx remix-serve build/server/index.js
 👉 **Express、Remix Express アダプター、および本番モードで実行するための [cross-env] をインストールする**
 
 ```shellscript nonumber
-npm i express @remix-run/express cross-env
+npm i express@4 @remix-run/express cross-env
 
 # これはもう使用しない
 npm uninstall @remix-run/serve
@@ -284,4 +286,5 @@ npx remix reveal
 [vite-config]: https://vitejs.dev/config
 [vite-middleware]: https://vitejs.dev/guide/ssr#setting-up-the-dev-server
 [cross-env]: https://www.npmjs.com/package/cross-env
-
+[remix-now-react-router]: https://remix.run/blog/incremental-path-to-react-19
+[react-router-get-started]: https://reactrouter.com/start/framework/installation

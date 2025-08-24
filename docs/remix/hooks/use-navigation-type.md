@@ -30,4 +30,3 @@ function SomeComponent() {
 [link-replace]: ../components/link#replace
 [form-replace]: ../components/form#replace
 [navigate-options]: ../hooks/use-navigate#options
-

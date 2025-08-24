@@ -25,4 +25,3 @@ Remix の Cookie はデフォルトで `SameSite=Lax` に設定されていま�
 [pe]: https://en.wikipedia.org/wiki/Progressive_enhancement
 [esm-browsers]: https://caniuse.com/es6-module
 [msie]: https://techcommunity.microsoft.com/t5/microsoft-365-blog/microsoft-365-apps-say-farewell-to-internet-explorer-11-and/ba-p/1591666
-

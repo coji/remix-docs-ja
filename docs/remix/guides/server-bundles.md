@@ -70,4 +70,3 @@ export default defineConfig({
 
 [remix-vite]: ./vite
 [pathless-layout-route]: ../file-conventions/routes#nested-layouts-without-nested-urls
-

@@ -471,11 +471,7 @@ node --loader tsm ./server.ts
 
 #### Cloudflare Functions の移行
 
-<docs-warning>
-
-Remix Vite プラグインは、フルスタックアプリケーション向けに特別に設計された[Cloudflare Pages][cloudflare-pages]のみを正式にサポートしています。[Cloudflare Workers Sites][cloudflare-workers-sites]とは異なります。現在 Cloudflare Workers Sites を使用している場合は、[Cloudflare Pages 移行ガイド][cloudflare-pages-migration-guide]を参照してください。
-
-</docs-warning>
+<docs-warning>Remix Vite プラグインは、フルスタックアプリケーション向けに特別に設計された[Cloudflare Pages][cloudflare-pages]のみを正式にサポートしています。[Cloudflare Workers Sites][cloudflare-workers-sites]とは異なります。現在 Cloudflare Workers Sites を使用している場合は、[Cloudflare Pages 移行ガイド][cloudflare-pages-migration-guide]を参照してください。</docs-warning>
 
 👉 Vite開発サーバーのミドルウェアを正しく上書きするには、`remix`プラグインの**前**に`cloudflareDevProxyVitePlugin`を追加してください！
 
@@ -491,9 +487,9 @@ export default defineConfig({
 });
 ```
 
-Cloudflare アプリケーションでは、[Remix 設定の `server` フィールド][remix-config-server]を設定して、キャッチオール Cloudflare Function を生成している可能性があります。
-Vite では、この間接参照は不要になりました。
-代わりに、Express やその他のカスタムサーバーと同様に、Cloudflare 用のキャッチオールルートを直接作成できます。
+Your Cloudflare app may be setting [the Remix Config `server` field][remix-config-server] to generate a catch-all Cloudflare Function.
+With Vite, this indirection is no longer necessary.
+Instead, you can author a catch-all route directly for Cloudflare, just like how you would for Express or any other custom servers.
 
 👉 **Remix のキャッチオールルートを作成する**
 
@@ -791,9 +787,6 @@ Remixコンパイラでは、フロントマターのエクスポート名は`at
 +   frontmatter,
   } from "./posts/first-post.mdx";
 ```
-
-[mdx-frontmatter]: <必要なURLをここに挿入>
-[remark]: <必要なURLをここに挿入>
 
 ###### MDXファイルの型定義
 
@@ -1313,4 +1306,3 @@ RemixコミュニティはViteサポートの調査を迅速に進めてくれ�
 [vite-plugin-react]: https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react
 
 [splitting-up-client-and-server-code]: ../discussion/server-vs-client
-

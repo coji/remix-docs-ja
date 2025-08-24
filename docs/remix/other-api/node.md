@@ -28,4 +28,3 @@ installGlobals();
 Remixは、常に**Active**および**Maintenance**の[Node LTSバージョン][node-releases]を公式にサポートしています。サポートが終了したNodeバージョンのサポート終了は、Remixのマイナーリリースで行われます。
 
 [node-releases]: https://nodejs.org/en/about/previous-releases
-

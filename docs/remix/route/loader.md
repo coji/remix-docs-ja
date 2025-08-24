@@ -71,9 +71,6 @@ export default function SomeRoute() {
 * `data.name` は文字列であることがわかります。
 * `data.date` は、[`json`][json] に日付オブジェクトを渡したにもかかわらず、文字列であることがわかります。クライアント遷移のためにデータがフェッチされる際、値は [`JSON.stringify`][json-stringify] を使用してネットワーク越しにシリアライズされ、型はそのことを認識しています。
 
-[json]: https://remix.run/docs/en/main/utils/json
-[json-stringify]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
-
 ## `params`
 
 ルートパラメータは、ルートファイル名によって定義されます。セグメントが `$invoiceId` のように `$` で始まる場合、そのセグメントの URL からの値が `loader` に渡されます。
@@ -206,10 +203,6 @@ export const loader = async ({
 * [`headers`][headers]
 * [MDN Response ドキュメント][response]
 
-[response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
-[json]: https://remix.run/utils/json
-[headers]: https://remix.run/utils/headers
-
 ## ローダーでのレスポンスのスロー
 
 レスポンスを返すだけでなく、`loader` から `Response` オブジェクトをスローすることもできます。これにより、コールスタックを中断し、次の2つのいずれかを行うことができます。
@@ -337,4 +330,3 @@ export function ErrorBoundary() {
 [response]: https://developer.mozilla.org/ja/docs/Web/API/Response
 
 [headers]: ../route/headers
-

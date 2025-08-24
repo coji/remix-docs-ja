@@ -41,4 +41,3 @@ function SomeComponent() {
 [pending_optimistic_ui]: ../discussion/pending-ui
 [use_fetcher]: ./use-fetcher
 [fetcherpersist]: ../file-conventions/remix-config#future
-

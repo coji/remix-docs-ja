@@ -8,6 +8,8 @@ hidden: true
 
 # Remix ドキュメント
 
+<docs-warning>Remixを始めたばかりですか？Remixの最新バージョンは[React Router v7になりました][remix-now-react-router]。最新のフレームワーク機能を使用したい場合は、[React Routerのドキュメントを参照して開始してください][react-router-get-started]。</docs-warning>
+
 ```shellscript nonumber
 npx create-remix@latest
 ```
@@ -52,3 +54,5 @@ npx create-remix@latest
 
 -->
 
+[remix-now-react-router]: https://remix.run/blog/incremental-path-to-react-19
+[react-router-get-started]: https://reactrouter.com/start/framework/installation

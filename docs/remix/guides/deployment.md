@@ -22,4 +22,3 @@ npx create-remix@latest --template remix-run/remix/templates/express
 要するに、アプリをデプロイしたい場合は、マニュアルを読んでください 😋
 
 [starter-templates]: https://github.com/remix-run/remix/tree/main/templates
-

@@ -65,4 +65,3 @@ export default defineConfig({
 [vite-s-dep-optimization-options]: https://vitejs.dev/config/dep-optimization-options#dep-optimization-options
 [publint]: https://publint.dev
 [jimp-package-is-misconfigured]: https://publint.dev/jimp@0.22.12
-

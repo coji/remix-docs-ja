@@ -48,7 +48,6 @@ export const clientAction = async ({
 [action]: ./action
 [action-params]: ./loader#params
 [action-request]: ./loader#request
-[fetch]: https://developer.mozilla.org/ja/docs/Web/API/Fetch_API
+[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 [client-data-guide]: ../guides/client-data
 [clientloader]: ./client-loader
-

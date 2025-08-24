@@ -158,4 +158,3 @@ Remix のルート設定アプローチは、規約と柔軟性を兼ね備え�
 [remix-vite]: ../guides/vite
 [vite-routes]: ../file-conventions/vite-config#routes
 [routes-disclaimer]: ../file-conventions/routes#disclaimer
-

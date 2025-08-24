@@ -121,4 +121,3 @@ export async function loader({
 詳細については、[リソースルート][resource-routes]のドキュメントを参照してください。
 
 [resource-routes]: ./resource-routes
-

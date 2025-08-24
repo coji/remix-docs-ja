@@ -141,4 +141,3 @@ export function SearchBox() {
 
 [wikipedia]: https://en.wikipedia.org/wiki/Progressive_enhancement
 [state_management]: ./state-management
-

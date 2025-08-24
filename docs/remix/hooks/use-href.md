@@ -38,4 +38,3 @@ useHref(to, options)
 [anchor_element_href_attribute]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#href
 [anchor_element]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
 [relativesplatpath]: ./use-resolved-path#splat-paths
-

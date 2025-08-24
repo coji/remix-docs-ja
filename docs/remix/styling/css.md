@@ -338,4 +338,3 @@ export const links: LinksFunction = () => {
 [classic-remix-compiler]: ../guides/vite#classic-remix-compiler-vs-remix-vite
 
 [remix-vite]: ../guides/vite
-

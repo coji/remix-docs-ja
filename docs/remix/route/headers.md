@@ -1,5 +1,5 @@
 ---
-title: ヘッダー
+title: headers
 ---
 
 # `headers`
@@ -134,4 +134,3 @@ export default function handleRequest(
 [response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
 [entry-server]: ../file-conventions/entry.server
 [handle-data-request]: ../file-conventions/entry.server#handledatarequest
-

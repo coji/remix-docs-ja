@@ -38,4 +38,3 @@ export const loader = async () => {
 [single-fetch]: ../guides/single-fetch
 [json]: ./json
 [defer]: ./defer
-

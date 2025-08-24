@@ -226,4 +226,3 @@ export function Layout({
 [livereload-component]: ../components/live-reload
 [scrollrestoration-component]: ../components/scroll-restoration
 [outlet-component]: ../components/outlet
-

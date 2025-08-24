@@ -112,6 +112,8 @@ fetcher.submit(
 
 ルートローダーからデータをロードします。複数のネストされたルートが URL に一致する可能性がありますが、リーフルートのみが呼び出されます。
 
+注意点として、インデックスルートのローダーで `load` を呼び出す際、`index.tsx` レイアウトと `root.tsx` ルートを区別するために、[`?index` クエリパラメータ][index-query-param] を含める必要があります。
+
 ```ts
 fetcher.load("/some/route");
 fetcher.load("/some/route?foo=bar");
@@ -180,4 +182,4 @@ fetcher.load("/some/route?foo=bar");
 [use-submit]: ./use-submit
 [userevalidator]: ./use-revalidator
 [shouldrevalidate]: ../route/should-revalidate#shouldrevalidate
-
+[index-query-param]: ../guides/index-query-param

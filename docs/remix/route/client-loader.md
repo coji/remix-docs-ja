@@ -94,4 +94,3 @@ export default function Component() {
 [bff]: ../guides/bff
 [fetch]: https://developer.mozilla.org/ja/docs/Web/API/Fetch_API
 [client-data-guide]: ../guides/client-data
-

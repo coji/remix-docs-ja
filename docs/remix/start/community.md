@@ -43,4 +43,3 @@ order: 4
 [the-remix-meetup-page]: https://rmx.as/meetup
 [remix-guide]: https://remix.guide
 [twitter]: https://twitter.com/remix_run
-

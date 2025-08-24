@@ -13,12 +13,6 @@ description: React RouterアプリをRemixに移行するには、一度に行�
 
 まだ React Router を使用していない場合でも、再考する価値のあるいくつかの説得力のある理由があると考えています！履歴管理、動的なパスマッチング、ネストされたルーティングなど、多くの機能があります。[React Router のドキュメント][react-router-docs] を見て、私たちが提供するすべての機能を確認してください。
 
-
-[classic-remix-compiler]: (Replace with actual link)
-[remix-vite]: (Replace with actual link)
-[react-router]: (Replace with actual link)
-[react-router-docs]: (Replace with actual link)
-
 ## React Router v6 の使用を保証する
 
 古いバージョンの React Router を使用している場合、最初のステップは v6 にアップグレードすることです。アプリを迅速かつ段階的に v6 にアップグレードするには、[v5 から v6 への移行ガイド][migration-guide-from-v5-to-v6] と [後方互換性パッケージ][backwards-compatibility-package] を参照してください。
@@ -277,8 +271,6 @@ export default function Root() {
 
 <docs-warning><strong>重要：</strong>ルートルートを作成したら、`public`ディレクトリから`index.html`を削除してください。ファイルを保持すると、`/`ルートにアクセスしたときに、RemixアプリではなくそのHTMLがサーバーから送信される可能性があります。</docs-warning>
 
-[a-few-tweaks-to-improve-progressive-enhancement]:  (この部分は原文にリンクが存在しますが、具体的なリンク先が不明なため、そのまま残しました。必要に応じて適切なリンクに置き換えてください。)
-
 ## 既存のアプリコードの適応
 
 まず、既存のReactコードのルートを`app`ディレクトリに移動します。プロジェクトルートの`src`ディレクトリにルートアプリコードが存在する場合は、`app/src`に移動する必要があります。
@@ -302,10 +294,6 @@ export { default } from "~/old-app/app";
 ```tsx filename=app/routes/$.tsx
 export { default } from "~/old-app/app";
 ```
-
-
-[routing-conventions]:  (ルーティング規則へのリンクをここに挿入)
-[a-catch-all-route]: (キャッチオールルートの説明へのリンクをここに挿入)
 
 ## バンドラーをRemixに置き換える
 
@@ -366,9 +354,6 @@ export default function About() {
 
 このファイルを作成したら、`App`から`<Route>`コンポーネントを削除できます。すべてのルートの移行が完了したら、`<Routes>`、そして最終的に`old-app`内のすべてのコードを削除できます。
 
-
-[routing-conventions]: routing-conventions
-
 ## 落とし穴と次のステップ
 
 この時点で、最初の移行が完了したと言えるかもしれません。おめでとうございます！しかし、Remixは一般的なReactアプリとは少し異なる方法で動作します。そうでなければ、そもそもなぜそれを構築する手間をかけたのでしょうか？😅
@@ -402,9 +387,6 @@ function Count() {
 
 解決策として、`window`オブジェクトをチェックし、ブラウザでのみコールバックを実行することを考えるかもしれません。しかし、これは別の問題、恐ろしい[ハイドレーションの不一致][hydration-mismatch]につながる可能性があります。Reactは、サーバーでレンダリングされたマークアップがクライアントのハイドレーション中にレンダリングされるものと同一であることに依存しています。これにより、`react-dom`はDOM要素とその対応するReactコンポーネントを一致させる方法を知り、イベントリスナーをアタッチし、状態の変化に合わせて更新を実行できます。そのため、ローカルストレージがサーバーで初期化したものとは異なる値を返す場合、新たな問題に対処する必要があります。
 
-
-[hydration-mismatch]:  (ハイドレーションの不一致へのリンクをここに挿入)
-
 #### クライアントのみのコンポーネント
 
 ここで考えられる解決策の1つは、サーバーで使用でき、ルートの[ローダーデータ][loader-data]からプロップとしてコンポーネントに渡される、異なるキャッシングメカニズムを使用することです。しかし、サーバー上でコンポーネントをレンダリングすることがアプリケーションにとって重要ではない場合は、サーバーでのレンダリングを完全にスキップし、ハイドレーションが完了するまでブラウザでのレンダリングを待つという、より簡単な解決策があります。
@@ -436,12 +418,6 @@ function SomeComponent() {
 
 この解決策を簡素化するために、[`remix-utils`][remix-utils]コミュニティパッケージの[`ClientOnly`コンポーネント][client-only-component]の使用をお勧めします。その使用方法の例は、[`examples`リポジトリ][examples-repository]にあります。
 
-
-[loader-data]: <loader-dataへのリンク>
-[client-only-component]: <ClientOnlyコンポーネントへのリンク>
-[remix-utils]: <remix-utilsへのリンク>
-[examples-repository]: <examplesリポジトリへのリンク>
-
 ### `React.lazy` と `React.Suspense`
 
 [`React.lazy`][react-lazy] と [`React.Suspense`][react-suspense] を使用してコンポーネントを遅延読み込みしている場合、使用しているReactのバージョンによっては問題が発生する可能性があります。React 18までは、`React.Suspense`は当初ブラウザのみの機能として実装されていたため、サーバーでは動作しませんでした。
@@ -454,12 +430,6 @@ React 17を使用している場合、いくつかの選択肢があります。
 * `React.lazy`と`React.Suspense`を完全に削除する
 
 Remixは管理するすべてのルートのコード分割を自動的に処理するため、`routes`ディレクトリに要素を移動する際には、`React.lazy`を手動で使用することはほとんど（もしあれば）必要ありません。
-
-
-[react-lazy]: (link to React.lazy documentation)
-[react-suspense]: (link to React.Suspense documentation)
-[client-only-approach]: (link to client-only approach documentation)
-[loadable-components]: (link to Loadable Components documentation)
 
 ### 設定
 
@@ -477,9 +447,6 @@ module.exports = {
   assetsBuildDirectory: "public/build",
 };
 ```
-
-
-[docs-on-configuration]:  (This needs to be replaced with the actual link to the documentation)
 
 #### `jsconfig.json` または `tsconfig.json`
 
@@ -586,11 +553,6 @@ export default function Icon() {
 }
 ```
 
-
-[react-svgr]:  (React SVGRへのリンクをここに挿入)
-[command-line]: (コマンドラインへのリンクをここに挿入)
-[online-playground]: (オンラインプレイグラウンドへのリンクをここに挿入)
-
 #### CSS のインポート
 
 Create React App や多くのビルドツールは、様々な方法でコンポーネントに CSS をインポートすることをサポートしています。Remix は、下記で説明するいくつかの一般的な CSS バンドルソリューションに加えて、通常の CSS ファイルのインポートもサポートしています。
@@ -647,11 +609,6 @@ export default function Root() {
 
 現在、既存のルートコンポーネントで、直接または[`react-helmet`][react-helmet]のような抽象化を介して、`<link />`タグをクライアントサイドでページに挿入している場合は、それを行うのをやめ、代わりに`links`エクスポートを使用できます。多くのコードと、場合によっては1つまたは2つの依存関係を削除できます！
 
-
-[see-our-docs-on-route-links-for-more-information]: (ドキュメントへのリンクをここに挿入してください)
-[page-link-descriptor-object]: (ドキュメントへのリンクをここに挿入してください)
-[react-helmet]: (ドキュメントへのリンクをここに挿入してください)
-
 ### CSS バンドリング
 
 Remix は、[CSS Modules][css-modules]、[Vanilla Extract][vanilla-extract]、および[CSS サイドエフェクトインポート][css-side-effect-imports] を組み込みでサポートしています。これらの機能を使用するには、アプリケーションで CSS バンドリングを設定する必要があります。
@@ -686,13 +643,6 @@ export const links: LinksFunction = () => {
 
 </docs-info>
 
-
-[css-modules]: <a href="ここにCSS Modulesのリンクを挿入">CSS Modulesのリンク</a>
-[vanilla-extract]: <a href="ここにVanilla Extractのリンクを挿入">Vanilla Extractのリンク</a>
-[css-side-effect-imports]: <a href="ここにCSSサイドエフェクトインポートのリンクを挿入">CSSサイドエフェクトインポートのリンク</a>
-[css-bundling]: <a href="ここにCSSバンドリングのドキュメントへのリンクを挿入">CSSバンドリングのドキュメントへのリンク</a>
-
-
 ### `<head>` 内でのコンポーネントのレンダリング
 
 `<link>` がルートコンポーネント内でレンダリングされ、最終的にルート `<Links />` コンポーネントでレンダリングされるのと同様に、アプリはドキュメントの `<head>` に追加のコンポーネントをレンダリングするために、いくつかのインジェクションのトリックを使用する場合があります。これは多くの場合、ドキュメントの `<title>` や `<meta>` タグを変更するために実行されます。
@@ -704,9 +654,6 @@ export const links: LinksFunction = () => {
 * 最適なSEOのために、メタデータに対するより細かい制御が必要になることが多い
 * [Open Graph プロトコル][open-graph-protocol] に従う一部のタグの場合、タグの順序によって、クローラーやソーシャルメディアサイトによる解釈に影響を与え、Remix が複雑なメタデータの結合方法を想定するのは予測が難しくなる
 * 一部のタグは複数の値を許可しますが、一部のタグは許可しません。Remix は、これらのすべてのケースをどのように処理したいかを想定すべきではありません
-
-
-[open-graph-protocol]: [Open Graph protocolのURLをここに挿入]
 
 ### インポートの更新
 
@@ -741,76 +688,39 @@ import { Link, Outlet } from "@remix-run/react";
 * [よくある落とし穴][common-gotchas]
 
 [react-router]: https://reactrouter.com
-
 [react-router-docs]: https://reactrouter.com/v6/start/concepts
-
 [migration-guide-from-v5-to-v6]: https://reactrouter.com/en/6.22.3/upgrading/v5
-
 [backwards-compatibility-package]: https://www.npmjs.com/package/react-router-dom-v5-compat
-
 [a-few-tweaks-to-improve-progressive-enhancement]: ../pages/philosophy#progressive-enhancement
-
 [routing-conventions]: ./routing
-
 [a-catch-all-route]: ../file-conventions/routes#splat-routes
-
-[hydration-mismatch]: https://reactjs.org/docs/react-dom.html#hydrate
-
+[hydration-mismatch]: https://react.dev/reference/react-dom/client/hydrateRoot
 [loader-data]: ../route/loader
-
 [client-only-component]: https://github.com/sergiodxa/remix-utils/blob/main/src/react/client-only.tsx
-
 [remix-utils]: https://www.npmjs.com/package/remix-utils
-
 [examples-repository]: https://github.com/remix-run/examples/blob/main/client-only-components/app/routes/_index.tsx
-
 [react-lazy]: https://reactjs.org/docs/code-splitting.html#reactlazy
-
 [react-suspense]: https://reactjs.org/docs/react-api.html#reactsuspense
-
 [client-only-approach]: #client-only-components
-
 [loadable-components]: https://loadable-components.com/docs/loadable-vs-react-lazy
-
 [docs-on-configuration]: ../file-conventions/remix-config
-
 [see-our-docs-on-route-links-for-more-information]: ../route/links
-
 [react-svgr]: https://react-svgr.com
-
 [command-line]: https://react-svgr.com/docs/cli
-
 [online-playground]: https://react-svgr.com/playground
-
 [page-link-descriptor-object]: ../route/links#pagelinkdescriptor
-
 [react-helmet]: https://www.npmjs.com/package/react-helmet
-
 [remix-philosophy]: ../pages/philosophy
-
 [remix-technical-explanation]: ../pages/technical-explanation
-
 [data-loading-in-remix]: ./data-loading
-
 [routing-in-remix]: ./routing
-
 [styling-in-remix]: ./styling
-
 [frequently-asked-questions]: ../pages/faq
-
 [common-gotchas]: ../pages/gotchas
-
 [css-modules]: ./styling#css-modules
-
 [vanilla-extract]: ./styling#vanilla-extract
-
 [css-side-effect-imports]: ./styling#css-side-effect-imports
-
 [css-bundling]: ./styling#css-bundling
-
 [open-graph-protocol]: https://ogp.me
-
 [classic-remix-compiler]: ./vite#classic-remix-compiler-vs-remix-vite
-
 [remix-vite]: ./vite
-

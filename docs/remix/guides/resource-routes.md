@@ -162,4 +162,3 @@ export const action = async ({
   return json({ success: true }, 200);
 };
 ```
-

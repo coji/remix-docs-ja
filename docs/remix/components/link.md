@@ -9,7 +9,7 @@ title: Link
 ```tsx
 import { Link } from "@remix-run/react";
 
-<Link to="/dashboard">ダッシュボード</Link>;
+<Link to="/dashboard">Dashboard</Link>;
 ```
 
 <docs-info>`useResolvedPath` ドキュメントの [Splat Paths][relativesplatpath] セクションで、スプラットルート内の相対 `<Link to>` の動作に関する `future.v3_relativeSplatPath` future フラグに関する注意点をご覧ください。</docs-info>
@@ -191,7 +191,7 @@ function SomeComp() {
 
 ```jsx
 <Link to={to} viewTransition>
-  クリックしてください
+  Click me
 </Link>
 ```
 
@@ -232,4 +232,3 @@ function ImageLink(to) {
 [use-view-transition-state]: ../hooks/use-view-transition-state
 [relativesplatpath]: ../hooks/use-resolved-path#splat-paths
 [lazy-route-discovery]: ../guides/lazy-route-discovery
-

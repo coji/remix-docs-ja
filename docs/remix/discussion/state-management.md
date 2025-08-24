@@ -43,11 +43,11 @@ Remix では、典型的な React の状態パターンを使用することが�
 
 Remix に移行する開発者として、従来の React パターンを適用するのではなく、その固有の効率性を認識し、受け入れることが不可欠です。Remix は、より少ないコード、最新のデータ、状態同期のバグがない、合理化された状態管理ソリューションを提供します。
 
-[fullstack_data_flow]: https://remix.run/docs/en/main/concepts/data-flow
-[use_navigation]: https://remix.run/docs/en/main/hooks/use-navigation
-[use_fetcher]: https://remix.run/docs/en/main/hooks/use-fetcher
-[use_loader_data]: https://remix.run/docs/en/main/hooks/use-loader-data
-[use_action_data]: https://remix.run/docs/en/main/hooks/use-action-data
+[fullstack_data_flow]: ./data-flow
+[use_navigation]: ../hooks/use-navigation
+[use_fetcher]: ../hooks/use-fetcher
+[use_loader_data]: ../hooks/use-loader-data
+[use_action_data]: ../hooks/use-action-data
 [cache_control_header]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 ## 例
@@ -55,8 +55,6 @@ Remix に移行する開発者として、従来の React パターンを適用�
 ### ネットワーク関連の状態
 
 ネットワーク関連の状態を管理するためにRemixの内部状態を使用する例については、[保留中のUI][pending_ui]を参照してください。
-
-[pending_ui]: (保留中のUIへのリンク)
 
 ### URL検索パラメータ
 
@@ -243,9 +241,6 @@ function Sidebar() {
 ```
 
 エフェクト内で状態を初期化することにより、サーバーでレンダリングされた状態とローカルストレージに保存された状態との間に不一致が生じる可能性があります。この不一致は、ページがレンダリングされた直後にUIがわずかにちらつく原因となり、避けるべきです。
-
-[window_global]: https://developer.mozilla.org/ja/docs/Web/API/Window
-[local_storage_global]: https://developer.mozilla.org/ja/docs/Web/API/Window/localStorage
 
 #### クッキー
 
@@ -524,20 +519,11 @@ export function Signup() {
 ネットワーク操作の状態を管理および同期することに苦労している場合は、Remixがよりエレガントなソリューションを提供してくれる可能性があります。
 
 [fullstack_data_flow]: ./data-flow
-
 [use_navigation]: ../hooks/use-navigation
-
 [use_fetcher]: ../hooks/use-fetcher
-
 [use_loader_data]: ../hooks/use-loader-data
-
 [use_action_data]: ../hooks/use-action-data
-
 [cache_control_header]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
-
 [pending_ui]: ./pending-ui
-
 [window_global]: https://developer.mozilla.org/en-US/docs/Web/API/Window/window
-
 [local_storage_global]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
-

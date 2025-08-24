@@ -88,4 +88,3 @@ Tailwind はインポートステートメントをインライン CSS に置き
 [classic-remix-compiler]: ../guides/vite#classic-remix-compiler-vs-remix-vite
 [remix-vite]: ../guides/vite
 [vite-postcss]: https://vitejs.dev/guide/features#postcss
-

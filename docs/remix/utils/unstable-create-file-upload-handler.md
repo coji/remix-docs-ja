@@ -5,6 +5,8 @@ toc: false
 
 # `unstable_createFileUploadHandler`
 
+<docs-warning>このAPIはReact Router v7で削除されました。推奨される代替APIについては、<a href="https://reactrouter.com/how-to/file-uploads">React Routerのファイルアップロードガイド</a>を参照してください。</docs-warning>
+
 Node.js のアップロードハンドラーで、ファイル名を持つパートをディスクに書き込み、メモリに保持しないようにします。ファイル名のないパートは解析されません。別のアップロードハンドラーと組み合わせて使用する必要があります。
 
 **例:**
@@ -46,4 +48,3 @@ export const action = async ({
 `file` および `directory` の関数 API は同じです。`object` を受け取り、`string` を返します。受け取るオブジェクトには、`filename`、`name`、および `contentType`（すべて文字列）があります。返される `string` はパスです。
 
 `filter` 関数は `object` を受け取り、`boolean`（または `boolean` に解決される Promise）を返します。受け取るオブジェクトには、`filename`、`name`、および `contentType`（すべて文字列）があります。返される `boolean` は、そのファイルストリームを処理する場合は `true` です。
-

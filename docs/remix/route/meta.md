@@ -52,7 +52,7 @@ export const meta: MetaFunction = () => {
 };
 ```
 
-メタ記述子は、`tagName` プロパティを `"link"` に設定することで、[`<link>` タグ][link-element] をレンダリングすることもできます。これは、`canonical` URL のような SEO に関連付けられた `<link>` タグに役立ちます。スタイルシートやファビコンなどのアセットリンクには、代わりに [`links` エクスポート][links] を使用する必要があります。
+メタ記述子は、`tagName` プロパティを `"link"` に設定することで、[`<link>` タグ][link-element] をレンダリングすることもできます。これは、`canonical` URL のような SEO に関連する `<link>` タグに役立ちます。スタイルシートやファビコンのようなアセットリンクには、代わりに [`links` エクスポート][links] を使用してください。
 
 ```tsx
 export const meta: MetaFunction = () => {
@@ -70,26 +70,26 @@ export const meta: MetaFunction = () => {
 
 ### `location`
 
-これは、現在のルーターの `Location` オブジェクトです。これは、特定のパスまたはクエリパラメータのルートのタグを生成するのに役立ちます。
+これは現在のルーターの `Location` オブジェクトです。特定のパスやクエリパラメータを持つルートのタグを生成するのに役立ちます。
 
 ```tsx
 export const meta: MetaFunction = ({ location }) => {
   const searchQuery = new URLSearchParams(
     location.search
   ).get("q");
-  return [{ title: `"${searchQuery}" の検索結果` }];
+  return [{ title: `Search results for "${searchQuery}"` }];
 };
 ```
 
 ### `matches`
 
-これは、現在のルートマッチの配列です。多くのもの、特に親マッチからのメタデータとデータにアクセスできます。
+これは現在のルートマッチの配列です。特に親マッチのメタデータやデータなど、多くのものにアクセスできます。
 
-`matches` のインターフェースは、[`useMatches`][use-matches] の戻り値に似ていますが、各マッチにはその `meta` 関数の出力が含まれます。これは、[ルート階層全体でメタデータをマージする][merging-metadata-across-the-route-hierarchy]のに役立ちます。
+`matches` のインターフェースは [`useMatches`][use-matches] の戻り値に似ていますが、各マッチにはその `meta` 関数の出力が含まれます。これは [ルート階層全体でメタデータをマージする][merging-metadata-across-the-route-hierarchy] のに役立ちます。
 
 ### `data`
 
-これは、ルートの [`loader`][loader] からのデータです。
+これはルートの [`loader`][loader] からのデータです。
 
 ```tsx
 export async function loader({
@@ -109,21 +109,21 @@ export const meta: MetaFunction<typeof loader> = ({
 
 ### `params`
 
-ルートの URL パラメータ。[ルーティングガイドの動的セグメント][url-params]を参照してください。
+ルートの URL パラメータです。[ルーティングガイドの動的セグメント][url-params] を参照してください。
 
 ### `error`
 
-エラー境界をトリガーするスローされたエラーは、`meta` 関数に渡されます。これは、エラーページのメタデータを生成するのに役立ちます。
+エラーバウンダリをトリガーするスローされたエラーは、`meta` 関数に渡されます。これはエラーページのメタデータを生成するのに役立ちます。
 
 ```tsx
 export const meta: MetaFunction = ({ error }) => {
-  return [{ title: error ? "おっと!" : "実際のタイトル" }];
+  return [{ title: error ? "oops!" : "Actual title" }];
 };
 ```
 
 ## 親ルートローダーからのデータへのアクセス
 
-現在のルートのデータに加えて、多くの場合、ルート階層の上位にあるルートからのデータにアクセスする必要があります。[`matches`][matches] でルート ID で検索できます。
+現在のルートのデータに加えて、ルート階層の上位にあるルートのデータにアクセスしたい場合がよくあります。これは [`matches`][matches] 内のルート ID で検索できます。
 
 ```tsx filename=app/routes/project.$pid.tasks.$tid.tsx
 import type { loader as projectDetailsLoader } from "./project.$pid";
@@ -148,13 +148,13 @@ export const meta: MetaFunction<
 
 ## `meta` とネストされたルートに関する注意点
 
-複数のネストされたルートが同時にレンダリングされるため、最終的にレンダリングされるメタタグを決定するために、いくつかのマージを行う必要があります。Remix は、明らかなデフォルトがないため、このマージを完全に制御できます。
+複数のネストされたルートが同時にレンダリングされるため、最終的にレンダリングされるメタタグを決定するためにマージが必要です。Remix は、明確なデフォルトがないため、このマージを完全に制御できます。
 
-Remix は、`meta` エクスポートを持つ最後に一致したルートを取得して使用します。これにより、`title` のようなものをオーバーライドしたり、親ルートが追加した `og:image` のようなものを削除したり、親からのすべてを保持して子ルートの新しいメタを追加したりできます。
+Remix は、`meta` エクスポートを持つ最後にマッチしたルートを使用します。これにより、`title` のようなものをオーバーライドしたり、親ルートが追加した `og:image` のようなものを削除したり、親からのすべてを保持して子ルートに新しいメタデータを追加したりできます。
 
-これは、慣れていないと非常に複雑になる可能性があります。
+これは、Remix を使い始めたばかりの場合、かなり複雑になる可能性があります。
 
-`/projects/123` のようなルートを考えてみましょう。おそらく、`app/root.tsx`、`app/routes/projects.tsx`、および `app/routes/projects.$id.tsx` の 3 つの一致するルートがあります。3 つすべてがメタ記述子をエクスポートする可能性があります。
+`/projects/123` のようなルートを考えてみましょう。`app/root.tsx`、`app/routes/projects.tsx`、`app/routes/projects.$id.tsx` の3つのマッチするルートがある可能性があります。これら3つすべてがメタ記述子をエクスポートする場合があります。
 
 ```tsx bad filename=app/root.tsx
 export const meta: MetaFunction = () => {
@@ -163,14 +163,14 @@ export const meta: MetaFunction = () => {
       name: "viewport",
       content: "width=device-width,initial-scale=1",
     },
-    { title: "新しい Remix アプリ" },
+    { title: "New Remix App" },
   ];
 };
 ```
 
 ```tsx bad filename=app/routes/projects.tsx
 export const meta: MetaFunction = () => {
-  return [{ title: "プロジェクト" }];
+  return [{ title: "Projects" }];
 };
 ```
 
@@ -182,11 +182,11 @@ export const meta: MetaFunction<typeof loader> = ({
 };
 ```
 
-このコードでは、`/projects` および `/projects/123` で `viewport` メタタグが失われます。これは、最後のメタのみが使用され、コードが親とマージされないためです。
+このコードでは、`/projects` および `/projects/123` で `viewport` メタタグが失われます。これは、最後のメタデータのみが使用され、コードが親とマージされないためです。
 
-### グローバル `meta`
+### グローバルな `meta`
 
-ほぼすべてのアプリには、`viewport` や `charSet` のようなグローバルメタがあります。`meta` エクスポートの代わりに、[ルートルート][root-route] 内で通常の [`<meta>` タグ][meta-element] を使用することをお勧めします。これにより、マージを処理する必要がなくなります。
+ほとんどすべてのアプリには、`viewport` や `charSet` のようなグローバルなメタデータがあります。マージに対処する必要がないように、`meta` エクスポートの代わりに [ルートルート][root-route] 内で通常の [`<meta>` タグ][meta-element] を使用することをお勧めします。
 
 ```tsx filename=app/root.tsx lines=[12-16]
 import {
@@ -219,35 +219,35 @@ export default function App() {
 
 ### 親ルートでの `meta` の回避
 
-親ルートからオーバーライドしたい `meta` をエクスポートしないことで、マージの問題を回避することもできます。親ルートで `meta` を定義する代わりに、[インデックスルート][index-route] を使用します。これにより、タイトルのようなものの複雑なマージロジックを回避できます。それ以外の場合は、親のタイトル記述子を見つけて、子タイトルに置き換える必要があります。インデックスルートを使用することで、オーバーライドする必要がないようにする方がはるかに簡単です。
+親ルートからオーバーライドしたい `meta` をエクスポートしないことで、マージの問題を回避することもできます。親ルートで `meta` を定義する代わりに、[インデックスルート][index-route] を使用してください。これにより、タイトルなどの複雑なマージロジックを回避できます。そうしないと、親のタイトル記述子を見つけて子のタイトルに置き換える必要があります。インデックスルートを使用することで、オーバーライドする必要がなくなるため、はるかに簡単です。
 
 ### 親 `meta` とのマージ
 
-通常、親がすでに定義しているものに `meta` を追加するだけで済みます。スプレッド演算子と [`matches`][matches] 引数を使用して、親 `meta` をマージできます。
+通常、親がすでに定義しているものに `meta` を追加するだけで済みます。スプレッド演算子と [`matches`][matches] 引数を使用して、親の `meta` をマージできます。
 
 ```tsx
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches.flatMap(
     (match) => match.meta ?? []
   );
-  return [...parentMeta, { title: "プロジェクト" }];
+  return [...parentMeta, { title: "Projects" }];
 };
 ```
 
-これは、`title` のようなものをオーバーライド _しない_ ことに注意してください。これは追加のみです。継承されたルートメタに `title` タグが含まれている場合は、[`Array.prototype.filter`][array-filter] でオーバーライドできます。
+これは `title` のようなものを _オーバーライドしない_ ことに注意してください。これは追加のみです。継承されたルートメタに `title` タグが含まれている場合、[`Array.prototype.filter`][array-filter] を使用してオーバーライドできます。
 
 ```tsx
 export const meta: MetaFunction = ({ matches }) => {
   const parentMeta = matches
     .flatMap((match) => match.meta ?? [])
     .filter((meta) => !("title" in meta));
-  return [...parentMeta, { title: "プロジェクト" }];
+  return [...parentMeta, { title: "Projects" }];
 };
 ```
 
 ### `meta` マージヘルパー
 
-グローバルメタまたはインデックスルートでマージの問題を回避できない場合は、親メタを簡単にオーバーライドおよび追加できるヘルパーをアプリに配置しました。
+グローバルなメタデータやインデックスルートでマージの問題を回避できない場合、親のメタデータを簡単にオーバーライドしたり追加したりできるヘルパーをアプリに組み込むことができます。
 
 - [`merge-meta.ts` の Gist を表示][merge-meta]
 
@@ -263,4 +263,3 @@ export const meta: MetaFunction = ({ matches }) => {
 [index-route]: ../discussion/routes#index-routes
 [array-filter]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 [merge-meta]: https://gist.github.com/ryanflorence/ec1849c6d690cfbffcb408ecd633e069
-

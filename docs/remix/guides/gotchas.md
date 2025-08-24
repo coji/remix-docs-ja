@@ -186,10 +186,6 @@ RemixはサーバービルドをCJSにコンパイルし、nodeモジュール�
 
 主要なデプロイプラットフォームがESMサーバー側をサポートするようになったことで、未来は過去よりも明るいと確信しています。ESMサーバービルドの堅牢な開発エクスペリエンスについてはまだ取り組んでおり、現在のアプローチはESMでは実行できないいくつかのことに依存しています。私たちはそこに到達します。
 
-[classic-remix-compiler]: https://github.com/remix-run/remix/blob/main/packages/remix-dev/compiler/README.md
-[server_dependencies_to_bundle]: https://remix.run/docs/en/main/file-conventions/remix-config#serverdependenciestobundle
-[remix_config]: https://remix.run/docs/en/main/file-conventions/remix-config
-
 ## CSSバンドルが誤ってツリーシェイキングされる
 
 <docs-warning>このセクションは、[Classic Remix Compiler][classic-remix-compiler]を使用している場合にのみ関連します。</docs-warning>
@@ -224,4 +220,3 @@ RemixはサーバービルドをCJSにコンパイルし、nodeモジュール�
 [cookie_header]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cookie
 
 [classic-remix-compiler]: ./vite#classic-remix-compiler-vs-remix-vite
-

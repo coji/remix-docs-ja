@@ -2,7 +2,7 @@
 title: ファイルアップロード
 ---
 
-<docs-warning>このドキュメントは作成中です: ファイルアップロードのAPIドキュメントから抽出されたため、少し文脈が欠けています。これをファイルアップロードに関する一般的なガイドとして書き直す予定です。</docs-warning>
+<docs-warning>このガイドで説明されているAPIはReact Router v7で削除されました。<a href="https://reactrouter.com/how-to/file-uploads">React Routerのファイルアップロードに関するガイド</a>で推奨されるアプローチを参照してください。</docs-warning>
 
 ほとんどの場合、ファイルをファイルホストにプロキシしたいと思うでしょう。
 
@@ -95,7 +95,7 @@ export const action = async ({
 | filename    | string                    | ユーザーがアップロード用に選択したファイルの名前（例：`rickroll.mp4`） |
 | contentType | string                    | ファイルのコンテンツタイプ（例：`videomp4`）                               |
 
-あなたの仕事は、`data`を使って必要なことを行い、有効な\[`FormData`]\[form-data]値である\[`File`]\[the-browser-file-api]、`string`、または結果のFormDataに追加しない場合は`undefined`を返すことです。
+あなたの仕事は、`data`を使って必要なことを行い、有効な[`FormData`][form-data]値である[`File`][the-browser-file-api]、`string`、または結果のFormDataに追加しない場合は`undefined`を返すことです。
 
 ### アップロードハンドラーの構成
 
@@ -125,4 +125,3 @@ export const fileUploadHandler: UploadHandler = (args) => {
   return undefined;
 };
 ```
-

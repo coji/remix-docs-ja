@@ -185,8 +185,6 @@ const cookie = createCookie("cookie-name", {
 
 各属性の詳細については、[MDN Set-Cookie ドキュメント][cookie-attrs]を参照してください。
 
-[cookie-attrs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
-
 ## `isCookie`
 
 オブジェクトが Remix のクッキーコンテナである場合に `true` を返します。
@@ -268,4 +266,3 @@ console.log(cookie.expires); // "2020-01-01T00:00:00.000Z"
 [cookie]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
 
 [cookie-attrs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes
-

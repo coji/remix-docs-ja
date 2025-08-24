@@ -66,4 +66,3 @@ export default defineConfig({
 
 [vite-config-future]: ../file-conventions/vite-config#future
 [remix-config-future]: ../file-conventions/remix-config#future
-

@@ -69,4 +69,3 @@ URL に対して `POST` が行われると、ルート階層内の複数のル�
 [form-component]: ../components/form
 [form-component-action]: ../components/form#action
 [index-query-param]: ../guides/index-query-param
-

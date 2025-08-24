@@ -38,4 +38,3 @@ function SomeForm() {
 ```
 
 [window_before_unload]: https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event
-

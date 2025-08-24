@@ -50,4 +50,3 @@ import { Link } from "@remix-run/react";
 ```
 
 [react_router]: https://reactrouter.com
-

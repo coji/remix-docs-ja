@@ -167,4 +167,3 @@ Remix で環境変数をブラウザバンドルに入れることができる�
 [vercel]: https://vercel.com/docs/environment-variables
 [architect]: https://arc.codes/docs/en/reference/cli/env
 [dev-vars]: https://developers.cloudflare.com/pages/functions/bindings/#interact-with-your-environment-variables-locally
-

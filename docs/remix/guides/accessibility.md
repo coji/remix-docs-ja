@@ -32,4 +32,3 @@ Remix のクライアントスクリプトがロードされると、React Route
 [scripts]: ../components/scripts
 [wcag]: https://www.w3.org/WAI/standards-guidelines/wcag/
 [marcy-sutton-led-and-published-findings-from-user-research]: https://www.gatsbyjs.com/blog/2019-07-11-user-testing-accessible-client-routing
-

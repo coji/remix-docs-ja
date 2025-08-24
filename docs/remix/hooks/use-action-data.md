@@ -50,4 +50,3 @@ export default function Invoices() {
 [action]: ../route/action
 [use_navigation]: ../hooks/use-navigation
 [fullstack_data_flow]: ../discussion/data-flow
-

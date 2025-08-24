@@ -80,4 +80,3 @@ function ImportantForm() {
 `blocked` 状態の場合、`blocker.reset()` を呼び出して、ブロッカーを `unblocked` 状態に戻し、ユーザーを現在の場所に残すことができます。
 
 [example]: https://github.com/remix-run/react-router/tree/main/examples/navigation-blocking
-
