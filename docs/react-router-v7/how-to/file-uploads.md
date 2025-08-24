@@ -4,12 +4,10 @@ title: ファイルアップロード
 
 # ファイルアップロード
 
-[モード: フレームワーク]
+[MODES: framework]
 
 <br/>
 <br/>
-
-React Router アプリケーションでファイルアップロードを処理します。このガイドでは、ファイルアップロードを簡単にするために、[Remix The Web][remix-the-web] プロジェクトのいくつかのパッケージを使用します。
 
 _このドキュメントのベースとなった[オリジナルのガイド](https://programmingarehard.com/2024/09/06/remix-file-uploads-updated.html/)を執筆してくれた David Adams に感謝します。さらに多くの例については、そちらを参照してください。_
 
@@ -38,7 +36,7 @@ export default [
 `form-data-parser` は、ファイルアップロードを処理するためのストリーミングサポートを提供する `request.formData()` のラッパーです。
 
 ```shellscript
-npm i @mjackson/form-data-parser
+npm i @remix-run/form-data-parser
 ```
 
 [詳細については、`form-data-parser` のドキュメントを参照してください][form-data-parser]
@@ -57,11 +55,12 @@ npm i @mjackson/form-data-parser
 import {
   type FileUpload,
   parseFormData,
-} from "@mjackson/form-data-parser";
+} from "@remix-run/form-data-parser";
+import type { Route } from "./+types/user-profile";
 
 export async function action({
   request,
-}: ActionFunctionArgs) {
+}: Route.ActionArgs) {
   const uploadHandler = async (fileUpload: FileUpload) => {
     if (fileUpload.fieldName === "avatar") {
       // アップロードを処理して File を返す
@@ -70,7 +69,7 @@ export async function action({
 
   const formData = await parseFormData(
     request,
-    uploadHandler
+    uploadHandler,
   );
   // 'avatar' はこの時点で既に処理済み
   const file = formData.get("avatar");
@@ -93,7 +92,7 @@ export default function Component() {
 `file-storage` は、JavaScript で [File オブジェクト][file] を保存するためのキー/値インターフェースです。`localStorage` がブラウザで文字列のキー/値ペアを保存できるのと同様に、file-storage ではサーバー上のファイルのキー/値ペアを保存できます。
 
 ```shellscript
-npm i @mjackson/file-storage
+npm i @remix-run/file-storage
 ```
 
 [詳細については、`file-storage` のドキュメントを参照してください][file-storage]
@@ -103,10 +102,10 @@ npm i @mjackson/file-storage
 異なるルートで使用される `LocalFileStorage` インスタンスをエクスポートするファイルを作成します。
 
 ```ts filename=avatar-storage.server.ts
-import { LocalFileStorage } from "@mjackson/file-storage/local";
+import { LocalFileStorage } from "@remix-run/file-storage/local";
 
 export const fileStorage = new LocalFileStorage(
-  "./uploads/avatars"
+  "./uploads/avatars",
 );
 
 export function getStorageKey(userId: string) {
@@ -122,7 +121,7 @@ export function getStorageKey(userId: string) {
 import {
   type FileUpload,
   parseFormData,
-} from "@mjackson/form-data-parser";
+} from "@remix-run/form-data-parser";
 import {
   fileStorage,
   getStorageKey,
@@ -150,7 +149,7 @@ export async function action({
 
   const formData = await parseFormData(
     request,
-    uploadHandler
+    uploadHandler,
   );
 }
 
@@ -209,8 +208,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 ```
 
-[remix-the-web]: https://github.com/mjackson/remix-the-web
-[form-data-parser]: https://github.com/mjackson/remix-the-web/tree/main/packages/form-data-parser
-[file-storage]: https://github.com/mjackson/remix-the-web/tree/main/packages/file-storage
+[form-data-parser]: https://www.npmjs.com/package/@remix-run/form-data-parser
+[file-storage]: https://www.npmjs.com/package/@remix-run/file-storage
 [file]: https://developer.mozilla.org/en-US/docs/Web/API/File
 [resource-route]: ../how-to/resource-routes

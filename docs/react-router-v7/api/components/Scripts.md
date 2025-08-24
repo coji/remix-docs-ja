@@ -4,13 +4,27 @@ title: Scripts
 
 # Scripts
 
+<!--
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
+
+Thank you for helping improve our documentation!
+
+This file is auto-generated from the JSDoc comments in the source
+code, so please edit the JSDoc comments in the file below and this
+file will be re-generated once those changes are merged.
+
+https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/dom/ssr/components.tsx
+-->
+
 [MODES: framework]
 
-## 概要
+## Summary
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.Scripts.html)
+[Reference Documentation ↗](https://api.reactrouter.com/v7/functions/react_router.Scripts.html)
 
-アプリのクライアントランタイムをレンダリングします。ドキュメントの `<body>` 内にレンダリングする必要があります。
+アプリのクライアントランタイムをレンダリングします。ドキュメントの [`<body>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) 内にレンダリングする必要があります。
+
+サーバーレンダリングの場合、`<Scripts/>` を省略すると、アプリは JavaScript なしの従来の Web アプリとして動作し、HTML とブラウザの動作のみに依存します。
 
 ```tsx
 import { Scripts } from "react-router";
@@ -27,18 +41,14 @@ export default function Root() {
 }
 ```
 
-サーバーレンダリングの場合、`<Scripts/>` を省略すると、アプリは JavaScript なしの従来の Web アプリとして動作し、HTML とブラウザの動作のみに依存します。
+## Signature
+
+```tsx
+function Scripts(scriptProps: ScriptsProps): React.JSX.Element | null
+```
 
 ## Props
 
-### ScriptsProps
+### scriptProps
 
-[modes: framework]
-
-いくつかの一般的な属性：
-
-- アプリとは異なるサーバーで静的アセットをホストするための `<Scripts crossOrigin>`。
-- `<script>` タグの [nonce-sources](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/Sources#sources) を使用した [スクリプトのコンテンツセキュリティポリシー](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src) をサポートするための `<Scripts nonce>`。
-
-`async`、`defer`、`src`、`type`、`noModule` などの属性は、React Router によって内部的に管理されているため、渡すことはできません。
-
+[`<script>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script) タグに展開される追加の props です。[`crossOrigin`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLScriptElement/crossOrigin) や [`nonce`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce) などがあります。

@@ -4,6 +4,18 @@ title: Await
 
 # Await
 
+<!--
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
+
+Thank you for helping improve our documentation!
+
+This file is auto-generated from the JSDoc comments in the source
+code, so please edit the JSDoc comments in the file below and this
+file will be re-generated once those changes are merged.
+
+https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/components.tsx
+-->
+
 [MODES: framework, data]
 
 ## 概要
@@ -11,6 +23,8 @@ title: Await
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.Await.html)
 
 自動エラー処理で Promise の値をレンダリングするために使用されます。
+
+**注:** `<Await>` は [`<React.Suspense>`](https://react.dev/reference/react/Suspense) の内部でレンダリングされることを想定しています。
 
 ```tsx
 import { Await, useLoaderData } from "react-router";
@@ -47,13 +61,19 @@ function Book() {
 }
 ```
 
-`<Await>` は `<React.Suspense>` の内部でレンダリングされることを想定しています。
+## シグネチャ
+
+```tsx
+function Await<Resolve>({
+  children,
+  errorElement,
+  resolve,
+}: AwaitProps<Resolve>)
+```
 
 ## Props
 
 ### children
-
-[modes: framework, data]
 
 関数を使用する場合、解決された値がパラメータとして提供されます。
 
@@ -78,9 +98,7 @@ function Reviews() {
 
 ### errorElement
 
-[modes: framework, data]
-
-Promise がリジェクトされた場合、children の代わりにエラー要素がレンダリングされます。
+[`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) がリジェクトされた場合、children の代わりにエラー要素がレンダリングされます。
 
 ```tsx
 <Await
@@ -107,16 +125,14 @@ function ReviewsError() {
 }
 ```
 
-errorElement を提供しない場合、リジェクトされた値は最も近いルートレベルの ErrorBoundary までバブルアップし、[useRouteError](../hooks/useRouteError) フックを介してアクセスできます。
+errorElement を提供しない場合、リジェクトされた値は最も近いルートレベルの [`ErrorBoundary`](../../start/framework/route-module#errorboundary) までバブルアップし、[useRouteError](../hooks/useRouteError) フックを介してアクセスできます。
 
 ### resolve
 
-[modes: framework, data]
+解決してレンダリングするために、[`loader`](../../start/framework/route-module#loader) から返された [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) を受け取ります。
 
-解決してレンダリングする [LoaderFunction](https://api.reactrouter.com/v7/types/react_router.LoaderFunction.html) から返された Promise を受け取ります。
-
-```jsx
-import { useLoaderData, Await } from "react-router";
+```tsx
+import { Await, useLoaderData } from "react-router";
 
 export async function loader() {
   let reviews = getReviews(); // await されない

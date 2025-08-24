@@ -1,5 +1,6 @@
 ---
 title: コンポーネントルートからのフレームワーク採用
+order: 4
 ---
 
 # コンポーネントルートからのフレームワーク採用
@@ -213,9 +214,9 @@ ReactDOM.hydrateRoot(
 
 ## 6. ルートを設定する
 
-React Router Vite プラグインは、`routes.ts` ファイルを使用してルートを設定します。今のところ、物事を進めるために単純なキャッチオールルートを追加します。
+The React Router Vite plugin uses a `routes.ts` file to configure your routes. For now we'll add a simple catchall route to get things going.
 
-**👉 `catchall.tsx` ルートを設定する**
+**👉 Set up a `catchall.tsx` route**
 
 ```shellscript nonumber
 touch src/routes.ts src/catchall.tsx
@@ -228,14 +229,14 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-  // * はすべての URL に一致し、? はオプションにするため、/ にも一致します
+  // * matches all URLs, the ? makes it optional so it will match / as well
   route("*?", "catchall.tsx"),
 ] satisfies RouteConfig;
 ```
 
-**👉 プレースホルダールートをレンダリングする**
+**👉 Render a placeholder route**
 
-最終的にはこれを元の `App` コンポーネントに置き換えますが、今のところアプリを起動できることを確認するために、何か簡単なものをレンダリングします。
+Eventually we'll replace this with our original `App` component, but for now we'll just render something simple to make sure we can boot the app.
 
 ```tsx filename=src/catchall.tsx
 export default function Component() {

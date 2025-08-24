@@ -5,6 +5,18 @@ unstable: true
 
 # unstable_getRSCStream
 
+<!--
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
+
+Thank you for helping improve our documentation!
+
+This file is auto-generated from the JSDoc comments in the source
+code, so please edit the JSDoc comments in the file below and this
+file will be re-generated once those changes are merged.
+
+https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/rsc/html-stream/browser.ts
+-->
+
 [MODES: data]
 
 <br />
@@ -14,9 +26,11 @@ unstable: true
 
 ## 概要
 
-ハイドレーション用のプリレンダリングされたRSCストリームを取得します。通常、`react-server-dom-xyz/client`の`createFromReadableStream`に直接渡されます。
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.unstable_getRSCStream.html)
 
-```tsx filename=entry.browser.ts
+ハイドレーション用のプリレンダリングされた[RSC](https://react.dev/reference/rsc/server-components)ストリームを取得します。通常、`react-server-dom-xyz/client`の`createFromReadableStream`に直接渡されます。
+
+```tsx
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import {
@@ -31,13 +45,23 @@ createFromReadableStream(getRSCStream()).then(
       hydrateRoot(
         document,
         <StrictMode>
-          <RSCHydratedRouter /* props */ />
+          <RSCHydratedRouter {...props} />
         </StrictMode>,
         {
-          /* ... */
+          // Options
         }
       );
     });
   }
 );
 ```
+
+## シグネチャ
+
+```tsx
+function getRSCStream(): ReadableStream
+```
+
+## 戻り値
+
+ハイドレーション用の[RSC](https://react.dev/reference/rsc/server-components)データを含む[`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)です。

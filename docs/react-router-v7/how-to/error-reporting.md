@@ -28,7 +28,7 @@ import { type HandleErrorFunction } from "react-router";
 
 export const handleError: HandleErrorFunction = (
   error,
-  { request }
+  { request },
 ) => {
   // React Router は中断されたリクエストを中止する可能性があるため、それらはログに記録しない
   if (!request.signal.aborted) {

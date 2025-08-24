@@ -4,13 +4,25 @@ title: useRouteError
 
 # useRouteError
 
+<!--
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
+
+Thank you for helping improve our documentation!
+
+This file is auto-generated from the JSDoc comments in the source
+code, so please edit the JSDoc comments in the file below and this
+file will be re-generated once those changes are merged.
+
+https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/hooks.tsx
+-->
+
 [MODES: framework, data]
 
 ## 概要
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useRouteError.html)
 
-[ActionFunction](https://api.reactrouter.com/v7/interfaces/react_router.ActionFunction.html)、[LoaderFunction](https://api.reactrouter.com/v7/types/react_router.LoaderFunction.html)、またはコンポーネントのレンダリング中にスローされたエラーにアクセスし、ルートモジュールのエラー境界で使用します。
+[`action`](../../start/framework/route-module#action)、[`loader`](../../start/framework/route-module#loader)、またはコンポーネントのレンダリング中にスローされたエラーにアクセスし、ルートモジュールの[`ErrorBoundary`](../../start/framework/route-module#errorboundary)で使用します。
 
 ```tsx
 export function ErrorBoundary() {
@@ -22,5 +34,9 @@ export function ErrorBoundary() {
 ## シグネチャ
 
 ```tsx
-useRouteError(): unknown
+function useRouteError(): unknown
 ```
+
+## 戻り値
+
+ルートの[ローディング](../../start/framework/route-module#loader)、[`action`](../../start/framework/route-module#action)の実行、またはレンダリング中にスローされたエラー。

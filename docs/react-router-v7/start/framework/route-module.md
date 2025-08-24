@@ -78,6 +78,92 @@ export default function MyRouteComponent({
 }
 ```
 
+## `unstable_middleware`
+
+ルート[ミドルウェア][middleware]は、ドキュメントおよびデータリクエストの前後でサーバー上で順次実行されます。これにより、ロギング、認証、レスポンスの後処理などを一箇所で行うことができます。`next` 関数はチェーンを続行し、リーフルートでは `next` 関数がナビゲーションのローダー/アクションを実行します。
+
+以下は、サーバー上でリクエストをログに記録するミドルウェアの例です。
+
+```tsx filename=root.tsx
+async function loggingMiddleware(
+  { request, context },
+  next,
+) {
+  console.log(
+    `${new Date().toISOString()} ${request.method} ${request.url}`,
+  );
+  const start = performance.now();
+  const response = await next();
+  const duration = performance.now() - start;
+  console.log(
+    `${new Date().toISOString()} Response ${response.status} (${duration}ms)`,
+  );
+  return response;
+}
+
+export const unstable_middleware = [loggingMiddleware];
+```
+
+以下は、ログインしているユーザーをチェックし、ローダーからアクセスできる `context` にユーザーを設定するミドルウェアの例です。
+
+```tsx filename=routes/_auth.tsx
+async function authMiddleware ({
+  request,
+  context,
+}) => {
+  const session = await getSession(request);
+  const userId = session.get("userId");
+
+  if (!userId) {
+    throw redirect("/login");
+  }
+
+  const user = await getUserById(userId);
+  context.set(userContext, user);
+};
+
+export const unstable_middleware = [authMiddleware];
+```
+
+<docs-warning>ルートにミドルウェアを追加する際に、アプリケーションが意図したとおりに動作するように、[ミドルウェアがいつ実行されるか][when-middleware-runs]を理解していることを確認してください。</docs-warning>
+
+参照：
+
+- [`unstable_middleware` params][middleware-params]
+- [ミドルウェア][middleware]
+
+## `unstable_clientMiddleware`
+
+これは `unstable_middleware` のクライアントサイド版であり、クライアントナビゲーション中にブラウザで実行されます。サーバーミドルウェアとの唯一の違いは、クライアントミドルウェアはサーバー上のHTTPリクエストをラップしないため、レスポンスを返さないことです。
+
+以下は、クライアント上でリクエストをログに記録するミドルウェアの例です。
+
+```tsx filename=root.tsx
+async function loggingMiddleware(
+  { request, context },
+  next,
+) {
+  console.log(
+    `${new Date().toISOString()} ${request.method} ${request.url}`,
+  );
+  const start = performance.now();
+  await next(); // 👈 No Response returned
+  const duration = performance.now() - start;
+  console.log(
+    `${new Date().toISOString()} Response ${response.status} (${duration}ms)`,
+  );
+  // ✅ No need to return anything
+}
+
+export const unstable_clientMiddleware = [
+  loggingMiddleware,
+];
+```
+
+参照：
+
+- [ミドルウェア][middleware]
+
 ## `loader`
 
 ルートローダーは、ルートコンポーネントがレンダリングされる前に、ルートコンポーネントにデータを提供します。サーバーレンダリング時、またはプリレンダリングによるビルド時にのみサーバー上で呼び出されます。
@@ -168,6 +254,10 @@ export async function action({ request }) {
 }
 ```
 
+参照：
+
+- [`action` params][action-params]
+
 ## `clientAction`
 
 ルートアクションと同様ですが、ブラウザでのみ呼び出されます。
@@ -218,9 +308,14 @@ export function ErrorBoundary() {
     );
   } else {
     return <h1>不明なエラー</h1>;
-  n}
+  }
 }
 ```
+
+参照：
+
+- [`useRouteError`][use-route-error]
+- [`isRouteErrorResponse`][is-route-error-response]
 
 ## `HydrateFallback`
 
@@ -243,7 +338,7 @@ export default function Component({ loaderData }) {
 
 ## `headers`
 
-ルートヘッダーは、サーバーレンダリング時にレスポンスとともに送信される HTTP ヘッダーを定義します。
+ルート `headers` 関数は、サーバーレンダリング時にレスポンスとともに送信される HTTP ヘッダーを定義します。
 
 ```tsx
 export function headers() {
@@ -254,6 +349,10 @@ export function headers() {
 }
 ```
 
+参照：
+
+- [`Headers`][headers]
+
 ## `handle`
 
 ルートハンドルを使用すると、アプリは `useMatches` のルート一致に何かを追加して、抽象化（パンくずリストなど）を作成できます。
@@ -263,6 +362,10 @@ export const handle = {
   its: "all yours",
 };
 ```
+
+参照：
+
+- [`useMatches`][use-matches]
 
 ## `links`
 
@@ -339,7 +442,7 @@ export default function MyRoute() {
 export function meta() {
   return [
     { title: "非常にクールなアプリ" },
-    { 
+    {
       property: "og:title",
       content: "非常にクールなアプリ",
     },
@@ -384,7 +487,7 @@ export default function Root() {
 import type { ShouldRevalidateFunctionArgs } from "react-router";
 
 export function shouldRevalidate(
-  arg: ShouldRevalidateFunctionArgs
+  arg: ShouldRevalidateFunctionArgs,
 ) {
   return true;
 }
@@ -396,19 +499,18 @@ export function shouldRevalidate(
 
 次: [レンダリング戦略](./rendering)
 
-[fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+[middleware-params]: https://api.reactrouter.com/v7/types/react_router.unstable_MiddlewareFunction.html
+[middleware]: ../../how-to/middleware
+[when-middleware-runs]: ../../how-to/middleware#when-middleware-runs
 [loader-params]: https://api.reactrouter.com/v7/interfaces/react_router.LoaderFunctionArgs
 [client-loader-params]: https://api.reactrouter.com/v7/types/react_router.ClientLoaderFunctionArgs
 [action-params]: https://api.reactrouter.com/v7/interfaces/react_router.ActionFunctionArgs
 [client-action-params]: https://api.reactrouter.com/v7/types/react_router.ClientActionFunctionArgs
-[error-boundaries]: https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
-[use-route-error]: https://api.reactrouter.com/v7/functions/react_router.useRouteError
-[is-route-error-response]: https://api.reactrouter.com/v7/functions/react_router.isRouteErrorResponse
-[cache-control-header]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
-[headers]: https://developer.mozilla.org/en-US/docs/Web/API/Response
-[use-matches]: https://api.reactrouter.com/v7/functions/react_router.useMatches
+[use-route-error]: ../../api/hooks/useRouteError
+[is-route-error-response]: ../../api/utils/isRouteErrorResponse
+[headers]: https://developer.mozilla.org/en-US/docs/Web/API/Response/headers
+[use-matches]: ../../api/hooks/useMatches
 [link-element]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
 [meta-element]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
 [meta-params]: https://api.reactrouter.com/v7/interfaces/react_router.MetaArgs
 [meta-function]: https://api.reactrouter.com/v7/types/react_router.MetaDescriptor.html
-[use-revalidator]: https://api.reactrouter.com/v7/functions/react_router.useRevalidator.html

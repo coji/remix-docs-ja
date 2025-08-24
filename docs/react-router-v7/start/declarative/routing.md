@@ -22,10 +22,9 @@ const root = document.getElementById("root");
 ReactDOM.createRoot(root).render(
   <BrowserRouter>
     <Routes>
-      <Route path=
-"/" element={<App />} />
+      <Route path="/" element={<App />} />
     </Routes>
-  </BrowserRouter>
+  </BrowserRouter>,
 );
 ```
 
@@ -36,7 +35,7 @@ ReactDOM.createRoot(root).render(
   <Route index element={<Home />} />
   <Route path="about" element={<About />} />
 
-  <Route element={<AuthLayout />} >
+  <Route element={<AuthLayout />}>
     <Route path="login" element={<Login />} />
     <Route path="register" element={<Register />} />
   </Route>
@@ -55,7 +54,7 @@ ReactDOM.createRoot(root).render(
 
 ```tsx
 <Routes>
-  <Route path="dashboard" element={<Dashboard />} >
+  <Route path="dashboard" element={<Dashboard />}>
     <Route index element={<Home />} />
     <Route path="settings" element={<Settings />} />
   </Route>
@@ -86,14 +85,14 @@ export default function Dashboard() {
 
 ```tsx lines=[2,9]
 <Routes>
-  <Route element={<MarketingLayout />} >
+  <Route element={<MarketingLayout />}>
     <Route index element={<MarketingHome />} />
     <Route path="contact" element={<Contact />} />
   </Route>
 
   <Route path="projects">
     <Route index element={<ProjectsHome />} />
-    <Route element={<ProjectsLayout />} >
+    <Route element={<ProjectsLayout />}>
       <Route path=":pid" element={<Project />} />
       <Route path=":pid/edit" element={<EditProject />} />
     </Route>
@@ -107,11 +106,11 @@ export default function Dashboard() {
 
 ```tsx lines=[4,8]
 <Routes>
-  <Route path="/" element={<Root />} >
+  <Route path="/" element={<Root />}>
     {/* "/" で <Root> のアウトレットにレンダリングされます */}
     <Route index element={<Home />} />
 
-    <Route path="dashboard" element={<Dashboard />} >
+    <Route path="dashboard" element={<Dashboard />}>
       {/* "/dashboard" で <Dashboard> のアウトレットにレンダリングされます */}
       <Route index element={<DashboardHome />} />
       <Route path="settings" element={<Settings />} />
@@ -129,7 +128,7 @@ export default function Dashboard() {
 ```tsx filename=app/routes.ts lines=[1]
 <Route path="projects">
   <Route index element={<ProjectsHome />} />
-  <Route element={<ProjectsLayout />} >
+  <Route element={<ProjectsLayout />}>
     <Route path=":pid" element={<Project />} />
     <Route path=":pid/edit" element={<EditProject />} />
   </Route>
@@ -197,8 +196,8 @@ export default function CategoryProduct() {
 
 ```tsx
 let params = useParams();
-// params[\"*\"] には、files/ の後の残りのURLが含まれます
-let filePath = params[\"*\"];
+// params["*"] には、files/ の後の残りのURLが含まれます
+let filePath = params["*"];
 ```
 
 `*` を分割できます。新しい名前を割り当てる必要があります。一般的な名前は `splat` です。

@@ -6,6 +6,9 @@ title: ステータスコード
 
 [MODES: framework ,data]
 
+<br/>
+<br/>
+
 ローダーとアクションから `data` でステータスコードを設定します。
 
 ```tsx filename=app/project.tsx lines=[3,12-15,20,23]
@@ -22,7 +25,7 @@ export async function action({
   if (!title) {
     return data(
       { message: "無効なタイトル" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 

@@ -25,11 +25,15 @@ export default function SomeParent() {
 }
 ```
 
+## シグネチャ
+
+```tsx
+function Outlet(props: OutletProps): React.ReactElement | null
+```
+
 ## Props
 
 ### context
-
-[modes: framework, data, declarative]
 
 Outlet の下の要素ツリーにコンテキスト値を提供します。親ルートが子ルートに値を提供する必要がある場合に使用します。
 
@@ -37,5 +41,4 @@ Outlet の下の要素ツリーにコンテキスト値を提供します。親�
 <Outlet context={myContextValue} />
 ```
 
-コンテキストには [useOutletContext](../hooks/useOutletContext) でアクセスします。
-
+コンテキストには [`useOutletContext`](../hooks/useOutletContext) でアクセスします。

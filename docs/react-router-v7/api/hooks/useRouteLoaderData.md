@@ -6,11 +6,19 @@ title: useRouteLoaderData
 
 [MODES: framework, data]
 
-## 概要
+## Summary
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useRouteLoaderData.html)
+[Reference Documentation ↗](https://api.reactrouter.com/v7/functions/react_router.useRouteLoaderData.html)
 
-指定されたルートIDによって、特定のルートのローダーデータを返します。
+指定されたルートIDによって、特定のルートの[`loader`](../../start/framework/route-module#loader)データを返します。
+
+ルートIDは自動的に作成されます。これは単に、拡張子を除いた、アプリフォルダからのルートファイルの相対パスです。
+
+| Route Filename               | Route ID               |
+| ---------------------------- | ---------------------- |
+| `app/root.tsx`               | `"root"`               |
+| `app/routes/teams.tsx`       | `"routes/teams"`       |
+| `app/whatever/teams.$id.tsx` | `"whatever/teams.$id"` |
 
 ```tsx
 import { useRouteLoaderData } from "react-router";
@@ -18,33 +26,26 @@ import { useRouteLoaderData } from "react-router";
 function SomeComponent() {
   const { user } = useRouteLoaderData("root");
 }
+
+// routes.tsファイルで、独自のルートIDを手動で指定することもできます。
+route("/", "containers/app.tsx", { id: "app" })
+useRouteLoaderData("app");
 ```
 
-ルートIDは自動的に作成されます。これは単に、拡張子を除いた、アプリフォルダからのルートファイルの相対パスです。
-
-| ルートファイル名               | ルートID               |
-| ---------------------------- | ---------------------- |
-| `app/root.tsx`               | `"root"`               |
-| `app/routes/teams.tsx`       | `"routes/teams"`       |
-| `app/whatever/teams.$id.tsx` | `"whatever/teams.$id"` |
-
-IDを手動で作成した場合は、代わりにそれを使用できます。
+## Signature
 
 ```tsx
-route("/", "containers/app.tsx", { id: "app" }})
+function useRouteLoaderData<T = any>(
+  routeId: string,
+): SerializeFrom<T> | undefined
 ```
 
-## シグネチャ
-
-```tsx
-useRouteLoaderData(routeId): undefined
-```
-
-## パラメータ
+## Params
 
 ### routeId
 
-[modes: framework, data]
+ローダーデータを取得するルートのID。
 
-_ドキュメントはありません_
+## Returns
 
+指定されたルートの[`loader`](../../start/framework/route-module#loader)関数から返されたデータ、または見つからない場合は`undefined`

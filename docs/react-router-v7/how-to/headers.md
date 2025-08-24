@@ -39,7 +39,7 @@ import { data } from "react-router";
 
 export async function loader({ params }: LoaderArgs) {
   let [page, ms] = await fakeTimeCall(
-    await getPage(params.id)
+    await getPage(params.id),
   );
 
   return data(page, {
@@ -55,11 +55,17 @@ export async function loader({ params }: LoaderArgs) {
 ローダーとアクションからのヘッダーは自動的に送信されません。`headers` エクスポートから明示的に返す必要があります。
 
 ```tsx
+function hasAnyHeaders(headers: Headers): boolean {
+  return [...headers].length > 0;
+}
+
 export function headers({
   actionHeaders,
   loaderHeaders,
 }: HeadersArgs) {
-  return actionHeaders ? actionHeaders : loaderHeaders;
+  return hasAnyHeaders(actionHeaders)
+    ? actionHeaders
+    : loaderHeaders;
 }
 ```
 
@@ -86,7 +92,7 @@ route("pages", "pages-layout-with-nav.tsx", [
 ```tsx
 export function headers({ parentHeaders }: HeadersArgs) {
   parentHeaders.append(
-    "Permissions-Policy: geolocation=()"
+    "Permissions-Policy: geolocation=()",
   );
   return parentHeaders;
 }
@@ -100,7 +106,7 @@ export function headers({ parentHeaders }: HeadersArgs) {
 export function headers({ parentHeaders }: HeadersArgs) {
   parentHeaders.set(
     "Cache-Control",
-    "max-age=3600, s-maxage=86400"
+    "max-age=3600, s-maxage=86400",
   );
   return parentHeaders;
 }
@@ -113,17 +119,17 @@ export function headers({ parentHeaders }: HeadersArgs) {
 `handleRequest` エクスポートは、ルートモジュールからのヘッダーを引数として受け取ります。ここでグローバルヘッダーを追加できます。
 
 ```tsx
-export default function handleRequest(
+export default async function handleRequest(
   request,
   responseStatusCode,
   responseHeaders,
   routerContext,
-  loadContext
+  loadContext,
 ) {
-  // グローバルヘッダーを設定、追加
+  // set, append global headers
   responseHeaders.set(
     "X-App-Version",
-    routerContext.manifest.version
+    routerContext.manifest.version,
   );
 
   return new Response(await getStream(), {

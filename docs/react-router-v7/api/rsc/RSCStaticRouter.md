@@ -5,6 +5,18 @@ unstable: true
 
 # unstable_RSCStaticRouter
 
+<!--
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
+
+Thank you for helping improve our documentation!
+
+This file is auto-generated from the JSDoc comments in the source
+code, so please edit the JSDoc comments in the file below and this
+file will be re-generated once those changes are merged.
+
+https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/rsc/server.ssr.tsx
+-->
+
 [MODES: data]
 
 <br />
@@ -14,11 +26,12 @@ unstable: true
 
 ## 概要
 
-`RSCPayload`をHTMLにプリレンダリングします。通常、`routeRSCServerRequest`の`renderHTML`コールバックで使用されます。
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.unstable_RSCStaticRouter.html)
 
-```tsx filename=entry.ssr.tsx
+[`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html)をHTMLにプリレンダリングします。通常、[`unstable_routeRSCServerRequest`](../rsc/routeRSCServerRequest)の`renderHTML`コールバックで使用されます。
+
+```tsx
 import { createFromReadableStream } from "@vitejs/plugin-rsc/ssr";
-// @ts-expect-error
 import * as ReactDomServer from "react-dom/server.edge";
 import {
   unstable_RSCStaticRouter as RSCStaticRouter,
@@ -43,8 +56,14 @@ routeRSCServerRequest({
 });
 ```
 
+## シグネチャ
+
+```tsx
+function RSCStaticRouter({ getPayload }: RSCStaticRouterProps)
+```
+
 ## プロパティ
 
 ### getPayload
 
-`RSCPayload`のデコードを開始する関数です。通常、`routeRSCServerRequest`の`renderHTML`から渡されます。
+[`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html)のデコードを開始する関数です。通常、[`unstable_routeRSCServerRequest`](../rsc/routeRSCServerRequest)の`renderHTML`から渡されます。

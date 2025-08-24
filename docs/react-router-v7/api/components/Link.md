@@ -8,9 +8,9 @@ title: Link
 
 ## 概要
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.Link.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/variables/react_router.Link.html)
 
-クライアントサイドルーティングによるナビゲーションを可能にする、段階的に機能拡張された `<a href>` ラッパー。
+クライアントサイドルーティングによるナビゲーションを可能にする、段階的に機能拡張された [`<a href>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) ラッパー。
 
 ```tsx
 import { Link } from "react-router";
@@ -35,7 +35,9 @@ import { Link } from "react-router";
 リンクの検出動作を定義します。
 
 ```tsx
+<Link /> // default ("render")
 <Link discover="render" />
+<Link discover="none" />
 ```
 
 - **render** - デフォルト。リンクのレンダリング時にルートを検出します。
@@ -48,7 +50,11 @@ import { Link } from "react-router";
 リンクのデータとモジュールのプリフェッチ動作を定義します。
 
 ```tsx
+<Link /> // default
+<Link prefetch="none" />
 <Link prefetch="intent" />
+<Link prefetch="render" />
+<Link prefetch="viewport" />
 ```
 
 - **none** - デフォルト。プリフェッチを行いません。
@@ -56,7 +62,7 @@ import { Link } from "react-router";
 - **render** - リンクのレンダリング時にプリフェッチします。
 - **viewport** - リンクがビューポート内にあるときにプリフェッチします。モバイルに非常に便利です。
 
-プリフェッチは、HTML `<link rel="prefetch">` タグを使用して行われます。これらはリンクの後に挿入されます。
+プリフェッチは、HTML [`<link rel="prefetch">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link) タグを使用して行われます。これらはリンクの後に挿入されます。
 
 ```tsx
 <a href="..." />
@@ -70,7 +76,7 @@ import { Link } from "react-router";
 
 [modes: framework, data]
 
-リンクがクリックされたときに、スクロール位置がウィンドウの上部にリセットされるのを防ぎます。これは、アプリが [ScrollRestoration](../components/ScrollRestoration) を使用している場合に限ります。これは、新しいロケーションでスクロールが上部にリセットされるのを防ぐだけで、戻る/進むボタンのナビゲーションではスクロール位置が復元されます。
+リンクがクリックされたときに、スクロール位置がウィンドウの上部にリセットされるのを防ぎます。これは、アプリが [`ScrollRestoration`](../components/ScrollRestoration) を使用している場合に限ります。これは、新しいロケーションでスクロールが上部にリセットされるのを防ぐだけで、戻る/進むボタンのナビゲーションではスクロール位置が復元されます。
 
 ```tsx
 <Link to="?tab=one" preventScrollReset />
@@ -90,8 +96,8 @@ import { Link } from "react-router";
 
 親ルートパターンが "blog" で、子ルートパターンが "blog/:slug/edit" であるルート階層を考えてみましょう。
 
-- **route** - デフォルト。ルートパターンを基準にしてリンクを解決します。上記の例では、`".."` の相対リンクは、`:slug/edit` セグメントの両方を削除して "/blog" に戻ります。
-- **path** - パスを基準にするため、`..` は1つのURLセグメントのみを削除して "/blog/:slug" に戻ります。
+- **route** - デフォルト。ルートパターンを基準にしてリンクを解決します。上記の例では、`"..."` の相対リンクは、`:slug/edit` セグメントの両方を削除して "/blog" に戻ります。
+- **path** - パスを基準にするため、`"..."` は1つのURLセグメントのみを削除して "/blog/:slug" に戻ります。
 
 インデックスルートとレイアウト ルートにはパスがないため、相対パスの計算には含まれないことに注意してください。
 
@@ -99,7 +105,7 @@ import { Link } from "react-router";
 
 [modes: framework, data, declarative]
 
-リンクがクリックされたときに、クライアントサイドルーティングの代わりにドキュメントナビゲーションを使用します。ブラウザは、トランジションを通常どおりに処理します（`<a href>` のように）。
+リンクがクリックされたときに、クライアントサイドルーティングの代わりにドキュメントナビゲーションを使用します。ブラウザは、トランジションを通常どおりに処理します（[`<a href>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) のように）。
 
 ```tsx
 <Link to="/logout" reloadDocument />
@@ -109,7 +115,7 @@ import { Link } from "react-router";
 
 [modes: framework, data, declarative]
 
-履歴スタックに新しいエントリをプッシュする代わりに、現在のエントリを置き換えます。
+履歴スタックに新しいエントリをプッシュする代わりに、[`History`](https://developer.mozilla.org/en-US/docs/Web/API/History) スタックの現在のエントリを置き換えます。
 
 ```tsx
 <Link replace />
@@ -151,7 +157,7 @@ function SomeComp() {
 
 [modes: framework, data, declarative]
 
-文字列または部分的な [Path](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) にすることができます。
+文字列または部分的な [`Path`](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) にすることができます。
 
 ```tsx
 <Link to="/some/path" />
@@ -167,7 +173,7 @@ function SomeComp() {
 
 ### viewTransition
 
-[modes: framework, data, declarative]
+[modes: framework, data]
 
 このナビゲーションで [View Transition](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API) を有効にします。
 
@@ -177,4 +183,4 @@ function SomeComp() {
 </Link>
 ```
 
-トランジションに特定のスタイルを適用するには、[useViewTransitionState](../hooks/useViewTransitionState) を参照してください。
+トランジションに特定のスタイルを適用するには、[`useViewTransitionState`](../hooks/useViewTransitionState) を参照してください。

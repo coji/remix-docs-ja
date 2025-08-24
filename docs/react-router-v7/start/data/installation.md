@@ -27,26 +27,23 @@ npm i react-router
 
 ルーターを作成し、`RouterProvider` に渡します:
 
-```tsx lines=[1-4,9-14,19]
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router";
-
+```tsx lines=[3-4,6-11,16]
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createBrowserRouter } from "react-router";
+import { RouterProvider } from "react-router/dom";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>ハローワールド</div>,
+    element: <div>Hello World</div>,
   },
 ]);
 
 const root = document.getElementById("root");
 
 ReactDOM.createRoot(root).render(
-  <RouterProvider router={router} />
+  <RouterProvider router={router} />,
 );
 ```
 

@@ -52,7 +52,7 @@ import {
 import { createRoot } from "react-dom/client";
 
 createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <RouterProvider router={router} />,
 );
 ```
 
@@ -150,7 +150,7 @@ export async function handler(request: Request) {
     <StaticRouterProvider
       router={router}
       context={context}
-    />
+    />,
   );
 
   // 最も深い一致からアクションとローダーのヘッダーを設定します
@@ -193,6 +193,6 @@ hydrateRoot(
   document,
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
 ```

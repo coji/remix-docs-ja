@@ -1,4 +1,4 @@
 ---
 title: 宣言的なルーター
-order: 5
+order: 6
 ---
