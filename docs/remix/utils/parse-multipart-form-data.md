@@ -4,6 +4,8 @@ title: unstable_parseMultipartFormData
 
 # `unstable_parseMultipartFormData`
 
+<docs-warning>このAPIはReact Router v7で削除されました。推奨される代替APIについては、<a href="https://reactrouter.com/how-to/file-uploads">React Routerのファイルアップロードガイド</a>を参照してください。</docs-warning>
+
 アプリでマルチパートフォーム（ファイルアップロード）を処理できるようにします。
 
 このAPIの使用方法を理解するには、[ブラウザのFile API][the-browser-file-api]を理解すると役立ちます。
@@ -64,4 +66,3 @@ Remixには、`uploadHandler`を作成するための2つのユーティリテ�
 
 [the-browser-file-api]: https://developer.mozilla.org/en-US/docs/Web/API/File
 [the-blob-api]: https://developer.mozilla.org/en-US/docs/Web/API/Blob
-

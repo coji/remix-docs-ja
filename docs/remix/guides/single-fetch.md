@@ -41,8 +41,8 @@ export default defineConfig({
 - 独自のサーバーを管理していて`installGlobals()`を呼び出している場合は、`undici`を使用するために`installGlobals({ nativeFetch: true })`を呼び出す必要があります。
 
   ```diff
-  - installGlobals();
-  + installGlobals({ nativeFetch: true });
+- installGlobals();
++ installGlobals({ nativeFetch: true });
   ```
 
 - `remix-serve`を使用している場合は、シングルフェッチが有効になっていると自動的に`undici`を使用します。
@@ -52,6 +52,28 @@ export default defineConfig({
 **3. `headers`の実装を調整する（必要に応じて）**
 
 シングルフェッチを有効にすると、複数のローダーを実行する必要がある場合でも、クライアント側のナビゲーションで1つのリクエストしか行われなくなります。呼び出されたハンドラーのヘッダーのマージを処理するために、[`headers`][headers]エクスポートは`loader`/`action`データリクエストにも適用されるようになります。多くの場合、ドキュメントリクエストに対して既に持っているロジックは、新しいシングルフェッチデータリクエストに対してほぼ十分です。
+
+```diff
+-import { json } from "@remix-run/node";
++import { data } from "@remix-run/node";
+
+// この例では、ドキュメントリクエストのヘッダーマージを処理するヘッダー関数がすでに存在することを前提としています
+export function headers() {
+  // ...
+}
+
+export async function loader({}: LoaderFunctionArgs) {
+  let tasks = await fetchTasks();
+-  return json(tasks, {
++  return data(tasks, {
+    headers: {
+      "Cache-Control": "public, max-age=604800"
+    }
+  });
+}
+```
+
+⚠️ これは、キャッシュの動作を確認する上で特に重要です。シングルフェッチ以前は、特定の`loader`が独自のキャッシュ期間を選択でき、それはその`loader`からの単一のHTTPレスポンスに適用されていました。しかし、ドキュメントリクエストは複数のローダーを呼び出すため、アプリケーションは複数のルートから返されるヘッダーをインテリジェントにマージするために`headers`メソッドを実装する必要がありました。シングルフェッチでは、ドキュメントリクエストとデータリクエストが同じように動作するため、`headers`関数は_すべての_ルートに対して適切なヘッダー/キャッシュ動作を返す必要があります。
 
 **4. `nonce`を追加する（CSPを使用している場合）**
 
@@ -493,5 +515,3 @@ function handleBrowserRequest(
 [data-utility]: ../utils/data
 [augment]: https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation
 [streaming-nonce]: ./streaming#streaming-with-a-content-security-policy
-
-

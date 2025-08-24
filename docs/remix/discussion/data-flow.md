@@ -179,4 +179,3 @@ HTML フォーム要素以外にも、フォームを送信する方法はいく
 [use_loader_data]: ../hooks/use-loader-data
 [request_form_data]: https://developer.mozilla.org/en-US/docs/Web/API/Request/formData
 [form_data_get]: https://developer.mozilla.org/en-US/docs/Web/API/FormData/get
-

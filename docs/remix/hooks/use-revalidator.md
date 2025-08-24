@@ -40,15 +40,16 @@ Remix は、アクションが呼び出されたときに、ページ上のデ�
 ```tsx
 function useLivePageData() {
   const revalidator = useRevalidator();
-  const interval = useInterval(5000);
 
-  useEffect(() => {
+  useInterval(() => {
     if (revalidator.state === "idle") {
       revalidator.revalidate();
     }
-  }, [interval, revalidator]);
+  }, 5000);
 }
 ```
+
+[here][here]で`useInterval`の実装例を参照してください。
 
 ## 注意点
 
@@ -61,4 +62,4 @@ function useLivePageData() {
 [form-component]: ../components/form
 [use-fetcher]: ./use-fetcher
 [use-submit]: ./use-submit
-
+[here]: https://overreacted.io/making-setinterval-declarative-with-react-hooks

@@ -17,7 +17,7 @@ order: 1
 Remixのすべてはコンパイラから始まります: `remix vite:build`。[Vite] を使用して、これはいくつかのものを生成します。
 
 1. サーバーHTTPハンドラー。通常は `build/server/index.js` にあります（設定可能です）。これには、サーバー上でレンダリングしたり、リソースに対する他のサーバーサイドリクエストを処理したりできるように、すべてのルートとモジュールが含まれています。
-2. ブラウザビルド。通常は `build/client/*` にあります。これには、ルートごとの自動コード分割、フィンガープリントされたアセットインポート（CSSや画像など）などが含まれます。ブラウザでアプリケーションを実行するために必要なものがすべて含まれています。
+2. ブラウザビルド。通常は `build/client/*` にあります。これには、ルートごとの自動コード分割、フィンガープリントされたアセットインポート（CSSや画像など）などが含まれています。ブラウザでアプリケーションを実行するために必要なものがすべて含まれています。
 3. アセットマニフェスト。クライアントとサーバーの両方が、このマニフェストを使用して依存関係グラフ全体を把握します。これは、初期サーバーレンダリングでリソースをプリロードしたり、クライアントサイドのトランジションのためにプリフェッチしたりするのに役立ちます。これが、Remixが今日のWebアプリでよく見られるレンダリング+フェッチのウォーターフォールを排除できる理由です。
 
 これらのビルド成果物を使用すると、JavaScriptを実行する任意のホスティングサービスにアプリケーションをデプロイできます。
@@ -70,11 +70,11 @@ export function createRequestHandler({ build }) {
 さらに、Remixにサーバー用のアダプターがまだない場合は、いずれかのアダプターのソースを見て、独自のアダプターを構築できます。
 
 [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-[vercel]: https://vercel.com/
-[netlify]: https://www.netlify.com/
-[arc]: https://arc.codes/
+[vercel]: https://vercel.com
+[netlify]: https://netlify.com
+[arc]: https://arc.codes
 [cf]: https://workers.cloudflare.com/
-[deno]: https://deno.com/deploy
+[deno]: https://deno.com/deploy/docs
 
 ## サーバーフレームワーク
 
@@ -232,18 +232,10 @@ Remix はバックエンドのコントローラーレベルに到達するた�
 私たちは古い用語を借りて、これを Remix のプログレッシブエンハンスメントと呼びました。プレーンな HTML フォームから小さく始め（Remix はスケールダウンします）、時間と意欲があるときに UI をスケールアップします。
 
 [vite]: https://vitejs.dev
-
 [cf]: https://workers.cloudflare.com/
-
 [deno]: https://deno.com/deploy/docs
-
 [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-
 [vercel]: https://vercel.com
-
 [netlify]: https://netlify.com
-
 [arc]: https://arc.codes
-
 [react_router]: https://reactrouter.com
-

@@ -49,4 +49,3 @@ React Router の `useResolvedPath` フックの元のロジックは、スプラ
 [rr-resolve-path]: https://reactrouter.com/v6/utils/resolve-path
 [rr-use-resolved-path-splat]: https://reactrouter.com/v6/hooks/use-resolved-path#splat-paths
 [remix-config-future]: https://remix.run/docs/en/main/file-conventions/remix-config#future
-

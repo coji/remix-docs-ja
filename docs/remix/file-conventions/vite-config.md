@@ -135,4 +135,3 @@ Remixのフルビルドが完了した後に呼び出される関数です。
 [rr-basename]: https://reactrouter.com/v6/routers/create-browser-router#basename
 [vite-public-base-path]: https://vitejs.dev/config/shared-options.html#base
 [vite-base]: https://vitejs.dev/config/shared-options.html#base
-

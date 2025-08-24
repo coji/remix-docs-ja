@@ -18,7 +18,7 @@ Remix は、React 要素ツリーの最上位で、すべてのルートマッ�
 
 ```tsx filename=app/routes/parent.tsx
 export const handle = {
-  breadcrumb: () => <Link to="/parent">親ルート</Link>,
+  breadcrumb: () => <Link to="/parent">何らかのルート</Link>,
 };
 ```
 
@@ -88,4 +88,3 @@ export default function Root() {
 [meta-component]: ../components/meta
 [links-component]: ../components/links
 [scripts-component]: ../components/scripts
-

@@ -273,7 +273,7 @@ export default defineConfig({
 [mdx-rollup-plugin]: https://github.com/mdx-js/mdx/tree/main/packages/rollup
 [migrate-mdx]: https://remix.run/docs/en/main/other-api/vite#migrate-mdx-routes
 
-## v3\_fetcherPersist
+## v3_fetcherPersist
 
 **背景**
 
@@ -295,7 +295,7 @@ remix({
 
 [fetcherpersist-rfc]: https://github.com/remix-run/remix/blob/main/rfcs/0000-fetcher-persist.md
 
-## v3\_relativeSplatPath
+## v3_relativeSplatPath
 
 **背景**
 
@@ -360,7 +360,7 @@ function Dashboard() {
 }
 ```
 
-## v3\_throwAbortReason
+## v3_throwAbortReason
 
 **背景**
 
@@ -380,7 +380,7 @@ remix({
 
 以前のエラーメッセージを他のエラーと区別するために `handleError` 内でカスタムロジックを使用していた場合を除き、コードを調整する必要はおそらくありません。
 
-## v3\_lazyRouteDiscovery
+## v3_lazyRouteDiscovery
 
 **背景**
 
@@ -406,7 +406,7 @@ remix({
 [lazy-route-discovery-blog-post]: https://remix.run/blog/lazy-route-discovery
 [discover-prop]: https://remix.run/docs/en/main/components/link#discover
 
-## v3\_singleFetch
+## v3_singleFetch
 
 <docs-warning>
 
@@ -473,11 +473,17 @@ export async function loader({}: LoaderFunctionArgs) {
 }
 ```
 
-`json`/`defer` の 2 番目のパラメーターを使用して、レスポンスにカスタムステータスまたはヘッダーを設定していた場合は、新しい `data` API を使用して引き続き設定できます。
+`json`/`defer` の 2 番目のパラメーターを使用して、レスポンスにカスタムステータスまたはヘッダーを設定していた場合は、新しい `data` API を使用して引き続き設定できます。（これらのヘッダーを Single Fetch データリクエストに適用するには、`headers` エクスポートが必要であることに注意してください）。
 
 ```diff
 -import { json } from "@remix-run/node";
 +import { data } from "@remix-run/node";
+
+// This example assumes you already have a headers function to handle header
+// merging for your document requests
+export function headers() {
+  // ...
+}
 
 export async function loader({}: LoaderFunctionArgs) {
   let tasks = await fetchTasks();
@@ -530,7 +536,7 @@ function handleBrowserRequest(/* ... */) {
 }
 ```
 
-## v3\_routeConfig
+## v3_routeConfig
 
 <docs-warning>
 
@@ -704,9 +710,6 @@ export default [
 
 詳細については、[Single Fetch][v3_singlefetch] のドキュメントを参照してください。
 
-[v3_singlefetch]: https://reactrouter.com/en/main/route/single-fetch
-[data-api]: https://reactrouter.com/en/main/utils/data
-
 ### SerializeFrom
 
 この型は非推奨であり、[Single Fetch][v3_singlefetch] がデータを JSON にシリアライズしなくなったため、React Router v7 で削除されます。
@@ -718,6 +721,19 @@ type SerializeFrom<T> = ReturnType<typeof useLoaderData<T>>;
 ```
 
 ほとんどの場合、`SerializeFrom` を削除して、`useLoaderData`/`useActionData` から返される型、または `loader`/`action` 関数内のデータの型を使用するだけで済みます。
+
+### マルチパートフォームデータとファイルアップロードユーティリティ
+
+以下のユーティリティは非推奨となり、React Router v7 で削除されます。
+
+- `unstable_parseMultipartFormData`
+- `unstable_composeUploadHandlers`
+- `unstable_createFileUploadHandler`
+- `unstable_createMemoryUploadHandler`
+
+マルチパートフォームデータとファイルアップロードを処理するには、[`@mjackson/form-data-parser`][form-data-parser] と [`@mjackson/file-storage`][file-storage] の使用をお勧めします。
+
+これらのライブラリの使用方法については、[React Router の「ファイルアップロード」ドキュメント][react-router-file-uploads] または [「Remix でのファイルアップロード」ブログ記事][file-uploads-with-remix] も参照してください。
 
 [development-strategy]: ../guides/api-development-strategy
 
@@ -773,3 +789,10 @@ type SerializeFrom<T> = ReturnType<typeof useLoaderData<T>>;
 
 [remix-template-eslint-config]: https://github.com/remix-run/remix/blob/main/templates/remix/.eslintrc.cjs
 
+[form-data-parser]: https://github.com/mjackson/remix-the-web/tree/main/packages/form-data-parser
+
+[file-storage]: https://github.com/mjackson/remix-the-web/tree/main/packages/file-storage
+
+[file-uploads-with-remix]: https://programmingarehard.com/2024/09/06/remix-file-uploads-updated.html/
+
+[react-router-file-uploads]: https://reactrouter.com/how-to/file-uploads

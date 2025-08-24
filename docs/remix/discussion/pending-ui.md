@@ -245,8 +245,8 @@ export default function ProductRoute() {
 * **リンクプリフェッチ:** [`<Link prefetch="intent">`][link-component-prefetch] を使用すると、フォールバックを完全にスキップできることがよくあります。ユーザーがリンクにカーソルを合わせたり、フォーカスしたりすると、このメソッドは必要なデータをプリロードし、ユーザーがクリックする前にネットワークがコンテンツをフェッチする短い時間を与えます。これにより、多くの場合、次のページへの即時ナビゲーションが実現します。
 
 [suspense_component]: https://react.dev/reference/react/Suspense
-[cumulative_layout_shift]: https://web.dev/cls/
-[first_contentful_paint]: https://web.dev/fcp/
+[cumulative_layout_shift]: https://web.dev/cls
+[first_contentful_paint]: https://web.dev/fcp
 [link-component-prefetch]: https://remix.run/components/link#prefetch
 
 ## 結論
@@ -266,4 +266,3 @@ export default function ProductRoute() {
 [first_contentful_paint]: https://web.dev/fcp
 
 [link-component-prefetch]: ../components/link#prefetch
-

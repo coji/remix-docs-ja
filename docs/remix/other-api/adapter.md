@@ -24,15 +24,15 @@ Remix アプリは、一般的にどこにでもデプロイできます。こ�
 
 ## コミュニティアダプター
 
-- [`@fastly/remix-server-adapter`][fastly-remix-server-adapter] - [Fastly Compute][fastly-compute] 用。
-- [`@mcansh/remix-fastify`][remix-fastify] - [Fastify][fastify] 用。
-- [`@mcansh/remix-raw-http`][remix-raw-http] - 古き良きベアボーンの Node サーバー用。
-- [`@netlify/remix-adapter`][netlify-remix-adapter] - [Netlify][netlify] 用。
-- [`@netlify/remix-edge-adapter`][netlify-remix-edge-adapter] - [Netlify][netlify] Edge 用。
-- [`@vercel/remix`][vercel-remix] - [Vercel][vercel] 用。
-- [`remix-google-cloud-functions`][remix-google-cloud-functions] - [Google Cloud][google-cloud-functions] および [Firebase][firebase-functions] 関数用。
-- [`partymix`][partymix] - [PartyKit][partykit] 用。
-- [`@scandinavianairlines/remix-azure-functions`][remix-azure-functions]: [Azure Functions][azure-functions] および [Azure Static Web Apps][azure-static-web-apps] 用。
+- [`@fastly/remix-server-adapter`][fastly-remix-server-adapter] — [Fastly Compute][fastly-compute] 用。
+- [`@mcansh/remix-fastify`][remix-fastify] — [Fastify][fastify] 用。
+- [`@mcansh/remix-raw-http`][remix-raw-http] — 古き良きベアボーンの Node.js サーバー用。
+- [`@netlify/remix-adapter`][netlify-remix-adapter] — [Netlify][netlify] 用。
+- [`@netlify/remix-edge-adapter`][netlify-remix-edge-adapter] — [Netlify][netlify] Edge 用。
+- [`@vercel/remix`][vercel-remix] — [Vercel][vercel] 用。
+- [`remix-google-cloud-functions`][remix-google-cloud-functions] — [Google Cloud][google-cloud-functions] および [Firebase][firebase-functions] 関数用。
+- [`partymix`][partymix] — [PartyKit][partykit] 用。
+- [`@scandinavianairlines/remix-azure-functions`][remix-azure-functions] — [Azure Functions][azure-functions] および [Azure Static Web Apps][azure-static-web-apps] 用。
 
 ## アダプターの作成
 
@@ -155,4 +155,3 @@ addEventListener("fetch", (event) => {
 [remix-azure-functions]: https://github.com/scandinavianairlines/remix-azure-functions
 [azure-functions]: https://azure.microsoft.com/ja-jp/products/functions/
 [azure-static-web-apps]: https://azure.microsoft.com/ja-jp/products/app-service/static
-

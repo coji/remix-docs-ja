@@ -1,9 +1,9 @@
 ---
-title: サーバーとクライアントでのコード実行
+title: サーバーとクライアントのコード実行
 order: 5
 ---
 
-# サーバーとクライアントでのコード実行
+# サーバーとクライアントのコード実行
 
 Remix は、サーバーとブラウザの両方でアプリを実行します。ただし、すべてのコードが両方で実行されるわけではありません。
 
@@ -186,4 +186,3 @@ export const PostPreview = ({ title, description }) => {
 [vite-env-only]: https://github.com/pcattori/vite-env-only
 [classic-remix-compiler]: ../guides/vite#classic-remix-compiler-vs-remix-vite
 [remix-vite]: ../guides/vite
-

@@ -72,4 +72,3 @@ export function headers({
 [check-out-this-video-for-more-information-on-that]: https://youtu.be/bfLFHp7Sbkg
 [cdn-caching]: ../guides/caching
 [web-fetch-api-headers-constructor]: https://developer.mozilla.org/en-US/docs/Web/API/Headers
-

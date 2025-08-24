@@ -238,4 +238,3 @@ export async function action({
 [polyfill-event-submitter]: https://github.com/idea2app/event-submitter-polyfill
 [polyfill-formdata-submitter]: https://github.com/jenseng/formdata-submitter-polyfill
 [remix-submitter-issue]: https://github.com/remix-run/remix/issues/9704
-

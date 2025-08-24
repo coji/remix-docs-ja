@@ -56,4 +56,3 @@ function Component() {
 [form_component_action]: ../components/form#action
 [form_component]: ../components/form
 [action]: ../route/action
-

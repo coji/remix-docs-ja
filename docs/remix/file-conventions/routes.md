@@ -306,7 +306,7 @@ URLにパスセグメントを追加せずに、ルートのグループとレ�
 export async function loader({
   params,
 }: LoaderFunctionArgs) {
-  const filePath = params["*"];
+  const filePath = params["*"].replace(/\/$/, "");
   return fake.getFileInfo(filePath);
 }
 ```
@@ -417,4 +417,3 @@ app/routes/app._index/route.tsx
 [custom_routes]: https://github.com/jacobparis-insiders/remix-custom-routes
 [json_routes]: https://github.com/brophdawg11/remix-json-routes
 [manual-route-configuration]: ../discussion/routes#manual-route-configuration
-

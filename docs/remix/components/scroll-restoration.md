@@ -116,4 +116,3 @@ export default function Root() {
 [script_element]: https://developer.mozilla.org/ja/docs/Web/HTML/Element/script
 [form_prevent_scroll_reset]: ../components/form#preventscrollreset
 [link_prevent_scroll_reset]: ../components/link#preventscrollreset
-

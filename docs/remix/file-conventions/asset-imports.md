@@ -34,4 +34,3 @@ export default function Page() {
 ```
 
 [remix-loaders]: https://github.com/remix-run/remix/blob/main/packages/remix-dev/compiler/utils/loaders.ts
-

@@ -78,4 +78,3 @@ test("renders loader data", async () => {
 [create-remix-stub]: ../utils/create-remix-stub
 [jest]: https://jestjs.io
 [rtl]: https://testing-library.com/docs/react-testing-library/intro
-

@@ -8,7 +8,7 @@ title: ホットモジュールリプレースメント
 これは素晴らしい開発者体験であり、Remix はこれをすぐにサポートしています。
 
 特に、HMR は更新間でブラウザの状態を維持するために最善を尽くします。
-モーダル内にフォームがあり、すべてのフィールドに入力した場合、従来のリロードではページがハードリフレッシュされます。
+モーダル内に`form`があり、すべてのフィールドに入力した場合、従来のリロードではページがハードリフレッシュされます。
 そのため、フォーム内のすべてのデータが失われます。
 変更を加えるたびに、モーダルを _再度_ 開いてフォームを _再度_ 入力する必要があります。😭
 
@@ -170,7 +170,7 @@ export default function Component() {
 
 ### コンポーネントキー
 
-場合によっては、React は変更されている既存のコンポーネントと追加されている新しいコンポーネントを区別できません。[React は、これらのケースを曖昧さを解消し、兄弟要素が変更されたときに変更を追跡するために `key` が必要です][react-keys]。
+場合によっては、React は変更されている既存のコンポーネントと追加されている新しいコンポーネントを区別できません。[React は、これらのケースを曖昧さを解消し、兄弟要素が変更されたときに変更を追跡するために `key`s が必要です][react-keys]。
 
 [virtual-dom]: https://reactjs.org/docs/faq-internals.html#what-is-the-virtual-dom
 [react-refresh]: https://github.com/facebook/react/tree/main/packages/react-refresh
@@ -181,4 +181,3 @@ export default function Component() {
 [meta]: ../route/meta
 [use-loader-data]: ../hooks/use-loader-data
 [react-keys]: https://react.dev/learn/rendering-lists#why-does-react-need-keys
-

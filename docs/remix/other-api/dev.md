@@ -59,7 +59,7 @@ remix vite:dev
 | `--profile`        | 組み込みの Node.js インスペクターを起動します。           |                                                     |         |
 | `--strictPort`     | 指定されたポートが既に使用中の場合、終了します。        | `boolean`                                           |         |
 
-## クラシック Remix コンパイラ コマンド
+## Classic Remix Compiler Commands
 
 <docs-warning>[クラシック Remix コンパイラ][classic-remix-compiler] を使用している場合にのみ、このドキュメントは関連します。</docs-warning>
 
@@ -323,7 +323,7 @@ REMIX_DEV_ORIGIN=https://myhost remix dev
 アプリと依存関係によっては、アプリに必要なコードよりもはるかに多くのコードを処理している可能性があります。
 詳細については、[バンドル分析ガイド][bundle_analysis]をご覧ください。
 
-[bundle_analysis]: (バンドル分析ガイドへのリンク)
+[bundle_analysis]: ../guides/performance
 
 #### トラブルシューティング
 
@@ -397,4 +397,3 @@ Remixコンパイラがアプリをビルド（およびリビルド）する際
 [remix-vite]: ../guides/vite
 
 [classic-remix-compiler]: ../guides/vite#classic-remix-compiler-vs-remix-vite
-

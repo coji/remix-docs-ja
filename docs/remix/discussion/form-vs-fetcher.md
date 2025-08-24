@@ -37,10 +37,6 @@ Remixでの開発は、機能が重複することがある豊富なツールセ
 
 これらのケースでは、開発者は[`<Form>`][form_component]、[`useActionData`][use_action_data]、[`useNavigation`][use_navigation]の組み合わせを使用することを検討すべきです。これらのツールはそれぞれ、フォームの送信処理、特定のアクションの呼び出し、アクション関連データの取得、ナビゲーションの管理を連携して行うことができます。
 
-[form_component]: #
-[use_action_data]: #
-[use_navigation]: #
-
 #### URLを変更すべきでない場合
 
 これらのアクションは一般的に、より微妙で、ユーザーのコンテキストスイッチを必要としません。
@@ -134,10 +130,6 @@ export function NewRecipe() {
 
 これらのAPIを組み合わせることで、構造化されたナビゲーションとフィードバックのバランスの取れた組み合わせが提供されます。
 
-[form_component]: https://remix.run/docs/en/main/components/form
-[use_action_data]: https://remix.run/docs/en/main/hooks/use-action-data
-[use_navigation]: https://remix.run/docs/en/main/hooks/use-navigation
-
 ### レコードの更新
 
 次に、各項目に削除ボタンがあるレシピのリストを見ていると仮定します。ユーザーが削除ボタンをクリックすると、データベースからレシピを削除し、リストから削除して、リストから移動しないようにします。
@@ -207,9 +199,6 @@ const RecipeListItem: FunctionComponent<{
 さらに、各フェッチャーが独自の状態を管理する自律性を持つことで、個々のリスト項目の操作が独立し、1つの項目に対するアクションが他の項目に影響を与えないようにします（ただし、ページデータの再検証は、[ネットワーク同時実行管理][network_concurrency_management]で説明されている共有の懸念事項です）。
 
 要するに、`useFetcher`は、URLの変更やナビゲーションを必要としないアクションのためのシームレスなメカニズムを提供し、リアルタイムのフィードバックとコンテキストの保持を提供することで、ユーザーエクスペリエンスを向上させます。
-
-[use_fetcher]: https://remix.run/docs/en/main/hooks/use-fetcher
-[network_concurrency_management]: ./network-concurrency-management
 
 ### 記事を既読にする
 
@@ -289,4 +278,3 @@ Remixは、多様な開発ニーズに対応するための幅広いツールを
 [use_navigation]: ../hooks/use-navigation
 
 [network_concurrency_management]: ./concurrency
-

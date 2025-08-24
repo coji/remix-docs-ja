@@ -39,8 +39,7 @@ npx create-remix@latest --template remix-run/remix/templates/spa
 
 または、Remix+Vite アプリで Remix Vite プラグインの設定で `ssr: false` を設定することで、手動で SPA モードを有効にすることができます。
 
-```js
-// vite.config.ts
+```ts filiename=vite.config.ts
 import { vitePlugin as remix } from "@remix-run/dev";
 import { defineConfig } from "vite";
 
@@ -57,7 +56,7 @@ export default defineConfig({
 
 SPA モードでは、従来の Remix SSR アプリと同様に開発を行い、実際には HMR/HDR を有効にするために実行中の Remix 開発サーバーを使用します。
 
-```sh
+```shellscript
 npx remix vite:dev
 ```
 
@@ -65,7 +64,7 @@ npx remix vite:dev
 
 SPA モードでアプリをビルドすると、Remix は `/` ルートのサーバーハンドラーを呼び出し、レンダリングされた HTML をクライアントサイドアセット（デフォルトでは `build/client/index.html`）と一緒に `index.html` ファイルに保存します。
 
-```sh
+```shellscript
 npx remix vite:build
 ```
 
@@ -302,5 +301,3 @@ SPA モードは、既存の React Router アプリを Remix アプリ（SPA か
 [sirv-cli]: https://www.npmjs.com/package/sirv-cli
 [vite-ssr-noexternal]: https://vitejs.dev/config/ssr-options#ssr-noexternal
 [vite-ssr-external]: https://vitejs.dev/config/ssr-options#ssr-external
-
-

@@ -202,9 +202,12 @@ exports.mdx = async (filename) => {
 };
 ```
 
+上記の構成は、Markdown を解析して [highlight.js][highlightjs] に対応した DOM 要素を挿入します。シンタックスハイライトを表示するには、highlight.js の CSS ファイルもインクルードする必要があります。[スタイルの表示][surfacing-styles] も参照してください。
+
 [mdx-plugin]: https://mdxjs.com/packages/rollup
 [mdx]: https://mdxjs.com
 [yaml]: https://yaml.org
 [mdx-bundler]: https://github.com/kentcdodds/mdx-bundler
 [classic-remix-compiler]: ./vite#classic-remix-compiler-vs-remix-vite
-
+[surfacing-styles]: ../styling#surfacing-styles
+[highlightjs]: https://highlightjs.org/

@@ -52,4 +52,3 @@ export function ErrorBoundary() {
 [error-boundaries]: https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
 [use-route-error]: ../hooks/use-route-error
 [is-route-error-response]: ../utils/is-route-error-response
-

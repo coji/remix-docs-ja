@@ -96,4 +96,3 @@ PORT=4000 npx remix-serve build/index.js
 [express-static]: https://expressjs.com/en/4x/api.html#express.static
 [serve-static]: https://expressjs.com/en/resources/middleware/serve-static.html
 [morgan]: https://expressjs.com/en/resources/middleware/morgan.html
-

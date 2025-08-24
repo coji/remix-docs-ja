@@ -256,4 +256,3 @@ Remixのすべてのリリース（安定版、実験版、ナイトリー、プ
 [nightly_action_comment]: https://github.com/remix-run/remix/blob/main/.github/workflows/nightly.yml#L8-L12
 [templates]: ./templates
 [https_remix_new]: https://remix.new
-

@@ -119,4 +119,3 @@ export async function action({
 [action]: ../route/action
 [form_component]: ../components/form
 [use_action_data]: ../hooks/use-action-data
-

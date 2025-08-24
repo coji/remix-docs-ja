@@ -3,7 +3,7 @@ title: フロントエンドのためのバックエンド
 toc: false
 ---
 
-# フロントエンドのためのバックエンド
+# あなたのフロントエンドのためのバックエンド
 
 Remixはフルスタックアプリケーションとして機能しますが、「フロントエンドのためのバックエンド」アーキテクチャにも完璧に適合します。
 
@@ -21,7 +21,7 @@ import escapeHtml from "escape-html";
 export async function loader({
   request,
 }: LoaderFunctionArgs) {
-  const apiUrl = "http://api.example.com/some-data.json";
+  const apiUrl = "https://api.example.com/some-data.json";
   const res = await fetch(apiUrl, {
     headers: {
       Authorization: `Bearer ${process.env.API_TOKEN}`,
@@ -48,4 +48,3 @@ export async function loader({
 3. `escapeHtml`のように、多くのコードをブラウザバンドルからサーバーに移動し、アプリを高速化します。さらに、コードをサーバーに移動すると、サーバー側のコードは非同期操作のUI状態を気にする必要がないため、通常、コードの保守が容易になります。
 
 繰り返しますが、RemixはサーバーサイドのJavaScript APIを使用してデータベースやその他のサービスと直接通信することで、唯一のサーバーとして使用できますが、フロントエンドのバックエンドとしても完璧に機能します。アプリケーションロジックのために既存のAPIサーバーをそのままにして、RemixにUIを接続させましょう。
-

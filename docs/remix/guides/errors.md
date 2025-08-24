@@ -117,4 +117,3 @@ export function ErrorBoundary() {
 [sentry]: https://sentry.io/
 [handle-error]: ../file-conventions/entry.server#handleerror
 [entry-server]: ../file-conventions/entry.server
-

@@ -80,4 +80,3 @@ idle → submitting → loading → idle
 [form-component]: ../components/form
 [use-submit]: ./use-submit
 [form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
-

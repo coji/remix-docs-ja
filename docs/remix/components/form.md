@@ -159,4 +159,3 @@ true の場合、クライアント側のルーティングではなく、ブラ
 [document-start-view-transition]: https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition
 [use-view-transition-state]: ../hooks/use-view-transition-state
 [relativesplatpath]: ../hooks/use-resolved-path#splat-paths
-

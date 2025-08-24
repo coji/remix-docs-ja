@@ -38,4 +38,3 @@ useFormAction(action, options)
 - **path** - アクションを URL パスに対する相対パスにするため、`..` は URL セグメントを 1 つ削除します。
 
 [form_component]: ../components/form
-

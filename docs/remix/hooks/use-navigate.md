@@ -96,4 +96,3 @@ navigate(".", {
 [loader]: ../route/loader
 [relativesplatpath]: ./use-resolved-path#splat-paths
 [scroll-restoration]: ../components/scroll-restoration#preventing-scroll-reset
-

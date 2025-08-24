@@ -188,4 +188,3 @@ RemixアプリケーションでCSSファイルを管理する方法は、最終
 [css-bundling]: #css-bundling
 
 [css-url-imports]: #css-url-imports
-

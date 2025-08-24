@@ -35,7 +35,7 @@ Remix CLI は型チェックを実行しません。代わりに、TypeScript �
     "@types/react-dom": "^18.2.7",
     "eslint": "^8.23.1",
     "typescript": "^5.1.6",
-    "vite": "^5.1.4"
+    "vite": "^6.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -85,4 +85,3 @@ Remix には TypeScript の型定義も組み込まれています。たとえ�
 <docs-info> `types` 配列で参照される型は、アプリを実行している環境によって異なることに注意してください。たとえば、Cloudflare では異なるグローバル変数が利用可能です。</docs-info>
 
 [with-jsx]: https://www.typescriptlang.org/docs/handbook/jsx.html
-
