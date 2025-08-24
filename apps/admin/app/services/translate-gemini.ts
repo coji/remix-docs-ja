@@ -55,10 +55,20 @@ Please provide the complete Japanese translation of the source text above. Retur
 
     const translatedText = result.text.trim()
 
-    // Validate that the output is not truncated
-    // Check if the translated text ends abruptly (common signs of truncation)
-    if (translatedText.length === 0) {
-      return { type: 'error', error: 'Translation returned empty text' }
+    // Check for common truncation indicators
+    const isTruncated =
+      translatedText.endsWith('...') ||
+      translatedText.length < source.length * 0.5 ||
+      (!translatedText.includes('</') && source.includes('</'))
+
+    // Consider: More robust validation
+    if (
+      !translatedText ||
+      translatedText.length === 0 ||
+      translatedText.trim() === '' ||
+      isTruncated
+    ) {
+      return { type: 'error', error: 'Translation resulted in empty text' }
     }
 
     return {
