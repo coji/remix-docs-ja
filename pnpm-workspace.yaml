@@ -1,33 +1,34 @@
 packages:
   - ./apps/*
   - ./packages/*
+
 catalog:
-  '@ai-sdk/google': 2.0.0
-  '@biomejs/biome': 2.1.3
+  '@ai-sdk/google': 2.0.8
+  '@biomejs/biome': 2.2.2
   '@conform-to/react': 1.8.2
   '@conform-to/zod': 1.8.2
   '@mdx-js/rollup': 3.1.0
-  '@prisma/client': 6.13.0
-  '@react-router/dev': 7.7.1
-  '@react-router/fs-routes': 7.7.1
-  '@react-router/node': 7.7.1
-  '@react-router/remix-routes-option-adapter': 7.7.1
-  '@react-router/serve': 7.7.1
+  '@prisma/client': 6.14.0
+  '@react-router/dev': 7.8.2
+  '@react-router/fs-routes': 7.8.2
+  '@react-router/node': 7.8.2
+  '@react-router/remix-routes-option-adapter': 7.8.2
+  '@react-router/serve': 7.8.2
   '@rehype-pretty/transformers': 0.13.2
-  '@shikijs/transformers': 3.9.1
+  '@shikijs/transformers': 3.11.0
   '@tailwindcss/typography': 0.5.16
-  '@tailwindcss/vite': 4.1.11
+  '@tailwindcss/vite': 4.1.12
   '@types/debug': 4.1.12
   '@types/hast': 3.0.4
-  '@types/mdast': 4.0.4
   '@types/kuromoji': 0.1.3
-  '@types/node': 24.1.0
+  '@types/mdast': 4.0.4
+  '@types/node': 24.3.0
   '@types/nprogress': 0.2.3
-  '@types/react': 19.1.9
+  '@types/react': 19.1.11
   '@types/react-dom': 19.1.7
   '@types/unist': 3.0.3
   '@vercel/og': 0.8.5
-  ai: 5.0.0
+  ai: 5.0.22
   autoprefixer: 10.4.20
   cheerio: 1.1.2
   class-variance-authority: 0.7.1
@@ -40,9 +41,9 @@ catalog:
   hast: 1.0.0
   hast-util-from-html: 2.0.3
   hast-util-to-html: 9.0.5
-  isbot: 5.1.29
+  isbot: 5.1.30
   kuromoji: 0.1.2
-  lucide-react: 0.536.0
+  lucide-react: 0.541.0
   mdast: 3.0.0
   neverthrow: 8.2.0
   next-themes: 0.4.6
@@ -53,11 +54,12 @@ catalog:
   prettier: 3.6.2
   prettier-plugin-organize-imports: 4.2.0
   prettier-plugin-tailwindcss: 0.6.14
-  prisma: 6.13.0
+  prisma: 6.14.0
+  radix-ui: 1.4.3
   react: 19.1.1
   react-dom: 19.1.1
   react-markdown: 10.1.0
-  react-router: 7.7.1
+  react-router: 7.8.2
   react-twc: 1.5.1
   rehype: 13.0.2
   rehype-autolink-headings: 7.1.0
@@ -77,19 +79,18 @@ catalog:
   shiki: 2.1.0
   sonner: 2.0.7
   tailwind-merge: 3.3.1
-  tailwindcss: 4.1.11
+  tailwindcss: 4.1.12
   tailwindcss-animate: 1.0.7
   ts-pattern: 5.8.0
-  tsx: 4.20.3
-  turbo: 2.5.5
+  tsx: 4.20.5
+  turbo: 2.5.6
   typescript: 5.9.2
   unified: 11.0.5
   unist: 0.0.1
   unist-util-visit: 5.0.0
-  vite: 7.0.6
+  vite: 7.1.3
   vite-tsconfig-paths: 5.1.4
   vitest: 3.2.4
-  wrangler: 4.27.0
-  zod: 4.0.14
+  wrangler: 4.32.0
+  zod: 4.1.1
   zodix: 0.4.4
-  radix-ui: 1.4.2
