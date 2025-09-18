@@ -18,7 +18,7 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/do
 
 ## 概要
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/variables/react_router.Form.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.Form.html)
 
 [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/fetch) を介してアクションにデータを送信する、プログレッシブエンハンスメントされた HTML [`<form>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form) です。[`useNavigation`](../hooks/useNavigation) で保留状態をアクティブにし、基本的な HTML フォームを超える高度なユーザーインターフェースを可能にします。フォームのアクションが完了すると、ページ上のすべてのデータが自動的に再検証され、UI がデータと同期されます。
 

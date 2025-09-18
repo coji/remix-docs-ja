@@ -20,7 +20,7 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/co
 
 ## 概要
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/variables/react_router.createRoutesFromElements.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.createRoutesFromElements.html)
 
 オブジェクトの配列の代わりに、JSX要素からルートオブジェクトを作成します。
 

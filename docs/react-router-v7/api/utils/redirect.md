@@ -20,7 +20,7 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/ro
 
 ## 概要
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/variables/react_router.redirect.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.redirect.html)
 
 リダイレクト [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) です。ステータスコードと [`Location`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Location) ヘッダーを設定します。デフォルトは [`302 Found`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302) です。
 

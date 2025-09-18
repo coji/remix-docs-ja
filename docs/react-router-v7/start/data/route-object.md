@@ -54,7 +54,7 @@ function MyRouteComponent() {
 }
 ```
 
-## `unstable_middleware`
+## `middleware`
 
 ルート[ミドルウェア][middleware]は、ナビゲーションの前後に順次実行されます。これにより、ロギングや認証などの処理を一箇所で行うことができます。`next` 関数はチェーンを続行し、リーフルートでは `next` 関数がナビゲーションのローダー/アクションを実行します。
 
@@ -62,12 +62,12 @@ function MyRouteComponent() {
 createBrowserRouter([
   {
     path: "/",
-    unstable_middleware: [loggingMiddleware],
+    middleware: [loggingMiddleware],
     loader: rootLoader,
     Component: Root,
     children: [{
       path: 'auth',
-      unstable_middleware: [authMiddleware],
+      middleware: [authMiddleware],
       loader: authLoader,
       Component: Auth,
       children: [...]
@@ -84,7 +84,7 @@ async function loggingMiddleware({ request }, next) {
   console.log(`Navigation completed in ${duration}ms`);
 }
 
-const userContext = unstable_createContext<User>();
+const userContext = createContext<User>();
 
 async function authMiddleware ({ context }) {
   const userId = getUserId();

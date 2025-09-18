@@ -63,7 +63,7 @@ function RSCHydratedRouter({
   fetch: fetchImplementation = fetch,
   payload,
   routeDiscovery = "eager",
-  unstable_getContext,
+  getContext,
 }: RSCHydratedRouterProps)
 ```
 
@@ -77,9 +77,9 @@ function RSCHydratedRouter({
 
 オプションのfetch実装です。デフォルトはグローバルの[`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/fetch)です。
 
-### unstable_getContext
+### getContext
 
-[`unstable_RouterContextProvider`](../utils/RouterContextProvider)インスタンスを返す関数です。これは、クライアントの[`action`](../../start/data/route-object#action)s、[`loader`](../../start/data/route-object#loader)s、および[middleware](../../how-to/middleware)に`context`引数として提供されます。この関数は、ナビゲーションまたはフェッチャー呼び出しごとに新しい`context`インスタンスを生成するために呼び出されます。
+[`RouterContextProvider`](../utils/RouterContextProvider)インスタンスを返す関数です。これは、クライアントの[`action`](../../start/data/route-object#action)s、[`loader`](../../start/data/route-object#loader)s、および[middleware](../../how-to/middleware)に`context`引数として提供されます。この関数は、ナビゲーションまたはフェッチャー呼び出しごとに新しい`context`インスタンスを生成するために呼び出されます。
 
 ### payload
 

@@ -74,7 +74,7 @@ export default [
 これにより、型安全なパラメータ、loaderData、コード分割、SPA/SSR/SSG戦略などを備えたRoute Module APIにアクセスできるようになります。
 
 ```ts filename=product.tsx
-import { Route } from "+./types/product.tsx";
+import { Route } from "./+types/product.tsx";
 
 export async function loader({ params }: Route.LoaderArgs) {
   let product = await getProduct(params.pid);
@@ -146,7 +146,7 @@ export default function Product({
 | Scripts                        | ✅        |      |             |
 | ScrollRestoration              | ✅        | ✅   |             |
 | ServerRouter                   | ✅        |      |             |
-| usePrompt                      | ✅        | ✅   | ✅          |
+| usePrompt                      | ✅        | ✅   |             |
 | useActionData                  | ✅        | ✅   |             |
 | useAsyncError                  | ✅        | ✅   |             |
 | useAsyncValue                  | ✅        | ✅   |             |

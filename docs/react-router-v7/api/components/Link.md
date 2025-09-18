@@ -8,7 +8,7 @@ title: Link
 
 ## 概要
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/variables/react_router.Link.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.Link.html)
 
 クライアントサイドルーティングによるナビゲーションを可能にする、段階的に機能拡張された [`<a href>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) ラッパー。
 
