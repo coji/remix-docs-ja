@@ -46,7 +46,7 @@
     "tailwind-merge": "catalog:",
     "ts-pattern": "catalog:",
     "zod": "catalog:",
-    "zodix": "catalog:",
+    "@coji/zodix": "catalog:",
     "radix-ui": "catalog:"
   },
   "devDependencies": {
