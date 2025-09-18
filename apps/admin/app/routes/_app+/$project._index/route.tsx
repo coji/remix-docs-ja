@@ -1,7 +1,7 @@
+import { zx } from '@coji/zodix/v4'
 import { ArrowLeftIcon, LoaderCircleIcon } from 'lucide-react'
 import { Form, href, Link, useNavigate, useNavigation } from 'react-router'
 import { z } from 'zod'
-import { zx } from 'zodix'
 import {
   Badge,
   Button,
@@ -30,8 +30,8 @@ import {
   startTranslationJob,
 } from './functions.server'
 
-export const meta = ({ data }: Route.MetaArgs) => [
-  { title: `${data?.project.id}` },
+export const meta = ({ loaderData }: Route.MetaArgs) => [
+  { title: `${loaderData?.project.id}` },
 ]
 
 export const loader = async ({ params }: Route.LoaderArgs) => {

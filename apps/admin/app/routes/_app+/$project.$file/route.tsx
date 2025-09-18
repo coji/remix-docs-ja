@@ -1,8 +1,8 @@
+import { zx } from '@coji/zodix/v4'
 import { ArrowLeftIcon } from 'lucide-react'
 import { basename } from 'node:path'
 import { Link, Outlet } from 'react-router'
 import { z } from 'zod'
-import { zx } from 'zodix'
 import {
   Badge,
   Button,
@@ -16,8 +16,8 @@ import {
 import type { Route } from './+types/route'
 import { getFile, getProject } from './queries.server'
 
-export const meta = ({ data }: Route.MetaArgs) => [
-  { title: `${data?.filename} - ${data?.project.id}` },
+export const meta = ({ loaderData }: Route.MetaArgs) => [
+  { title: `${loaderData?.filename} - ${loaderData?.project.id}` },
 ]
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
