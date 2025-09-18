@@ -12,7 +12,7 @@ React Router は、React 18 から React 19 へのギャップを埋める、Rea
 アプリで使用する方法（または「モード」）は主に3つあるため、始めるためのガイドも3つあります。
 
 - [宣言的](./start/declarative/installation)
-- [データ](./start/data/custom)
+- [データ](./start/data/installation)
 - [フレームワーク](./start/framework/installation)
 
 どのモードが自分に適しているかは、[モードの選択](./start/modes)で確認してください。
@@ -37,4 +37,3 @@ React Router は、React 18 から React 19 へのギャップを埋める、Rea
 
 - [v6 からのアップグレード](./upgrading/v6)
 - [Remix からのアップグレード](./upgrading/remix)
-

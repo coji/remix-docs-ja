@@ -47,22 +47,22 @@ function createHashRouter(
 
 ルーターで有効にするFutureフラグ。
 
-### opts.unstable_getContext
+### opts.getContext
 
-クライアントの[`action`](../../start/data/route-object#action)s、[`loader`](../../start/data/route-object#loader)s、および[ミドルウェア](../../how-to/middleware)に`context`引数として提供される[`unstable_RouterContextProvider`](../utils/RouterContextProvider)インスタンスを返す関数。
+クライアントの[`action`](../../start/data/route-object#action)s、[`loader`](../../start/data/route-object#loader)s、および[ミドルウェア](../../how-to/middleware)に`context`引数として提供される[`RouterContextProvider`](../utils/RouterContextProvider)インスタンスを返す関数。
 この関数は、ナビゲーションまたはフェッチャー呼び出しごとに新しい`context`インスタンスを生成するために呼び出されます。
 
 ```tsx
 import {
-  unstable_createContext,
-  unstable_RouterContextProvider,
+  createContext,
+  RouterContextProvider,
 } from "react-router";
 
-const apiClientContext = unstable_createContext<APIClient>();
+const apiClientContext = createContext<APIClient>();
 
 function createBrowserRouter(routes, {
-  unstable_getContext() {
-    let context = new unstable_RouterContextProvider();
+  getContext() {
+    let context = new RouterContextProvider();
     context.set(apiClientContext, getApiClient());
     return context;
   }
@@ -71,7 +71,7 @@ function createBrowserRouter(routes, {
 
 ### opts.hydrationData
 
-サーバーレンダリング時、および自動ハイドレーションをオプトアウトする場合、`hydrationData`オプションを使用すると、サーバーレンダリングからのハイドレーションデータを渡すことができます。これは、[`StaticHandler`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandler.html)の`query`メソッドから返される[`StaticHandlerContext`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandler.html)値からのデータのサブセットであることがほとんどです。
+サーバーレンダリング時、および自動ハイドレーションをオプトアウトする場合、`hydrationData`オプションを使用すると、サーバーレンダリングからのハイドレーションデータを渡すことができます。これは、[`StaticHandler`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandler.html)の`query`メソッドから返される[`StaticHandlerContext`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandlerContext.html)値からのデータのサブセットであることがほとんどです。
 
 ```tsx
 const router = createBrowserRouter(routes, {
@@ -287,7 +287,7 @@ let router = createBrowserRouter(routes, {
 
 場合によっては、これだけでは不十分です。大規模なアプリケーションでは、すべてのルート定義を事前に提供することは非常にコストがかかる可能性があります。さらに、特定のマイクロフロントエンドまたはモジュールフェデレーションアーキテクチャでは、すべてのルート定義を事前に提供すること自体が不可能な場合もあります。
 
-ここで`patchRoutesOnNavigation`が登場します（[RFC](https://github.com/remix-run/react-router/discussions/11113)）。このAPIは、完全なルートツリーを事前に提供できず、実行時にルートツリーの一部を遅延的に「発見」する必要がある高度なユースケース向けです。この機能は、ビデオゲームが移動するにつれて「世界」を拡大するのと同様に、ユーザーがアプリ内をナビゲートするにつれてルーターがルーティングツリーを拡大するものの、ユーザーが訪れたツリーの部分のみをロードすることになるため、しばしば["Fog of War"](https://en.wikipedia.org/wiki/Fog_of_war)と呼ばれます。
+ここで`patchRoutesOnNavigation`が登場します（[RFC](https://github.com/remix-run/react-router/discussions/11113)）。このAPIは、完全なルートツリーを事前に提供できず、実行時にルートツリーの一部を遅延的に「発見」する必要がある高度なユースケース向けです。この機能は、ビデオゲームが移動するにつれて「世界」を拡大するのと同様に、ユーザーがアプリ内をナビゲートするにつれてルーターがルーティングツリーを拡大するものの、ユーザーが訪れたツリーの部分のみをロードすることになるため、しばin["Fog of War"](https://en.wikipedia.org/wiki/Fog_of_war)と呼ばれます。
 
 `patchRoutesOnNavigation`は、React Routerが`path`をマッチできない場合に常に呼び出されます。引数には、`path`、部分的な`matches`、および新しいルートをツリーの特定の場所にパッチするために呼び出すことができる`patch`関数が含まれます。このメソッドは、`GET`リクエストのナビゲーションの`loading`フェーズ中、および非`GET`リクエストのナビゲーションの`submitting`フェーズ中に実行されます。
 
@@ -486,7 +486,7 @@ let router = createBrowserRouter(routes, {
   );
   ```
 
-  ユーザーが最初にブログ投稿（例: `/blog/my-post`）にアクセスした場合、`:slug`ルートをパッチします。その後、ユーザーが新しい投稿を作成するために`/blog/new`にナビゲートした場合、`/blog/:slug`にマッチしますが、それは_正しい_マッチではありません！まだ発見されていない、よりスコアの高いルートが存在する可能性があるので、`patchRoutesOnNavigation`を呼び出す必要があります。このケースでは実際に存在します。
+  もしユーザーが最初にブログ投稿（例: `/blog/my-post`）にアクセスした場合、`:slug`ルートをパッチします。その後、ユーザーが新しい投稿を作成するために`/blog/new`にナビゲートした場合、`/blog/:slug`にマッチしますが、それは_正しい_マッチではありません！まだ発見されていない、よりスコアの高いルートが存在する可能性があるので、`patchRoutesOnNavigation`を呼び出す必要があります。このケースでは実際に存在します。
 
   したがって、React Routerが少なくとも1つのパラメータを含むパスにマッチするたびに、`patchRoutesOnNavigation`を呼び出し、最適なマッチを見つけたことを確認するために再度ルートをマッチングします。
 

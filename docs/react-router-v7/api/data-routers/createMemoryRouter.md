@@ -51,9 +51,9 @@ function createMemoryRouter(
 
 ルーターで有効にするFutureフラグ。
 
-### opts.unstable_getContext
+### opts.getContext
 
-クライアントの[`action`](../../start/data/route-object#action)s、[`loader`](../../start/data/route-object#loader)s、および[middleware](../../how-to/middleware)に`context`引数として提供される[`unstable_RouterContextProvider`](../utils/RouterContextProvider)インスタンスを返す関数です。この関数は、ナビゲーションまたはフェッチャー呼び出しごとに新しい`context`インスタンスを生成するために呼び出されます。
+クライアントの[`action`](../../start/data/route-object#action)s、[`loader`](../../start/data/route-object#loader)s、および[middleware](../../how-to/middleware)に`context`引数として提供される[`RouterContextProvider`](../utils/RouterContextProvider)インスタンスを返す関数です。この関数は、ナビゲーションまたはフェッチャー呼び出しごとに新しい`context`インスタンスを生成するために呼び出されます。
 
 ### opts.hydrationData
 

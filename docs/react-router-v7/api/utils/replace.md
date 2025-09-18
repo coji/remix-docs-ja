@@ -20,7 +20,7 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/ro
 
 ## 概要
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/variables/react_router.replace.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.replace.html)
 
 クライアントサイドのナビゲーションリダイレクトで、[`history.pushState`](https://developer.mozilla.org/en-US/docs/Web/API/History/pushState) の代わりに [`history.replaceState`](https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState) を実行するリダイレクト [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) です。
 ステータスコードと [`Location`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Location) ヘッダーを設定します。

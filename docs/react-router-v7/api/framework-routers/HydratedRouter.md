@@ -30,7 +30,7 @@ function HydratedRouter(props: HydratedRouterProps)
 
 ## Props
 
-### unstable_getContext
+### getContext
 
 [`createBrowserRouter`](../data-routers/createBrowserRouter)に渡され、[`clientAction`](../../start/framework/route-module#clientAction)/[`clientLoader`](../../start/framework/route-module#clientLoader)関数で利用可能になるコンテキストオブジェクト
 

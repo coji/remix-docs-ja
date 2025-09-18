@@ -20,7 +20,7 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/do
 
 ## Summary
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/variables/react_router.NavLink.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.NavLink.html)
 
 [Link](../components/Link) をラップし、アクティブおよび保留状態のスタイル設定のための追加の props を提供します。
 

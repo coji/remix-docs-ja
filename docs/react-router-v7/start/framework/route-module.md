@@ -78,7 +78,7 @@ export default function MyRouteComponent({
 }
 ```
 
-## `unstable_middleware`
+## `middleware`
 
 ルート[ミドルウェア][middleware]は、ドキュメントおよびデータリクエストの前後でサーバー上で順次実行されます。これにより、ロギング、認証、レスポンスの後処理などを一箇所で行うことができます。`next` 関数はチェーンを続行し、リーフルートでは `next` 関数がナビゲーションのローダー/アクションを実行します。
 
@@ -101,7 +101,7 @@ async function loggingMiddleware(
   return response;
 }
 
-export const unstable_middleware = [loggingMiddleware];
+export const middleware = [loggingMiddleware];
 ```
 
 以下は、ログインしているユーザーをチェックし、ローダーからアクセスできる `context` にユーザーを設定するミドルウェアの例です。
@@ -122,19 +122,19 @@ async function authMiddleware ({
   context.set(userContext, user);
 };
 
-export const unstable_middleware = [authMiddleware];
+export const middleware = [authMiddleware];
 ```
 
 <docs-warning>ルートにミドルウェアを追加する際に、アプリケーションが意図したとおりに動作するように、[ミドルウェアがいつ実行されるか][when-middleware-runs]を理解していることを確認してください。</docs-warning>
 
 参照：
 
-- [`unstable_middleware` params][middleware-params]
+- [`middleware` params][middleware-params]
 - [ミドルウェア][middleware]
 
-## `unstable_clientMiddleware`
+## `clientMiddleware`
 
-これは `unstable_middleware` のクライアントサイド版であり、クライアントナビゲーション中にブラウザで実行されます。サーバーミドルウェアとの唯一の違いは、クライアントミドルウェアはサーバー上のHTTPリクエストをラップしないため、レスポンスを返さないことです。
+これは `middleware` のクライアントサイド版であり、クライアントナビゲーション中にブラウザで実行されます。サーバーミドルウェアとの唯一の違いは、クライアントミドルウェアはサーバー上のHTTPリクエストをラップしないため、レスポンスを返さないことです。
 
 以下は、クライアント上でリクエストをログに記録するミドルウェアの例です。
 
@@ -155,7 +155,7 @@ async function loggingMiddleware(
   // ✅ No need to return anything
 }
 
-export const unstable_clientMiddleware = [
+export const clientMiddleware = [
   loggingMiddleware,
 ];
 ```
@@ -479,7 +479,7 @@ export default function Root() {
 
 ## `shouldRevalidate`
 
-フレームワークモードでは、ルートローダーはすべてのナビゲーションとフォーム送信後に自動的に再検証されます（これは[データモード](../data/route-object#shouldrevalidate)とは異なります）。これにより、ミドルウェアとローダーはリクエストコンテキストを共有し、データモードの場合とは異なる方法で最適化できます。
+SSR を使用するフレームワークモードでは、ルートローダーはすべてのナビゲーションとフォーム送信後に自動的に再検証されます（これは[データモード][data-mode-should-revalidate]とは異なります）。これにより、ミドルウェアとローダーはリクエストコンテキストを共有し、データモードの場合とは異なる方法で最適化できます。
 
 この関数を定義すると、ナビゲーションとフォーム送信に対するルートローダーの再検証をオプトアウトできます。
 
@@ -493,13 +493,15 @@ export function shouldRevalidate(
 }
 ```
 
+[SPA モード][spa-mode]を使用する場合、ナビゲーション時に呼び出すサーバーローダーがないため、`shouldRevalidate` は[データモード][data-mode-should-revalidate]と同じように動作します。
+
 [`ShouldRevalidateFunctionArgs` Reference Documentation ↗](https://api.reactrouter.com/v7/interfaces/react_router.ShouldRevalidateFunctionArgs.html)
 
 ---
 
 次: [レンダリング戦略](./rendering)
 
-[middleware-params]: https://api.reactrouter.com/v7/types/react_router.unstable_MiddlewareFunction.html
+[middleware-params]: https://api.reactrouter.com/v7/types/react_router.MiddlewareFunction.html
 [middleware]: ../../how-to/middleware
 [when-middleware-runs]: ../../how-to/middleware#when-middleware-runs
 [loader-params]: https://api.reactrouter.com/v7/interfaces/react_router.LoaderFunctionArgs
@@ -514,3 +516,5 @@ export function shouldRevalidate(
 [meta-element]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
 [meta-params]: https://api.reactrouter.com/v7/interfaces/react_router.MetaArgs
 [meta-function]: https://api.reactrouter.com/v7/types/react_router.MetaDescriptor.html
+[data-mode-should-revalidate]: ../data/route-object#shouldrevalidate
+[spa-mode]: ../../how-to/spa

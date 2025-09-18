@@ -66,7 +66,7 @@ React Routerの完全なビルドが完了した後に呼び出される関数�
 
 ```tsx filename=react-router.config.ts
 export default {
-  buildEnd: async ({ buildManifest, serverBuildPath }) => {
+  buildEnd: async ({ buildManifest, reactRouterConfig, viteConfig }) => {
     // ここにカスタムビルドロジックを記述
     console.log("ビルドが完了しました！");
   },

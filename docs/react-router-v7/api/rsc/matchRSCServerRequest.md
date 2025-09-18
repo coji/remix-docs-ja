@@ -81,7 +81,7 @@ async function matchRSCServerRequest({
   decodeReply?: DecodeReplyFunction;
   decodeAction?: DecodeActionFunction;
   decodeFormState?: DecodeFormStateFunction;
-  requestContext?: unstable_RouterContextProvider;
+  requestContext?: RouterContextProvider;
   loadServerAction?: LoadServerActionFunction;
   onError?: (error: unknown) => void;
   request: Request;
@@ -137,7 +137,7 @@ IDによってサーバーアクションをロードするために使用され
 
 ### opts.requestContext
 
-リクエストごとに作成され、[`action`](../../start/data/route-object#action)s、[`loader`](../../start/data/route-object#loader)s、および[middleware](../../how-to/middleware)に渡される[`unstable_RouterContextProvider`](../utils/RouterContextProvider)のインスタンスです。
+リクエストごとに作成され、[`action`](../../start/data/route-object#action)s、[`loader`](../../start/data/route-object#loader)s、および[middleware](../../how-to/middleware)に渡される[`RouterContextProvider`](../utils/RouterContextProvider)のインスタンスです。
 
 ### opts.routes
 

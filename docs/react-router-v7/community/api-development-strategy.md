@@ -6,7 +6,7 @@ title: API 開発戦略
 
 React Router はアプリケーションの基盤です。React エコシステムが進歩するにつれて、動作や API を調整および強化できるようにしながら、新しいメジャーバージョンへのアップグレードが可能な限りスムーズになるようにしたいと考えています。
 
-私たちの戦略と動機については、[Future Flags][future-flags-blog-post] のブログ記事で詳しく説明しています。
+私たちの戦略と動機については、[Future Flags][future-flags-blog-post] のブログ記事と私たちの [Open Governance Model][governance] で詳しく説明されています。
 
 ## Future Flags
 
@@ -36,11 +36,9 @@ Unstable Flags は実験的なものであり、存続が保証されていな�
 
 ### 新機能のフローの例
 
-新機能の決定フローは次のようになります（この図は Remix v1/v2 に関連していますが、React Router v6/v7 にも適用されることに注意してください）。
+新機能の決定フローは次のようになります。
 
-![新機能を導入する方法の決定プロセスのフローチャート][feature-flowchart]
+<img width="400" src="https://reactrouter.com/_docs/feature-flowchart.png" alt="Flowchart of the decision process for how to introduce a new feature" />
 
 [future-flags-blog-post]: https://remix.run/blog/future-flags
-[feature-flowchart]: https://remix.run/docs-images/feature-flowchart.png
-[picking-a-router]: ../routers/picking-a-router
-
+[governance]: https://github.com/remix-run/react-router/blob/main/GOVERNANCE.md#new-feature-process

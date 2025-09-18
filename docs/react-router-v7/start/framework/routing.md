@@ -230,6 +230,24 @@ export default [
 ] satisfies RouteConfig;
 ```
 
+これはルートツリーに新しいルートを導入するものではないことに注意してください。代わりに、子ルートのパスを単に修正するだけです。
+
+例えば、以下の2つのルートのセットは同等です。
+
+```ts filename=app/routes.ts
+// この `prefix` の使用法は...
+prefix("parent", [
+  route("child1", "./child1.tsx"),
+  route("child2", "./child2.tsx"),
+])
+
+// ...以下と同等です:
+[
+  route("parent/child1", "./child1.tsx"),
+  route("parent/child2", "./child2.tsx"),
+]
+```
+
 ## 動的セグメント
 
 パスセグメントが `:` で始まる場合、それは「動的セグメント」になります。ルートが URL と一致すると、動的セグメントは URL から解析され、他のルーター API に `params` として提供されます。
