@@ -48,6 +48,9 @@ function SomeComponent() {
     method: "post",
     encType: "application/json"
   })
+
+  // fetcher をリセットする
+  fetcher.unstable_reset()
 }
 ```
 

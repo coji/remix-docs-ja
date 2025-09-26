@@ -5,7 +5,7 @@ unstable: true
 
 # React Server Components
 
-[MODES: data]
+[MODES: framework, data]
 
 <br/>
 <br/>
@@ -22,6 +22,10 @@ React Server Components (RSC) は、React バージョン19以降で提供され
 
 React Routerは、RSC互換のバンドラーと統合するためのAPIセットを提供し、React Routerアプリケーションで[サーバーコンポーネント][react-server-components-doc]と[サーバー関数][react-server-functions-doc]を活用できるようにします。
 
+これらのReact機能に馴染みがない場合は、React RouterのRSC APIを使用する前に、公式の[Server Componentsドキュメント][react-server-components-doc]を読むことをお勧めします。
+
+RSCのサポートは、Framework ModeとData Modeの両方で利用できます。これらの概念的な違いについては、「[モードの選択][picking-a-mode]」を参照してください。ただし、RSCモードと非RSCモードではAPIと機能が異なる点があり、このガイドで詳しく説明します。
+
 ## クイックスタート
 
 最も手軽に始めるには、いずれかのテンプレートをご利用ください。
@@ -33,23 +37,261 @@ React Routerは、RSC互換のバンドラーと統合するためのAPIセッ�
 - クライアントコンポーネント ([`"use client"`][use-client-docs] ディレクティブ経由)
 - サーバー関数 ([`"use server"`][use-server-docs] ディレクティブ経由)
 
-**Parcel テンプレート**
+### RSC Framework Modeテンプレート
 
-[Parcel テンプレート][parcel-rsc-template]は、公式のReact `react-server-dom-parcel` プラグインを使用しています。
-
-```shellscript
-npx create-react-router@latest --template remix-run/react-router-templates/unstable_rsc-parcel
-```
-
-**Vite テンプレート**
-
-[Vite テンプレート][vite-rsc-template]は、実験的なVite `@vitejs/plugin-rsc` プラグインを使用しています。
+[RSC Framework Modeテンプレート][framework-rsc-template]は、不安定なReact Router RSC Viteプラグインと実験的な[`@vitejs/plugin-rsc`プラグイン][vite-plugin-rsc]を使用しています。
 
 ```shellscript
-npx create-react-router@latest --template remix-run/react-router-templates/unstable_rsc-vite
+npx create-react-router@latest --template remix-run/react-router-templates/unstable_rsc-framework-mode
 ```
 
-## React RouterでのRSCの使用
+### RSC Data Modeテンプレート
+
+RSC Data Modeを使用する場合、ViteとParcelのテンプレートから選択できます。
+
+[Vite RSC Data Modeテンプレート][vite-rsc-template]は、実験的なVite `@vitejs/plugin-rsc`プラグインを使用しています。
+
+```shellscript
+npx create-react-router@latest --template remix-run/react-router-templates/unstable_rsc-data-mode-vite
+```
+
+[Parcel RSC Data Modeテンプレート][parcel-rsc-template]は、公式のReact `react-server-dom-parcel`プラグインを使用しています。
+
+```shellscript
+npx create-react-router@latest --template remix-run/react-router-templates/unstable_rsc-data-mode-parcel
+```
+
+## RSC Framework Mode
+
+RSC Framework ModeのほとんどのAPIと機能は、非RSC Framework Modeと同じであるため、このガイドではその違いに焦点を当てます。
+
+### 新しいReact Router RSC Viteプラグイン
+
+RSC Framework Modeは、非RSC Framework Modeとは異なるViteプラグインを使用しており、現在は`unstable_reactRouterRSC`としてエクスポートされています。
+
+この新しいViteプラグインは、実験的な`@vitejs/plugin-rsc`プラグインにピア依存関係を持っています。`@vitejs/plugin-rsc`プラグインは、Vite設定でReact Router RSCプラグインの後に配置する必要があることに注意してください。
+
+```tsx filename=vite.config.ts
+import { defineConfig } from "vite";
+import { unstable_reactRouterRSC as reactRouterRSC } from "@react-router/dev/vite";
+import rsc from "@vitejs/plugin-rsc";
+
+export default defineConfig({
+  plugins: [reactRouterRSC(), rsc()],
+});
+```
+
+### ビルド出力
+
+RSC Framework Modeのサーバービルドファイル（`build/server/index.js`）は、ドキュメント/データリクエスト用の`default`リクエストハンドラ関数（`(request: Request) => Promise<Response>`）をエクスポートするようになりました。
+
+必要に応じて、[@remix-run/node-fetch-server][node-fetch-server]の`createRequestListener`関数を使用することで、これをNodeの組み込み`http.createServer`関数（または[Express][express]など、それをサポートするもの）で使用するための[標準的なNode.jsリクエストリスナー][node-request-listener]に変換できます。
+
+例えば、Expressでは次のようになります。
+
+```tsx filename=start.js
+import express from "express";
+import requestHandler from "./build/server/index.js";
+import { createRequestListener } from "@remix-run/node-fetch-server";
+
+const app = express();
+
+app.use(
+  "/assets",
+  express.static("build/client/assets", {
+    immutable: true,
+    maxAge: "1y",
+  }),
+);
+app.use(express.static("build/client"));
+app.use(createRequestListener(requestHandler));
+app.listen(3000);
+```
+
+### ローダー/アクションからのReact要素
+
+RSC Framework Modeでは、ローダーとアクションが他のデータとともにReact要素を返すことができるようになりました。これらの要素は常にサーバー上でレンダリングされます。
+
+```tsx
+import type { Route } from "./+types/route";
+
+export async function loader() {
+  return {
+    message: "Message from the server!",
+    element: <p>Element from the server!</p>,
+  };
+}
+
+export default function Route({
+  loaderData,
+}: Route.ComponentProps) {
+  return (
+    <>
+      <h1>{loaderData.message}</h1>
+      {loaderData.element}
+    </>
+  );
+}
+```
+
+ローダー/アクションから返されるReact要素内でクライアント専用機能（例：[Hooks][hooks]、イベントハンドラ）を使用する必要がある場合は、これらの機能を使用するコンポーネントを[クライアントモジュール][use-client-docs]に抽出する必要があります。
+
+```tsx filename=src/routes/counter/counter.tsx
+"use client";
+
+export function Counter() {
+  const [count, setCount] = useState(0);
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Count: {count}
+    </button>
+  );
+}
+```
+
+```tsx filename=src/routes/counter/route.tsx
+import type { Route } from "./+types/route";
+import { Counter } from "./counter";
+
+export async function loader() {
+  return {
+    message: "Message from the server!",
+    element: (
+      <>
+        <p>Element from the server!</p>
+        <Counter />
+      </>
+    ),
+  };
+}
+
+export default function Route({
+  loaderData,
+}: Route.ComponentProps) {
+  return (
+    <>
+      <h1>{loaderData.message}</h1>
+      {loaderData.element}
+    </>
+  );
+}
+```
+
+### サーバーコンポーネントルート
+
+ルートが通常の`default`コンポーネントエクスポートの代わりに`ServerComponent`をエクスポートする場合、このコンポーネントは他のルートコンポーネント（`ErrorBoundary`、`HydrateFallback`、`Layout`）とともに、通常のクライアントコンポーネントではなくサーバーコンポーネントになります。
+
+```tsx
+import type { Route } from "./+types/route";
+import { Outlet } from "react-router";
+import { getMessage } from "./message";
+
+export async function loader() {
+  return {
+    message: await getMessage(),
+  };
+}
+
+export function ServerComponent({
+  loaderData,
+}: Route.ComponentProps) {
+  return (
+    <>
+      <h1>Server Component Route</h1>
+      <p>Message from the server: {loaderData.message}</p>
+      <Outlet />
+    </>
+  );
+}
+```
+
+サーバーファーストのルート内でクライアント専用機能（例：[Hooks][hooks]、イベントハンドラ）を使用する必要がある場合は、これらの機能を使用するコンポーネントを[クライアントモジュール][use-client-docs]に抽出する必要があります。
+
+```tsx filename=src/routes/counter/counter.tsx
+"use client";
+
+export function Counter() {
+  const [count, setCount] = useState(0);
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Count: {count}
+    </button>
+  );
+}
+```
+
+```tsx filename=src/routes/counter/route.tsx
+import { Counter } from "./counter";
+
+export function ServerComponent() {
+  return (
+    <>
+      <h1>Counter</h1>
+      <Counter />
+    </>
+  );
+}
+```
+
+### `.server`/`.client`モジュール
+
+RSCの`"use server"`および`"use client"`ディレクティブとの混同を避けるため、RSC Framework Modeを使用する場合、[`.server`モジュール][server-modules]および[`.client`モジュール][client-modules]のサポートは組み込まれなくなりました。
+
+ファイル命名規則に依存しない代替ソリューションとして、[`@vitejs/plugin-rsc`][vite-plugin-rsc]によって提供される`"server-only"`および`"client-only"`インポートを使用することをお勧めします。例えば、モジュールが誤ってクライアントビルドに含まれないようにするには、サーバー専用モジュール内で`"server-only"`から副作用としてインポートするだけです。
+
+```ts filename=app/utils/db.ts
+import "server-only";
+
+// Rest of the module...
+```
+
+Reactチームによって作成された公式のnpmパッケージ[`server-only`][server-only-package]と[`client-only`][client-only-package]がありますが、これらをインストールする必要はありません。`@vitejs/plugin-rsc`はこれらのインポートを内部的に処理し、ランタイムエラーではなくビルド時の検証を提供します。
+
+`.server`および`.client`ファイル命名規則に依存する既存のコードを迅速に移行したい場合は、[`vite-env-only`プラグイン][vite-env-only]を直接使用することをお勧めします。例えば、`.server`モジュールが誤ってクライアントビルドに含まれないようにするには、次のようになります。
+
+```tsx filename=vite.config.ts
+import { defineConfig } from "vite";
+import { denyImports } from "vite-env-only";
+import { unstable_reactRouterRSC as reactRouterRSC } from "@react-router/dev/vite";
+import rsc from "@vitejs/plugin-rsc";
+
+export default defineConfig({
+  plugins: [
+    denyImports({
+      client: { files: ["**/.server/*", "**/*.server.*"] },
+    }),
+    reactRouterRSC(),
+    rsc(),
+  ],
+});
+```
+
+### MDXルートのサポート
+
+MDXルートは、`@mdx-js/rollup` v3.1.1以降を使用する場合、RSC Framework Modeでサポートされます。
+
+MDXルートからエクスポートされるコンポーネントは、RSC環境でも有効である必要があることに注意してください。つまり、[Hooks][hooks]のようなクライアント専用機能を使用することはできません。これらの機能を使用する必要があるコンポーネントは、[クライアントモジュール][use-client-docs]に抽出する必要があります。
+
+### サポートされていない設定オプション
+
+最初の不安定版リリースでは、`react-router.config.ts`の以下のオプションはRSC Framework Modeではまだサポートされていません。
+
+- `buildEnd`
+- `prerender`
+- `presets`
+- `routeDiscovery`
+- `serverBundles`
+- `ssr: false` (SPA Mode)
+- `future.unstable_splitRouteModules`
+- `future.unstable_subResourceIntegrity`
+
+カスタムビルドエントリーファイルもまだサポートされていません。
+
+## RSC Data Mode
+
+上記で説明したRSC Framework ModeのAPIは、より低レベルのRSC Data Mode APIの上に構築されています。
+
+RSC Data Modeには、RSC Framework Modeの一部の機能（例：`routes.ts`設定とファイルシステムルーティング、HMRとホットデータ再検証）がありませんが、より柔軟性があり、独自のバンドラーとサーバー抽象化と統合できます。
 
 ### ルートの設定
 
@@ -70,7 +312,7 @@ matchRSCServerRequest({
 
 <docs-info>
 
-これまでの[ルートモジュールAPI][route-module]は、[フレームワークモード][framework-mode]専用の機能でした。しかし、RSCルート設定の`lazy`フィールドは、ルートモジュールのエクスポートと同じエクスポートを期待しており、APIをさらに統一しています。
+これまでの[ルートモジュールAPI][route-module]は、[Framework Mode][framework-mode]専用の機能でした。しかし、RSCルート設定の`lazy`フィールドは、ルートモジュールのエクスポートと同じエクスポートを期待しており、APIをさらに統一しています。
 
 </docs-info>
 
@@ -236,15 +478,15 @@ export default function Root() {
 }
 ```
 
-## React RouterでのRSCの設定
+### バンドラーの設定
 
-React Routerは、RSC互換のバンドラーと簡単に統合できるいくつかのAPIを提供しており、独自の[カスタムフレームワーク][custom-framework]を作成するためにReact Routerデータモードを使用している場合に役立ちます。
+React Routerは、RSC互換のバンドラーと簡単に統合できるいくつかのAPIを提供しており、独自の[カスタムフレームワーク][custom-framework]を作成するためにReact Router Data Modeを使用している場合に役立ちます。
 
 以下の手順は、React Routerアプリケーションをセットアップして、サーバーコンポーネント（RSC）を使用してページをサーバーレンダリング（SSR）し、シングルページアプリケーション（SPA）ナビゲーションのためにそれらをハイドレートする方法を示しています。SSR（またはクライアントサイドハイドレーション）を使用する必要はありません。必要に応じて、静的サイト生成（SSG）やインクリメンタル静的再生成（ISR）のためにHTML生成を活用することもできます。このガイドは、典型的なRSCベースのアプリケーションのさまざまなAPIをすべて連携させる方法を説明することを目的としています。
 
 ### エントリーポイント
 
-[ルート定義](#configuring-routes)に加えて、以下を設定する必要があります。
+[ルートの設定](#configuring-routes)に加えて、以下を設定する必要があります。
 
 1. 受信リクエストを処理し、RSCペイロードをフェッチし、それをHTMLに変換するサーバー
 2. RSCペイロードを生成するReactサーバー
@@ -301,7 +543,7 @@ SSRをまったく使用する必要はありません。RSCを使用して、�
 
 ### Parcel
 
-詳細については、[Parcel RSC ドキュメント][parcel-rsc-doc]を参照してください。動作するバージョンを確認するには、[Parcel RSC テンプレート][parcel-rsc-template]も参照できます。
+詳細については、[Parcel RSC ドキュメント][parcel-rsc-doc]を参照してください。動作するバージョンを確認するには、[Parcel RSC Data Modeテンプレート][parcel-rsc-template]も参照できます。
 
 `react`、`react-dom`、`react-router`に加えて、以下の依存関係が必要です。
 
@@ -389,7 +631,7 @@ import { createFromReadableStream } from "react-server-dom-parcel/client.edge";
 export async function generateHTML(
   request: Request,
   fetchServer: (request: Request) => Promise<Response>,
-  bootstrapScriptContent: string | undefined
+  bootstrapScriptContent: string | undefined,
 ): Promise<Response> {
   return await routeRSCServerRequest({
     // 受信リクエスト。
@@ -400,18 +642,14 @@ export async function generateHTML(
     createFromReadableStream,
     // ルーターをHTMLにレンダリング。
     async renderHTML(getPayload) {
-      const payload = await getPayload();
-      const formState =
-        payload.type === "render"
-          ? await payload.formState
-          : undefined;
+      const payload = getPayload();
 
       return await renderHTMLToReadableStream(
         <RSCStaticRouter getPayload={getPayload} />,
         {
           bootstrapScriptContent,
-          formState,
-        }
+          formState: await payload.formState,
+        },
       );
     },
   });
@@ -453,10 +691,13 @@ function fetchServer(request: Request) {
     routes: routes(),
     // Reactサーバーの実装でマッチをエンコード。
     generateResponse(match) {
-      return new Response(renderToReadableStream(match.payload), {
-        status: match.statusCode,
-        headers: match.headers,
-      });
+      return new Response(
+        renderToReadableStream(match.payload),
+        {
+          status: match.statusCode,
+          headers: match.headers,
+        },
+      );
     },
   });
 }
@@ -470,7 +711,7 @@ app.use(
   express.static("dist/client", {
     immutable: true,
     maxAge: "1y",
-  })
+  }),
 );
 // アプリケーションを接続。
 app.use(
@@ -478,9 +719,10 @@ app.use(
     generateHTML(
       request,
       fetchServer,
-      (routes as unknown as { bootstrapScript?: string }).bootstrapScript
-    )
-  )
+      (routes as unknown as { bootstrapScript?: string })
+        .bootstrapScript,
+    ),
+  ),
 );
 
 app.listen(3000, () => {
@@ -514,7 +756,7 @@ setServerCallback(
     createFromReadableStream,
     createTemporaryReferenceSet,
     encodeReply,
-  })
+  }),
 );
 
 // 初期サーバーペイロードを取得してデコードします。
@@ -538,16 +780,16 @@ createFromReadableStream(getRSCStream()).then(
         </StrictMode>,
         {
           formState,
-        }
+        },
       );
     });
-  }
+  },
 );
 ```
 
 ### Vite
 
-詳細については、[Vite RSC ドキュメント][vite-rsc-doc]を参照してください。動作するバージョンを確認するには、[Vite RSC テンプレート][vite-rsc-template]も参照できます。
+詳細については、[@vitejs/plugin-rsc ドキュメント][vite-plugin-rsc]を参照してください。動作するバージョンを確認するには、[Vite RSC Data Modeテンプレート][vite-rsc-template]も参照できます。
 
 `react`、`react-dom`、`react-router`に加えて、以下の依存関係が必要です。
 
@@ -618,7 +860,7 @@ import {
 
 export async function generateHTML(
   request: Request,
-  fetchServer: (request: Request) => Promise<Response>
+  fetchServer: (request: Request) => Promise<Response>,
 ): Promise<Response> {
   return await routeRSCServerRequest({
     // 受信リクエスト。
@@ -629,23 +871,19 @@ export async function generateHTML(
     createFromReadableStream,
     // ルーターをHTMLにレンダリング。
     async renderHTML(getPayload) {
-      const payload = await getPayload();
-      const formState =
-        payload.type === "render"
-          ? await payload.formState
-          : undefined;
+      const payload = getPayload();
 
       const bootstrapScriptContent =
         await import.meta.viteRsc.loadBootstrapScriptContent(
-          "index"
+          "index",
         );
 
       return await renderHTMLToReadableStream(
         <RSCStaticRouter getPayload={getPayload} />,
         {
           bootstrapScriptContent,
-          formState,
-        }
+          formState: payload.formState,
+        },
       );
     },
   });
@@ -688,7 +926,7 @@ function fetchServer(request: Request) {
         {
           status: match.statusCode,
           headers: match.headers,
-        }
+        },
       );
     },
   });
@@ -728,12 +966,12 @@ setServerCallback(
     createFromReadableStream,
     createTemporaryReferenceSet,
     encodeReply,
-  })
+  }),
 );
 
 // 初期サーバーペイロードを取得してデコードします。
 createFromReadableStream<RSCServerPayload>(
-  getRSCStream()
+  getRSCStream(),
 ).then((payload) => {
   startTransition(async () => {
     const formState =
@@ -753,12 +991,13 @@ createFromReadableStream<RSCServerPayload>(
       </StrictMode>,
       {
         formState,
-      }
+      },
     );
   });
 });
 ```
 
+[picking-a-mode]: ../start/modes
 [react-server-components-doc]: https://react.dev/reference/rsc/server-components
 [react-server-functions-doc]: https://react.dev/reference/rsc/server-functions
 [use-client-docs]: https://react.dev/reference/rsc/use-client
@@ -767,7 +1006,7 @@ createFromReadableStream<RSCServerPayload>(
 [framework-mode]: ../start/modes#framework
 [custom-framework]: ../start/data/custom
 [parcel-rsc-doc]: https://parceljs.org/recipes/rsc/
-[vite-rsc-doc]: https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-rsc
+[vite-plugin-rsc]: https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-rsc
 [match-rsc-server-request]: ../api/rsc/matchRSCServerRequest
 [route-rsc-server-request]: ../api/rsc/routeRSCServerRequest
 [rsc-static-router]: ../api/rsc/RSCStaticRouter
@@ -776,5 +1015,13 @@ createFromReadableStream<RSCServerPayload>(
 [rsc-hydrated-router]: ../api/rsc/RSCHydratedRouter
 [express]: https://expressjs.com/
 [node-fetch-server]: https://www.npmjs.com/package/@remix-run/node-fetch-server
-[parcel-rsc-template]: https://github.com/remix-run/react-router-templates/tree/main/unstable_rsc-parcel
-[vite-rsc-template]: https://github.com/remix-run/react-router-templates/tree/main/unstable_rsc-vite
+[framework-rsc-template]: https://github.com/remix-run/react-router-templates/tree/main/unstable_rsc-framework-mode
+[parcel-rsc-template]: https://github.com/remix-run/react-router-templates/tree/main/unstable_rsc-data-mode-parcel
+[vite-rsc-template]: https://github.com/remix-run/react-router-templates/tree/main/unstable_rsc-data-mode-vite
+[node-request-listener]: https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
+[hooks]: https://react.dev/reference/react/hooks
+[vite-env-only]: https://github.com/pcattori/vite-env-only
+[server-modules]: ../api/framework-conventions/server-modules
+[client-modules]: ../api/framework-conventions/client-modules
+[server-only-package]: https://www.npmjs.com/package/server-only
+[client-only-package]: https://www.npmjs.com/package/client-only
