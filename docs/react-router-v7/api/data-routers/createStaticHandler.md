@@ -5,12 +5,13 @@ title: createStaticHandler
 # createStaticHandler
 
 <!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
+⚠️ ⚠️ 重要 ⚠️ ⚠️ 
 
-ドキュメントの改善にご協力いただきありがとうございます！
+ドキュメント改善にご協力いただきありがとうございます！
 
-このファイルはソースコード内のJSDocコメントから自動生成されています。
-以下のファイルのJSDocコメントを編集してください。変更がマージされると、このファイルが再生成されます。
+このファイルはソースコード内の JSDoc コメントから自動生成されます。
+したがって、以下のファイルにある JSDoc コメントを編集してください。
+変更がマージされると、このファイルは再生成されます。
 
 https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/dom/server.tsx
 -->
@@ -21,7 +22,7 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/do
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.createStaticHandler.html)
 
-サーバーサイドでのデータ読み込みを実行するための静的ハンドラーを作成します。
+サーバーサイドのデータローディングを実行するためのスタティックハンドラーを作成します。
 
 ```tsx
 export async function handleRequest(request: Request) {
@@ -53,16 +54,16 @@ function createStaticHandler(
 
 ### routes
 
-静的ハンドラーを作成するための[ルートオブジェクト](https://api.reactrouter.com/v7/types/react_router.RouteObject.html)。
+スタティックハンドラーを作成するための [ルートオブジェクト](https://api.reactrouter.com/v7/types/react_router.RouteObject.html) です。
 
 ### opts.basename
 
-静的ハンドラーのベースURL（デフォルト: `/`）。
+スタティックハンドラーのベース URL です (デフォルト: `/`)。
 
 ### opts.future
 
-静的ハンドラーのフューチャーフラグ。
+スタティックハンドラーの future フラグです。
 
 ## 戻り値
 
-指定されたルートのデータをクエリするために使用できる静的ハンドラー。
+指定された routes のデータをクエリするために使用できるスタティックハンドラーです。

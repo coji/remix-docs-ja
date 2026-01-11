@@ -13,9 +13,9 @@ order: 3
 このファイルはオプションです
 </docs-info>
 
-[参照ドキュメント ↗](https://api.reactrouter.com/v7/types/_react_router_dev.config.Config.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/types/_react_router_dev.config.Config.html)
 
-React Routerアプリケーションのサーバーサイドレンダリング、ディレクトリの場所、ビルド設定などの側面をカスタマイズできるReact Routerフレームワーク設定ファイルです。
+React Router のフレームワーク設定ファイルで、React Router アプリケーションのサーバーサイドレンダリング、ディレクトリの場所、ビルド設定などの側面をカスタマイズできます。
 
 ```tsx filename=react-router.config.ts
 import type { Config } from "@react-router/dev/config";
@@ -32,7 +32,7 @@ export default {
 
 ### `appDirectory`
 
-ルートディレクトリからの相対パスで、`app`ディレクトリへのパスを指定します。デフォルトは`"app"`です。
+ルートディレクトリからの相対パスで、`app` ディレクトリへのパスを指定します。デフォルトは `"app"` です。
 
 ```tsx filename=react-router.config.ts
 export default {
@@ -42,7 +42,7 @@ export default {
 
 ### `basename`
 
-React Routerアプリケーションのベース名。デフォルトは`"/"`です。
+React Router アプリの basename です。デフォルトは `"/"` です。
 
 ```tsx filename=react-router.config.ts
 export default {
@@ -52,7 +52,7 @@ export default {
 
 ### `buildDirectory`
 
-プロジェクトからの相対パスで、ビルドディレクトリへのパスを指定します。デフォルトは`"build"`です。
+プロジェクトからの相対パスで、ビルドディレクトリへのパスを指定します。デフォルトは `"build"` です。
 
 ```tsx filename=react-router.config.ts
 export default {
@@ -62,43 +62,43 @@ export default {
 
 ### `buildEnd`
 
-React Routerの完全なビルドが完了した後に呼び出される関数です。
+React Router のビルドが完全に完了した後で呼び出される関数です。
 
 ```tsx filename=react-router.config.ts
 export default {
   buildEnd: async ({ buildManifest, reactRouterConfig, viteConfig }) => {
-    // ここにカスタムビルドロジックを記述
-    console.log("ビルドが完了しました！");
+    // Custom build logic here
+    console.log("Build completed!");
   },
 } satisfies Config;
 ```
 
 ### `future`
 
-今後の機能を選択するための将来のフラグを有効にします。
+今後の機能を選択的に使用できるように、将来のフラグを有効にします。
 
-詳細については、[将来のフラグ][future-flags]を参照してください。
+詳細については、[Future Flags][future-flags] を参照してください。
 
 ```tsx filename=react-router.config.ts
 export default {
   future: {
-    // ここで将来のフラグを有効にする
+    // Enable future flags here
   },
 } satisfies Config;
 ```
 
 ### `prerender`
 
-ビルド時にHTMLファイルにプリレンダリングするURLの配列。動的にURLを生成するために配列を返す関数にすることもできます。
+ビルド時に HTML ファイルとしてプリレンダリングする URL の配列です。URL を動的に生成するために、配列を返す関数にすることもできます。
 
-詳細については、[プリレンダリング][pre-rendering]を参照してください。
+詳細については、[Pre-Rendering][pre-rendering] を参照してください。
 
 ```tsx filename=react-router.config.ts
 export default {
-  // 静的配列
+  // Static array
   prerender: ["/", "/about", "/contact"],
 
-  // または動的関数
+  // Or dynamic function
   prerender: async ({ getStaticPaths }) => {
     const paths = await getStaticPaths();
     return ["/", ...paths];
@@ -108,52 +108,52 @@ export default {
 
 ### `presets`
 
-他のプラットフォームやツールとの統合を容易にするためのReact Routerプラグイン設定プリセットの配列。
+他のプラットフォームやツールとの統合を容易にするための、React Router プラグイン設定プリセットの配列です。
 
-詳細については、[プリセット][presets]を参照してください。
+詳細については、[Presets][presets] を参照してください。
 
 ```tsx filename=react-router.config.ts
 export default {
   presets: [
-    // ここにプリセットを追加
+    // Add presets here
   ],
 } satisfies Config;
 ```
 
 ### `routeDiscovery`
 
-クライアントがルートを検出してロードする方法を設定します。デフォルトは`mode: "lazy"`で`manifestPath: "/__manifest"`です。
+クライアントによるルートの検出とロード方法を設定します。デフォルトは `mode: "lazy"` で `manifestPath: "/__manifest"` です。
 
 **オプション:**
 
-- `mode: "lazy"` - ユーザーがナビゲートする際にルートが検出されます（デフォルト）
-  - `manifestPath` - `lazy`モードを使用する際のmanifestリクエストのカスタムパス
+- `mode: "lazy"` - ユーザーがナビゲートする際にルートが検出されます (デフォルト)
+  - `manifestPath` - `lazy` モードを使用する際の manifest リクエストのカスタムパス
 - `mode: "initial"` - すべてのルートが初期マニフェストに含まれます
 
 ```tsx filename=react-router.config.ts
 export default {
-  // 遅延ルート検出を有効にする（デフォルト）
+  // Enable lazy route discovery (default)
   routeDiscovery: {
     mode: "lazy",
     manifestPath: "/__manifest",
   },
 
-  // カスタムマニフェストパスを使用する
+  // Use a custom manifest path
   routeDiscovery: {
     mode: "lazy",
     manifestPath: "/custom-manifest",
   },
 
-  // 遅延検出を無効にし、すべてのルートを最初から含める
+  // Disable lazy discovery and include all routes initially
   routeDiscovery: { mode: "initial" },
 } satisfies Config;
 ```
 
-詳細については、[遅延ルート検出][lazy-route-discovery]を参照してください。
+詳細については、[Lazy Route Discovery][lazy-route-discovery] を参照してください。
 
 ### `serverBuildFile`
 
-サーバービルド出力のファイル名。このファイルは`.js`拡張子で終わる必要があり、サーバーにデプロイする必要があります。デフォルトは`"index.js"`です。
+サーバービルド出力のファイル名です。このファイルは `.js` 拡張子で終わり、サーバーにデプロイされるべきです。デフォルトは `"index.js"` です。
 
 ```tsx filename=react-router.config.ts
 export default {
@@ -163,14 +163,14 @@ export default {
 
 ### `serverBundles`
 
-ルートを異なるサーバーバンドルに割り当てるための関数。この関数は、サーバービルドディレクトリ内のバンドルのディレクトリ名として使用されるサーバーバンドルIDを返す必要があります。
+ルートを異なるサーバーバンドルに割り当てるための関数です。この関数は、サーバービルドディレクトリ内のバンドルのディレクトリ名として使用されるサーバーバンドル ID を返す必要があります。
 
-詳細については、[サーバーバンドル][server-bundles]を参照してください。
+詳細については、[Server Bundles][server-bundles] を参照してください。
 
 ```tsx filename=react-router.config.ts
 export default {
   serverBundles: ({ branch }) => {
-    // ルートブランチに基づいてバンドルIDを返す
+    // Return bundle ID based on route branch
     return branch.some((route) => route.id === "admin")
       ? "admin"
       : "main";
@@ -180,25 +180,25 @@ export default {
 
 ### `serverModuleFormat`
 
-サーバービルドの出力形式。デフォルトは`"esm"`です。
+サーバービルドの出力フォーマットです。デフォルトは `"esm"` です。
 
 ```tsx filename=react-router.config.ts
 export default {
-  serverModuleFormat: "cjs", // または "esm"
+  serverModuleFormat: "cjs", // or "esm"
 } satisfies Config;
 ```
 
 ### `ssr`
 
-`true`の場合、React Routerはアプリケーションをサーバーレンダリングします。
+もし `true` の場合、React Router はアプリケーションをサーバーレンダリングします。
 
-`false`の場合、React Routerはアプリケーションをプリレンダリングし、アセットとともに`index.html`ファイルとして保存するため、サーバーレンダリングなしでSPAとしてアプリケーションをデプロイできます。詳細については、["SPAモード"][spa-mode]を参照してください。
+もし `false` の場合、React Router はアプリケーションをプリレンダリングし、アセットとともに `index.html` ファイルとして保存します。これにより、サーバーレンダリングなしでアプリケーションを SPA としてデプロイできます。詳細については、["SPA Mode"][spa-mode] を参照してください。
 
-デフォルトは`true`です。
+デフォルトは `true` です。
 
 ```tsx filename=react-router.config.ts
 export default {
-  ssr: false, // サーバーサイドレンダリングを無効にする
+  ssr: false, // disabled server-side rendering
 } satisfies Config;
 ```
 

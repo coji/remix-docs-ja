@@ -8,9 +8,9 @@ title: 貢献
 
 オープンソースにおいては、さまざまな種類の貢献が可能であり、そのすべてが価値のあるものです。貢献を準備する際に役立ついくつかのガイドラインを以下に示します。
 
-## オープンガバナンスモデル
+## Open Governance モデル
 
-さらに進む前に、React Router でのバグ/イシュー/機能提案の取り扱いに関する情報について、オープンガバナンスの[ブログ投稿](https://remix.run/blog/rr-governance)と[ドキュメント](https://github.com/remix-run/react-router/blob/main/GOVERNANCE.md)をお読みください。
+先に進む前に、React Router でバグ/issue/機能提案をどのように扱っているかに関する情報について、Open Governance の[ブログ記事](https://remix.run/blog/rr-governance)と[ドキュメント](https://github.com/remix-run/react-router/blob/main/GOVERNANCE.md)をお読みください。
 
 ## セットアップ
 
@@ -37,7 +37,7 @@ title: 貢献
 
 ## バグを見つけたと思いますか？
 
-issue テンプレートに従い、**最小限で実行可能な**再現方法を提供してください。最も良いのは、[失敗するテスト](https://github.com/remix-run/react-router/blob/dev/integration/bug-report-test.ts) を含むプルリクエストです。次に良いのは、バグを示す [StackBlitz](https://reactrouter.com/new)、CodeSandbox、または GitHub リポジトリへのリンクです。
+issue テンプレートに従い、**最小限**で**実行可能な**再現手順を提供してください。最も良いのは、[失敗するテスト](https://github.com/remix-run/react-router/blob/dev/integration/bug-report-test.ts) を含むプルリクエストです。次に良いのは、バグを示す [StackBlitz](https://reactrouter.com/new)、CodeSandbox、または GitHub リポジトリへのリンクです。
 
 ## Issue が注目されていない？
 
@@ -45,15 +45,15 @@ issue テンプレートに従い、**最小限で実行可能な**再現方法�
 
 ## 新しい API または変更された API を提案しますか？
 
-⚠️ _新機能のプルリクエストから始めないでください。_
+⚠️ _新機能の PR から始めないでください。_
 
-新機能は、[オープンガバナンスモデル](https://github.com/remix-run/react-router/blob/main/GOVERNANCE.md#new-feature-process)に概説されているプロセスを経る必要があり、GitHub で[提案ディスカッション](https://github.com/remix-run/react-router/discussions/new?category=proposals)を開くことから始めることができます。React Router をアプリでどのように使用したいかを示す、思慮深いコメントとサンプルコードを提供してください。変更または追加する必要があるものについて結論を急ぐ前に、現在の API によってどのように制限されているかを示すことができれば、議論がしやすくなります。
+新機能は、[Open Governance モデル](https://github.com/remix-run/react-router/blob/main/GOVERNANCE.md#new-feature-process) で概説されているプロセスを経る必要があり、GitHub で[提案に関するディスカッション](https://github.com/remix-run/react-router/discussions/new?category=proposals)を開くことから始めることができます。React Router をアプリでどのように使用したいかを示す、思慮深いコメントとサンプルコードを提供してください。変更または追加する必要があるものについて結論を急ぐ前に、現在の API によってどのように制限されているかを示すことができれば、議論がしやすくなります。
 
 私たちは経験から、小さな API の方が通常は優れていることを学んだので、現在の API に明らかな制限がない限り、何か新しいものを追加することには少し抵抗があるかもしれません。とは言え、私たちがこれまで考慮していなかったケースについてお聞きするのはいつでも大歓迎ですので、遠慮なくお申し付けください！ :)
 
 ## 例を追加しますか？
 
-例は、main ブランチに直接追加できます。ローカルにクローンした main からブランチを作成します。完了したら、プルリクエストを作成し、例の概要を説明します。
+例は、`main` ブランチに直接追加できます。ローカルにクローンした `main` からブランチを作成します。完了したら、プルリクエストを作成し、例の概要を説明します。
 
 ## プルリクエストを作成しますか？
 
@@ -113,4 +113,4 @@ pnpm test packages/react-router-dev/
 
 ## リリース
 
-リリースプロセスのアウトラインについては、[DEVELOPMENT.md](https://github.com/remix-run/react-router/blob/main/DEVELOPMENT.md)を参照してください。
+リリースプロセスのアウトラインについては、[DEVELOPMENT.md](https://github.com/remix-run/react-router/blob/main/DEVELOPMENT.md) を参照してください。

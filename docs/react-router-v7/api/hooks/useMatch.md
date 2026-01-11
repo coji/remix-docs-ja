@@ -18,14 +18,13 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/ho
 
 [MODES: framework, data, declarative]
 
-## 概要
+## Summary
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useMatch.html)
+[Reference Documentation ↗](https://api.reactrouter.com/v7/functions/react_router.useMatch.html)
 
-指定されたパターンが現在のURLと一致する場合、[`PathMatch`](https://api.reactrouter.com/v7/interfaces/react_router.PathMatch.html)オブジェクトを返します。
-これは、コンポーネントが「アクティブ」状態を知る必要がある場合に便利です。例えば、[`<NavLink>`](../components/NavLink)などです。
+指定されたパターンが現在のURLと一致する場合、[`PathMatch`](https://api.reactrouter.com/v7/interfaces/react_router.PathMatch.html) オブジェクトを返します。これは、コンポーネントが「アクティブ」状態を知る必要がある場合に便利です。例えば、[`<NavLink>`](../components/NavLink) などです。
 
-## シグネチャ
+## Signature
 
 ```tsx
 function useMatch<ParamKey extends ParamParseKey<Path>, Path extends string>(
@@ -33,12 +32,12 @@ function useMatch<ParamKey extends ParamParseKey<Path>, Path extends string>(
 ): PathMatch<ParamKey> | null
 ```
 
-## パラメータ
+## Params
 
 ### pattern
 
-現在の[`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html)と照合するパターン。
+現在の [`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html) と照合するパターン。
 
-## 戻り値
+## Returns
 
-パターンが一致した場合のパス一致オブジェクト。それ以外の場合は`null`。
+パターンが一致した場合、パス一致オブジェクトを返します。それ以外の場合は `null` を返します。

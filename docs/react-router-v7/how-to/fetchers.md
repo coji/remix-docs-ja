@@ -4,6 +4,8 @@ title: Fetcher の使用
 
 # Fetcher の使用
 
+[MODES: framework, data]
+
 <br/>
 <br/>
 

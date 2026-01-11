@@ -4,27 +4,15 @@ title: useOutletContext
 
 # useOutletContext
 
-<!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
-
-Thank you for helping improve our documentation!
-
-This file is auto-generated from the JSDoc comments in the source
-code, so please edit the JSDoc comments in the file below and this
-file will be re-generated once those changes are merged.
-
-https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/hooks.tsx
--->
-
 [MODES: framework, data, declarative]
 
-## 概要
+## Summary
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useOutletContext.html)
+[Reference Documentation ↗](https://api.reactrouter.com/v7/functions/react_router.useOutletContext.html)
 
 親ルートの [`<Outlet context>`](../components/Outlet) を返します。
 
-親ルートは、子ルートと共有したい状態やその他の値を管理することがよくあります。必要であれば独自の[コンテキストプロバイダー](https://react.dev/learn/passing-data-deeply-with-context)を作成することもできますが、これは非常に一般的な状況であるため、[`<Outlet>`](../components/Outlet) に組み込まれています。
+親ルートが、子ルートと共有したい state や他の値を管理することはよくあります。必要であれば独自の [context provider](https://react.dev/learn/passing-data-deeply-with-context) を作成することもできますが、これはよくある状況であるため、[`<Outlet>`](../components/Outlet) に組み込まれています。
 
 ```tsx
 // Parent route
@@ -45,7 +33,7 @@ function Child() {
 }
 ```
 
-TypeScriptを使用している場合、親コンポーネントがコンテキスト値にアクセスするためのカスタムフックを提供することをお勧めします。これにより、コンシューマーが適切な型付けを得やすくなり、コンシューマーを制御し、誰がコンテキスト値を使用しているかを把握しやすくなります。
+TypeScript を使用している場合、親コンポーネントが context の値にアクセスするためのカスタム hook を提供することをお勧めします。これにより、コンシューマーが適切な型付けを得やすくなり、コンシューマーを制御し、誰が context の値を使用しているかを把握しやすくなります。
 
 より現実的な例を次に示します。
 
@@ -87,12 +75,12 @@ export default function DashboardMessages() {
 }
 ```
 
-## シグネチャ
+## Signature
 
 ```tsx
 function useOutletContext<Context = unknown>(): Context
 ```
 
-## 戻り値
+## Returns
 
-親の [`Outlet`](../components/Outlet) コンポーネントに渡されたコンテキスト値を返します。
+親 [`Outlet`](../components/Outlet) コンポーネントに渡された context の値

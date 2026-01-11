@@ -130,4 +130,4 @@ export function LoginPage() {
 
 ---
 
-次へ：[URL の値](./url-values)
+次へ: [URL 値](./url-values)

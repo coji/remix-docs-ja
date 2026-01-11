@@ -45,4 +45,4 @@ function useFetchers(): (Fetcher & {
 
 ## 戻り値
 
-それぞれが一意の`key`プロパティを持つ、実行中のすべての[`Fetcher`](https://api.reactrouter.com/v7/types/react_router.Fetcher.html)の配列。
+実行中のすべての[`Fetcher`](https://api.reactrouter.com/v7/types/react_router.Fetcher.html)の配列を返します。各要素は一意の `key` プロパティを持ちます。

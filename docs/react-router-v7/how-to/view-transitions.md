@@ -27,7 +27,7 @@ title: ビュートランジション
 
 ### 2. プログラムによるナビゲーションでビュートランジションを有効にする
 
-`useNavigate` フックを使用したプログラムによるナビゲーションを使用する場合、`viewTransition: true` オプションを渡すことでビュートランジションを有効にできます。
+`useNavigate` hook を使用してプログラムによるナビゲーションを行う場合、`viewTransition: true` オプションを渡すことでビュートランジションを有効にできます。
 
 ```tsx
 import { useNavigate } from "react-router";
@@ -64,21 +64,21 @@ export const images = [
   "https://remix.run/blog-images/headers/the-future-is-now.jpg",
   "https://remix.run/blog-images/headers/waterfall.jpg",
   "https://remix.run/blog-images/headers/webpack.png",
-  // ... その他の画像 ...
+  // ... more images ...
 ];
 
 export default function ImageGalleryRoute() {
   return (
     <div className="image-list">
-      <h1>画像リスト</h1>
+      <h1>Image List</h1>
       <div>
         {images.map((src, idx) => (
           <NavLink
             key={src}
             to={`/image/${idx}`}
-            viewTransition // このリンクでビュートランジションを有効にする
+            viewTransition // Enable view transitions for this link
           >
-            <p>画像番号 {idx}</p>
+            <p>Image Number {idx}</p>
             <img
               className="max-w-full contain-layout"
               src={src}
@@ -96,7 +96,7 @@ export default function ImageGalleryRoute() {
 ルート間でスムーズにトランジションする必要がある要素のビュートランジション名とアニメーションを定義します。
 
 ```css filename=app.css
-/* 画像グリッドのレイアウトスタイル */
+/* Layout styles for the image grid */
 .image-list > div {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -117,7 +117,7 @@ export default function ImageGalleryRoute() {
   width: fit-content;
 }
 
-/* ナビゲーション中に要素にトランジション名を割り当てる */
+/* Assign transition names to elements during navigation */
 .image-list a.transitioning img {
   view-transition-name: image-expand;
 }
@@ -142,9 +142,9 @@ export default function ImageDetailsRoute({
   return (
     <div className="image-detail">
       <Link to="/" viewTransition>
-        戻る
+        Back
       </Link>
-      <h1>画像番号 {params.id}</h1>
+      <h1>Image Number {params.id}</h1>
       <img src={images[Number(params.id)]} />
     </div>
   );
@@ -154,7 +154,7 @@ export default function ImageDetailsRoute({
 ### 4. 詳細ビューに一致するトランジションスタイルを追加する
 
 ```css filename=app.css
-/* リストビューからのトランジション名に一致させる */
+/* Match transition names from the list view */
 .image-detail h1 {
   font-size: 2rem;
   font-weight: 600;
@@ -171,7 +171,7 @@ export default function ImageDetailsRoute({
 
 ## 高度な使用法
 
-レンダープロパティまたは `useViewTransitionState` フックを使用して、ビュートランジションをより正確に制御できます。
+レンダープロパティまたは `useViewTransitionState` hook を使用して、ビュートランジションをより正確に制御できます。
 
 ### 1. レンダープロパティの使用
 
@@ -186,7 +186,7 @@ export default function ImageDetailsRoute({
             : "none",
         }}
       >
-        画像番号 {idx}
+        Image Number {idx}
       </p>
       <img
         src={src}
@@ -201,12 +201,12 @@ export default function ImageDetailsRoute({
 </NavLink>
 ```
 
-### 2. `useViewTransitionState` フックの使用
+### 2. `useViewTransitionState` hook の使用
 
 ```tsx filename=routes/image-gallery.tsx
 function NavImage(props: { src: string; idx: number }) {
   const href = `/image/${props.idx}`;
-  // フックは特定のルートのトランジション状態を提供します
+  // Hook provides transition state for specific route
   const isTransitioning = useViewTransitionState(href);
 
   return (
@@ -218,7 +218,7 @@ function NavImage(props: { src: string; idx: number }) {
             : "none",
         }}
       >
-        画像番号 {props.idx}
+        Image Number {props.idx}
       </p>
       <img
         src={props.src}

@@ -14,15 +14,15 @@ React Router は次の2つの方法でデプロイできます。
 - フルスタックホスティング
 - 静的ホスティング
 
-公式の [React Router テンプレート](https://github.com/remix-run/react-router-templates) は、アプリケーションのブートストラップに役立つか、独自のアプリケーションのリファレンスとして使用できます。
+公式の [React Router テンプレート](https://github.com/remix-run/react-router-templates) は、アプリケーションのブートストラップに役立ち、または自身のアプリケーションの参照として使用できます。
 
-静的ホスティングにデプロイする場合、React Router は他の React シングルページアプリケーションと同様にデプロイできます。
+静的ホスティングにデプロイする場合、React Router は他の React を使用したシングルページアプリケーションと同様にデプロイできます。
 
 ## テンプレート
 
-`create-react-router` コマンドを実行した後、README の指示に従ってください。
+`create-react-router` コマンドの実行後、README の指示に従ってください。
 
-### Node.js と Docker
+### Node.js (Docker 使用)
 
 ```
 npx create-react-router@latest --template remix-run/react-router-templates/default
@@ -31,7 +31,7 @@ npx create-react-router@latest --template remix-run/react-router-templates/defau
 - サーバーレンダリング
 - Tailwind CSS
 
-コンテナ化されたアプリケーションは、以下を含む Docker をサポートする任意のプラットフォームにデプロイできます。
+コンテナ化されたアプリケーションは、Docker をサポートするあらゆるプラットフォームにデプロイできます。具体的には以下の通りです。
 
 - AWS ECS
 - Google Cloud Run
@@ -40,7 +40,7 @@ npx create-react-router@latest --template remix-run/react-router-templates/defau
 - Fly.io
 - Railway
 
-### Node と Docker (カスタムサーバー)
+### Node.js (Docker とカスタムサーバー使用)
 
 ```
 npx create-react-router@latest --template remix-run/react-router-templates/node-custom-server
@@ -50,7 +50,7 @@ npx create-react-router@latest --template remix-run/react-router-templates/node-
 - Tailwind CSS
 - より詳細な制御のためのカスタム Express サーバー
 
-コンテナ化されたアプリケーションは、以下を含む Docker をサポートする任意のプラットフォームにデプロイできます。
+コンテナ化されたアプリケーションは、Docker をサポートするあらゆるプラットフォームにデプロイできます。具体的には以下の通りです。
 
 - AWS ECS
 - Google Cloud Run
@@ -59,7 +59,7 @@ npx create-react-router@latest --template remix-run/react-router-templates/node-
 - Fly.io
 - Railway
 
-### Node と Docker と Postgres
+### Node.js (Docker と Postgres 使用)
 
 ```
 npx create-react-router@latest --template remix-run/react-router-templates/node-postgres
@@ -70,7 +70,7 @@ npx create-react-router@latest --template remix-run/react-router-templates/node-
 - Tailwind CSS
 - より詳細な制御のためのカスタム Express サーバー
 
-コンテナ化されたアプリケーションは、以下を含む Docker をサポートする任意のプラットフォームにデプロイできます。
+コンテナ化されたアプリケーションは、Docker をサポートするあらゆるプラットフォームにデプロイできます。具体的には以下の通りです。
 
 - AWS ECS
 - Google Cloud Run
@@ -81,37 +81,12 @@ npx create-react-router@latest --template remix-run/react-router-templates/node-
 
 ### Vercel
 
-```
-npx create-react-router@latest --template remix-run/react-router-templates/vercel
-```
-
-- サーバーレンダリング
-- Tailwind CSS
-
-### Cloudflare Workers と D1
-
-```
-npx create-react-router@latest --template remix-run/react-router-templates/cloudflare-d1
-```
-
-- サーバーレンダリング
-- Drizzle ORM を使用した D1 データベース
-- Tailwind CSS
+Vercel は React Router 用の独自のテンプレートを維持しています。詳細については、[Vercel ガイド](https://vercel.com/templates/react-router/react-router-boilerplate) を参照してください。
 
 ### Cloudflare Workers
 
-```
-npx create-react-router@latest --template remix-run/react-router-templates/cloudflare
-```
-
-- サーバーレンダリング
-- Tailwind CSS
+Cloudflare は React Router 用の独自のテンプレートを維持しています。詳細については、[Cloudflare ガイド](https://developers.cloudflare.com/workers/framework-guides/web-apps/react-router/) を参照してください。
 
 ### Netlify
 
-```
-npx create-react-router@latest --template remix-run/react-router-templates/netlify
-```
-
-- サーバーレンダリング
-- Tailwind CSS
+Netlify は React Router 用の独自のテンプレートを維持しています。詳細については、[Netlify ガイド](https://docs.netlify.com/build/frameworks/framework-setup-guides/react-router/) を参照してください。

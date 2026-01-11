@@ -76,8 +76,8 @@ function NewProjectForm() {
       <input type="text" name="title" />
       <button type="submit">
         {fetcher.state !== "idle"
-          ? "送信中..."
-          : "送信"}
+          ? "Submitting..."
+          : "Submit"}
       </button>
     </fetcher.Form>
   );
@@ -97,8 +97,8 @@ function NewProjectForm() {
       <input type="text" name="title" />
       <button type="submit">
         {navigation.formAction === "/projects/new"
-          ? "送信中..."
-          : "送信"}
+          ? "Submitting..."
+          : "Submit"}
       </button>
     </Form>
   );
@@ -127,7 +127,7 @@ function Task({ task }) {
           name="status"
           value={isComplete ? "incomplete" : "complete"}
         >
-          {isComplete ? "未完了としてマーク" : "完了としてマーク"}
+          {isComplete ? "Mark Incomplete" : "Mark Complete"}
         </button>
       </fetcher.Form>
     </div>

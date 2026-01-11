@@ -4,6 +4,11 @@ title: ファイルルートの規約
 
 # ファイルルートの規約
 
+[MODES: framework]
+
+<br/>
+<br/>
+
 `@react-router/fs-routes` パッケージは、ファイル規約に基づいたルート設定を可能にします。
 
 ## セットアップ
@@ -293,15 +298,15 @@ export async function loader({ params }) {
 
 ## キャッチオールルート
 
-他の定義されたルートに一致しないリクエスト（404ページなど）に一致するルートを作成するには、ルートディレクトリ内に `$.tsx` という名前のファイルを作成します。
+定義されている他のルートと一致しないリクエスト（404ページなど）に一致するルートを作成するには、routes ディレクトリ内に `$.tsx` という名前のファイルを作成します。
 
 | URL                            | マッチするルート            |
-| ------------------------------ | ------------------------ |
-| `/`                            | `app/routes/_index.tsx`  |
-| `/about`                       | `app/routes/about.tsx`   |
-| `/any-invalid-path-will-match` | `app/routes/$.tsx`       |
+| ------------------------------ | ----------------------- |
+| `/`                            | `app/routes/_index.tsx` |
+| `/about`                       | `app/routes/about.tsx`  |
+| `/any-invalid-path-will-match` | `app/routes/$.tsx`      |
 
-デフォルトでは、一致したルートは200応答を返します。そのため、キャッチオールルートを404を返すように変更してください。
+デフォルトでは、一致したルートは 200 レスポンスを返します。そのため、キャッチオールルートを修正して 404 を返すようにしてください。
 
 ```tsx filename=app/routes/$.tsx
 export async function loader() {

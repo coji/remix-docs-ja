@@ -41,4 +41,4 @@ function MyRoute() {
 
 ---
 
-次へ: [アクション](./actions)
+次: [Actions](./actions)

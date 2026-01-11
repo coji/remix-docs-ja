@@ -22,7 +22,7 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/ho
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useNavigation.html)
 
-現在の[`Navigation`](https://api.reactrouter.com/v7/types/react_router.Navigation.html)を返します。ナビゲーションが進行中でない場合は、デフォルトで "idle" ナビゲーションになります。これを使用して、保留中の UI (グローバルスピナーなど) をレンダリングしたり、フォームナビゲーションから[`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData)を読み取ったりできます。
+現在の [`Navigation`](https://api.reactrouter.com/v7/types/react_router.Navigation.html) を返します。ナビゲーションが進行中でない場合は、デフォルトで "idle" ナビゲーションになります。これを使用して、保留中の UI (グローバルスピナーなど) をレンダリングしたり、フォームナビゲーションから [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) を読み取ったりできます。
 
 ```tsx
 import { useNavigation } from "react-router";
@@ -41,6 +41,6 @@ function SomeComponent() {
 function useNavigation(): Navigation
 ```
 
-## 戻り値
+## Returns
 
-現在の[`Navigation`](https://api.reactrouter.com/v7/types/react_router.Navigation.html)オブジェクト
+現在の [`Navigation`](https://api.reactrouter.com/v7/types/react_router.Navigation.html) オブジェクト

@@ -13,7 +13,7 @@ order: 1
 このファイルは必須です
 </docs-info>
 
-"root" ルート (`app/root.tsx`) は、React Router アプリケーションにおいて唯一の _必須_ ルートです。なぜなら、すべてのルートの親であり、ルートの `<html>` ドキュメントのレンダリングを担当するからです。
+「root」route (`app/root.tsx`) は、すべての route の親であり、root の `<html>` ドキュメントのレンダリングを担当するため、React Router アプリケーションで唯一 _必須_ の route です。
 
 ```tsx filename=app/root.tsx
 import { Outlet, Scripts } from "react-router";
@@ -37,7 +37,7 @@ export default function App() {
 
 ## レンダリングするコンポーネント
 
-ルートルートはドキュメントを管理するため、React Router が提供するいくつかの「ドキュメントレベル」コンポーネントをレンダリングするのに適切な場所です。これらのコンポーネントはルートルート内で一度だけ使用され、ページが適切にレンダリングされるために React Router が特定または構築したすべてを含みます。
+root route はドキュメントを管理するため、React Router が提供するいくつかの「ドキュメントレベル」のコンポーネントをレンダリングするのに適切な場所です。これらのコンポーネントは root route 内で一度使用され、ページが適切にレンダリングされるために React Router が見つけ出した、または構築したすべてを含みます。
 
 ```tsx filename=app/root.tsx
 import {
@@ -57,15 +57,15 @@ export default function App() {
         />
       </head>
       <body>
-        {/* 子ルートはここにレンダリングされます */}
+        {/* 子 route はここにレンダリングされます */}
         <Outlet />
 
-        {/* クライアントサイドの遷移におけるスクロール位置を管理します */}
-        {/* スクリプトにnonceベースのコンテンツセキュリティポリシーを使用する場合、`nonce`プロップを提供する必要があります。そうでない場合は、ここに示されているようにnonceプロップを省略してください。 */}
+        {/* クライアントサイドのトランジションでのスクロール位置を管理します */}
+        {/* スクリプトに nonce ベースのコンテンツセキュリティポリシーを使用する場合、`nonce` prop を指定する必要があります。それ以外の場合は、ここに示されているように nonce prop を省略してください。 */}
         <ScrollRestoration />
 
         {/* スクリプトタグはここに入ります */}
-        {/* スクリプトにnonceベースのコンテンツセキュリティポリシーを使用する場合、`nonce`プロップを提供する必要があります。そうでない場合は、ここに示されているようにnonceプロップを省略してください。 */}
+        {/* スクリプトに nonce ベースのコンテンツセキュリティポリシーを使用する場合、`nonce` prop を指定する必要があります。それ以外の場合は、ここに示されているように nonce prop を省略してください。 */}
         <Scripts />
       </body>
     </html>
@@ -73,7 +73,7 @@ export default function App() {
 }
 ```
 
-React 19 を使用していない場合、または React の [`<link>`][react-link]、[`<title>`][react-title]、[`<meta>`][react-meta] コンポーネントを使用せず、代わりに React Router の [`links`][react-router-links] および [`meta`][react-router-meta] エクスポートに依存している場合は、ルートルートに以下を追加する必要があります。
+React 19 を使用していない場合、または React の [`<link>`][react-link]、[`<title>`][react-title]、および [`<meta>`][react-meta] コンポーネントを使用しないことを選択し、代わりに React Router の [`links`][react-router-links] および [`meta`][react-router-meta] export に依存している場合は、root route に以下を追加する必要があります。
 
 ```tsx filename=app/root.tsx
 import { Links, Meta } from "react-router";
@@ -82,10 +82,10 @@ export default function App() {
   return (
     <html lang="en">
       <head>
-        {/* すべてのルートのすべての`meta`エクスポートはここにレンダリングされます */}
+        {/* すべての route の `meta` export はここにレンダリングされます */}
         <Meta />
 
-        {/* すべてのルートのすべての`link`エクスポートはここにレンダリングされます */}
+        {/* すべての route の `link` export はここにレンダリングされます */}
         <Links />
       </head>
       <body>
@@ -98,16 +98,16 @@ export default function App() {
 }
 ```
 
-## レイアウトのエクスポート
+## Layout Export
 
-ルートルートはすべての [ルートモジュールエクスポート][route-module] をサポートしています。
+root route はすべての [route module export][route-module] をサポートしています。
 
-ルートルートは、追加のオプションの `Layout` エクスポートもサポートしています。`Layout` コンポーネントには2つの目的があります。
+root route は、追加のオプションの `Layout` export もサポートしています。`Layout` コンポーネントには 2 つの目的があります。
 
-1. ルートコンポーネント、`HydrateFallback`、および `ErrorBoundary` 間でドキュメントの「アプリシェル」の重複を避ける
-2. ルートコンポーネント/`HydrateFallback`/`ErrorBoundary` 間を切り替える際に、React がアプリシェル要素を再マウントするのを防ぐ。これにより、React が `<Links>` コンポーネントから `<link rel="stylesheet">` タグを削除したり再追加したりすると、FOUC（Flash of Unstyled Content）が発生する可能性があります。
+1. root コンポーネント、`HydrateFallback`、および `ErrorBoundary` 全体でドキュメントの「app shell」が重複するのを避ける
+2. root コンポーネント / `HydrateFallback` / `ErrorBoundary` 間を切り替えるときに React が app shell 要素を再マウントするのを防ぐ。これにより、React が `<Links>` コンポーネントから `<link rel="stylesheet">` タグを削除して再度追加すると、FOUC が発生する可能性があります。
 
-`Layout` は単一の `children` プロップを受け取ります。これは `default` エクスポート（例: `App`）、`HydrateFallback`、または `ErrorBoundary` です。
+`Layout` は単一の `children` prop を受け取ります。これは `default` export (例: `App`)、`HydrateFallback`、または `ErrorBoundary` のいずれかです。
 
 ```tsx filename=app/root.tsx
 export function Layout({ children }) {
@@ -123,7 +123,7 @@ export function Layout({ children }) {
         <Links />
       </head>
       <body>
-        {/* children はルートコンポーネント、ErrorBoundary、またはHydrateFallbackになります */}
+        {/* children は、root Component、ErrorBoundary、または HydrateFallback になります */}
         {children}
         <Scripts />
         <ScrollRestoration />
@@ -139,13 +139,13 @@ export default function App() {
 export function ErrorBoundary() {}
 ```
 
-**`Layout` コンポーネントにおける `useLoaderData` についての注意**
+**`Layout` コンポーネントにおける `useLoaderData` に関する注意点**
 
-`useLoaderData` は、正常なルートレンダリングを意図しており、その型定義には `loader` が正常に実行され、何かを返したという組み込みの仮定があるため、`ErrorBoundary` コンポーネントでの使用は許可されていません。`ErrorBoundary` では、`loader` がエラーをスローして境界をトリガーした可能性があるため、この仮定は成り立ちません！`ErrorBoundary` でローダーデータにアクセスするには、ローダーデータが `undefined` である可能性を考慮した `useRouteLoaderData` を使用できます。
+`useLoaderData` は `ErrorBoundary` コンポーネントでの使用が許可されていません。これは、正常な route レンダリングを意図しており、その型定義には `loader` が正常に実行され何かを返したという組み込みの前提があるためです。`loader` がエラーをスローして境界をトリガーした可能性があるため、`ErrorBoundary` ではその前提は成り立ちません！`ErrorBoundary` で loader data にアクセスするには、loader data が `undefined` である可能性を考慮する `useRouteLoaderData` を使用できます。
 
-`Layout` コンポーネントは成功時とエラー時の両方のフローで使用されるため、この同じ制限が適用されます。`Layout` で、リクエストが成功したかどうかに応じてロジックを分岐させる必要がある場合は、`useRouteLoaderData("root")` と `useRouteError()` を使用できます。
+`Layout` コンポーネントは成功フローとエラーフローの両方で使用されるため、同じ制限が適用されます。`Layout` 内で、それが成功したリクエストであるかどうかに応じてロジックを分岐させる必要がある場合は、`useRouteLoaderData("root")` と `useRouteError()` を使用できます。
 
-<docs-warn>あなたの `<Layout>` コンポーネントは `ErrorBoundary` のレンダリングに使用されるため、レンダリングエラーに遭遇することなく `ErrorBoundary` をレンダリングできることを _非常に慎重に_ 確認する必要があります。もし `Layout` が境界をレンダリングしようとして別のエラーをスローした場合、それは使用できなくなり、UIは非常に最小限の組み込みのデフォルト `ErrorBoundary` にフォールバックします。</docs-warn>
+<docs-warn> `<Layout>` コンポーネントは `ErrorBoundary` のレンダリングに使用されるため、レンダリングエラーなしで `ErrorBoundary` をレンダリングできるように _非常に注意深く_ 確認する必要があります。`Layout` が境界をレンダリングしようとして別のエラーをスローすると、使用できなくなり、UI は非常に最小限の組み込みのデフォルト `ErrorBoundary` にフォールバックします。</docs-warn>
 
 ```tsx filename=app/root.tsx lines=[6-7,19-29,32-34]
 export function Layout({

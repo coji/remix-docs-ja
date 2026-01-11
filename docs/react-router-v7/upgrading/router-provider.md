@@ -423,7 +423,7 @@ npm run dev
 
 ## SSR および/またはプリレンダリングを有効にする
 
-サーバーレンダリングと静的プリレンダリングを有効にする場合は、バンドラープラグインの `ssr` および `prerender` オプションを使用して有効にできます。SSR の場合は、サーバービルドをサーバーにデプロイする必要もあります。
+サーバーレンダリングと静的プリレンダリングを有効にする場合は、バンドラープラグインの `ssr` および `prerender` オプションを使用して有効にできます。SSR の場合は、サーバービルドをサーバーにデプロイする必要もあります。詳細については、[デプロイ][deploying] を参照してください。
 
 ```ts filename=react-router.config.ts
 import type { Config } from "@react-router/dev/config";
@@ -437,6 +437,7 @@ export default {
 ```
 
 [upgrade-component-routes]: ./component-routes
+[deploying]: ../start/deploying
 [configuring-routes]: ../start/framework/routing
 [route-modules]: ../start/framework/route-module
 [type-safety]: ../how-to/route-module-type-safety

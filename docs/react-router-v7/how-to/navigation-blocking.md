@@ -1,25 +1,25 @@
 ---
-title: ナビゲーションブロッキング
+title: ナビゲーションのブロック
 ---
 
-# ナビゲーションブロッキング
+# ナビゲーションのブロック
 
 [MODES: framework, data]
 
 <br/>
 <br/>
 
-ユーザーが重要なフォームの入力など、ワークフローの途中にいる場合、ページからの離脱を防ぎたい場合があります。
+ユーザーが重要なフォームへの入力などのワークフローの途中にいる場合、そのページから移動するのを防ぎたいことがあります。
 
-この例では、以下を示します。
+この例では以下を示します。
 
-- フォームとフェッチャーで呼び出されるアクションを持つルートの設定
-- フォームがダーティな場合のナビゲーションのブロック
-- ユーザーがページを離れようとしたときの確認の表示
+- フォームと、fetcher を用いて呼び出される action を持つ route の設定
+- フォームが dirty な状態のときにナビゲーションをブロックする
+- ユーザーがページを離れようとしたときに確認を表示する
 
-## 1. フォームを持つルートを設定する
+## 1. フォームを持つ route の設定
 
-フォームを持つルートを追加します。この例では "contact" ルートを使用します。
+フォームを持つ route を追加します。この例では「contact」route を使用します。
 
 ```ts filename=routes.ts
 import {
@@ -34,7 +34,7 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-contact ルートモジュールにフォームを追加します。
+contact route モジュールにフォームを追加します。
 
 ```tsx filename=routes/contact.tsx
 import { useFetcher } from "react-router";
@@ -73,9 +73,9 @@ export default function Contact() {
 }
 ```
 
-## 2. ダーティ状態と onChange ハンドラを追加する
+## 2. dirty state と onChange handler の追加
 
-フォームのダーティ状態を追跡するために、単一のブール値と簡単なフォームの onChange ハンドラを使用します。ダーティ状態の追跡方法は異なる場合がありますが、このガイドではこれで機能します。
+フォームの dirty state を追跡するために、単一の boolean と簡単なフォームの onChange handler を使用します。dirty state の追跡方法は異なる場合がありますが、このガイドではこの方法で動作します。
 
 ```tsx filename=routes/contact.tsx lines=[2,8-12]
 export default function Contact() {
@@ -91,13 +91,13 @@ export default function Contact() {
         setIsDirty(Boolean(email || message));
       }}
     >
-      {/* 既存のコード */}
+      {/* existing code */}
     </fetcher.Form>
   );
 }
 ```
 
-## 3. フォームがダーティな場合にナビゲーションをブロックする
+## 3. フォームが dirty な状態のときにナビゲーションをブロックする
 
 ```tsx filename=routes/contact.tsx lines=[1,6-8]
 import { useBlocker } from "react-router";
@@ -109,15 +109,15 @@ export default function Contact() {
     useCallback(() => isDirty, [isDirty]),
   );
 
-  // ... 既存のコード
+  // ... existing code
 }
 ```
 
 これでナビゲーションはブロックされますが、ユーザーがそれを確認する方法はありません。
 
-## 4. 確認UIを表示する
+## 4. 確認 UI の表示
 
-これは単純な div を使用しますが、モーダルダイアログを使用することもできます。
+これはシンプルな div を使用していますが、モーダルダイアログを使用することもできます。
 
 ```tsx filename=routes/contact.tsx lines=[19-41]
 export default function Contact() {
@@ -136,23 +136,23 @@ export default function Contact() {
         setIsDirty(Boolean(email || message));
       }}
     >
-      {/* 既存のコード */}
+      {/* existing code */}
 
       {blocker.state === "blocked" && (
         <div>
-          <p>待ってください！まだメッセージを送信していません:</p>
+          <p>Wait! You didn't send the message yet:</p>
           <p>
             <button
               type="button"
               onClick={() => blocker.proceed()}
             >
-              離れる
+              Leave
             </button>{" "}
             <button
               type="button"
               onClick={() => blocker.reset()}
             >
-              ここに留まる
+              Stay here
             </button>
           </p>
         </div>
@@ -162,11 +162,11 @@ export default function Contact() {
 }
 ```
 
-ユーザーが「離れる」をクリックすると、`blocker.proceed()` がナビゲーションを続行します。「ここに留まる」をクリックすると、`blocker.reset()` がブロッカーをクリアし、現在のページに留まります。
+ユーザーが「Leave」をクリックすると `blocker.proceed()` によってナビゲーションが続行されます。「Stay here」をクリックすると `blocker.reset()` によって blocker がクリアされ、現在のページに留まります。
 
-## 5. アクションが解決したときにブロッカーをリセットする
+## 5. action が解決したときに blocker をリセットする
 
-ユーザーが「離れる」または「ここに留まる」のどちらもクリックせずにフォームを送信した場合、ブロッカーはまだアクティブなままです。エフェクトを使用して、アクションが解決したときにブロッカーをリセットしましょう。
+ユーザーが「Leave」または「Stay here」のどちらもクリックせずにフォームを送信した場合、blocker はまだアクティブなままです。action が effect とともに解決したときに blocker をリセットしましょう。
 
 ```tsx filename=routes/contact.tsx
 useEffect(() => {
@@ -178,29 +178,29 @@ useEffect(() => {
 }, [fetcher.data]);
 ```
 
-## 6. アクションが解決したときにフォームをクリアする
+## 6. action が解決したときにフォームをクリアする
 
-ナビゲーションブロッキングとは無関係ですが、ref を使用してアクションが解決したときにフォームをクリアしましょう。
+ナビゲーションのブロックとは直接関係ありませんが、action が ref とともに解決したときにフォームをクリアしましょう。
 
 ```tsx
 let formRef = useRef<HTMLFormElement>(null);
 
-// フォームに設定します
+// put it on the form
 <fetcher.Form
   ref={formRef}
   method="post"
   onChange={(event) => {
-    // ... 既存のコード
+    // ... existing code
   }}
 >
-  {/* 既存のコード */}
+  {/* existing code */}
 </fetcher.Form>;
 ```
 
 ```tsx
 useEffect(() => {
   if (fetcher.data?.ok) {
-    // エフェクト内でフォームをクリアします
+    // clear the form in the effect
     formRef.current?.reset();
     if (blocker.state === "blocked") {
       blocker.reset();
@@ -209,13 +209,13 @@ useEffect(() => {
 }, [fetcher.data]);
 ```
 
-あるいは、ナビゲーションが現在ブロックされている場合、ブロッカーをリセットする代わりに、ブロックされたナビゲーションを続行することもできます。
+あるいは、ナビゲーションが現在ブロックされている場合、blocker をリセットする代わりに、ブロックされたナビゲーションに進むことができます。
 
 ```tsx
 useEffect(() => {
   if (fetcher.data?.ok) {
     if (blocker.state === "blocked") {
-      // ブロックされたナビゲーションを続行します
+      // proceed with the blocked navigation
       blocker.proceed();
     } else {
       formRef.current?.reset();
@@ -227,7 +227,7 @@ useEffect(() => {
 この場合のユーザーフローは次のとおりです。
 
 - ユーザーがフォームに入力する
-- ユーザーが「送信」をクリックするのを忘れて、代わりにリンクをクリックする
+- ユーザーが「送信」をクリックするのを忘れ、代わりにリンクをクリックする
 - ナビゲーションがブロックされ、確認メッセージが表示される
-- 「離れる」または「ここに留まる」をクリックする代わりに、ユーザーはフォームを送信する
+- ユーザーは「Leave」または「Stay here」をクリックする代わりにフォームを送信する
 - ユーザーは要求されたページに移動する

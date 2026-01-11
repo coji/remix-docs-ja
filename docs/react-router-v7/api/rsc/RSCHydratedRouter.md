@@ -22,13 +22,11 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/rs
 <br />
 <br />
 
-<docs-warning>このAPIは実験的であり、マイナー/パッチリリースで破壊的変更が行われる可能性があります。注意して使用し、関連する変更についてはリリースノートに**非常に**注意を払ってください。</docs-warning>
+<docs-warning>この API は実験的なものであり、マイナーリリースやパッチリリースで破壊的変更が行われる可能性があります。使用する際は注意し、関連する変更についてはリリースノートに**非常**に注意してください。</docs-warning>
 
 ## 概要
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.unstable_RSCHydratedRouter.html)
-
-サーバーでレンダリングされた[`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html)をブラウザでハイドレートします。
+ブラウザでサーバーレンダリングされた [`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html) をハイドレートします。
 
 ```tsx
 import { startTransition, StrictMode } from "react";
@@ -71,20 +69,20 @@ function RSCHydratedRouter({
 
 ### createFromReadableStream
 
-サーバーからのペイロードをデコードするために使用される、`react-server-dom-xyz/client`の`createFromReadableStream`関数です。
+サーバーからの payload をデコードするために使用される、`react-server-dom-xyz/client` の `createFromReadableStream` 関数です。
 
 ### fetch
 
-オプションのfetch実装です。デフォルトはグローバルの[`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/fetch)です。
+オプションの `fetch` の実装です。デフォルトはグローバルな [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/fetch) です。
 
 ### getContext
 
-[`RouterContextProvider`](../utils/RouterContextProvider)インスタンスを返す関数です。これは、クライアントの[`action`](../../start/data/route-object#action)s、[`loader`](../../start/data/route-object#loader)s、および[middleware](../../how-to/middleware)に`context`引数として提供されます。この関数は、ナビゲーションまたはフェッチャー呼び出しごとに新しい`context`インスタンスを生成するために呼び出されます。
+クライアントの [`action`](../../start/data/route-object#action)、[`loader`](../../start/data/route-object#loader)、および [`middleware`](../../how-to/middleware) に `context` 引数として提供される、[`RouterContextProvider`](../utils/RouterContextProvider) インスタンスを返す関数です。この関数は、ナビゲーションまたはフェッチャーの呼び出しごとに新しい `context` インスタンスを生成するために呼び出されます。
 
 ### payload
 
-ハイドレートするデコードされた[`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html)です。
+ハイドレートするデコードされた [`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html) です。
 
 ### routeDiscovery
 
-`"eager"`または`"lazy"` - リンクが積極的に検出されるか、クリックされるまで遅延されるかを決定します。
+`"eager"` または `"lazy"` - リンクが積極的に発見されるか、クリックされるまで遅延されるかを決定します。

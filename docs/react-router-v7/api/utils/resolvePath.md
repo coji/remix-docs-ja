@@ -18,28 +18,28 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/ro
 
 [MODES: framework, data, declarative]
 
-## Summary
+## 概要
 
-[Reference Documentation ↗](https://api.reactrouter.com/v7/functions/react_router.resolvePath.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.resolvePath.html)
 
 指定されたパス名に対する相対パスを解決した [`Path`](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) オブジェクトを返します。
 
-## Signature
+## シグネチャ
 
 ```tsx
 function resolvePath(to: To, fromPathname = "/"): Path
 ```
 
-## Params
+## パラメータ
 
 ### to
 
-解決するパス。文字列または部分的な [`Path`](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) オブジェクトのいずれかです。
+解決するパス。文字列、または部分的な [`Path`](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) オブジェクトです。
 
 ### fromPathname
 
-パスを解決する元のパス名。デフォルトは `/` です。
+パスを解決する際の基準となる pathname。デフォルトは `/` です。
 
-## Returns
+## 戻り値
 
-解決されたパス名、search、および hash を含む [`Path`](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) オブジェクト。
+解決された pathname、search、および hash を含む [`Path`](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) オブジェクト。

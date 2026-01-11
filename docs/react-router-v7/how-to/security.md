@@ -4,6 +4,11 @@ title: セキュリティ
 
 # セキュリティ
 
+[MODES: framework]
+
+<br/>
+<br/>
+
 これは決して包括的なガイドではありませんが、React Router は、_セキュリティ_という_非常に大きな_傘の下にあるいくつかの側面に対処するのに役立つ機能を提供します。
 
 ## `Content-Security-Policy`

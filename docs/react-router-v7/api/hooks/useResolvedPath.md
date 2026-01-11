@@ -4,6 +4,18 @@ title: useResolvedPath
 
 # useResolvedPath
 
+<!--
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️
+
+Thank you for helping improve our documentation!
+
+This file is auto-generated from the JSDoc comments in the source
+code, so please edit the JSDoc comments in the file below and this
+file will be re-generated once those changes are merged.
+
+https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/hooks.tsx
+-->
+
 [MODES: framework, data, declarative]
 
 ## 概要
@@ -45,8 +57,8 @@ function useResolvedPath(
 
 ### options.relative
 
-デフォルトは`"route"`で、ルーティングはルートツリーに対して相対的になります。相対ルーティングをパスセグメントに対して動作させるには、`"path"`に設定します。
+デフォルトは `"route"` で、ルーティングがルートツリーに対して相対的になります。相対ルーティングがパスセグメントに対して機能するように、`"path"` に設定します。
 
 ## 戻り値
 
-解決された [`Path`](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) オブジェクト（`pathname`、`search`、`hash` を含む）
+`pathname`、`search`、および `hash` を含む、解決された [`Path`](https://api.reactrouter.com/v7/interfaces/react_router.Path.html) オブジェクト。

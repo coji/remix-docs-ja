@@ -1,5 +1,5 @@
 ---
-title: usePrompt
+title: unstable_usePrompt
 unstable: true
 ---
 
@@ -22,21 +22,21 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/do
 <br />
 <br />
 
-<docs-warning>このAPIは実験的であり、マイナー/パッチリリースで破壊的変更が発生する可能性があります。ご使用の際は注意し、関連する変更についてはリリースノートに**細心の**注意を払ってください。</docs-warning>
+<docs-warning>この API は実験的であり、マイナー/パッチリリースで破壊的変更が加えられる可能性があります。慎重に使用し、関連する変更についてはリリースノートに**非常**に注意してください。</docs-warning>
 
 ## 概要
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.unstable_usePrompt.html)
 
-[`useBlocker`](../hooks/useBlocker)でカスタムUIを構築する代わりに、ユーザーに[`window.confirm`](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm)プロンプトを表示するための`useBlocker`のラッパーです。
+[`useBlocker`](../hooks/useBlocker) をラップし、[`useBlocker`](../hooks/useBlocker) でカスタム UI を構築する代わりに、[`window.confirm`](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm) プロンプトをユーザーに表示します。
 
-この手法には多くの問題点があり、確認ダイアログが開いている間にユーザーが追加の戻る/進むナビゲーションをクリックすると、ブラウザ間で動作が大きく異なり（時には誤動作する）ため、`unstable_`フラグは削除されません。自己責任でご使用ください。
+このテクニックには多くの未完成な点があり、確認ダイアログが開いている間にユーザーが追加の「戻る」/「進む」ナビゲーションをクリックした場合、ブラウザ間で動作が大きく異なる（時には正しくない）ため、`unstable_` フラグは削除されません。自己責任で使用してください。
 
 ```tsx
 function ImportantForm() {
   let [value, setValue] = React.useState("");
 
-  // 入力にデータが入力されている場合に、他の場所へのナビゲーションをブロックします
+  // 入力にデータが入力されている場合、他の場所へのナビゲーションをブロックします
   unstable_usePrompt({
     message: "Are you sure?",
     when: ({ currentLocation, nextLocation }) =>
@@ -76,11 +76,11 @@ function usePrompt({
 
 ### options.message
 
-確認ダイアログに表示するメッセージです。
+確認ダイアログに表示するメッセージ。
 
 ### options.when
 
-ナビゲーションをブロックするかどうかを示すブール値、またはブール値を返す関数です。関数が提供された場合、`currentLocation`と`nextLocation`プロパティを持つオブジェクトを受け取ります。
+ナビゲーションをブロックするかどうかを示す boolean または boolean を返す関数。関数が提供された場合、`currentLocation` と `nextLocation` プロパティを持つオブジェクトを受け取ります。
 
 ## 戻り値
 

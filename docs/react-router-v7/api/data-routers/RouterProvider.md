@@ -4,25 +4,13 @@ title: RouterProvider
 
 # RouterProvider
 
-<!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
-
-Thank you for helping improve our documentation!
-
-This file is auto-generated from the JSDoc comments in the source
-code, so please edit the JSDoc comments in the file below and this
-file will be re-generated once those changes are merged.
-
-https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/components.tsx
--->
-
 [MODES: data]
 
 ## 概要
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.RouterProvider.html)
 
-指定された[`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html)のUIをレンダリングします。このコンポーネントは通常、アプリの要素ツリーの最上位に配置する必要があります。
+与えられた [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html) のUIをレンダリングします。このコンポーネントは通常、アプリの要素ツリーの最上位に配置されるべきです。
 
 ```tsx
 import { createBrowserRouter } from "react-router";
@@ -35,15 +23,16 @@ createRoot(document.getElementById("root")).render(
 );
 ```
 
-<docs-info>このコンポーネントは`react-router`と`react-router/dom`の両方からエクスポートされていますが、唯一の違いは、後者が`react-dom`の[`flushSync`](https://react.dev/reference/react-dom/flushSync)実装を自動的に接続することです。非DOM環境で実行している場合を除き、_ほとんどの場合_`react-router/dom`からのバージョンを使用することをお勧めします。</docs-info>
+<docs-info>このコンポーネントは `react-router` と `react-router/dom` の両方からエクスポートされており、後者のみが `react-dom` の [`flushSync`](https://react.dev/reference/react-dom/flushSync) 実装を自動的に設定するという違いがある点に注意してください。非DOM環境で実行している場合を除き、_ほぼ常に_ `react-router/dom` からのバージョンを使用したいと考えるでしょう。</docs-info>
 
-## シグネチャ
+## Signature
 
 ```tsx
 function RouterProvider({
   router,
   flushSync: reactDomFlushSyncImpl,
-  unstable_onError,
+  onError,
+  unstable_useTransitions,
 }: RouterProviderProps): React.ReactElement
 ```
 
@@ -51,25 +40,37 @@ function RouterProvider({
 
 ### flushSync
 
-更新をフラッシュするために使用する[`ReactDOM.flushSync`](https://react.dev/reference/react-dom/flushSync)の実装です。
+アップデートをフラッシュするために使用する [`ReactDOM.flushSync`](https://react.dev/reference/react-dom/flushSync) の実装です。
 
-通常、これについて心配する必要はありません。
-- `react-router/dom`からエクスポートされる`RouterProvider`は、これを内部で処理します。
-- 非DOM環境でレンダリングしている場合、`react-router`から`RouterProvider`をインポートし、このプロパティを無視できます。
+通常、これを気にする必要はありません。
+- `react-router/dom` からエクスポートされる `RouterProvider` は、これを内部で処理します。
+- 非DOM環境でレンダリングしている場合、`react-router` から `RouterProvider` をインポートし、この props を無視できます。
 
-### unstable_onError
+### onError
 
-アプリケーションで発生するloader/action/renderエラーに対して呼び出されるエラーハンドラ関数です。これは、再レンダリングの影響を受けず、エラーごとに1回だけ実行されるため、`ErrorBoundary`の代わりにエラーをログに記録したり報告したりするのに役立ちます。
+アプリケーションで発生するあらゆる middleware、loader、action、またはレンダリングエラーに対して呼び出されるエラーハンドラー関数です。これは `ErrorBoundary` 内ではなく、エラーのロギングや報告に役立ちます。なぜなら、再レンダリングの対象ではなく、エラーごとに1回だけ実行されるためです。
 
-`errorInfo`パラメータは[`componentDidCatch`](https://react.dev/reference/react/Component#componentdidcatch)から渡され、レンダリングエラーの場合にのみ存在します。
+`errorInfo` パラメーターは [`componentDidCatch`](https://react.dev/reference/react/Component#componentdidcatch) から渡され、レンダリングエラーの場合にのみ存在します。
 
 ```tsx
-<RouterProvider unstable_onError=(error, errorInfo) => {
-  console.error(error, errorInfo);
-  reportToErrorService(error, errorInfo);
+<RouterProvider onError=(error, info) => {
+  let { location, params, unstable_pattern, errorInfo } = info;
+  console.error(error, location, errorInfo);
+  reportToErrorService(error, location, errorInfo);
 }} />
 ```
 
 ### router
 
-ナビゲーションとデータフェッチに使用する[`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html)インスタンスです。
+ナビゲーションおよびデータフェッチングに使用する [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html) インスタンスです。
+
+### unstable_useTransitions
+
+ルーターの state のアップデートが、内部的に [`React.startTransition`](https://react.dev/reference/react/startTransition) でラップされるかどうかを制御します。
+
+- `undefined` のままにすると、すべての state のアップデートが `React.startTransition` でラップされます。
+  - これは、独自のナビゲーションやフェッチャーを `startTransition` でラップしている場合に、バグのある動作につながる可能性があります。
+- `true` に設定すると、[`Link`](../components/Link) や [`Form`](../components/Form) のナビゲーションは `React.startTransition` でラップされ、ルーターの state の変更も `React.startTransition` でラップされるだけでなく、ナビゲーション途中のルーターの state の変更をUIに表示するために [`useOptimistic`](https://react.dev/reference/react/useOptimistic) を通じて送信されます。
+- `false` に設定すると、ルーターはナビゲーションや state の変更において `React.startTransition` または `React.useOptimistic` を利用しません。
+
+詳細については、[ドキュメント](https://reactrouter.com/explanation/react-transitions)を参照してください。

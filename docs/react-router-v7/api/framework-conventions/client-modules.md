@@ -8,33 +8,33 @@ title: .client モジュール
 
 ## 概要
 
-ブラウザでモジュールの副作用を使用するファイルや依存関係があるかもしれません。ファイル名に `*.client.ts` を使用するか、`.client` ディレクトリ内にファイルをネストすることで、それらをサーバーバンドルから除外できます。
+ブラウザでモジュールの副作用を使用するファイルや依存関係がある場合があります。ファイル名に `*.client.ts` を使用するか、ファイルを `.client` ディレクトリ内にネストすることで、それらをサーバーバンドルから強制的に除外できます。
 
 ```ts filename=feature-check.client.ts
-// これはサーバーで動作しません
+// this would break the server
 export const supportsVibrationAPI =
   "vibrate" in window.navigator;
 ```
 
-このモジュールからエクスポートされた値はすべてサーバー上では `undefined` になるため、それらを使用できるのは [`useEffect`][use_effect] やクリックハンドラーなどのユーザーイベント内のみです。
+このモジュールからエクスポートされる値はすべてサーバー上では `undefined` になるため、それらを使用できるのは [`useEffect`][use_effect] やクリックハンドラーのようなユーザーイベントのみであることに注意してください。
 
 ```ts
 import { supportsVibrationAPI } from "./feature-check.client.ts";
 
 console.log(supportsVibrationAPI);
-// サーバー: undefined
-// クライアント: true | false
+// server: undefined
+// client: true | false
 ```
 
 <docs-info>
 
-クライアント/サーバーバンドルに何を含めるかについて、より高度な制御が必要な場合は、[`vite-env-only` プラグイン](https://github.com/pcattori/vite-env-only) を確認してください。
+クライアント/サーバーバンドルに含まれるものをより高度に制御する必要がある場合は、[`vite-env-only` プラグイン](https://github.com/pcattori/vite-env-only)を確認してください。
 
 </docs-info>
 
 ## 使用パターン
 
-### 個別ファイル
+### 個々のファイル
 
 ファイル名に `.client` を追加することで、個々のファイルをクライアント専用としてマークします。
 
@@ -61,7 +61,7 @@ app/
 
 ## 例
 
-### ブラウザ機能の検出
+### ブラウザの機能検出
 
 ```ts filename=app/utils/browser.client.ts
 export const canUseDOM = typeof window !== "undefined";
@@ -75,7 +75,7 @@ export const supportsVibrationAPI =
 ### クライアント専用ライブラリ
 
 ```ts filename=app/analytics.client.ts
-// これはサーバーで動作しません
+// これはサーバー上で動作しません
 import { track } from "some-browser-only-analytics-lib";
 
 export function trackEvent(eventName: string, data: any) {

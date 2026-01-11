@@ -10,7 +10,7 @@ title: StaticRouterProvider
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.StaticRouterProvider.html)
 
-他の[`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html)にナビゲートできない[`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html)です。これは、ステートフルなUIがないサーバー上で役立ちます。
+他の [`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html) にナビゲートできない [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html) です。これは、ステートフルなUIがないサーバー上で役立ちます。
 
 ```tsx
 export async function handleRequest(request: Request) {
@@ -44,16 +44,16 @@ function StaticRouterProvider({
 
 ### context
 
-[`StaticHandler`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandler.html)の`query`から返される[`StaticHandlerContext`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandlerContext.html)。
+[`StaticHandler`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandler.html) の `query` から返される [`StaticHandlerContext`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandlerContext.html)。
 
 ### hydrate
 
-クライアントでルーターをハイドレートするかどうか（デフォルトは`true`）。
+クライアントでルーターをハイドレーションするかどうか (デフォルトは `true`)。
 
 ### nonce
 
-ハイドレーション用の[`<script>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script)タグに使用する[`nonce`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce)。
+ハイドレーション用の [`<script>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script) タグに使用する [`nonce`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/nonce)。
 
 ### router
 
-[`createStaticRouter`](../data-routers/createStaticRouter)から取得した静的な[`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html)。
+[`createStaticRouter`](../data-routers/createStaticRouter) からの静的な [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html)。

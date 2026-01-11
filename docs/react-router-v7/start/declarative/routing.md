@@ -71,8 +71,8 @@ import { Outlet } from "react-router";
 export default function Dashboard() {
   return (
     <div>
-      <h1>ダッシュボード</h1>
-      {/* <Home/> または <Settings/> のいずれかになります */}
+      <h1>Dashboard</h1>
+      {/* will either be <Home/> or <Settings/> */}
       <Outlet />
     </div>
   );
@@ -107,11 +107,11 @@ export default function Dashboard() {
 ```tsx lines=[4,8]
 <Routes>
   <Route path="/" element={<Root />}>
-    {/* "/" で <Root> のアウトレットにレンダリングされます */}
+    {/* renders into the outlet in <Root> at "/" */}
     <Route index element={<Home />} />
 
     <Route path="dashboard" element={<Dashboard />}>
-      {/* "/dashboard" で <Dashboard> のアウトレットにレンダリングされます */}
+      {/* renders into the outlet in <Dashboard> at "/dashboard" */}
       <Route index element={<DashboardHome />} />
       <Route path="settings" element={<Settings />} />
     </Route>
@@ -196,7 +196,7 @@ export default function CategoryProduct() {
 
 ```tsx
 let params = useParams();
-// params["*"] には、files/ の後の残りのURLが含まれます
+// params["*"] will contain the remaining URL after files/
 let filePath = params["*"];
 ```
 
@@ -216,17 +216,17 @@ import { NavLink, Link } from "react-router";
 function Header() {
   return (
     <nav>
-      {/* NavLink を使用すると、アクティブな状態を簡単に表示できます */}
+      {/* NavLink makes it easy to show active states */}
       <NavLink
         to="/"
         className={({ isActive }) =>
           isActive ? "active" : ""
         }
       >
-        ホーム
+        Home
       </NavLink>
 
-      <Link to="/concerts/salt-lake-city">コンサート</Link>
+      <Link to="/concerts/salt-lake-city">Concerts</Link>
     </nav>
   );
 }

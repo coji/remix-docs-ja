@@ -20,16 +20,16 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/ro
 
 ## Summary
 
-[Reference Documentation ↗](https://api.reactrouter.com/v7/functions/react_router.createContext.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.createContext.html)
 
-型安全な[`RouterContext`](https://api.reactrouter.com/v7/interfaces/react_router.RouterContext.html)オブジェクトを作成します。これは、[`action`](../../start/framework/route-module#action)s、[`loader`](../../start/framework/route-module#loader)s、および[ミドルウェア](../../how-to/middleware)で任意の値を保存および取得するために使用できます。Reactの[`createContext`](https://react.dev/reference/react/createContext)に似ていますが、React Routerのリクエスト/レスポンスライフサイクル向けに特別に設計されています。
+`action`、`loader`、および `middleware` で任意の値を保存および取得するために使用できる、型安全な [`RouterContext`](https://api.reactrouter.com/v7/interfaces/react_router.RouterContext.html) オブジェクトを作成します。React の [`createContext`](https://react.dev/reference/react/createContext) と似ていますが、React Router のリクエスト/レスポンスライフサイクル用に特別に設計されています。
 
-`defaultValue`が提供された場合、コンテキストに値が設定されていないときに`context.get()`からその値が返されます。それ以外の場合、値が設定されていないときにこのコンテキストを読み取るとエラーがスローされます。
+`defaultValue` が提供された場合、`context` に値が設定されていないときに `context.get()` から返されます。そうでない場合、値が設定されていないこの `context` を読み取るとエラーがスローされます。
 
 ```tsx filename=app/context.ts
 import { createContext } from "react-router";
 
-// Create a context for user data
+// ユーザーデータの context を作成
 export const userContext =
   createContext<User | null>(null);
 ```
@@ -73,8 +73,8 @@ function createContext<T>(defaultValue?: T): RouterContext<T>
 
 ### defaultValue
 
-コンテキストのオプションのデフォルト値です。このコンテキストに値が設定されていない場合、この値が返されます。
+`context` のオプションのデフォルト値です。この値は、`context` に値が設定されていない場合に返されます。
 
 ## Returns
 
-[`RouterContext`](https://api.reactrouter.com/v7/interfaces/react_router.RouterContext.html)オブジェクトです。これは、[`action`](../../start/framework/route-module#action)s、[`loader`](../../start/framework/route-module#loader)s、および[ミドルウェア](../../how-to/middleware)で`context.get()`および`context.set()`と共に使用できます。
+`action`、`loader`、および `middleware` で `context.get()` および `context.set()` とともに使用できる [`RouterContext`](https://api.reactrouter.com/v7/interfaces/react_router.RouterContext.html) オブジェクトです。

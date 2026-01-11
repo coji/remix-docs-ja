@@ -1,27 +1,27 @@
 ---
-title: Suspense を使用したストリーミング
+title: Suspense を使ったストリーミング
 ---
 
-# Suspense を使用したストリーミング
+# Suspense を使ったストリーミング
 
 [MODES: framework, data]
 
 <br/>
 <br/>
 
-React Suspense を使用したストリーミングにより、重要でないデータを遅延させ、UI レンダリングのブロックを解除することで、アプリの初期レンダリングを高速化できます。
+React Suspense を使ったストリーミングにより、重要でないデータを遅延させ、UI レンダリングをブロック解除することで、アプリの初期レンダリングを高速化できます。
 
-React Router は、ローダーとアクションからプロミスを返すことで React Suspense をサポートします。
+React Router は、ローダーとアクションから Promise を返すことで、React Suspense をサポートします。
 
-## 1. ローダーからプロミスを返す
+## 1. ローダーから Promise を返す
 
-React Router は、ルートコンポーネントをレンダリングする前にルートローダーを待機します。重要でないデータのローダーのブロックを解除するには、ローダーでプロミスを待機するのではなく、プロミスを返します。
+React Router は、ルートコンポーネントをレンダリングする前にルートローダーを待機します。重要でないデータのローダーをブロック解除するには、ローダーで待機するのではなく、Promise を返します。
 
 ```tsx
 import type { Route } from "./+types/my-route";
 
 export async function loader({}: Route.LoaderArgs) {
-  // note this is NOT awaited
+  // これは待機されないことに注意してください
   let nonCriticalData = new Promise((res) =>
     setTimeout(() => res("non-critical"), 5000),
   );
@@ -34,11 +34,11 @@ export async function loader({}: Route.LoaderArgs) {
 }
 ```
 
-単一のプロミスを返すことはできず、キーを持つオブジェクトである必要があることに注意してください。
+単一の Promise を返すことはできず、キーを持つオブジェクトである必要があります。
 
 ## 2. フォールバックと解決された UI をレンダリングする
 
-プロミスは `loaderData` で利用可能になり、`<Await>` はプロミスを待機し、`<Suspense>` をトリガーしてフォールバック UI をレンダリングします。
+Promise は `loaderData` で利用可能になり、`<Await>` は Promise を待機し、`<Suspense>` がフォールバック UI をレンダリングするようにトリガーします。
 
 ```tsx
 import * as React from "react";
@@ -68,7 +68,7 @@ export default function MyComponent({
 
 ## React 19 を使用する場合
 
-React 19 を試している場合は、`Await` の代わりに `React.use` を使用できますが、サスペンスフォールバックをトリガーするために新しいコンポーネントを作成し、プロミスを渡す必要があります。
+React 19 を試している場合は、`Await` の代わりに `React.use` を使用できますが、新しいコンポーネントを作成し、Promise を渡してサスペンスフォールバックをトリガーする必要があります。
 
 ```tsx
 <React.Suspense fallback={<div>Loading...</div>}>
@@ -85,9 +85,9 @@ function NonCriticalUI({ p }: { p: Promise<string> }) {
 
 ## タイムアウト
 
-デフォルトでは、ローダーとアクションは、4950ms 後に未処理のプロミスを拒否します。これは、`entry.server.tsx` から `streamTimeout` の数値を出力することで制御できます。
+デフォルトでは、ローダーとアクションは、未処理の Promise を 4950ms 後に拒否します。これは、`entry.server.tsx` から `streamTimeout` という数値の値をエクスポートすることで制御できます。
 
 ```ts filename=entry.server.tsx
-// Reject all pending promises from handler functions after 10 seconds
+// ハンドラー関数からのすべての保留中の Promise を 10 秒後に拒否します
 export const streamTimeout = 10_000;
 ```

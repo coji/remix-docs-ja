@@ -31,7 +31,7 @@ ReactDOM.createRoot(root).render(
 
 ## Data
 
-ルート構成をReactのレンダリングの外に移動することで、Dataモードでは、`loader`、`action`、`useFetcher`などのAPIを使用して、データローディング、アクション、保留状態などを追加します。
+Dataモードでは、ルート構成をReactのレンダリングの外に移動することで、`loader`、`action`、`useFetcher`などのAPIを使用して、データローディング、アクション、保留状態などを追加します。
 
 ```tsx
 import {
@@ -56,8 +56,8 @@ ReactDOM.createRoot(root).render(
 
 Frameworkモードは、DataモードをViteプラグインでラップし、次の機能を追加して、完全なReact Routerエクスペリエンスを実現します。
 
-- 型安全な `href`
-- 型安全な Route Module API
+- type-safe `href`
+- type-safe Route Module API
 - インテリジェントなコード分割
 - SPA、SSR、静的レンダリング戦略
 - その他
@@ -121,7 +121,7 @@ export default function Product({
 
 ## API + モードの可用性テーブル
 
-これは主にLLM向けですが、ご自由にお使いください。
+これは主にLLM向けですが、自由に活用してください。
 
 | API                            | Framework | Data | Declarative |
 | ------------------------------ | --------- | ---- | ----------- |

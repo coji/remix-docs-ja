@@ -4,18 +4,6 @@ title: useParams
 
 # useParams
 
-<!--
-⚠️ ⚠️ 重要 ⚠️ ⚠️
-
-ドキュメントの改善にご協力いただきありがとうございます！
-
-このファイルはソースコードのJSDocコメントから自動生成されています。
-そのため、以下のファイルのJSDocコメントを編集してください。
-変更がマージされると、このファイルは再生成されます。
-
-https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/hooks.tsx
--->
-
 [MODES: framework, data, declarative]
 
 ## 概要
@@ -47,19 +35,19 @@ function useParams<
 
 ## 戻り値
 
-動的なルートパラメータを含むオブジェクト
+動的ルートパラメータを含むオブジェクト
 
-## 使用例
+## 例
 
-### 基本的な使用法
+### 基本的な使用方法
 
 ```tsx
 import { useParams } from "react-router";
 
-// 以下のようなルートの場合:
+// 例えば以下のようなルートがあった場合:
 <Route path="/posts/:postId" element={<Post />} />;
 
-// または、以下のようなデータルートの場合:
+// またはデータルートの場合:
 createBrowserRouter([
   {
     path: "/posts/:postId",
@@ -67,11 +55,11 @@ createBrowserRouter([
   },
 ]);
 
-// または routes.ts の場合:
+// あるいは routes.ts で:
 route("/posts/:postId", "routes/post.tsx");
 ```
 
-コンポーネント内でパラメータにアクセスします:
+コンポーネントでparamsにアクセスします:
 
 ```tsx
 import { useParams } from "react-router";
@@ -113,7 +101,7 @@ export default function Post() {
 "/files/*";
 ```
 
-マッチした値は、以下のようにparamsオブジェクトで利用可能になります:
+マッチした値はparamsオブジェクトで以下のように利用可能になります:
 
 ```tsx
 import { useParams } from "react-router";
@@ -125,7 +113,7 @@ export default function File() {
 }
 ```
 
-キャッチオールパラメータを分割代入できます:
+キャッチオールパラメータを分割代入することができます:
 
 ```tsx
 export default function File() {

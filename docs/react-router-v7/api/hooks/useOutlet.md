@@ -5,13 +5,13 @@ title: useOutlet
 # useOutlet
 
 <!--
-⚠️ ⚠️ 重要 ⚠️ ⚠️
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
 
-ドキュメントの改善にご協力いただきありがとうございます！
+Thank you for helping improve our documentation!
 
-このファイルはソースコード内のJSDocコメントから自動生成されています。
-そのため、以下のファイルのJSDocコメントを編集してください。
-変更がマージされると、このファイルは再生成されます。
+This file is auto-generated from the JSDoc comments in the source
+code, so please edit the JSDoc comments in the file below and this
+file will be re-generated once those changes are merged.
 
 https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/hooks.tsx
 -->
@@ -34,8 +34,8 @@ function useOutlet(context?: unknown): React.ReactElement | null
 
 ### context
 
-アウトレットに渡すコンテキスト。
+outlet に渡す context
 
 ## 戻り値
 
-子ルートの要素、または一致する子ルートがない場合は `null`。
+子ルートの要素。一致する子ルートがない場合は `null`。

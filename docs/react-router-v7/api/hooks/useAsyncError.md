@@ -18,9 +18,9 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/ho
 
 [MODES: framework, data]
 
-## Summary
+## 概要
 
-[Reference Documentation ↗](https://api.reactrouter.com/v7/functions/react_router.useAsyncError.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useAsyncError.html)
 
 最も近い[`<Await>`](../components/Await)からのリジェクト値を返します。
 
@@ -30,23 +30,23 @@ import { Await, useAsyncError } from "react-router";
 function ErrorElement() {
   const error = useAsyncError();
   return (
-    <p>Uh Oh, something went wrong! {error.message}</p>
+    <p>おっと、何か問題が発生しました！ {error.message}</p>
   );
 }
 
-// somewhere in your app
+// アプリ内のどこかで
 <Await
   resolve={promiseThatRejects}
   errorElement={<ErrorElement />}
 />;
 ```
 
-## Signature
+## シグネチャ
 
 ```tsx
 function useAsyncError(): unknown
 ```
 
-## Returns
+## 戻り値
 
-最も近い[`Await`](../components/Await)コンポーネントでスローされたエラー
+最も近い[`Await`](../components/Await) コンポーネントでスローされたエラーです。

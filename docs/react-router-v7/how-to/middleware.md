@@ -4,18 +4,18 @@ title: ミドルウェア
 
 # ミドルウェア
 
-[MODES: framework, data]
+[モード: framework, data]
 
 <br/>
 <br/>
 
-<docs-info>フレームワークモードでは、`getLoadContext`関数と`loader`/`action`の`context`パラメーターに軽微な[破壊的変更][getloadcontext]が含まれているため、[`future.v8_middleware`][future-flags]フラグを介してミドルウェアをオプトインする必要があります。</docs-info>
+<docs-info>Framework Mode では、`getLoadContext` 関数と loader/action の `context` パラメーターに小さな[破壊的変更][getloadcontext]が含まれるため、[`future.v8_middleware`][future-flags] フラグを介してミドルウェアをオプトインする必要があります。</docs-info>
 
-ミドルウェアを使用すると、一致したパスの[`Response`][Response]生成の前後にコードを実行できます。これにより、認証、ロギング、エラー処理、データ前処理などの[一般的なパターン][common-patterns]を再利用可能な方法で実現できます。
+ミドルウェアを使用すると、マッチしたパスの[`Response`][Response]生成の前後でコードを実行できます。これにより、認証、ロギング、エラー処理、データ前処理などの[一般的なパターン][common-patterns]を再利用可能な方法で実現できます。
 
-ミドルウェアはネストされたチェーンで実行され、ルートハンドラーへの「下り」の途中で親ルートから子ルートへ、そして[`Response`][Response]が生成された後の「上り」の途中で子ルートから親ルートへと実行されます。
+ミドルウェアはネストされたチェーンで実行され、ルートハンドラーへ「下り」方向には親ルートから子ルートへ、[`Response`][Response]が生成された後は「上り」方向には子ルートから親ルートへ実行されます。
 
-例えば、`GET /parent/child`リクエストでは、ミドルウェアは以下の順序で実行されます。
+例えば、`GET /parent/child` リクエストでは、ミドルウェアは以下の順序で実行されます。
 
 ```text
 - Root middleware start
@@ -27,13 +27,13 @@ title: ミドルウェア
 - Root middleware end
 ```
 
-<docs-info>サーバー（フレームワークモード）とクライアント（フレームワーク/データモード）でのミドルウェアには、いくつかのわずかな違いがあります。このドキュメントでは、過去に他のHTTPサーバーでミドルウェアを使用したことがあるユーザーにとって最も馴染み深いため、ほとんどの例でサーバーミドルウェアについて言及します。詳細については、以下の[サーバーミドルウェアとクライアントミドルウェア][server-client]セクションを参照してください。</docs-info>
+<docs-info>サーバー (framework mode) とクライアント (framework/data mode) のミドルウェアには、若干の違いがあります。このドキュメントでは、過去に他の HTTP サーバーでミドルウェアを使用したことがあるユーザーにとって最も馴染みのある Server Middleware をほとんどの例で参照します。詳細については、下記の[Server vs Client Middleware][server-client]セクションを参照してください。</docs-info>
 
-## クイックスタート (フレームワークモード)
+## クイックスタート (Framework mode)
 
 ### 1. ミドルウェアフラグを有効にする
 
-まず、[React Routerの設定][rr-config]でミドルウェアを有効にします。
+まず、[React Router config][rr-config]でミドルウェアを有効にします。
 
 ```ts filename=react-router.config.ts
 import type { Config } from "@react-router/dev/config";
@@ -45,12 +45,12 @@ export default {
 } satisfies Config;
 ```
 
-<docs-warning>ミドルウェア機能を有効にすると、[`action`][framework-action]と[`loader`][framework-loader]の`context`パラメーターの型が変更されます。現在`context`を積極的に使用している場合は、以下の[`getLoadContext`][getloadcontext]セクションに注意してください。</docs-warning>
+<docs-warning>ミドルウェア機能を有効にすると、[`action`][framework-action] と [`loader`][framework-loader] の `context` パラメーターの型が変更されます。現在 `context` を積極的に使用している場合は、下記の [`getLoadContext`][getloadcontext] に関するセクションに注意してください。</docs-warning>
 
-### 2. コンテキストを作成する
+### 2. context を作成する
 
-ミドルウェアは、ミドルウェアチェーンにデータを供給するために`context`プロバイダーインスタンスを使用します。
-[`createContext`][createContext]を使用して型安全なコンテキストオブジェクトを作成できます。
+ミドルウェアは、`context` provider のインスタンスを使用して、ミドルウェアチェーンの下位にデータを提供します。
+[`createContext`][createContext] を使用して、型安全な context オブジェクトを作成できます。
 
 ```ts filename=app/context.ts
 import { createContext } from "react-router";
@@ -65,7 +65,7 @@ export const userContext = createContext<User | null>(null);
 import { redirect } from "react-router";
 import { userContext } from "~/context";
 
-// サーバーサイド認証ミドルウェア
+// Server-side Authentication Middleware
 async function authMiddleware({ request, context }) {
   const user = await getUserFromSession(request);
   if (!user) {
@@ -78,7 +78,7 @@ export const middleware: Route.MiddlewareFunction[] = [
   authMiddleware,
 ];
 
-// クライアントサイドタイミングミドルウェア
+// Client-side timing middleware
 async function timingMiddleware({ context }, next) {
   const start = performance.now();
   await next();
@@ -109,9 +109,9 @@ export default function Dashboard({
 }
 ```
 
-### 4. `getLoadContext`関数を更新する（該当する場合）
+### 4. `getLoadContext` 関数を更新する (該当する場合)
 
-カスタムサーバーと`getLoadContext`関数を使用している場合、実装を更新して、JavaScriptオブジェクトの代わりに[`RouterContextProvider`][RouterContextProvider]のインスタンスを返す必要があります。
+カスタムサーバーと `getLoadContext` 関数を使用している場合、実装を更新して、JavaScript オブジェクトの代わりに [`RouterContextProvider`][RouterContextProvider] のインスタンスを返すようにする必要があります。
 
 ```diff
 +import {
@@ -130,14 +130,14 @@ function getLoadContext(req, res) {
 }
 ```
 
-## クイックスタート (データモード)
+## クイックスタート (Data Mode)
 
-<docs-info>データモードには将来のフラグがないことに注意してください。これは、ルートにミドルウェアを追加することでオプトインでき、将来のフラグを必要とする破壊的変更が存在しないためです。</docs-info>
+<docs-info>Data Mode には future flag はありません。これは、ルートにミドルウェアを追加することでオプトインできるため、future flag を必要とする破壊的変更が存在しないためです。</docs-info>
 
-### 1. コンテキストを作成する
+### 1. context を作成する
 
-ミドルウェアは、ミドルウェアチェーンにデータを供給するために`context`プロバイダーインスタンスを使用します。
-[`createContext`][createContext]を使用して型安全なコンテキストオブジェクトを作成できます。
+ミドルウェアは、`context` provider のインスタンスを使用して、ミドルウェアチェーンの下位にデータを提供します。
+[`createContext`][createContext] を使用して、型安全な context オブジェクトを作成できます。
 
 ```ts
 import { createContext } from "react-router";
@@ -206,9 +206,9 @@ export default function Profile() {
 }
 ```
 
-### 3. `getContext`関数を追加する（オプション）
+### 3. `getContext` 関数を追加する (オプション)
 
-すべてのナビゲーション/フェッチにベースコンテキストを含めたい場合は、ルーターに[`getContext`][getContext]関数を追加できます。これは、すべてのナビゲーション/フェッチで新しいコンテキストを生成するために呼び出されます。
+すべてのナビゲーション/フェッチに基本 context を含めたい場合は、ルーターに [`getContext`][getContext] 関数を追加できます。これは、すべてのナビゲーション/フェッチで新しい context を設定するために呼び出されます。
 
 ```tsx
 let sessionContext = createContext();
@@ -222,13 +222,13 @@ const router = createBrowserRouter(routes, {
 });
 ```
 
-<docs-info>このAPIは、フレームワークモードのサーバーにおける`getLoadContext` APIをミラーリングするために存在します。これは、HTTPサーバーからReact Routerハンドラーに値を渡す方法として存在します。この[`getContext`][getContext] APIは、[`window`][window]/[`document`][document]からReact Routerにグローバルな値を渡すために使用できますが、これらはすべて同じコンテキスト（ブラウザ）で実行されるため、ルートミドルウェアを使用しても実質的に同じ動作を実現できます。したがって、サーバーと同じ方法でこのAPIが必要ない場合もありますが、一貫性のために提供されています。</docs-info>
+<docs-info>この API は、Framework Mode のサーバーにおける `getLoadContext` API をミラーリングするために存在し、HTTP サーバーから React Router ハンドラーに値を渡す方法として存在します。この [`getContext`][getContext] API は、[`window`][window]/[`document`][document] から React Router にグローバルな値を渡すために使用できますが、それらがすべて同じ context (ブラウザ) で実行されているため、ルートルートのミドルウェアでも実質的に同じ動作を実現できます。したがって、サーバーと同じようにこの API を必要としないかもしれませんが、一貫性のために提供されています。</docs-info>
 
 ## コアコンセプト
 
-### サーバーミドルウェア vs クライアントミドルウェア
+### サーバーミドルウェアとクライアントミドルウェア
 
-サーバーミドルウェアは、フレームワークモードのサーバーで、HTMLドキュメントリクエストおよび後続のナビゲーションとフェッチャー呼び出しのための`.data`リクエストに対して実行されます。サーバーミドルウェアはHTTP [`Request`][request]に応答してサーバーで実行されるため、`next`関数を介してHTTP [`Response`][Response]をミドルウェアチェーンに返します。
+Server middleware は、Framework mode のサーバーで、HTML Document リクエストと、その後のナビゲーションおよび fetcher 呼び出しのための `.data` リクエストに対して実行されます。server middleware は HTTP [`Request`][request] に応答してサーバー上で実行されるため、`next` 関数を介して HTTP [`Response`][Response] をミドルウェアチェーンの上位に返します。
 
 ```ts
 async function serverMiddleware({ request }, next) {
@@ -244,7 +244,7 @@ export const middleware: Route.MiddlewareFunction[] = [
 ];
 ```
 
-クライアントミドルウェアは、クライアントサイドのナビゲーションとフェッチャー呼び出しのために、フレームワークモードとデータモードのブラウザで実行されます。クライアントミドルウェアは、HTTPリクエストがないため、`Response`をバブルアップしない点でサーバーミドルウェアとは異なります。ほとんどの場合、`next`からの戻り値を無視し、クライアントのミドルウェアから何も返さないことができます。
+Client middleware は、クライアントサイドのナビゲーションおよび fetcher 呼び出しのために、framework と data mode のブラウザで実行されます。client middleware は HTTP Request がないため、server middleware とは異なります。そのため、上位にバブルアップする [`Response`][Response] がありません。ほとんどの場合、`next` からの戻り値を無視し、クライアント側のミドルウェアからは何も返さないことができます。
 
 ```ts
 async function clientMiddleware({ request }, next) {
@@ -266,7 +266,7 @@ const route = {
 };
 ```
 
-ローダー/アクションの結果に基づいて何らかの後処理を行いたい場合があるかもしれません。`Response`の代わりに、クライアントミドルウェアはアクティブな[`dataStrategy`][datastrategy]から返された値（ルートIDでキー付けされた`Record<string, DataStrategyResult>`）をバブルアップします。これにより、実行された`loader`/`action`関数の結果に基づいて、ミドルウェアで条件付きアクションを実行できます。
+ローダー/アクションの結果に基づいて何らかの後処理を行いたい_場合_もあります。[`Response`][Response] の代わりに、client middleware はアクティブな [`dataStrategy`][datastrategy] から返される値 (route id でキー付けされた `Record<string, DataStrategyResult>`) を上位にバブルアップさせます。これにより、実行された `loader`/`action` 関数の結果に基づいて、ミドルウェアで条件付きアクションを実行できます。
 
 以下は、クライアントサイドミドルウェアとして実装された[404でのCMSリダイレクト][cms-redirect]のユースケースの例です。
 
@@ -292,27 +292,27 @@ async function cmsFallbackMiddleware({ request }, next) {
 }
 ```
 
-<docs-warning>サーバーミドルウェアでは、`Response`ボディをいじるべきではなく、ステータス/ヘッダーの読み取りとヘッダーの設定のみを行うべきです。同様に、この値はクライアントミドルウェアでは読み取り専用と見なされるべきです。なぜなら、それは結果のナビゲーションの「ボディ」または「データ」を表し、ミドルウェアではなくローダー/アクションによって駆動されるべきだからです。これはまた、クライアントミドルウェアでは、`await next()`から結果をキャプチャする必要があったとしても、通常は結果を返す必要がないことを意味します。</docs-warning>
+<docs-warning>server middleware では、[`Response`][Response] ボディを操作するべきではなく、ステータス/ヘッダーの読み取りとヘッダーの設定のみを行うべきです。同様に、この値は client middleware では読み取り専用と見なすべきです。なぜなら、これは結果として得られるナビゲーションの「ボディ」または「データ」を表し、これはミドルウェアではなく loader/action によって駆動されるべきだからです。これはまた、client middleware では、`await next()` から結果をキャプチャする必要があったとしても、通常、結果を返す必要がないことを意味します。</docs-warning>
 
-### ミドルウェアの実行タイミング
+### ミドルウェアが実行されるタイミング
 
-アプリケーションが意図したとおりに動作するように、ミドルウェアが_いつ_実行されるかを理解することは非常に重要です。
+アプリケーションが意図したとおりに動作していることを確認するためには、ミドルウェアが_いつ_実行されるかを理解することが非常に重要です。
 
 #### サーバーミドルウェア
 
-ハイドレートされたフレームワークモードのアプリでは、サーバーミドルウェアはSPAの動作を優先し、デフォルトでは新しいネットワークアクティビティを作成しないように設計されています。ミドルウェアは_既存の_リクエストをラップし、サーバーにアクセスする必要がある場合にのみ実行されます。
+ハイドレートされた Framework Mode アプリでは、server middleware は SPA の動作を優先し、デフォルトでは新しいネットワークアクティビティを作成しないように設計されています。ミドルウェアは_既存の_リクエストをラップし、サーバーにヒットする_必要が_ある場合にのみ実行されます。
 
-これにより、React Routerにおける「ハンドラー」とは何かという疑問が生じます。それはルートでしょうか？それとも`loader`でしょうか？私たちは「場合による」と考えています。
+ここで、React Router における「ハンドラー」とは何かという疑問が生じます。それは route でしょうか？それとも `loader` でしょうか？私たちは「場合による」と考えています。
 
-- ドキュメントリクエスト（`GET /route`）では、ハンドラーはルートです。なぜなら、レスポンスには`loader`とルートコンポーネントの両方が含まれるからです。
-- クライアントサイドナビゲーションのデータリクエスト（`GET /route.data`）では、ハンドラーは[`action`][data-action]/[`loader`][data-loader]です。なぜなら、レスポンスに含まれるのはそれだけだからです。
+- ドキュメントリクエスト (`GET /route`) では、ハンドラーは route です。なぜなら、レスポンスは `loader` と route component の両方を包含するからです。
+- クライアントサイドナビゲーションのデータリクエスト (`GET /route.data`) では、ハンドラーは [`action`][data-action]/[`loader`][data-loader] です。なぜなら、レスポンスに含まれるのはそれだけだからです。
 
-したがって:
+したがって：
 
-- ドキュメントリクエストは、`loader`が存在するかどうかにかかわらずサーバーミドルウェアを実行します。なぜなら、UIをレンダリングするための「ハンドラー」の中にまだいるからです。
-- クライアントサイドナビゲーションは、[`action`][framework-action]/[`loader`][framework-loader]のためにサーバーに`.data`リクエストが行われた場合にのみ、サーバーミドルウェアを実行します。
+- ドキュメントリクエストは、UI をレンダリングするための「ハンドラー」にまだいるため、`loader` が存在するかどうかにかかわらず server middleware を実行します。
+- クライアントサイドナビゲーションは、[`action`][framework-action]/[`loader`][framework-loader] のための `.data` リクエストがサーバーに対して行われた場合にのみ server middleware を実行します。
 
-これは、リクエスト期間のロギング、セッションのチェック/設定、送信キャッシュヘッダーの設定などのリクエストアノテーションミドルウェアにとって重要な動作です。そもそもサーバーにアクセスする理由がないのに、サーバーにアクセスしてこれらの種類のミドルウェアを実行しても無意味でしょう。これにより、サーバーの負荷が増加し、サーバーログが煩雑になります。
+これは、リクエスト期間のロギング、セッションのチェック/設定、出力キャッシュヘッダーの設定など、リクエストアノテーションミドルウェアにとって重要な動作です。そもそもサーバーにアクセスする理由がない場合に、サーバーにアクセスしてこれらの種類のミドルウェアを実行しても無意味です。これにより、サーバー負荷が増加し、サーバーログが煩雑になります。
 
 ```tsx filename=app/root.tsx
 // This middleware won't run on client-side navigations without a `.data` request
@@ -330,7 +330,7 @@ export const middleware: Route.MiddlewareFunction[] = [
 ];
 ```
 
-しかし、`loader`が存在しない場合でも、_すべての_クライアントナビゲーションで特定のサーバーミドルウェアを実行したい場合があります。例えば、サイトの認証済みセクションにあるフォームで、`loader`は必要ないが、ユーザーがフォームに入力する前に認証ミドルウェアを使用してリダイレクトしたい場合などです。`action`に送信するときではなく。ミドルウェアがこれらの基準を満たす場合、そのルートを含むルートに`loader`を配置することで、そのルートが関与するクライアントサイドナビゲーションに対して常にサーバーを呼び出すように強制できます。
+しかし、`loader` が存在しない場合でも、_すべての_クライアントナビゲーションで特定の server middleware を実行したい_場合_があるかもしれません。例えば、サイトの認証済みセクションにあるフォームで、`loader` を必要としないが、ユーザーがフォームを送信して `action` に到達する前ではなく、フォームに入力する前に認証ミドルウェアを使用してユーザーをリダイレクトしたい場合などです。ミドルウェアがこれらの基準を満たしている場合、ミドルウェアを含むルートに `loader` を配置することで、そのルートを含むクライアントサイドナビゲーションに対して常にサーバーを呼び出すように強制できます。
 
 ```tsx filename=app/_auth.tsx
 function authMiddleware({ request }, next) {
@@ -352,34 +352,34 @@ export async function loader() {
 
 #### クライアントミドルウェア
 
-クライアントミドルウェアはよりシンプルです。なぜなら、私たちはすでにクライアント上にいて、ナビゲーション時に常にルーターに「リクエスト」を行っているからです。クライアントミドルウェアは、実行する`loader`があるかどうかにかかわらず、すべてのクライアントナビゲーションで実行されます。
+client middleware はよりシンプルです。なぜなら、私たちはすでにクライアントにいて、ナビゲーション時には常にルーターに「リクエスト」を行っているからです。Client middleware は、実行すべき `loader` があるかどうかにかかわらず、すべてのクライアントナビゲーションで実行されます。
 
-### コンテキストAPI
+### Context API
 
-新しいコンテキストシステムは、型安全を提供し、名前の衝突を防ぎ、ネストされたミドルウェアや`action`/`loader`関数にデータを提供できるようにします。フレームワークモードでは、これは以前の`AppLoadContext` APIを置き換えます。
+新しい context システムは、型安全を提供し、名前の競合を防ぎ、ネストされたミドルウェアや `action`/`loader` 関数にデータを提供することを可能にします。Framework Mode では、これは以前の `AppLoadContext` API を置き換えます。
 
 ```ts
-// ✅ 型安全
+// ✅ Type-safe
 import { createContext } from "react-router";
 const userContext = createContext<User>();
 
-// 後でミドルウェア/`loader`s
-context.set(userContext, user); // User型である必要があります
-const user = context.get(userContext); // User型を返します
+// Later in middleware/`loader`s
+context.set(userContext, user); // Must be `User` type
+const user = context.get(userContext); // Returns `User` type
 
-// ❌ 古い方法（型安全なし）
-context.user = user; // 何でもあり得る
+// ❌ Old way (no type safety)
+context.user = user; // Could be anything
 ```
 
-#### `Context`と`AsyncLocalStorage`
+#### `Context` と `AsyncLocalStorage`
 
-Nodeは、非同期実行コンテキストを通じて値を提供する[`AsyncLocalStorage`][asynclocalstorage] APIを提供します。これはNode APIですが、ほとんどのモダンなランタイムで（ほとんど）利用可能になっています（例：[Cloudflare][cloudflare]、[Bun][bun]、[Deno][deno]）。
+Node は、非同期実行 context を介して値を提供する方法を提供する [`AsyncLocalStorage`][asynclocalstorage] API を提供します。これは Node API ですが、ほとんどの最新のランタイムで (ほとんど) 利用可能になっています ([Cloudflare][cloudflare]、[Bun][bun]、[Deno][deno] など)。
 
-理論的には、ミドルウェアから子ルートに値を渡す方法として[`AsyncLocalStorage`][asynclocalstorage]を直接活用することもできましたが、100%のクロスプラットフォーム互換性がないことが懸念され、ランタイムに依存しない方法で再利用可能なミドルウェアパッケージを公開できるように、ファーストクラスの`context` APIを引き続き提供したいと考えました。
+理論的には、ミドルウェアから子ルートへ値を渡す方法として [`AsyncLocalStorage`][asynclocalstorage] を直接活用することもできたかもしれませんが、100% のクロスプラットフォーム互換性がないことが十分に懸念されたため、ランタイムに依存しない方法で確実に動作する再利用可能なミドルウェアパッケージを公開できる方法として、ファーストクラスの `context` API を依然として提供したいと考えました。
 
-とはいえ、このAPIはReact Routerミドルウェアと非常によく連携し、`context` APIの代わりとして、またはそれと並行して使用できます。
+とはいえ、この API は React Router のミドルウェアと依然としてうまく機能し、`context` API の代わりに、またはそれと組み合わせて使用​​できます。
 
-<docs-info>[React Server Components](../how-to/react-server-components)を使用する場合、[`AsyncLocalStorage`][asynclocalstorage]は_特に_強力です。なぜなら、`middleware`からServer ComponentsやServer Actionsに情報を提供できるからです。これらは同じサーバー実行コンテキストで実行されるためです🤯</docs-info>
+<docs-info>[`AsyncLocalStorage`][asynclocalstorage] は、[React Server Components](../how-to/react-server-components) を使用する際に_特に_強力です。なぜなら、`middleware` から Server Components および Server Actions に情報を提供できるからです。それらは同じサーバー実行 context で実行されるためです 🤯</docs-info>
 
 ```tsx filename=app/user-context.ts
 import { AsyncLocalStorage } from "node:async_hooks";
@@ -421,32 +421,32 @@ export async function loader() {
 }
 ```
 
-### `next`関数
+### `next` 関数
 
-`next`関数のロジックは、それが呼び出されているルートミドルウェアによって異なります。
+`next` 関数のロジックは、それがどのルートミドルウェアから呼び出されているかによって異なります。
 
 - リーフではないミドルウェアから呼び出された場合、チェーン内の次のミドルウェアを実行します。
 - リーフミドルウェアから呼び出された場合、ルートハンドラーを実行し、リクエストに対する結果の[`Response`][Response]を生成します。
 
 ```ts
 const middleware = async ({ context }, next) => {
-  // ここに書かれたコードはハンドラーの実行「前」に実行されます
+  // Code here runs BEFORE handlers
   console.log("Before");
 
   const response = await next();
 
-  // ここに書かれたコードはハンドラーの実行「後」に実行されます
+  // Code here runs AFTER handlers
   console.log("After");
 
   return response; // クライアントではオプション、サーバーでは必須
 };
 ```
 
-<docs-warning>ミドルウェアごとに`next()`を1回しか呼び出すことはできません。複数回呼び出すとエラーがスローされます。</docs-warning>
+<docs-warning>`next()` はミドルウェアごとに一度しか呼び出せません。複数回呼び出すとエラーが発生します</docs-warning>
 
-### `next()`のスキップ
+### `next()` のスキップ
 
-ハンドラーの後にコードを実行する必要がない場合は、`next()`の呼び出しをスキップできます。
+ハンドラーの後にコードを実行する必要がない場合は、`next()` の呼び出しをスキップできます。
 
 ```ts
 const authMiddleware = async ({ request, context }) => {
@@ -459,18 +459,18 @@ const authMiddleware = async ({ request, context }) => {
 };
 ```
 
-### `next()`とエラーハンドリング
+### `next()` とエラーハンドリング
 
-React Routerには、ルートの[`ErrorBoundary`][ErrorBoundary]エクスポートを介した組み込みのエラーハンドリングが含まれています。`action`/`loader`がスローした場合と同様に、`middleware`がスローした場合、適切な[`ErrorBoundary`][ErrorBoundary]で捕捉および処理され、祖先の`next()`呼び出しを通じて[`Response`][Response]が返されます。これは、`next()`関数は決してスローせず、常に[`Response`][Response]を返す必要があることを意味するため、try/catchでラップすることを心配する必要はありません。
+React Router には、ルートの [`ErrorBoundary`][ErrorBoundary] エクスポートを介した組み込みのエラー処理が含まれています。`action`/`loader` がスローした場合と同様に、`middleware` がスローした場合、適切な [`ErrorBoundary`][ErrorBoundary] で捕捉され処理され、祖先の `next()` 呼び出しを介して[`Response`][Response]が返されます。これは、`next()` 関数が決してスローせず、常に[`Response`][Response]を返す必要があることを意味するため、try/catch でラップすることを心配する必要はありません。
 
-この動作は、ルート`middleware`から送信されるレスポンスに必須ヘッダーを自動的に設定する（つまり、セッションをコミットする）などのミドルウェアパターンを可能にするために重要です。もし`middleware`からのエラーが`next()`を`throw`させた場合、終了時の祖先ミドルウェアの実行を見逃し、必要なヘッダーが設定されなくなります。
+この動作は、ルート `middleware` からの応答（セッションのコミットなど）に必要なヘッダーを自動的に設定するようなミドルウェアパターンを可能にする上で重要です。`middleware` からのエラーが `next()` を `throw` させた場合、上位ミドルウェアの実行がスキップされ、必要なヘッダーが設定されなくなってしまいます。
 
 ```tsx filename=routes/parent.tsx
 export const middleware: Route.MiddlewareFunction[] = [
   async (_, next) => {
     let res = await next();
     //  ^ res.status = 500
-    // This response contains the ErrorBoundary
+    // この response には ErrorBoundary が含まれています
     return res;
   },
 ];
@@ -481,32 +481,34 @@ export const middleware: Route.MiddlewareFunction[] = [
   async (_, next) => {
     let res = await next();
     //  ^ res.status = 200
-    // This response contains the successful UI render
+    // この response には正常にレンダリングされた UI が含まれています
     throw new Error("Uh oh, something went wrong!");
   },
 ];
 ```
 
-## `getLoadContext`/`AppLoadContext`の変更点
+どの [`ErrorBoundary`][ErrorBoundary] がレンダリングされるかは、ミドルウェアが `next()` 関数を呼び出す_前_にスローしたか_後_にスローしたかによって異なります。_後_にスローされた場合、すでに loader を実行しており、route component でレンダリングするための適切な `loaderData` があるため、通常の loader エラーと同様にスローしたルートからバブルアップします。しかし、`next()` を呼び出す_前_にエラーがスローされた場合、まだ loader を呼び出しておらず、利用可能な `loaderData` がありません。この場合、`loader` を持つ最も上位のルートまでバブルアップし、そこで [`ErrorBoundary`][ErrorBoundary] を探し始める必要があります。そのレベル以下では、`loaderData` なしではいかなる route component もレンダリングできません。
 
-<docs-info>これは、カスタムサーバーとカスタム`getLoadContext`関数を使用している場合にのみ適用されます。</docs-info>
+## `getLoadContext` と `AppLoadContext` への変更点
 
-ミドルウェアは、`getLoadContext`によって生成され、`action`と`loader`に渡される`context`パラメーターに破壊的変更を導入します。モジュール拡張された`AppLoadContext`の現在の方法は、実際には型安全ではなく、TypeScriptに「私を信じて」と伝えるようなものです。
+<docs-info>これは、カスタムサーバーとカスタム `getLoadContext` 関数を使用している場合にのみ適用されます。</docs-info>
 
-ミドルウェアは`clientMiddleware`のためにクライアント上で同等の`context`を必要としますが、すでに不満があったサーバーからのこのパターンを複製したくなかったため、型安全に取り組める新しいAPIを導入することにしました。
+ミドルウェアは、`getLoadContext` によって生成され、`action` と `loader` に渡される `context` パラメーターに破壊的変更を導入します。モジュール拡張された `AppLoadContext` の現在の方法は、実際には型安全ではなく、TypeScript に「私を信じて」と言うようなものです。
 
-ミドルウェアをオプトインすると、`context`パラメーターは[`RouterContextProvider`][RouterContextProvider]のインスタンスに変更されます。
+ミドルウェアには `clientMiddleware` 用にクライアント側で同等の `context` が必要ですが、すでに不満を抱いていたサーバー側のこのパターンを重複させたくなかったため、型安全性を解決できる新しい API を導入することにしました。
+
+ミドルウェアをオプトインすると、`context` パラメーターは [`RouterContextProvider`][RouterContextProvider] のインスタンスに変更されます。
 
 ```ts
 let dbContext = createContext<Database>();
 let context = new RouterContextProvider();
 context.set(dbContext, getDb());
-//                     ^ type-safe
+//                     ^ 型安全
 let db = context.get(dbContext);
 //  ^ Database
 ```
 
-カスタムサーバーと`getLoadContext`関数を使用している場合、実装を更新して、プレーンなJavaScriptオブジェクトの代わりに[`RouterContextProvider`][RouterContextProvider]のインスタンスを返す必要があります。
+カスタムサーバーと `getLoadContext` 関数を使用している場合、実装を更新して、プレーンな JavaScript オブジェクトの代わりに [`RouterContextProvider`][RouterContextProvider] のインスタンスを返すようにする必要があります。
 
 ```diff
 +import {
@@ -525,9 +527,9 @@ function getLoadContext(req, res) {
 }
 ```
 
-### `AppLoadContext`からの移行
+### AppLoadContext からの移行
 
-現在`AppLoadContext`を使用している場合、既存のモジュール拡張を使用して`AppLoadContext`の代わりに[`RouterContextProvider`][RouterContextProvider]を拡張することで、段階的に移行できます。次に、`getLoadContext`関数を更新して、[`RouterContextProvider`][RouterContextProvider]のインスタンスを返すようにします。
+現在 `AppLoadContext` を使用している場合、既存のモジュール拡張を使用して `AppLoadContext` の代わりに [`RouterContextProvider`][RouterContextProvider] を拡張することで、段階的に移行できます。次に、`getLoadContext` 関数を更新して、[`RouterContextProvider`][RouterContextProvider] のインスタンスを返すようにします。
 
 ```diff
 declare module "react-router" {
@@ -547,11 +549,11 @@ function getLoadContext() {
 }
 ```
 
-これにより、`action`/`loader`は値を直接読み取ることができる（例：`context.db`）ため、ミドルウェアの初期導入時に`action`/`loader`をそのままにしておくことができます。
+これにより、`action` と `loader` は値を直接読み取ることができるため (`context.db` など)、ミドルウェアの初期導入時にそれらを変更せずに残すことができます。
 
-<docs-warning>このアプローチは、React Router v7でミドルウェアを導入する際の移行戦略としてのみ意図されており、`context.set`/`context.get`への段階的な移行を可能にします。このアプローチがReact Routerの次のメジャーバージョンで機能すると仮定するのは安全ではありません。</docs-warning>
+<docs-warning>このアプローチは、React Router v7 でミドルウェアを導入する際の移行戦略としてのみ使用することを意図しており、`context.set`/`context.get` への段階的な移行を可能にします。このアプローチが React Router の次のメジャーバージョンで機能すると仮定するのは安全ではありません。</docs-warning>
 
-<docs-warning>[`RouterContextProvider`][RouterContextProvider]クラスは、`<HydratedRouter getContext>`および`<RouterProvider getContext>`を介したクライアントサイドの`context`パラメーターにも使用されます。`AppLoadContext`は主にHTTPサーバーからReact Routerハンドラーへの引き渡しとして意図されているため、これらの拡張フィールドは`clientMiddleware`、`clientLoader`、または`clientAction`関数では利用できないことに注意する必要があります（もちろん、クライアントで`getContext`を介してフィールドを提供しない限り、TypeScriptはそれらが利用可能であると示しますが）。</docs-warning>
+<docs-warning>[`RouterContextProvider`][RouterContextProvider] クラスは、`<HydratedRouter getContext>` および `<RouterProvider getContext>` を介したクライアントサイドの `context` パラメーターにも使用されます。`AppLoadContext` は主に HTTP サーバーから React Router ハンドラーへの引き渡しを意図しているため、これらの拡張フィールドは `clientMiddleware`、`clientLoader`、または `clientAction` 関数では利用できないことに注意する必要があります (もちろん、クライアント側で `getContext` を介してフィールドを提供する場合を除きます)。</docs-warning>
 
 ## 一般的なパターン
 
@@ -588,7 +590,7 @@ export const middleware: Route.MiddlewareFunction[] = [
 export async function loader({
   context,
 }: Route.LoaderArgs) {
-  const user = context.get(userContext); // 存在が保証されます
+  const user = context.get(userContext); // 存在することが保証されています
   return { user };
 }
 ```
@@ -630,9 +632,9 @@ export const cmsFallbackMiddleware = async (
 ) => {
   const response = await next();
 
-  // 404を受け取ったか確認
+  // Check if we got a 404
   if (response.status === 404) {
-    // CMSでリダイレクトを確認
+    // Check CMS for a redirect
     const cmsRedirect = await checkCMSRedirects(
       request.url,
     );
@@ -654,7 +656,7 @@ export const headersMiddleware = async (
 ) => {
   const response = await next();
 
-  // セキュリティヘッダーを追加
+  // Add security headers
   response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("X-Content-Type-Options", "nosniff");
 
@@ -667,7 +669,7 @@ export const headersMiddleware = async (
 ```tsx
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ request, context }, next) => {
-    // POSTリクエストの場合のみ認証を実行
+    // Only run auth for POST requests
     if (request.method === "POST") {
       await ensureAuthenticated(request, context);
     }
@@ -676,15 +678,19 @@ export const middleware: Route.MiddlewareFunction[] = [
 ];
 ```
 
-### `action`と`loader`間でのコンテキスト共有
+### action と loader 間での Context 共有
+
+<docs-info>サーバーでは、`context` はリクエストにスコープされているため、このアプローチはドキュメントの POST リクエストに対してのみ機能します。SPA ナビゲーションの送信は個別の POST/GET リクエストを使用するため、それらの間で `context` を共有することはできません。このパターンは、個別の HTTP リクエストがないため、`clientMiddleware`、`clientLoader`、`clientAction` で常に機能します。</docs-info>
 
 ```tsx
 const sharedDataContext = createContext<any>();
 
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ request, context }, next) => {
-    if (request.method === "POST") {
-      // アクションフェーズ中にデータを設定
+    // データが存在しない場合に設定
+    // これはドキュメントリクエストに対して一度だけ実行されます
+    // SPA の送信では二度 (action リクエスト + loader リクエスト) 実行されます
+    if (!context.get(sharedDataContext)) {
       context.set(
         sharedDataContext,
         await getExpensiveData(),
@@ -698,14 +704,14 @@ export async function action({
   context,
 }: Route.ActionArgs) {
   const data = context.get(sharedDataContext);
-  // データを活用...
+  // データを...使用します。
 }
 
 export async function loader({
   context,
 }: Route.LoaderArgs) {
   const data = context.get(sharedDataContext);
-  // 同じデータがここで利用可能
+  // 同じデータがここで利用可能です
 }
 ```
 

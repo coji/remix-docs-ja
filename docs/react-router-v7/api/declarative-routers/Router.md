@@ -4,18 +4,6 @@ title: Router
 
 # Router
 
-<!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
-
-Thank you for helping improve our documentation!
-
-This file is auto-generated from the JSDoc comments in the source
-code, so please edit the JSDoc comments in the file below and this
-file will be re-generated once those changes are merged.
-
-https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/components.tsx
--->
-
 [MODES: declarative]
 
 ## 概要
@@ -36,6 +24,7 @@ function Router({
   navigationType = NavigationType.Pop,
   navigator,
   static: staticProp = false,
+  unstable_useTransitions,
 }: RouterProps): React.ReactElement | null
 ```
 
@@ -43,28 +32,34 @@ function Router({
 
 ### basename
 
-アプリケーションのベースパスです。これはすべてのロケーションの前に付加されます。
+アプリケーションのベースパスです。すべてのロケーションの前に付加されます。
 
 ### children
 
-ルートツリーを記述するネストされた [`Route`](../components/Route) 要素。
+ルーティングツリーを記述するネストされた [`Route`](../components/Route) 要素。
 
 ### location
 
-マッチング対象のロケーションです。デフォルトは現在のロケーションです。
-これは文字列または [`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html) オブジェクトのいずれかです。
+マッチング対象のロケーションです。現在のロケーションがデフォルトです。文字列または [`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html) オブジェクトのいずれかになります。
 
 ### navigationType
 
-この `location` の変更をトリガーしたナビゲーションのタイプです。
-デフォルトは `NavigationType.Pop` です。
+このロケーション変更をトリガーした navigation のタイプです。`NavigationType.Pop` がデフォルトです。
 
 ### navigator
 
-ナビゲーションに使用するナビゲーターです。これは通常、history オブジェクト
-または [`Navigator`](https://api.reactrouter.com/v7/interfaces/react_router.Navigator.html) インターフェースを実装するカスタムナビゲーターです。
+navigation に使用する navigator です。これは通常、history オブジェクト、または [`Navigator`](https://api.reactrouter.com/v7/interfaces/react_router.Navigator.html) インターフェースを実装するカスタム navigator です。
 
 ### static
 
-このルーターが静的であるかどうか（SSR で使用）。`true` の場合、ルーターは
-ロケーションの変更に反応しません。
+このルーターが静的であるかどうか (SSR で使用されます)。`true` の場合、ルーターはロケーションの変更に反応しません。
+
+### unstable_useTransitions
+
+router の state updates が内部的に [`React.startTransition`](https://react.dev/reference/react/startTransition) でラップされるかどうかを制御します。
+
+- `undefined` のままの場合、すべての router の state updates は `React.startTransition` でラップされます。
+- `true` に設定すると、[`Link`](../components/Link) と [`Form`](../components/Form) の navigations は `React.startTransition` でラップされ、すべての router の state updates も `React.startTransition` でラップされます。
+- `false` に設定すると、router は navigations または state 変更のいずれにおいても `React.startTransition` を利用しません。
+
+詳細については、[ドキュメント](https://reactrouter.com/explanation/react-transitions)を参照してください。

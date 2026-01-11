@@ -5,13 +5,13 @@ title: ServerRouter
 # ServerRouter
 
 <!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
+⚠️ ⚠️ 重要 ⚠️ ⚠️ 
 
-Thank you for helping improve our documentation!
+ドキュメントの改善にご協力いただきありがとうございます！
 
-This file is auto-generated from the JSDoc comments in the source
-code, so please edit the JSDoc comments in the file below and this
-file will be re-generated once those changes are merged.
+このファイルはソースコード内の JSDoc コメントから自動生成されます。
+そのため、以下のファイルの JSDoc コメントを編集してください。
+変更がマージされると、このファイルは再生成されます。
 
 https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/dom/ssr/server.tsx
 -->
@@ -22,7 +22,7 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/do
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.ServerRouter.html)
 
-Framework ModeにおけるReact Routerアプリのサーバーエントリーポイントです。このコンポーネントは、サーバーからのレスポンスでHTMLを生成するために使用されます。[`entry.server.tsx`](../framework-conventions/entry.server.tsx)を参照してください。
+Framework Mode の React Router アプリケーションにおけるサーバーのエントリーポイントです。このコンポーネントは、サーバーからのレスポンスで HTML を生成するために使用されます。[`entry.server.tsx`](../framework-conventions/entry.server.tsx) を参照してください。
 
 ## シグネチャ
 
@@ -38,12 +38,12 @@ function ServerRouter({
 
 ### context
 
-レンダリングに必要なmanifest、route modules、その他のデータを含むエントリーコンテキストです。
+マニフェスト、route module、およびレンダリングに必要なその他のデータを含むエントリーコンテキスト。
 
 ### nonce
 
-[Content Security Policy (CSP)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)に準拠するためのオプションの`nonce`です。インラインスクリプトを安全に実行できるようにするために使用されます。
+[Content Security Policy (CSP)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP) に準拠するためのオプションの `nonce` で、インラインスクリプトを安全に実行できるようにするために使用されます。
 
 ### url
 
-処理されているリクエストのURLです。
+処理されているリクエストの URL。

@@ -11,11 +11,11 @@ title: Route
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.Route.html)
 
 パターンが現在のロケーションに一致したときにレンダリングする要素を設定します。
-[`Routes`](../components/Routes) 要素内でレンダリングする必要があります。これらのルートは、
+[Routes](../components/Routes) 要素内でレンダリングする必要があります。これらのルートは、
 データローディング、アクション、コード分割、またはその他のルートモジュールの機能には関与しません。
 
 ```tsx
-// Usually used in a declarative router
+// 通常、宣言的な router で使用されます。
 function App() {
   return (
     <BrowserRouter>
@@ -28,7 +28,7 @@ function App() {
   );
 }
 
-// But can be used with a data router as well if you prefer the JSX notation
+// しかし、JSX 表記を好む場合はデータ router でも使用できます。
 const routes = createRoutesFromElements(
   <>
     <Route index loader={step1Loader} Component={StepOne} />
@@ -54,7 +54,7 @@ function Route(props: RouteProps): React.ReactElement | null
 
 ### action
 
-ルートのアクション。
+ルート action。
 [`action`](../../start/data/route-object#action) を参照してください。
 
 ### caseSensitive
@@ -63,45 +63,45 @@ function Route(props: RouteProps): React.ReactElement | null
 
 ### Component
 
-このルートがマッチしたときにレンダリングする React Component。
-`element` とは相互排他的です。
+この route がマッチしたときにレンダリングする React Component。
+`element` とは相互に排他的です。
 
 ### children
 
-子となる Route コンポーネント。
+子 Route コンポーネント。
 
 ### element
 
-この Route がマッチしたときにレンダリングする React 要素。
-`Component` とは相互排他的です。
+この Route がマッチしたときにレンダリングする React element。
+`Component` とは相互に排他的です。
 
 ### ErrorBoundary
 
-エラーが発生した場合にこのルートでレンダリングする React Component。
-`errorElement` とは相互排他的です。
+エラーが発生した場合にこの route でレンダリングする React Component。
+`errorElement` とは相互に排他的です。
 
 ### errorElement
 
-エラーが発生した場合にこのルートでレンダリングする React 要素。
-`ErrorBoundary` とは相互排他的です。
+エラーが発生した場合にこの route でレンダリングする React element。
+`ErrorBoundary` とは相互に排他的です。
 
 ### handle
 
-ルートのハンドル。
+ルート handle。
 
 ### HydrateFallback
 
-このルーターがデータをロードしている間にレンダリングする React Component。
-`hydrateFallbackElement` とは相互排他的です。
+この router がデータをロードしている間にレンダリングする React Component。
+`hydrateFallbackElement` とは相互に排他的です。
 
 ### hydrateFallbackElement
 
-このルーターがデータをロードしている間にレンダリングする React 要素。
-`HydrateFallback` とは相互排他的です。
+この router がデータをロードしている間にレンダリングする React element。
+`HydrateFallback` とは相互に排他的です。
 
 ### id
 
-このルートの一意の識別子 ([`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html) で使用)。
+この route の一意な識別子（[`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html) と共に使用するため）。
 
 ### index
 
@@ -109,13 +109,13 @@ function Route(props: RouteProps): React.ReactElement | null
 
 ### lazy
 
-ルートオブジェクトに解決される Promise を返す関数。
-ルートのコード分割に使用されます。
+route オブジェクトに解決される Promise を返す関数。
+route のコード分割に使用されます。
 [`lazy`](../../start/data/route-object#lazy) を参照してください。
 
 ### loader
 
-ルートのローダー。
+ルート loader。
 [`loader`](../../start/data/route-object#loader) を参照してください。
 
 ### path
@@ -124,5 +124,5 @@ function Route(props: RouteProps): React.ReactElement | null
 
 ### shouldRevalidate
 
-ルートの shouldRevalidate 関数。
+ルート shouldRevalidate 関数。
 [`shouldRevalidate`](../../start/data/route-object#shouldRevalidate) を参照してください。

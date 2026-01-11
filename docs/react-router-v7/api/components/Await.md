@@ -4,18 +4,6 @@ title: Await
 
 # Await
 
-<!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
-
-Thank you for helping improve our documentation!
-
-This file is auto-generated from the JSDoc comments in the source
-code, so please edit the JSDoc comments in the file below and this
-file will be re-generated once those changes are merged.
-
-https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/components.tsx
--->
-
 [MODES: framework, data]
 
 ## 概要
@@ -30,12 +18,10 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/co
 import { Await, useLoaderData } from "react-router";
 
 export async function loader() {
-  // await されない
+  // not awaited
   const reviews = getReviews();
-  // await される (トランジションをブロックする)
-  const book = await fetch("/api/book").then((res) =>
-    res.json()
-  );
+  // awaited (blocks the transition)
+  const book = await fetch("/api/book").then((res) => res.json());
   return { book, reviews };
 }
 
@@ -49,7 +35,7 @@ function Book() {
         <Await
           resolve={reviews}
           errorElement={
-            <div>レビューをロードできませんでした 😬</div>
+            <div>Could not load reviews 😬</div>
           }
           children={(resolvedReviews) => (
             <Reviews items={resolvedReviews} />
@@ -83,12 +69,12 @@ function Await<Resolve>({
 </Await>
 ```
 
-React 要素を使用する場合、[useAsyncValue](../hooks/useAsyncValue) が解決された値を提供します。
+React 要素を使用する場合、[`useAsyncValue`](../hooks/useAsyncValue) が解決された値を提供します。
 
 ```tsx [2]
 <Await resolve={reviewsPromise}>
   <Reviews />
-</Await>;
+</Await>
 
 function Reviews() {
   const resolvedReviews = useAsyncValue();
@@ -98,18 +84,18 @@ function Reviews() {
 
 ### errorElement
 
-[`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) がリジェクトされた場合、children の代わりにエラー要素がレンダリングされます。
+[`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) がリジェクトされた場合、`children` の代わりにエラー要素がレンダリングされます。
 
 ```tsx
 <Await
-  errorElement={<div>おっと</div>}
+  errorElement={<div>Oops</div>}
   resolve={reviewsPromise}
 >
   <Reviews />
 </Await>
 ```
 
-よりコンテキストに沿ったエラーを提供するには、子コンポーネントで [useAsyncError](../hooks/useAsyncError) を使用できます。
+よりコンテキストに沿ったエラーを提供するには、子コンポーネントで [`useAsyncError`](../hooks/useAsyncError) を使用できます。
 
 ```tsx
 <Await
@@ -117,36 +103,36 @@ function Reviews() {
   resolve={reviewsPromise}
 >
   <Reviews />
-</Await>;
+</Await>
 
 function ReviewsError() {
   const error = useAsyncError();
-  return <div>レビューのロード中にエラーが発生しました: {error.message}</div>;
+  return <div>Error loading reviews: {error.message}</div>;
 }
 ```
 
-errorElement を提供しない場合、リジェクトされた値は最も近いルートレベルの [`ErrorBoundary`](../../start/framework/route-module#errorboundary) までバブルアップし、[useRouteError](../hooks/useRouteError) フックを介してアクセスできます。
+errorElement を提供しない場合、リジェクトされた値は最も近いルートレベルの [`ErrorBoundary`](../../start/framework/route-module#errorboundary) までバブルアップし、[`useRouteError`](../hooks/useRouteError) hook を介してアクセスできます。
 
 ### resolve
 
-解決してレンダリングするために、[`loader`](../../start/framework/route-module#loader) から返された [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) を受け取ります。
+[`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) を受け取ります。これは、解決およびレンダリングされる [`loader`](../../start/framework/route-module#loader) から返されたものです。
 
 ```tsx
 import { Await, useLoaderData } from "react-router";
 
 export async function loader() {
-  let reviews = getReviews(); // await されない
+  let reviews = getReviews(); // not awaited
   let book = await getBook();
   return {
     book,
-    reviews, // これは Promise です
+    reviews, // this is a promise
   };
 }
 
 export default function Book() {
   const {
     book,
-    reviews, // これは同じ Promise です
+    reviews, // this is the same promise
   } = useLoaderData();
 
   return (
@@ -155,7 +141,7 @@ export default function Book() {
       <p>{book.description}</p>
       <React.Suspense fallback={<ReviewsSkeleton />}>
         <Await
-          // そして、これは Await に渡す Promise です
+          // and is the promise we pass to Await
           resolve={reviews}
         >
           <Reviews />

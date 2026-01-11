@@ -6,15 +6,15 @@ title: useRouteLoaderData
 
 [MODES: framework, data]
 
-## Summary
+## 概要
 
-[Reference Documentation ↗](https://api.reactrouter.com/v7/functions/react_router.useRouteLoaderData.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useRouteLoaderData.html)
 
-指定されたルートIDによって、特定のルートの[`loader`](../../start/framework/route-module#loader)データを返します。
+指定されたルートIDにより、特定のルートの[`loader`](../../start/framework/route-module#loader)データを返します。
 
 ルートIDは自動的に作成されます。これは単に、拡張子を除いた、アプリフォルダからのルートファイルの相対パスです。
 
-| Route Filename               | Route ID               |
+| ルートファイル名               | ルートID               |
 | ---------------------------- | ---------------------- |
 | `app/root.tsx`               | `"root"`               |
 | `app/routes/teams.tsx`       | `"routes/teams"`       |
@@ -27,12 +27,12 @@ function SomeComponent() {
   const { user } = useRouteLoaderData("root");
 }
 
-// routes.tsファイルで、独自のルートIDを手動で指定することもできます。
+// routes.ts ファイルで、ルートIDを自分で手動で指定することもできます:
 route("/", "containers/app.tsx", { id: "app" })
 useRouteLoaderData("app");
 ```
 
-## Signature
+## シグネチャ
 
 ```tsx
 function useRouteLoaderData<T = any>(
@@ -40,12 +40,12 @@ function useRouteLoaderData<T = any>(
 ): SerializeFrom<T> | undefined
 ```
 
-## Params
+## パラメータ
 
 ### routeId
 
-ローダーデータを取得するルートのID。
+loaderデータを取得するルートのIDです。
 
-## Returns
+## 戻り値
 
-指定されたルートの[`loader`](../../start/framework/route-module#loader)関数から返されたデータ、または見つからない場合は`undefined`
+指定されたルートの[`loader`](../../start/framework/route-module#loader)関数から返されたデータ、または見つからない場合は`undefined`を返します。
