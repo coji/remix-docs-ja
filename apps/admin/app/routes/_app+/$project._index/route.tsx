@@ -177,7 +177,7 @@ export default function ProjectDetail({
               <span>
                 Translation: {translationJob.status}
                 {translationJob.progress && (
-                  <span className="ml-2 text-muted-foreground">
+                  <span className="text-muted-foreground ml-2">
                     ({translationJob.progress.current}/
                     {translationJob.progress.total})
                   </span>
@@ -199,11 +199,15 @@ export default function ProjectDetail({
               />
             )}
             {translationJob.output && (
-              <div className="text-sm text-muted-foreground">
+              <div className="text-muted-foreground text-sm">
                 Completed:{' '}
-                {(translationJob.output as { translatedCount: number }).translatedCount}{' '}
+                {
+                  (translationJob.output as { translatedCount: number })
+                    .translatedCount
+                }{' '}
                 translated,{' '}
-                {(translationJob.output as { errorCount: number }).errorCount} errors
+                {(translationJob.output as { errorCount: number }).errorCount}{' '}
+                errors
               </div>
             )}
           </div>
