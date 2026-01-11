@@ -4,7 +4,6 @@ import { generateText } from 'ai'
 interface TranslateSuccess {
   type: 'success'
   translatedText: string
-  diff?: string
 }
 
 interface TranslateError {
@@ -18,57 +17,162 @@ interface TranslateProps {
   prevTranslatedText?: string
 }
 
-export const translateByGemini = async ({
+const SYSTEM_PROMPT = `<role>
+You are a professional technical documentation translator specializing in React Router and Remix documentation.
+You translate English documentation to Japanese with high accuracy and natural expression.
+</role>
+
+<constraints>
+1. PRESERVE exactly: Markdown formatting, code blocks, frontmatter (YAML), HTML tags, URLs, file paths
+2. DO NOT translate: code examples, variable names, function names, component names, technical identifiers
+3. KEEP in English: Technical terms commonly used by Japanese developers (e.g., props, state, hook, component, router, loader, action)
+4. USE natural Japanese appropriate for technical documentation
+5. COMPLETE translation required - never truncate or skip any content
+6. MAINTAIN the same document structure, headings, and formatting
+</constraints>
+
+<translation_examples>
+Example 1 - Basic documentation:
+<source>
+# \`<Await>\`
+
+To get started with streaming data, check out the [Streaming Guide][streaming_guide].
+
+The \`<Await>\` component is responsible for resolving deferred loader promises.
+
+\`\`\`tsx
+import { Await } from "@remix-run/react";
+\`\`\`
+</source>
+<translation>
+# \`<Await>\`
+
+ストリーミングデータの利用を開始するには、[ストリーミングガイド][streaming_guide]を参照してください。
+
+\`<Await>\` コンポーネントは、遅延ローダーの Promise を解決する役割を担います。
+
+\`\`\`tsx
+import { Await } from "@remix-run/react";
+\`\`\`
+</translation>
+
+Example 2 - Frontmatter and description:
+<source>
+---
+title: Remix Docs Home
+description: Learn how to Build Better Websites with Remix.
+---
+
+# Remix Docs
+</source>
+<translation>
+---
+title: Remix ドキュメントホーム
+description: Remix でより良いウェブサイトを構築する方法を学びましょう。
+---
+
+# Remix ドキュメント
+</translation>
+</translation_examples>
+
+<output_format>
+Return ONLY the translated Markdown text.
+Do not include any explanations, comments, or wrapping.
+The output should be directly usable as a Japanese documentation file.
+</output_format>`
+
+const buildUserPrompt = ({
   source,
   extraPrompt,
   prevTranslatedText,
-}: TranslateProps): Promise<TranslateSuccess | TranslateError> => {
-  const system = `You are a professional technical documentation translator specializing in React Router and Remix documentation.
+}: TranslateProps): string => {
+  const mode = prevTranslatedText ? 'update' : 'new'
 
-Your task is to translate the following text from English to Japanese.
+  let prompt = ''
 
-Important guidelines:
-1. Preserve all Markdown formatting, code blocks, and frontmatter exactly as they are
-2. Do NOT translate code examples, variable names, function names, or technical identifiers
-3. Keep all URLs, file paths, and references intact
-4. Maintain the same document structure and formatting
-5. Use natural Japanese that is appropriate for technical documentation
-6. For technical terms that are commonly used in English by Japanese developers, keep them in English
-7. Ensure the translation is complete - do not truncate or skip any content
+  if (mode === 'update') {
+    prompt += `<translation_mode>
+UPDATE MODE: A previous translation exists.
+- Preserve the existing translation style and terminology choices
+- Only update parts that correspond to changed content in the source
+- Maintain consistency with the previous translation
+</translation_mode>
 
-If previous translated text is provided, try to keep the existing translation as much as possible and only translate the changed parts to maintain consistency.`
+<previous_translation>
+${prevTranslatedText}
+</previous_translation>
 
-  const prompt = `
-${prevTranslatedText ? `<PreviousTranslated>\n${prevTranslatedText}\n</PreviousTranslated>\n\n` : ''}
-<Source>\n${source}\n</Source>\n\n
-${extraPrompt ? `<ExtraPrompt>\n${extraPrompt}\n</ExtraPrompt>\n\n` : ''}
+`
+  } else {
+    prompt += `<translation_mode>
+NEW MODE: This is a new translation. Translate the entire document.
+</translation_mode>
 
-Please provide the complete Japanese translation of the source text above. Return ONLY the translated text without any additional explanation or wrapping.`
+`
+  }
+
+  if (extraPrompt) {
+    prompt += `<additional_instructions>
+${extraPrompt}
+</additional_instructions>
+
+`
+  }
+
+  prompt += `<source_document>
+${source}
+</source_document>
+
+<task>
+Translate the source document above to Japanese following all constraints and guidelines.
+${mode === 'update' ? 'Preserve existing translations where the source has not changed.' : ''}
+</task>
+
+<self_check>
+Before outputting, verify:
+1. All Markdown formatting is preserved
+2. Code blocks are unchanged
+3. No content is truncated or skipped
+4. Technical terms are handled consistently
+5. The translation reads naturally in Japanese
+</self_check>`
+
+  return prompt
+}
+
+export const translateByGemini = async (
+  props: TranslateProps,
+): Promise<TranslateSuccess | TranslateError> => {
+  const { source } = props
 
   try {
     const result = await generateText({
       model: google('gemini-2.5-flash'),
-      system,
-      prompt,
-      temperature: 0,
+      system: SYSTEM_PROMPT,
+      prompt: buildUserPrompt(props),
+      temperature: 1, // Recommended for Gemini 2.5
     })
 
     const translatedText = result.text.trim()
 
-    // Check for common truncation indicators
+    // Validation checks
+    if (!translatedText || translatedText.length === 0) {
+      return { type: 'error', error: 'Translation resulted in empty text' }
+    }
+
+    // Check for truncation indicators
+    const sourceHasClosingTags = source.includes('</')
+    const translationHasClosingTags = translatedText.includes('</')
     const isTruncated =
       translatedText.endsWith('...') ||
-      translatedText.length < source.length * 0.5 ||
-      (!translatedText.includes('</') && source.includes('</'))
+      translatedText.length < source.length * 0.3 ||
+      (sourceHasClosingTags && !translationHasClosingTags)
 
-    // Consider: More robust validation
-    if (
-      !translatedText ||
-      translatedText.length === 0 ||
-      translatedText.trim() === '' ||
-      isTruncated
-    ) {
-      return { type: 'error', error: 'Translation resulted in empty text' }
+    if (isTruncated) {
+      return {
+        type: 'error',
+        error: `Translation appears truncated (source: ${source.length} chars, translation: ${translatedText.length} chars)`,
+      }
     }
 
     return {
