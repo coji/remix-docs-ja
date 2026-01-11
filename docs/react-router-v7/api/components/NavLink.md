@@ -4,30 +4,18 @@ title: NavLink
 
 # NavLink
 
-<!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
-
-Thank you for helping improve our documentation!
-
-This file is auto-generated from the JSDoc comments in the source
-code, so please edit the JSDoc comments in the file below and this
-file will be re-generated once those changes are merged.
-
-https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/dom/lib.tsx
--->
-
 [MODES: framework, data, declarative]
 
 ## Summary
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.NavLink.html)
 
-[Link](../components/Link) をラップし、アクティブおよび保留状態のスタイル設定のための追加の props を提供します。
+[`<Link>`](../components/Link) をラップし、アクティブおよび保留状態のスタイル設定のための追加の props を提供します。
 
-- アクティブおよび保留状態に基づいて、クラスがリンクに自動的に適用されます。[NavLinkProps.className](https://api.reactrouter.com/v7/interfaces/react_router.NavLinkProps.html#className) を参照してください。
-  - なお、`pending` は Framework および Data モードでのみ利用可能です。
+- アクティブおよび保留状態に基づいて、クラスがリンクに自動的に適用されます。[`NavLinkProps.className`](https://api.reactrouter.com/v7/interfaces/react_router.NavLinkProps.html#className) を参照してください。
+  - `pending` は Framework および Data モードでのみ利用可能です。
 - リンクがアクティブな場合、`aria-current="page"` がリンクに自動的に適用されます。MDN の [`aria-current`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current) を参照してください。
-- 状態は、className、style、および children のレンダー props を通じて利用できます。[NavLinkRenderProps](https://api.reactrouter.com/v7/types/react_router.NavLinkRenderProps.html) を参照してください。
+- 状態は、className、style、および children のレンダー props を通じて利用できます。[`NavLinkRenderProps`](https://api.reactrouter.com/v7/types/react_router.NavLinkRenderProps.html) を参照してください。
 
 ```tsx
 <NavLink to="/message">Messages</NavLink>
@@ -62,13 +50,13 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/do
 
 通常の React children または、リンクのアクティブおよび保留状態を持つオブジェクトを受け取る関数にすることができます。
 
- ```tsx
- <NavLink to="/tasks">
-   {({ isActive }) => (
-     <span className={isActive ? "active" : ""}>Tasks</span>
-   )}
- </NavLink>
- ```
+```tsx
+<NavLink to="/tasks">
+  {({ isActive }) => (
+    <span className={isActive ? "active" : ""}>Tasks</span>
+  )}
+</NavLink>
+```
 
 ### className
 
@@ -88,7 +76,7 @@ a.transitioning {
 }
 ```
 
-または、[`NavLinkRenderProps`](https://api.reactrouter.com/v7/types/react_router.NavLinkRenderProps.html) を受け取り、`className` を返す関数を指定することもできます。
+または、[`NavLinkRenderProps`](https://api.reactrouter.com/v7/types/react_router.NavLinkRenderProps.html) を受け取り `className` を返す関数を指定することもできます。
 
 ```tsx
 <NavLink className={({ isActive, isPending }) => (
@@ -102,16 +90,16 @@ a.transitioning {
 
 [modes: framework]
 
-リンクの検出動作を定義します。
+リンクの [lazy route discovery](../../explanation/lazy-route-discovery) 動作を定義します。
+
+- **render** - デフォルト、リンクがレンダリングされるときにルートを検出します。
+- **none** - 積極的に検出せず、リンクがクリックされた場合にのみ検出します。
 
 ```tsx
 <Link /> // default ("render")
 <Link discover="render" />
 <Link discover="none" />
 ```
-
-- **render** - デフォルト、リンクがレンダリングされるときにルートを検出します。
-- **none** - 積極的に検出せず、リンクがクリックされた場合にのみ検出します。
 
 ### end
 
@@ -161,7 +149,7 @@ a.transitioning {
 
 [modes: framework, data]
 
-リンクがクリックされたときに、スクロール位置がウィンドウの上部にリセットされるのを防ぎます。アプリが [`ScrollRestoration`](../components/ScrollRestoration) を使用している場合に限ります。これは、新しい場所でスクロールが上部にリセットされるのを防ぐだけであり、戻る/進むボタンのナビゲーションではスクロール位置が復元されます。
+リンクがクリックされ、アプリが [`ScrollRestoration`](../components/ScrollRestoration) を使用している場合に、スクロール位置がウィンドウの上部にリセットされるのを防ぎます。これは、新しい場所でスクロールが上部にリセットされるのを防ぐだけであり、戻る/進むボタンのナビゲーションではスクロール位置が復元されます。
 
 ```tsx
 <Link to="?tab=one" preventScrollReset />
@@ -181,10 +169,10 @@ a.transitioning {
 
 親ルートパターンが "blog" で、子ルートパターンが "blog/:slug/edit" であるルート階層を考えてみましょう。
 
-- **route** - デフォルト、ルートパターンを基準にしてリンクを解決します。上記の例では、`"..."` の相対リンクは、`:slug/edit` セグメントを "/blog" まで削除します。
-- **path** - パスを基準にするため、`"..."` は "/blog/:slug" まで 1 つの URL セグメントのみを削除します。
+- **route** - デフォルト、ルートパターンを基準にしてリンクを解決します。上記の例では、`"..."` の相対リンクは、`:slug/edit` セグメントを削除して `"/blog"` まで戻ります。
+- **path** - パスを基準にするため、`"..."` は `/blog/:slug` まで 1 つの URL セグメントのみを削除します。
 
-なお、インデックスルートとレイアウトルートにはパスがないため、相対パスの計算には含まれません。
+インデックスルートおよびレイアウトルートはパスを持たないため、相対パスの計算には含まれません。
 
 ### reloadDocument
 
@@ -200,7 +188,7 @@ a.transitioning {
 
 [modes: framework, data, declarative]
 
-履歴スタックに新しいエントリをプッシュする代わりに、[`History`](https://developer.mozilla.org/en-US/docs/Web/API/History) スタック内の現在のエントリを置き換えます。
+[`History`](https://developer.mozilla.org/en-US/docs/Web/API/History) スタックに新しいエントリをプッシュする代わりに、履歴スタック内の現在のエントリを置き換えます。
 
 ```tsx
 <Link replace />
@@ -242,7 +230,7 @@ function SomeComp() {
 
 [modes: framework, data, declarative]
 
-スタイルは、[`NavLinkRenderProps`](https://api.reactrouter.com/v7/types/react_router.NavLinkRenderProps.html) を受け取り、スタイルを返す関数を介して動的に適用することもできます。
+スタイルは、[`NavLinkRenderProps`](https://api.reactrouter.com/v7/types/react_router.NavLinkRenderProps.html) を受け取りスタイルを返す関数を介して動的に適用することもできます。
 
 ```tsx
 <NavLink to="/tasks" style={{ color: "red" }} />

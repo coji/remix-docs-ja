@@ -15,7 +15,7 @@ order: 5
 
 `loaderData` プロップの型は、[自動的に生成されます][type-safety]。
 
-<docs-info>Reactがサーバーコンポーネントからクライアントコンポーネントにpropsとして渡すことを許可している[シリアライズ可能な型][serializable-types]と同じセットをサポートするよう努めています。これにより、将来的に[RSC][rsc]への移行が発生した場合でも、アプリケーションの将来性が保証されます。</docs-info>
+<docs-info>React がサーバーコンポーネントがクライアントコンポーネントに props として渡すことを許可している[シリアライズ可能な型][serializable-types]と同じセットをサポートするように努めています。これにより、将来的に[RSC][rsc]への移行があった場合にも、アプリケーションが対応できるようになります。</docs-info>
 
 ## クライアントデータローディング
 
@@ -106,7 +106,7 @@ export default function Product({
 }
 ```
 
-プリレンダリングする URL は、react-router.config.ts で指定します。
+プリレンダリングする URL は、`react-router.config.ts` で指定します。
 
 ```ts filename=react-router.config.ts
 import type { Config } from "@react-router/dev/config";
@@ -171,7 +171,7 @@ export async function clientLoader() {
 }
 
 // ハイドレーション中にクライアントローダーを強制的に実行します
-clientLoader.hydrate = true as const; // `as const` for type inference
+clientLoader.hydrate = true as const; // 型推論のための `as const`
 
 export function HydrateFallback() {
   return <div>Loading...</div>;

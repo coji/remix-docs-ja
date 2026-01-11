@@ -42,7 +42,7 @@ export default function Signup(_: Route.ComponentProps) {
         <input type="password" name="password" />
       </p>
 
-      <button type="submit">サインアップ</button>
+      <button type="submit">Sign Up</button>
     </fetcher.Form>
   );
 }
@@ -113,7 +113,7 @@ export default function Signup(_: Route.ComponentProps) {
         ) : null}
       </p>
 
-      <button type="submit">サインアップ</button>
+      <button type="submit">Sign Up</button>
     </fetcher.Form>
   );
 }

@@ -22,7 +22,7 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/ro
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/classes/react_router.RouterContextProvider.html)
 
-アプリケーションコンテキスト内の値を型安全な方法で書き込み/読み取りするためのメソッドを提供します。主に[ミドルウェア](../../how-to/middleware)での使用を想定しています。
+アプリケーションコンテキスト内の値を型安全な方法で書き込み/読み込みするためのメソッドを提供します。主に [middleware](../../how-to/middleware) で使用されます。
 
 ```tsx
 import {

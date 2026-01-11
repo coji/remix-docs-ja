@@ -4,9 +4,9 @@ title: "@react-router/dev (CLI)"
 
 # React Router CLI
 
-React Router CLIは`@react-router/dev`パッケージに含まれています。サーバーにデプロイされないよう、`package.json`の`devDependencies`に含めるようにしてください。
+React Router CLI は `@react-router/dev` パッケージに含まれています。`package.json` の `devDependencies` に含まれていることを確認し、サーバーにデプロイされないようにしてください。
 
-利用可能なコマンドとフラグの全リストを取得するには、以下を実行します。
+利用可能なコマンドとフラグの全リストを表示するには、以下を実行します。
 
 ```shellscript nonumber
 npx @react-router/dev -h
@@ -14,28 +14,28 @@ npx @react-router/dev -h
 
 ## `react-router build`
 
-[Vite][vite]を使用して、本番環境向けにアプリをビルドします。このコマンドは`process.env.NODE_ENV`を`production`に設定し、デプロイ用にアウトプットをminifyします。
+[Vite][vite] を使用して、プロダクション用にアプリをビルドします。このコマンドは `process.env.NODE_ENV` を `production` に設定し、デプロイ用にアウトプットをミニファイします。
 
 ```shellscript nonumber
 react-router build
 ```
 
-| フラグ                  | 説明                                                    | 型                                                  | デフォルト  |
-| --------------------- | ------------------------------------------------------- | --------------------------------------------------- | ----------- |
-| `--assetsInlineLimit` | 静的アセットのbase64インライン閾値（バイト単位）        | `number`                                            | `4096`      |
-| `--clearScreen`       | ログ出力時の画面クリアを許可/無効にする                 | `boolean`                                           |             |
-| `--config`, `-c`      | 指定された設定ファイルを使用する                        | `string`                                            |             |
-| `--emptyOutDir`       | `outDir`がルート外にある場合に強制的に空にする          | `boolean`                                           |             |
-| `--logLevel`, `-l`    | 指定されたログレベルを使用する                          | `"info" \| "warn" \| "error" \| "silent" \| string` |             |
-| `--minify`            | minificationを有効/無効にする、または使用するminifierを指定する | `boolean \| "terser" \| "esbuild"`                  | `"esbuild"` |
-| `--mode`, `-m`        | 環境モードを設定する                                    | `string`                                            |             |
-| `--profile`           | ビルトインのNode.jsインスペクターを開始する             |                                                     |             |
-| `--sourcemapClient`   | クライアントビルド用のソースマップを出力する            | `boolean \| "inline" \| "hidden"`                   | `false`     |
-| `--sourcemapServer`   | サーバービルド用のソースマップを出力する                | `boolean \| "inline" \| "hidden"`                   | `false`     |
+| フラグ                  | 説明                                                | 型                                                  | デフォルト  |
+| :---------------------- | :-------------------------------------------------- | :-------------------------------------------------- | :---------- |
+| `--assetsInlineLimit`   | バイト単位での静的アセットの base64 インライン閾値  | `number`                                            | `4096`      |
+| `--clearScreen`         | ログ出力時の画面クリアを許可/無効化                 | `boolean`                                           |             |
+| `--config`, `-c`        | 指定された設定ファイルを使用                        | `string`                                            |             |
+| `--emptyOutDir`         | ルート外にある `outDir` を強制的に空にする          | `boolean`                                           |             |
+| `--logLevel`, `-l`      | 指定されたログレベルを使用                          | `"info" \| "warn" \| "error" \| "silent" \| string` |             |
+| `--minify`              | ミニファイを有効/無効にするか、使用するミニファイアを指定 | `boolean \| "terser" \| "esbuild"`                  | `"esbuild"` |
+| `--mode`, `-m`          | 環境モードを設定                                    | `string`                                            |             |
+| `--profile`             | 組み込みの Node.js インスペクターを開始             |                                                     |             |
+| `--sourcemapClient`     | クライアントビルド用のソースマップを出力            | `boolean \| "inline" \| "hidden"`                   | `false`     |
+| `--sourcemapServer`     | サーバービルド用のソースマップを出力                | `boolean \| "inline" \| "hidden"`                   | `false`     |
 
 ## `react-router dev`
 
-[Vite][vite]を搭載し、HMRとHot Data Revalidation (HDR) を使用して開発モードでアプリを実行します。
+[Vite][vite] を使用して、HMR と Hot Data Revalidation (HDR) を備えた開発モードでアプリを実行します。
 
 ```shellscript nonumber
 react-router dev
@@ -45,80 +45,76 @@ react-router dev
 
 「Hot Data Revalidation」とは？
 
-HMRと同様に、HDRはページをリフレッシュすることなくアプリをホットアップデートする方法です。
-これにより、編集がアプリに適用されてもアプリの状態を維持できます。
-HMRは、アプリのコンポーネント、マークアップ、スタイルを変更したときのようなクライアントサイドのコード更新を処理します。
-同様に、HDRはサーバーサイドのコード更新を処理します。
+HMR と同様に、HDR はページをリフレッシュすることなくアプリをホット更新する方法です。これにより、編集がアプリに適用されている間もアプリの state を保持できます。HMR は、アプリの component、マークアップ、またはスタイルを変更したときのような、クライアントサイドのコード更新を処理します。同様に、HDR はサーバーサイドのコード更新を処理します。
 
-つまり、現在のページ（または現在のページが依存する任意のコード）に変更を加えるたびに、React Routerは[loaders][loaders]からデータを再フェッチします。
-これにより、アプリはクライアントサイドまたはサーバーサイドの最新のコード変更で_常に_最新の状態に保たれます。
+これは、現在のページ（または現在のページが依存するコード）に変更を加えるたびに、React Router が [loader][loaders] からデータを再フェッチすることを意味します。これにより、アプリはクライアントサイドまたはサーバーサイドの最新のコード変更で_常に_最新の状態に保たれます。
 
 </docs-info>
 
-| フラグ               | 説明                                                    | 型                                                  | デフォルト |
-| ------------------ | ----------------------------------------------------- | --------------------------------------------------- | ------- |
-| `--clearScreen`    | ログ出力時の画面クリアを許可/無効にする                 | `boolean`                                           |         |
-| `--config`, `-c`   | 指定された設定ファイルを使用する                        | `string`                                            |         |
-| `--cors`           | CORSを有効にする                                      | `boolean`                                           |         |
-| `--force`          | オプティマイザーにキャッシュを無視して再バンドルさせる  | `boolean`                                           |         |
-| `--host`           | ホスト名を指定する                                      | `string`                                            |         |
-| `--logLevel`, `-l` | 指定されたログレベルを使用する                          | `"info" \| "warn" \| "error" \| "silent" \| string` |         |
-| `--mode`, `-m`     | 環境モードを設定する                                    | `string`                                            |         |
-| `--open`           | 起動時にブラウザを開く                                  | `boolean \| string`                                 |         |
-| `--port`           | ポートを指定する                                        | `number`                                            |         |
-| `--profile`        | ビルトインのNode.jsインスペクターを開始する             |                                                     |         |
-| `--strictPort`     | 指定されたポートが既に使用されている場合に終了する      | `boolean`                                           |         |
+| フラグ               | 説明                                                  | 型                                                  | デフォルト |
+| :------------------- | :---------------------------------------------------- | :-------------------------------------------------- | :--------- |
+| `--clearScreen`      | ログ出力時の画面クリアを許可/無効化                   | `boolean`                                           |            |
+| `--config`, `-c`     | 指定された設定ファイルを使用                          | `string`                                            |            |
+| `--cors`             | CORS を有効にする                                     | `boolean`                                           |            |
+| `--force`            | オプティマイザーにキャッシュを無視して再バンドルするよう強制 | `boolean`                                           |            |
+| `--host`             | ホスト名を指定                                        | `string`                                            |            |
+| `--logLevel`, `-l`   | 指定されたログレベルを使用                            | `"info" \| "warn" \| "error" \| "silent" \| string` |            |
+| `--mode`, `-m`       | 環境モードを設定                                      | `string`                                            |            |
+| `--open`             | 起動時にブラウザを開く                                | `boolean \| string`                                 |            |
+| `--port`             | ポートを指定                                          | `number`                                            |            |
+| `--profile`          | 組み込みの Node.js インスペクターを開始               |                                                     |            |
+| `--strictPort`       | 指定されたポートが既に使用中の場合、終了する          | `boolean`                                           |            |
 
 ## `react-router reveal`
 
-React Routerは、デフォルトでアプリケーションのエントリーポイントを処理します。
+React Router は、デフォルトでアプリケーションのエントリーポイントを処理します。
 
-これらのエントリーポイントを制御したい場合は、`npx react-router reveal`を実行して、`app`ディレクトリに[`entry.client.tsx`][entry-client]と[`entry.server.tsx`][entry-server]ファイルを生成できます。これらのファイルが存在する場合、React Routerはデフォルトの代わりにそれらを使用します。
+これらのエントリーポイントを制御したい場合は、`npx react-router reveal` を実行して、`app` ディレクトリに [`entry.client.tsx`][entry-client] と [`entry.server.tsx`][entry-server] ファイルを生成できます。これらのファイルが存在する場合、React Router はデフォルトの代わりにこれらを使用します。
 
 ```shellscript nonumber
 npx react-router reveal
 ```
 
-| フラグ              | 説明                                | 型        | デフォルト |
-| ----------------- | ----------------------------------- | --------- | ------- |
-| `--config`, `-c`  | 指定された設定ファイルを使用する    | `string`  |         |
-| `--mode`, `-m`    | 環境モードを設定する                | `string`  |         |
-| `--no-typescript` | プレーンなJavaScriptファイルを生成する | `boolean` | `false` |
-| `--typescript`    | TypeScriptファイルを生成する        | `boolean` | `true`  |
+| フラグ              | 説明                            | 型        | デフォルト |
+| :------------------ | :------------------------------ | :-------- | :--------- |
+| `--config`, `-c`    | 指定された設定ファイルを使用    | `string`  |            |
+| `--mode`, `-m`      | 環境モードを設定                | `string`  |            |
+| `--no-typescript`   | プレーンな JavaScript ファイルを生成 | `boolean` | `false`    |
+| `--typescript`      | TypeScript ファイルを生成       | `boolean` | `true`     |
 
 ## `react-router routes`
 
-アプリのルートをターミナルに出力します。
+アプリ内の routes をターミナルに出力します。
 
 ```shellscript nonumber
 react-router routes
 ```
 
-ルートツリーはデフォルトでJSX形式で表示されます。`--json`フラグを使用すると、JSON形式でルートを取得することもできます。
+デフォルトでは、routes ツリーは JSX フォーマットになります。`--json` フラグを使用して、routes を JSON フォーマットで取得することもできます。
 
 ```shellscript nonumber
 react-router routes --json
 ```
 
-| フラグ             | 説明                                | 型        | デフォルト |
-| ---------------- | ----------------------------------- | --------- | ------- |
-| `--config`, `-c` | 指定された設定ファイルを使用する    | `string`  |         |
-| `--json`         | ルートをJSON形式で出力する          | `boolean` | `false` |
-| `--mode`, `-m`   | 環境モードを設定する                | `string`  |         |
+| フラグ             | 説明                       | 型        | デフォルト |
+| :----------------- | :------------------------- | :-------- | :--------- |
+| `--config`, `-c`   | 指定された設定ファイルを使用 | `string`  |            |
+| `--json`           | routes を JSON フォーマットで出力 | `boolean` | `false`    |
+| `--mode`, `-m`     | 環境モードを設定           | `string`  |            |
 
 ## `react-router typegen`
 
-ルートのTypeScript型を生成します。これは開発中に自動的に行われますが、必要に応じて手動で実行することもできます。例えば、`tsc`を実行する前にCIで型を生成する場合などです。詳細については、[Type Safety][type-safety]を参照してください。
+routes の TypeScript 型を生成します。これは開発中に自動的に行われますが、必要に応じて手動で実行できます（例: CI で `tsc` を実行する前に型を生成する場合など）。詳細については、[Type Safety][type-safety] を参照してください。
 
 ```shellscript nonumber
 react-router typegen
 ```
 
-| フラグ             | 説明                                | 型        | デフォルト |
-| ---------------- | ----------------------------------- | --------- | ------- |
-| `--config`, `-c` | 指定された設定ファイルを使用する    | `string`  |         |
-| `--mode`, `-m`   | 環境モードを設定する                | `string`  |         |
-| `--watch`        | 変更を監視する                      | `boolean` | `false` |
+| フラグ             | 説明                       | 型        | デフォルト |
+| :----------------- | :------------------------- | :-------- | :--------- |
+| `--config`, `-c`   | 指定された設定ファイルを使用 | `string`  |            |
+| `--mode`, `-m`     | 環境モードを設定           | `string`  |            |
+| `--watch`          | 変更を監視                 | `boolean` | `false`    |
 
 [loaders]: ../../start/framework/data-loading
 [vite]: https://vite.dev

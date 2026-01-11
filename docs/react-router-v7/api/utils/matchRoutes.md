@@ -4,18 +4,6 @@ title: matchRoutes
 
 # matchRoutes
 
-<!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
-
-Thank you for helping improve our documentation!
-
-This file is auto-generated from the JSDoc comments in the source
-code, so please edit the JSDoc comments in the file below and this
-file will be re-generated once those changes are merged.
-
-https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/router/utils.ts
--->
-
 [MODES: framework, data, declarative]
 
 ## 概要
@@ -55,15 +43,15 @@ function matchRoutes<
 
 ### routes
 
-マッチング対象となるルートオブジェクトの配列。
+マッチ対象となるルートオブジェクトの配列。
 
 ### locationArg
 
-マッチング対象となるロケーション。文字列パスまたは部分的な [`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html) オブジェクトのいずれか。
+マッチ対象となるロケーション。文字列パスまたは部分的な [`Location`](https://api.reactrouter.com/v7/interfaces/react_router.Location.html) オブジェクトのいずれかです。
 
 ### basename
 
-マッチング前にロケーションから取り除くオプションのベースパス。デフォルトは `/` です。
+マッチング前にロケーションから削除するオプションのベースパス。デフォルトは `/` です。
 
 ## 戻り値
 

@@ -37,13 +37,13 @@ export default function Project({
 }: Route.ComponentProps) {
   return (
     <div>
-      <h1>プロジェクト</h1>
+      <h1>Project</h1>
       <Form method="post">
         <input type="text" name="title" />
-        <button type="submit">送信</button>
+        <button type="submit">Submit</button>
       </Form>
       {actionData ? (
-        <p>{actionData.title} が更新されました</p>
+        <p>{actionData.title} updated</p>
       ) : null}
     </div>
   );
@@ -74,13 +74,13 @@ export default function Project({
 }: Route.ComponentProps) {
   return (
     <div>
-      <h1>プロジェクト</h1>
+      <h1>Project</h1>
       <Form method="post">
         <input type="text" name="title" />
-        <button type="submit">送信</button>
+        <button type="submit">Submit</button>
       </Form>
       {actionData ? (
-        <p>{actionData.title} が更新されました</p>
+        <p>{actionData.title} updated</p>
       ) : null}
     </div>
   );
@@ -100,7 +100,7 @@ function SomeComponent() {
   return (
     <Form action="/projects/123" method="post">
       <input type="text" name="title" />
-      <button type="submit">送信</button>
+      <button type="submit">Submit</button>
     </Form>
   );
 }
@@ -149,7 +149,7 @@ function Task() {
     <fetcher.Form method="post" action="/update-task/123">
       <input type="text" name="title" />
       <button type="submit">
-        {busy ? "保存中..." : "保存"}
+        {busy ? "Saving..." : "Save"}
       </button>
     </fetcher.Form>
   );
@@ -160,7 +160,7 @@ function Task() {
 
 ```tsx
 fetcher.submit(
-  { title: "新しいタイトル" },
+  { title: "New Title" },
   { action: "/update-task/123", method: "post" },
 );
 ```

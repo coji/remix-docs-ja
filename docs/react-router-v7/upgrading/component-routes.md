@@ -170,13 +170,13 @@ import "./index.css";
 import App from "./App";
 
 ReactDOM.createRoot(
-  document.getElementById("root")!
+  document.getElementById("root")!,
 ).render(
   <React.StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 ```
 
@@ -192,7 +192,7 @@ ReactDOM.hydrateRoot(
   document,
   <React.StrictMode>
     <HydratedRouter />
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 ```
 
@@ -214,9 +214,9 @@ ReactDOM.hydrateRoot(
 
 ## 6. ルートを設定する
 
-The React Router Vite plugin uses a `routes.ts` file to configure your routes. For now we'll add a simple catchall route to get things going.
+React Router Vite プラグインは、`routes.ts` ファイルを使用してルートを設定します。今のところ、物事を進めるために単純なキャッチオールルートを追加します。
 
-**👉 Set up a `catchall.tsx` route**
+**👉 `catchall.tsx` ルートを設定する**
 
 ```shellscript nonumber
 touch src/routes.ts src/catchall.tsx
@@ -229,14 +229,14 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-  // * matches all URLs, the ? makes it optional so it will match / as well
+  // * はすべての URL に一致し、? はオプションにするため、/ にも一致します
   route("*?", "catchall.tsx"),
 ] satisfies RouteConfig;
 ```
 
-**👉 Render a placeholder route**
+**👉 プレースホルダールートをレンダリングする**
 
-Eventually we'll replace this with our original `App` component, but for now we'll just render something simple to make sure we can boot the app.
+最終的にはこれを元の `App` コンポーネントに置き換えますが、今のところアプリを起動できることを確認するために、何か簡単なものをレンダリングします。
 
 ```tsx filename=src/catchall.tsx
 export default function Component() {

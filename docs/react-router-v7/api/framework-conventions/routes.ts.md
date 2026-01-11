@@ -13,9 +13,9 @@ order: 2
 このファイルは必須です
 </docs-info>
 
-[参照ドキュメント ↗](https://api.reactrouter.com/v7/interfaces/_react_router_dev.routes.RouteConfigEntry.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/interfaces/_react_router_dev.routes.RouteConfigEntry.html)
 
-アプリケーション内のURLパターンをルートモジュールにマッピングする設定ファイルです。
+アプリケーション内の URL パターンを route module にマッピングする設定ファイルです。
 
 詳細については、[ルーティングガイド][routing]を参照してください。
 
@@ -23,7 +23,7 @@ order: 2
 
 ### 基本
 
-ルートをオブジェクトの配列として設定します。
+routes をオブジェクトの配列として設定します。
 
 ```tsx filename=app/routes.ts
 import {
@@ -37,17 +37,17 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-ルート設定エントリを作成するには、以下のヘルパーを使用できます。
+route config エントリを作成するには、以下のヘルパーを使用できます。
 
-- [`route`][route] — ルート設定エントリを作成するためのヘルパー関数
-- [`index`][index] — インデックスルートのルート設定エントリを作成するためのヘルパー関数
-- [`layout`][layout] — レイアウトルートのルート設定エントリを作成するためのヘルパー関数
-- [`prefix`][prefix] — 親ルートファイルを導入することなく、一連のルートにパスプレフィックスを追加するためのヘルパー関数
-- [`relative`][relative] — 指定されたディレクトリに対するファイルパスを解決する一連のルート設定ヘルパーを作成します。異なるディレクトリ内の複数のファイルにルート設定を分割することをサポートするように設計されています
+- [`route`][route] — route config エントリを作成するためのヘルパー関数
+- [`index`][index] — index route の route config エントリを作成するためのヘルパー関数
+- [`layout`][layout] — layout route の route config エントリを作成するためのヘルパー関数
+- [`prefix`][prefix] — 親 route を導入することなく、一連の routes にパスプレフィックスを追加するためのヘルパー関数
+- [`relative`][relative] — 指定されたディレクトリを基準にファイルパスを解決する route config ヘルパーのセットを作成します。route config を異なるディレクトリ内の複数のファイルに分割することをサポートするように設計されています
 
 ### ファイルベースルーティング
 
-設定ではなくファイル命名規則でルートを定義したい場合は、`@react-router/fs-routes`パッケージが[ファイルシステムルーティング規約][file-route-conventions]を提供します。
+設定ではなくファイル命名規約によって routes を定義したい場合、`@react-router/fs-routes` パッケージは [ファイルシステムルーティング規約][file-route-conventions]を提供します。
 
 ```ts filename=app/routes.ts
 import { type RouteConfig } from "@react-router/dev/routes";

@@ -22,13 +22,11 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/rs
 <br />
 <br />
 
-<docs-warning>このAPIは実験的であり、マイナー/パッチリリースで破壊的変更が発生する可能性があります。使用には注意し、関連する変更についてはリリースノートに**細心の**注意を払ってください。</docs-warning>
+<docs-warning>このAPIは実験的であり、マイナー/パッチリリースで破壊的変更が行われる可能性があります。使用には注意し、関連する変更についてはリリースノートに**非常に**注意を払ってください。</docs-warning>
 
 ## 概要
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.unstable_getRSCStream.html)
-
-ハイドレーション用のプリレンダリングされた[RSC](https://react.dev/reference/rsc/server-components)ストリームを取得します。通常、`react-server-dom-xyz/client`の`createFromReadableStream`に直接渡されます。
+ハイドレーションのためのプリレンダリングされた [RSC](https://react.dev/reference/rsc/server-components) ストリームを取得します。通常、`react-server-dom-xyz/client` の `createFromReadableStream` に直接渡されます。
 
 ```tsx
 import { startTransition, StrictMode } from "react";
@@ -64,4 +62,4 @@ function getRSCStream(): ReadableStream
 
 ## 戻り値
 
-ハイドレーション用の[RSC](https://react.dev/reference/rsc/server-components)データを含む[`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)です。
+ハイドレーション用の [RSC](https://react.dev/reference/rsc/server-components) データを含む [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) を返します。

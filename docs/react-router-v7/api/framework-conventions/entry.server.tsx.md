@@ -7,29 +7,30 @@ order: 5
 
 [MODES: framework]
 
-## Summary
+## 概要
 
-<docs-info>
-このファイルはオプションです
-</docs-info>
+このファイルは、あなたの React Router アプリケーションがサーバー上で HTTP レスポンスを生成する方法を制御する、サーバーサイドのエントリーポイントです。
 
-このファイルは、React Routerアプリケーションがサーバー上でHTTPレスポンスを生成する方法を制御するサーバーサイドのエントリーポイントです。
+このモジュールは、現在のリクエストに対する `context` と `url` を [`<ServerRouter>`][serverrouter] 要素とともに使用して、現在のページのマークアップをレンダリングする必要があります。このマークアップは、ブラウザで JavaScript が読み込まれると、[クライアントエントリーモジュール][client-entry]を使用して（オプションで）再ハイドレーションされます。
 
-このモジュールは、現在のリクエストの`context`と`url`を使用して、[`<ServerRouter>`][serverrouter]要素で現在のページのマークアップをレンダリングする必要があります。このマークアップは、ブラウザでJavaScriptがロードされた後、[クライアントエントリーモジュール][client-entry]を使用して（オプションで）再ハイドレートされます。
+<docs-info>このファイルは、Node で実行している場合はオプションです。存在しない場合、[デフォルトの実装][node-streaming-entry-server]が使用されます。
+<br/>
+<br/>
+他のランタイム（例: Cloudflare）を使用している場合は、このファイルを含める必要があります。[テンプレートリポジトリ][templates-repo]でサンプル実装を見つけることができます。</docs-info>
 
-## `entry.server.tsx`の生成
+## `entry.server.tsx` の生成
 
-デフォルトでは、React RouterがHTTPレスポンスの生成を処理します。以下のコマンドでデフォルトのエントリーサーバーファイルを表示できます。
+Node で実行している場合、React Router が HTTP レスポンスの生成を処理します。デフォルトのエントリーサーバーファイルは、以下で表示できます。
 
 ```shellscript nonumber
 npx react-router reveal
 ```
 
-## Exports
+## エクスポート
 
 ### `default`
 
-このモジュールの`default`エクスポートは、HTTPステータス、ヘッダー、HTMLを含むレスポンスを作成できる関数であり、マークアップが生成されクライアントに送信される方法を完全に制御できます。
+このモジュールの `default` エクスポートは、HTTP ステータス、ヘッダー、HTML を含むレスポンスを作成できる関数であり、マークアップが生成されクライアントに送信される方法を完全に制御できます。
 
 ```tsx filename=app/entry.server.tsx
 import { PassThrough } from "node:stream";
@@ -42,7 +43,7 @@ export default function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  routerContext: EntryContext
+  routerContext: EntryContext,
 ) {
   return new Promise((resolve, reject) => {
     const { pipe, abort } = renderToPipeableStream(
@@ -62,7 +63,7 @@ export default function handleRequest(
             new Response(stream, {
               headers: responseHeaders,
               status: responseStatusCode,
-            })
+            }),
           );
 
           pipe(body);
@@ -70,7 +71,7 @@ export default function handleRequest(
         onShellError(error: unknown) {
           reject(error);
         },
-      }
+      },
     );
   });
 }
@@ -78,12 +79,12 @@ export default function handleRequest(
 
 ### `streamTimeout`
 
-レスポンスを[ストリーミング]している場合、オプションの`streamTimeout`値（ミリ秒単位）をエクスポートできます。これは、未処理のプロミスを拒否してストリームを閉じる前に、サーバーがストリーミングされたプロミスが解決するのを待つ時間を制御します。
+レスポンスを[ストリーミング]している場合、オプションの `streamTimeout` 値（ミリ秒単位）をエクスポートできます。これは、サーバーがストリーミングされた Promise が解決されるのを待つ時間を制御し、未解決の Promise を拒否してストリームを閉じる前にその時間を設定します。
 
-この値をReactレンダラーを中止するタイムアウトから切り離すことをお勧めします。Reactレンダリングのタイムアウトは常に高い値に設定し、`streamTimeout`からの基になる拒否をストリームダウンする時間を与えるべきです。
+この値を、React レンダラーを中止する際のタイムアウトとは切り離すことをお勧めします。React のレンダリングタイムアウトは常に、`streamTimeout` からの基盤となる拒否をストリーミングする時間を確保できるように、より高い値に設定する必要があります。
 
 ```tsx lines=[1-2,13-15]
-// 10秒後にハンドラー関数からの保留中のすべてのプロミスを拒否します
+// Reject all pending promises from handler functions after 10 seconds
 export const streamTimeout = 10000;
 
 export default function handleRequest(...) {
@@ -95,7 +96,8 @@ export default function handleRequest(...) {
       { /* ... */ }
     );
 
-    // 拒否された境界がフラッシュされるように、11秒後にストリーミングレンダリングパスを中止します
+    // Abort the streaming render pass after 11 seconds to allow the rejected
+    // boundaries to be flushed
     setTimeout(abort, streamTimeout + 1000);
   });
 }
@@ -103,7 +105,7 @@ export default function handleRequest(...) {
 
 ### `handleDataRequest`
 
-オプションの`handleDataRequest`関数をエクスポートすることで、データリクエストのレスポンスを変更できます。これらはHTMLをレンダリングせず、クライアントサイドのハイドレーションが発生した後に`loader`および`action`データをブラウザに返すリクエストです。
+データリクエストのレスポンスを変更できるオプションの `handleDataRequest` 関数をエクスポートできます。これらは HTML をレンダリングせず、クライアントサイドのハイドレーションが発生した後、`loader` および `action` データをブラウザに返すリクエストです。
 
 ```tsx
 export function handleDataRequest(
@@ -112,7 +114,7 @@ export function handleDataRequest(
     request,
     params,
     context,
-  }: LoaderFunctionArgs | ActionFunctionArgs
+  }: LoaderFunctionArgs | ActionFunctionArgs,
 ) {
   response.headers.set("X-Custom-Header", "value");
   return response;
@@ -121,7 +123,7 @@ export function handleDataRequest(
 
 ### `handleError`
 
-デフォルトでは、React Routerは発生したサーバーサイドエラーをコンソールにログ出力します。ロギングをより細かく制御したい場合、またはこれらのエラーを外部サービスに報告したい場合は、オプションの`handleError`関数をエクスポートできます。これにより制御が可能になり（そして組み込みのエラーロギングは無効になります）。
+デフォルトでは、React Router は発生したサーバーサイドのエラーをコンソールにログ出力します。ロギングをより詳細に制御したい場合、またはこれらのエラーを外部サービスにも報告したい場合は、制御を可能にするオプションの `handleError` 関数をエクスポートできます（そして、組み込みのエラーロギングは無効になります）。
 
 ```tsx
 export function handleError(
@@ -130,7 +132,7 @@ export function handleError(
     request,
     params,
     context,
-  }: LoaderFunctionArgs | ActionFunctionArgs
+  }: LoaderFunctionArgs | ActionFunctionArgs,
 ) {
   if (!request.signal.aborted) {
     sendErrorToErrorReportingService(error);
@@ -139,21 +141,24 @@ export function handleError(
 }
 ```
 
-*リクエストが中止された場合、React Routerのキャンセルと競合状態の処理により多くのリクエストが中止される可能性があるため、通常はロギングを避けるべきであることに注意してください。*
+_リクエストが中止されたときにロギングを避けるのが一般的であることに注意してください。React Router のキャンセル処理と競合状態の処理により、多くのリクエストが中止される可能性があるためです。_
 
-__ストリーミングレンダリングエラー__
+**ストリーミングレンダリングエラー**
 
-[`renderToPipeableStream`][rendertopipeablestream]または[`renderToReadableStream`][rendertoreadablestream]を介してHTMLレスポンスをストリーミングしている場合、独自の`handleError`実装は、初期シェルレンダリング中に発生したエラーのみを処理します。その後のストリーミングレンダリング中にレンダリングエラーが発生した場合、React Routerサーバーはすでにその時点でレスポンスを送信しているため、これらのエラーを手動で処理する必要があります。
+[`renderToPipeableStream`][rendertopipeablestream] または [`renderToReadableStream`][rendertoreadablestream] を介して HTML レスポンスをストリーミングしている場合、独自の `handleError` 実装は初期のシェルレンダリング中に発生したエラーのみを処理します。後続のストリーミングレンダリング中にレンダリングエラーが発生した場合、React Router サーバーはその時点で既にレスポンスを送信しているため、これらのエラーは手動で処理する必要があります。
 
-`renderToPipeableStream`の場合、これらのエラーは`onError`コールバック関数で処理できます。エラーがシェルレンダリングエラーであったか（無視できる）、または非同期であったかを知るために、`onShellReady`でブール値を切り替える必要があります。例については、Nodeのデフォルトの[`entry.server.tsx`][node-streaming-entry-server]を参照してください。
+`renderToPipeableStream` の場合、これらのエラーは `onError` コールバック関数で処理できます。エラーがシェルレンダリングエラー（無視できる）なのか、非同期エラーなのかを知るために、`onShellReady` で boolean を切り替える必要があります。
 
-__スローされたレスポンス__
+例については、Node のデフォルトの [`entry.server.tsx`][node-streaming-entry-server] を参照してください。
 
-これは、`loader`/`action`関数からスローされた`Response`インスタンスを処理しないことに注意してください。このハンドラーの意図は、予期しないスローされたエラーを引き起こすコードのバグを見つけることです。シナリオを検出し、`loader`/`action`で401/404などの`Response`をスローしている場合、それはコードによって処理される予期されたフローです。それらをログに記録したり、外部サービスに送信したりしたい場合は、レスポンスをスローする時点で行うべきです。
+**スローされたレスポンス**
+
+これは、`loader`/`action` 関数からスローされた `Response` インスタンスを処理しないことに注意してください。このハンドラーの意図は、予期しないスローされたエラーを引き起こすコードのバグを見つけることです。シナリオを検出し、`loader`/`action` で 401/404 などの `Response` をスローしている場合、それはコードによって処理される予期されたフローです。それらをログに記録したり、外部サービスに送信したりしたい場合も、レスポンスをスローする時点で行うべきです。
 
 [client-entry]: ./entry.client.tsx
-[serverrouter]: ../components/ServerRouter
-[streaming]: ../how-to/suspense
+[serverrouter]: ../framework-routers/ServerRouter
+[streaming]: ../../how-to/suspense
 [rendertopipeablestream]: https://react.dev/reference/react-dom/server/renderToPipeableStream
 [rendertoreadablestream]: https://react.dev/reference/react-dom/server/renderToReadableStream
 [node-streaming-entry-server]: https://github.com/remix-run/react-router/blob/dev/packages/react-router-dev/config/defaults/entry.server.node.tsx
+[templates-repo]: https://github.com/remix-run/react-router-templates

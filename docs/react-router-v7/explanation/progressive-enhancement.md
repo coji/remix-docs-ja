@@ -4,14 +4,14 @@ title: プログレッシブエンハンスメント
 
 # プログレッシブエンハンスメント
 
-[モード: フレームワーク]
+[MODES: framework]
 
 <br/>
 <br/>
 
 > プログレッシブエンハンスメントとは、ウェブデザインにおける戦略の一つで、ウェブコンテンツを最優先に考え、すべての人がウェブページの基本的なコンテンツと機能にアクセスできるようにし、追加のブラウザ機能や高速なインターネットアクセスを持つユーザーには、代わりに強化されたバージョンを提供するものです。
->
-> <cite>- [Wikipedia][wikipedia]</cite>
+
+<cite>- [Wikipedia][wikipedia]</cite>
 
 React Routerをサーバーサイドレンダリング（フレームワークモードではデフォルト）で使用すると、プログレッシブエンハンスメントのメリットを自動的に活用できます。
 
@@ -116,7 +116,7 @@ export function SearchBox() {
   return (
     <Form method="get" action="/search">
       <input type="search" name="query" />
-      {isSearching ? <Spinner /> : <SearchIcon />}
+      <SearchIcon />
     </Form>
   );
 }

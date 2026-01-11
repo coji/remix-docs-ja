@@ -5,7 +5,7 @@ title: redirect
 # redirect
 
 <!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️
 
 Thank you for helping improve our documentation!
 
@@ -22,7 +22,7 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/ro
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.redirect.html)
 
-リダイレクト [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) です。ステータスコードと [`Location`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Location) ヘッダーを設定します。デフォルトは [`302 Found`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302) です。
+リダイレクト [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response)です。ステータスコードと [`Location`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Location) ヘッダーを設定します。デフォルトは [`302 Found`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302) です。
 
 ```tsx
 import { redirect } from "react-router";
@@ -40,12 +40,12 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 ### url
 
-リダイレクト先のURL。
+リダイレクト先の URL です。
 
 ### init
 
-レスポンスに含めるステータスコード、または `ResponseInit` オブジェクト。
+レスポンスに含まれるステータスコード、または `ResponseInit` オブジェクトです。
 
 ## 戻り値
 
-リダイレクトステータスと [`Location`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Location) ヘッダーを含む [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) オブジェクト。
+リダイレクトステータスと [`Location`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Location) ヘッダーを含む [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) オブジェクトです。

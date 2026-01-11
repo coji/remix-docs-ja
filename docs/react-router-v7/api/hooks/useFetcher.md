@@ -18,13 +18,13 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/do
 
 [MODES: framework, data]
 
-## 概要
+## Summary
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.useFetcher.html)
+[Reference Documentation ↗](https://api.reactrouter.com/v7/functions/react_router.useFetcher.html)
 
 ナビゲーションを引き起こすことなく、複数の同時データインタラクションを必要とする複雑で動的なユーザーインターフェースを作成するのに役立ちます。
 
-Fetcher は、独自の独立した状態を追跡し、データのロード、フォームの送信、および [`action`](../../start/framework/route-module#action) および [`loader`](../../start/framework/route-module#loader) 関数との一般的なインタラクションに使用できます。
+Fetcher は、独自の独立した状態を追跡し、データのロード、フォームの送信、および一般的に[`action`](../../start/framework/route-module#action)関数や[`loader`](../../start/framework/route-module#loader)関数とインタラクトするために使用できます。
 
 ```tsx
 import { useFetcher } from "react-router"
@@ -49,12 +49,12 @@ function SomeComponent() {
     encType: "application/json"
   })
 
-  // fetcher をリセットする
-  fetcher.unstable_reset()
+  // reset fetcher
+  fetcher.reset()
 }
 ```
 
-## シグネチャ
+## Signature
 
 ```tsx
 function useFetcher<T = any>({
@@ -64,14 +64,11 @@ function useFetcher<T = any>({
 } = ): FetcherWithComponents<SerializeFrom<T>> {}
 ```
 
-## パラメータ
+## Params
 
 ### options.key
 
-fetcher を識別するためのユニークなキーです。
-
-デフォルトでは、`useFetcher` はそのコンポーネントにスコープされたユニークな fetcher を生成します。
-アプリ内の他の場所からアクセスできるように、独自のキーで fetcher を識別したい場合は、`key` オプションを使用できます。
+Fetcher を識別するためのユニークな key です。デフォルトでは、`useFetcher` はそのコンポーネントにスコープされたユニークな fetcher を生成します。アプリの他の場所から fetcher にアクセスできるよう、独自の key で fetcher を識別したい場合は、`key` オプションを使用できます。
 
 ```tsx
 function SomeComp() {
@@ -87,6 +84,6 @@ function AnotherComp() {
 }
 ```
 
-## 戻り値
+## Returns
 
-fetcher の状態、データ、およびフォームの送信とデータのロードのためのコンポーネントを含む [`FetcherWithComponents`](https://api.reactrouter.com/v7/types/react_router.FetcherWithComponents.html) オブジェクトです。
+Fetcher の state、data、およびフォーム送信やデータロードのためのコンポーネントを含む [`FetcherWithComponents`](https://api.reactrouter.com/v7/types/react_router.FetcherWithComponents.html) オブジェクトを返します。

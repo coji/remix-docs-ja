@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-[http://localhost:5173][http-localhost-5173] を開くと、次のようなスタイルが適用されていない画面が表示されるはずですが、まだ何も表示されていません。
+[http://localhost:5173][http-localhost-5173] を開くと、次のようなスタイルが適用されていない画面が表示されるはずです。
 
 ## ルートルート
 
@@ -329,12 +329,12 @@ import {
   isRouteErrorResponse,
 } from "react-router";
 
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export default function App() {
   return (
     <>
-      <div id="sidebar">{/* other elements */}</div>
+      <div id="sidebar">{/* その他の要素 */}</div>
       <div id="detail">
         <Outlet />
       </div>
@@ -365,25 +365,25 @@ import {
   isRouteErrorResponse,
 } from "react-router";
 
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export default function App() {
   return (
     <>
       <div id="sidebar">
-        {/* other elements */}
+        {/* その他の要素 */}
         <nav>
           <ul>
             <li>
-              <Link to={`/contacts/1`}>Your Name</Link>
+              <Link to={`/contacts/1`}>あなたの名前</Link>
             </li>
             <li>
-              <Link to={`/contacts/2`}>Your Friend</Link>
+              <Link to={`/contacts/2`}>あなたの友達</Link>
             </li>
           </ul>
         </nav>
       </div>
-      {/* other elements */}
+      {/* その他の要素 */}
     </>
   );
 }
@@ -409,10 +409,10 @@ URLセグメント、レイアウト、データは、多くの場合、組み�
 <docs-info>次のコードには型エラーが含まれています。次のセクションで修正します</docs-info>
 
 ```tsx filename=app/root.tsx lines=[2,6-9,11-12,19-42]
-// existing imports
+// 既存のインポート
 import { getContacts } from "./data";
 
-// existing exports
+// 既存のエクスポート
 
 export async function clientLoader() {
   const contacts = await getContacts();
@@ -425,7 +425,7 @@ export default function App({ loaderData }) {
   return (
     <>
       <div id="sidebar">
-        {/* other elements */}
+        {/* その他の要素 */}
         <nav>
           {contacts.length ? (
             <ul>
@@ -437,7 +437,7 @@ export default function App({ loaderData }) {
                         {contact.first} {contact.last}
                       </>
                     ) : (
-                      <i>No Name</i>
+                      <i>名前なし</i>
                     )}
                     {contact.favorite ? (
                       <span>★</span>
@@ -448,12 +448,12 @@ export default function App({ loaderData }) {
             </ul>
           ) : (
             <p>
-              <i>No contacts</i>
+              <i>コンタクトなし</i>
             </p>
           )}
         </nav>
       </div>
-      {/* other elements */}
+      {/* その他の要素 */}
     </>
   );
 }
@@ -472,16 +472,16 @@ export default function App({ loaderData }) {
 👉 **`App` コンポーネントに `ComponentProps` 型を追加してください**
 
 ```tsx filename=app/root.tsx lines=[5-7]
-// existing imports
+// 既存のインポート
 import type { Route } from "./+types/root";
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export default function App({
   loaderData,
 }: Route.ComponentProps) {
   const { contacts } = loaderData;
 
-  // existing code
+  // 既存のコード
 }
 ```
 
@@ -503,20 +503,20 @@ export default {
 } satisfies Config;
 ```
 
-ページをリロードするたびに、アプリが読み込まれる前に白い画面が一瞬表示されることに気づき始めたかもしれません。クライアント側でのみレンダリングしているため、アプリの読み込み中にユーザーに表示するものがありません。
+ページをリロードするたびに、アプリが読み込まれる前に白い画面が一瞬表示されることに気づき始めましたかもしれません。クライアント側でのみレンダリングしているため、アプリの読み込み中にユーザーに表示するものがありません。
 
 👉 **`HydrateFallback` エクスポートを追加する**
 
 [`HydrateFallback`][hydrate-fallback]エクスポートを使用すると、アプリがハイドレートされる（クライアントで初めてレンダリングされる）前に表示されるフォールバックを提供できます。
 
 ```tsx filename=app/root.tsx lines=[3-10]
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export function HydrateFallback() {
   return (
     <div id="loading-splash">
       <div id="loading-splash-spinner" />
-      <p>Loading, please wait...</p>
+      <p>読み込み中、しばらくお待ちください...</p>
     </div>
   );
 }
@@ -558,13 +558,12 @@ export default [
 export default function Home() {
   return (
     <p id="index-page">
-      This is a demo for React Router.
+      これは React Router のデモです。
       <br />
-      Check out{" "}
       <a href="https://reactrouter.com">
-        the docs at reactrouter.com
+        reactrouter.com のドキュメント
       </a>
-      .
+      をご覧ください。
     </p>
   );
 }
@@ -604,41 +603,36 @@ import { Link } from "react-router";
 export default function About() {
   return (
     <div id="about">
-      <Link to="/">← Go to demo</Link>
-      <h1>About React Router Contacts</h1>
+      <Link to="/">← デモへ移動</Link>
+      <h1>React Router Contactsについて</h1>
 
       <div>
         <p>
-          This is a demo application showing off some of the
-          powerful features of React Router, including
-          dynamic routing, nested routes, loaders, actions,
-          and more.
+          これは、動的ルーティング、ネストされたルート、ローダー、アクションなど、React Routerの強力な機能のいくつかを紹介するデモアプリケーションです。
         </p>
 
-        <h2>Features</h2>
+        <h2>機能</h2>
         <p>
-          Explore the demo to see how React Router handles:
+          React Routerがどのように処理するかをデモで確認してください。
         </p>
         <ul>
           <li>
-            Data loading and mutations with loaders and
-            actions
+            ローダーとアクションによるデータのロードと変更
           </li>
           <li>
-            Nested routing with parent/child relationships
+            親子関係によるネストされたルーティング
           </li>
-          <li>URL-based routing with dynamic segments</li>
-          <li>Pending and optimistic UI</li>
+          <li>動的なセグメントによるURLベースのルーティング</li>
+          <li>保留中および楽観的なUI</li>
         </ul>
 
-        <h2>Learn More</h2>
+        <h2>詳細</h2>
         <p>
-          Check out the official documentation at{" "}
+          React Routerで優れたWebアプリケーションを構築する方法の詳細については、公式ドキュメント（
           <a href="https://reactrouter.com">
             reactrouter.com
-          </a>{" "}
-          to learn more about building great web
-          applications with React Router.
+          </a>
+          ）をご覧ください。
         </p>
       </div>
     </div>
@@ -854,7 +848,7 @@ export default {
 👉 **`loader` を使用してデータをフェッチするように切り替える**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[3]
-// existing imports
+// 既存のインポート
 
 export async function loader() {
   const contacts = await getContacts();
@@ -862,7 +856,7 @@ export async function loader() {
 }
 ```
 
-`ssr` を `true` に設定するか `false` に設定するかは、あなたとユーザーのニーズによって異なります。どちらの戦略も完全に有効です。このチュートリアルの残りの部分ではサーバーサイドレンダリングを使用しますが、すべてのレンダリング戦略が React Router のファーストクラスシチズンであることを知っておいてください。
+`ssr` を `true` に設定するか `false` に設定するかは、あなたとユーザーのニーズによって異なります。どちらの戦略も完全に有効です。このチュートリアルの残りの部分では、サーバーサイドレンダリングを使用しますが、すべてのレンダリング戦略が React Router で第一級市民であることを知っておいてください。
 
 ## ローダーにおける URL パラメータ
 
@@ -883,7 +877,7 @@ export async function loader() {
 <docs-info>次のコードには型エラーが含まれています。次のセクションで修正します</docs-info>
 
 ```tsx filename=app/routes/contact.tsx lines=[2-3,5-8,10-13]
-// existing imports
+// 既存のインポート
 import { getContact } from "../data";
 import type { Route } from "./+types/contact";
 
@@ -897,10 +891,10 @@ export default function Contact({
 }: Route.ComponentProps) {
   const { contact } = loaderData;
 
-  // existing code
+  // 既存のコード
 }
 
-// existing code
+// 既存のコード
 ```
 
 <img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/11.webp" />
@@ -912,7 +906,7 @@ export default function Contact({
 コンポーネントコードで連絡先が見つからない可能性を考慮することもできますが、Web 的なやり方としては適切な 404 を送信することです。ローダーでそれを行うことで、すべての問題を一度に解決できます。
 
 ```tsx filename=app/routes/contact.tsx lines=[5-7]
-// existing imports
+// 既存のインポート
 
 export async function loader({ params }: Route.LoaderArgs) {
   const contact = await getContact(params.contactId);
@@ -922,7 +916,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { contact };
 }
 
-// existing code
+// 既存のコード
 ```
 
 これで、ユーザーが見つからない場合、このパスでのコード実行は停止し、代わりに React Router がエラーパスをレンダリングします。React Router のコンポーネントは、ハッピーパスのみに集中できます 😁
@@ -950,7 +944,7 @@ React Routerは、このフォームナビゲーションを処理するサー�
 👉 **`app/root.tsx` から `action` 関数をエクスポートします**
 
 ```tsx filename=app/root.tsx lines=[3,5-8]
-// existing imports
+// 既存のインポート
 
 import { createEmptyContact } from "./data";
 
@@ -959,7 +953,7 @@ export async function action() {
   return { contact };
 }
 
-// existing code
+// 既存のコード
 ```
 
 以上です！「新規」ボタンをクリックすると、新しいレコードがリストに表示されるはずです 🥳
@@ -1032,19 +1026,19 @@ export default function EditContact({
   return (
     <Form key={contact.id} id="contact-form" method="post">
       <p>
-        <span>Name</span>
+        <span>名前</span>
         <input
-          aria-label="First name"
+          aria-label="名"
           defaultValue={contact.first}
           name="first"
-          placeholder="First"
+          placeholder="名"
           type="text"
         />
         <input
-          aria-label="Last name"
+          aria-label="姓"
           defaultValue={contact.last}
           name="last"
-          placeholder="Last"
+          placeholder="姓"
           type="text"
         />
       </p>
@@ -1058,9 +1052,9 @@ export default function EditContact({
         />
       </label>
       <label>
-        <span>Avatar URL</span>
+        <span>アバター URL</span>
         <input
-          aria-label="Avatar URL"
+          aria-label="アバター URL"
           defaultValue={contact.avatar}
           name="avatar"
           placeholder="https://example.com/avatar.jpg"
@@ -1068,7 +1062,7 @@ export default function EditContact({
         />
       </label>
       <label>
-        <span>Notes</span>
+        <span>メモ</span>
         <textarea
           defaultValue={contact.notes}
           name="notes"
@@ -1076,8 +1070,8 @@ export default function EditContact({
         />
       </label>
       <p>
-        <button type="submit">Save</button>
-        <button type="button">Cancel</button>
+        <button type="submit">保存</button>
+        <button type="button">キャンセル</button>
       </p>
     </Form>
   );
@@ -1096,7 +1090,7 @@ export default function EditContact({
 
 ```tsx filename=app/routes/edit-contact.tsx lines=[1,4,8,6-15]
 import { Form, redirect } from "react-router";
-// existing imports
+// 既存のインポート
 
 import { getContact, updateContact } from "../data";
 
@@ -1110,7 +1104,7 @@ export async function action({
   return redirect(`/contacts/${params.contactId}`);
 }
 
-// existing code
+// 既存のコード
 ```
 
 フォームに入力して保存を押すと、このような表示になるはずです！ <small>（スイカを切る忍耐力があれば、もっと見やすくなるかもしれません。）</small>
@@ -1196,14 +1190,14 @@ import {
   isRouteErrorResponse,
   redirect,
 } from "react-router";
-// existing imports
+// 既存のインポート
 
 export async function action() {
   const contact = await createEmptyContact();
   return redirect(`/contacts/${contact.id}/edit`);
 }
 
-// existing code
+// 既存のコード
 ```
 
 これで「新規」をクリックすると、編集ページに移動するはずです。
@@ -1214,12 +1208,12 @@ export async function action() {
 
 レコードがたくさんある今、サイドバーでどのレコードを見ているのかが明確ではありません。[`NavLink`][nav-link] を使用してこれを修正できます。
 
-👉 **サイドバーの `<a href>` を `<Link to>` に置き換えてください**
+👉 **サイドバーの `<Link>` を `<NavLink>` に置き換えてください**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[1,17-26,28]
 import { Form, Link, NavLink, Outlet } from "react-router";
 
-// existing imports and exports
+// 既存のインポートとエクスポート
 
 export default function SidebarLayout({
   loaderData,
@@ -1229,7 +1223,7 @@ export default function SidebarLayout({
   return (
     <>
       <div id="sidebar">
-        {/* existing elements */}
+        {/* 既存の要素 */}
         <ul>
           {contacts.map((contact) => (
             <li key={contact.id}>
@@ -1238,19 +1232,19 @@ export default function SidebarLayout({
                   isActive
                     ? "active"
                     : isPending
-                      ? "pending"
-                      : ""
+                    ? "pending"
+                    : ""
                 }
                 to={`contacts/${contact.id}`}
               >
-                {/* existing elements */}
+                {/* 既存の要素 */}
               </NavLink>
             </li>
           ))}
         </ul>
-        {/* existing elements */}
+        {/* 既存の要素 */}
       </div>
-      {/* existing elements */}
+      {/* 既存の要素 */}
     </>
   );
 }
@@ -1285,7 +1279,7 @@ export default function SidebarLayout({
 
   return (
     <>
-      {/* existing elements */}
+      {/* 既存の要素 */}
       <div
         className={
           navigation.state === "loading" ? "loading" : ""
@@ -1343,12 +1337,12 @@ touch app/routes/destroy-contact.tsx
 
 ```tsx filename=app/routes.ts lines=[3-6]
 export default [
-  // existing routes
+  // 既存のルート
   route(
     "contacts/:contactId/destroy",
-    "routes/destroy-contact.tsx",
+    "routes/destroy-contact.tsx"
   ),
-  // existing routes
+  // 既存のルート
 ] satisfies RouteConfig;
 ```
 
@@ -1374,7 +1368,7 @@ export async function action({ params }: Route.ActionArgs) {
 
 1. `<Form>` は、新しいドキュメント `POST` リクエストをサーバーに送信するというデフォルトのブラウザの動作を防ぎますが、代わりにクライアント側のルーティングと [`fetch`][fetch] を使用してブラウザをエミュレートすることにより、`POST` リクエストを作成します。
 2. `<Form action="destroy">` は `contacts/:contactId/destroy` の新しいルートと一致し、リクエストを送信します。
-3. `action` がリダイレクトした後、React Router はページのデータを取得するためにすべての `loader` を呼び出して最新の値を取得します（これが「再検証」です）。`routes/contact.tsx` の `loaderData` には新しい値が入り、コンポーネントが更新されます！
+3. `action` がリダイレクトした後、React Router はページのデータを取得するためにすべての `loader` を呼び出して最新の値を取得します（これが「再検証」です）。`loaderData` には新しい値が入り、コンポーネントが更新されます！
 
 `Form` を追加し、`action` を追加すると、残りは React Router が処理します。
 
@@ -1388,7 +1382,7 @@ export async function action({ params }: Route.ActionArgs) {
 
 ```tsx filename=app/routes/edit-contact.tsx lines=[1,8,15]
 import { Form, redirect, useNavigate } from "react-router";
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export default function EditContact({
   loaderData,
@@ -1398,11 +1392,11 @@ export default function EditContact({
 
   return (
     <Form key={contact.id} id="contact-form" method="post">
-      {/* existing elements */}
+      {/* 既存の要素 */}
       <p>
-        <button type="submit">Save</button>
+        <button type="submit">保存</button>
         <button onClick={() => navigate(-1)} type="button">
-          Cancel
+          キャンセル
         </button>
       </p>
     </Form>
@@ -1439,7 +1433,7 @@ http://localhost:5173/?q=ryan
 👉 **`URLSearchParams` がある場合はリストをフィルタリングする**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[3-8]
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export async function loader({
   request,
@@ -1450,7 +1444,7 @@ export async function loader({
   return { contacts };
 }
 
-// existing code
+// 既存のコード
 ```
 
 <img class="tutorial" loading="lazy" src="/_docs/v7_address_book_tutorial/19.webp" />
@@ -1473,7 +1467,7 @@ export async function loader({
 👉 **`loader`から`q`を返し、それを入力のデフォルト値として設定します**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[9,15,26]
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export async function loader({
   request,
@@ -1493,24 +1487,24 @@ export default function SidebarLayout({
   return (
     <>
       <div id="sidebar">
-        {/* existing elements */}
+        {/* 既存の要素 */}
         <div>
           <Form id="search-form" role="search">
             <input
-              aria-label="Search contacts"
+              aria-label="連絡先を検索"
               defaultValue={q || ""}
               id="q"
               name="q"
-              placeholder="Search"
+              placeholder="検索"
               type="search"
             />
-            {/* existing elements */}
+            {/* 既存の要素 */}
           </Form>
-          {/* existing elements */}
+          {/* 既存の要素 */}
         </div>
-        {/* existing elements */}
+        {/* 既存の要素 */}
       </div>
-      {/* existing elements */}
+      {/* 既存の要素 */}
     </>
   );
 }
@@ -1523,10 +1517,10 @@ export default function SidebarLayout({
 👉 **入力値を`URLSearchParams`と同期させます**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[2,12-17]
-// existing imports
+// 既存のインポート
 import { useEffect } from "react";
 
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export default function SidebarLayout({
   loaderData,
@@ -1541,7 +1535,7 @@ export default function SidebarLayout({
     }
   }, [q]);
 
-  // existing code
+  // 既存のコード
 }
 ```
 
@@ -1554,21 +1548,21 @@ export default function SidebarLayout({
 <summary>展開して、どのようなものかを確認してください</summary>
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[2,11-12,14-18,30-33,36-37]
-// existing imports
+// 既存のインポート
 import { useEffect, useState } from "react";
 
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export default function SidebarLayout({
   loaderData,
 }: Route.ComponentProps) {
   const { contacts, q } = loaderData;
   const navigation = useNavigation();
-  // the query now needs to be kept in state
+  // クエリは状態に保持する必要がある
   const [query, setQuery] = useState(q || "");
 
-  // we still have a `useEffect` to synchronize the query
-  // to the component state on back/forward button clicks
+  // クエリを同期させるための`useEffect`はまだある
+  // 「戻る/進む」ボタンのクリック時にコンポーネントの状態に同期させる
   useEffect(() => {
     setQuery(q || "");
   }, [q]);
@@ -1576,29 +1570,29 @@ export default function SidebarLayout({
   return (
     <>
       <div id="sidebar">
-        {/* existing elements */}
+        {/* 既存の要素 */}
         <div>
           <Form id="search-form" role="search">
             <input
-              aria-label="Search contacts"
+              aria-label="連絡先を検索"
               id="q"
               name="q"
-              // synchronize user's input to component state
+              // ユーザーの入力をコンポーネントの状態に同期させる
               onChange={(event) =>
                 setQuery(event.currentTarget.value)
               }
-              placeholder="Search"
+              placeholder="検索"
               type="search"
-              // switched to `value` from `defaultValue`
+              // `defaultValue`から`value`に切り替え
               value={query}
             />
-            {/* existing elements */}
+            {/* 既存の要素 */}
           </Form>
-          {/* existing elements */}
+          {/* 既存の要素 */}
         </div>
-        {/* existing elements */}
+        {/* 既存の要素 */}
       </div>
-      {/* existing elements */}
+      {/* 既存の要素 */}
     </>
   );
 }
@@ -1623,7 +1617,7 @@ import {
   useNavigation,
   useSubmit,
 } from "react-router";
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export default function SidebarLayout({
   loaderData,
@@ -1632,12 +1626,12 @@ export default function SidebarLayout({
   const navigation = useNavigation();
   const submit = useSubmit();
 
-  // existing code
+  // 既存のコード
 
   return (
     <>
       <div id="sidebar">
-        {/* existing elements */}
+        {/* 既存の要素 */}
         <div>
           <Form
             id="search-form"
@@ -1646,13 +1640,13 @@ export default function SidebarLayout({
             }
             role="search"
           >
-            {/* existing elements */}
+            {/* 既存の要素 */}
           </Form>
-          {/* existing elements */}
+          {/* 既存の要素 */}
         </div>
-        {/* existing elements */}
+        {/* 既存の要素 */}
       </div>
-      {/* existing elements */}
+      {/* 既存の要素 */}
     </>
   );
 }
@@ -1673,7 +1667,7 @@ export default function SidebarLayout({
 👉 **検索中かどうかを判断する変数を追加します**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[9-13]
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export default function SidebarLayout({
   loaderData,
@@ -1687,7 +1681,7 @@ export default function SidebarLayout({
       "q",
     );
 
-  // existing code
+  // 既存のコード
 }
 ```
 
@@ -1696,17 +1690,17 @@ export default function SidebarLayout({
 👉 **新しい`searching`状態を使用して、検索フォーム要素にクラスを追加します**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[22,31]
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export default function SidebarLayout({
   loaderData,
 }: Route.ComponentProps) {
-  // existing code
+  // 既存のコード
 
   return (
     <>
       <div id="sidebar">
-        {/* existing elements */}
+        {/* 既存の要素 */}
         <div>
           <Form
             id="search-form"
@@ -1716,12 +1710,12 @@ export default function SidebarLayout({
             role="search"
           >
             <input
-              aria-label="Search contacts"
+              aria-label="連絡先を検索"
               className={searching ? "loading" : ""}
               defaultValue={q || ""}
               id="q"
               name="q"
-              placeholder="Search"
+              placeholder="検索"
               type="search"
             />
             <div
@@ -1730,11 +1724,11 @@ export default function SidebarLayout({
               id="search-spinner"
             />
           </Form>
-          {/* existing elements */}
+          {/* 既存の要素 */}
         </div>
-        {/* existing elements */}
+        {/* 既存の要素 */}
       </div>
-      {/* existing elements */}
+      {/* 既存の要素 */}
     </>
   );
 }
@@ -1743,16 +1737,16 @@ export default function SidebarLayout({
 ボーナスポイントとして、検索時にメイン画面がフェードアウトしないようにします。
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[13]
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export default function SidebarLayout({
   loaderData,
 }: Route.ComponentProps) {
-  // existing code
+  // 既存のコード
 
   return (
     <>
-      {/* existing elements */}
+      {/* 既存の要素 */}
       <div
         className={
           navigation.state === "loading" && !searching
@@ -1763,7 +1757,7 @@ export default function SidebarLayout({
       >
         <Outlet />
       </div>
-      {/* existing elements */}
+      {/* 既存の要素 */}
     </>
   );
 }
@@ -1784,17 +1778,17 @@ export default function SidebarLayout({
 👉 **`submit` で `replace` を使用する**
 
 ```tsx filename=app/layouts/sidebar.tsx lines=[16-19]
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 export default function SidebarLayout({
   loaderData,
 }: Route.ComponentProps) {
-  // existing code
+  // 既存のコード
 
   return (
     <>
       <div id="sidebar">
-        {/* existing elements */}
+        {/* 既存の要素 */}
         <div>
           <Form
             id="search-form"
@@ -1806,13 +1800,13 @@ export default function SidebarLayout({
             }}
             role="search"
           >
-            {/* existing elements */}
+            {/* 既存の要素 */}
           </Form>
-          {/* existing elements */}
+          {/* 既存の要素 */}
         </div>
-        {/* existing elements */}
+        {/* 既存の要素 */}
       </div>
-      {/* existing elements */}
+      {/* 既存の要素 */}
     </>
   );
 }
@@ -1833,7 +1827,7 @@ export default function SidebarLayout({
 ```tsx filename=app/routes/contact.tsx lines=[1,10,14,26]
 import { Form, useFetcher } from "react-router";
 
-// existing imports & exports
+// 既存のインポートとエクスポート
 
 function Favorite({
   contact,
@@ -1848,8 +1842,8 @@ function Favorite({
       <button
         aria-label={
           favorite
-            ? "Remove from favorites"
-            : "Add to favorites"
+            ? "お気に入りから削除"
+            : "お気に入りに追加"
         }
         name="favorite"
         value={favorite ? "false" : "true"}
@@ -1866,9 +1860,9 @@ function Favorite({
 👉 **`action`を作成する**
 
 ```tsx filename=app/routes/contact.tsx lines=[2,5-13]
-// existing imports
+// 既存のインポート
 import { getContact, updateContact } from "../data";
-// existing imports
+// 既存のインポート
 
 export async function action({
   params,
@@ -1880,7 +1874,7 @@ export async function action({
   });
 }
 
-// existing code
+// 既存のコード
 ```
 
 Alright, we're ready to click the star next to the user's name!
@@ -1902,7 +1896,7 @@ fetcher は `action` に送信される [`FormData`][form-data] を認識して�
 👉 **`fetcher.formData` からオプティミスティックな値を読み取る**
 
 ```tsx filename=app/routes/contact.tsx lines=[9-11]
-// existing code
+// 既存のコード
 
 function Favorite({
   contact,
@@ -1919,8 +1913,8 @@ function Favorite({
       <button
         aria-label={
           favorite
-            ? "Remove from favorites"
-            : "Add to favorites"
+            ? "お気に入りから削除"
+            : "お気に入りに追加"
         }
         name="favorite"
         value={favorite ? "false" : "true"}
@@ -1934,42 +1928,76 @@ function Favorite({
 
 これで、星をクリックすると、*すぐに*新しい状態に変わります。
 
----
+***
 
 以上です！React Router を試していただきありがとうございます。このチュートリアルが、優れたユーザーエクスペリエンスを構築するための確かなスタートとなることを願っています。他にもできることはたくさんあるので、必ずすべての [API][react-router-apis] を確認してください 😀
 
 [http-localhost-5173]: http://localhost:5173
+
 [root-route]: ../explanation/special-files#roottsx
+
 [error-boundaries]: ../how-to/error-boundary
+
 [links]: ../start/framework/route-module#links
+
 [outlet-component]: https://api.reactrouter.com/v7/functions/react_router.Outlet
+
 [file-route-conventions]: ../how-to/file-route-conventions
+
 [contacts-1]: http://localhost:5173/contacts/1
+
 [link-component]: https://api.reactrouter.com/v7/functions/react_router.Link
+
 [client-loader]: ../start/framework/route-module#clientloader
-[spa]: ../how-to/spa
+
+[spa]: https://ja.wikipedia.org/wiki/%E3%82%B7%E3%83%B3%E3%82%B0%E3%83%AB%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3
+
 [type-safety]: ../explanation/type-safety
+
 [react-router-config]: ../explanation/special-files#react-routerconfigts
+
 [rendering-strategies]: ../start/framework/rendering
+
 [index-route]: ../start/framework/routing#index-routes
+
 [layout-route]: ../start/framework/routing#layout-routes
+
 [hydrate-fallback]: ../start/framework/route-module#hydratefallback
+
 [about-page]: http://localhost:5173/about
+
 [pre-rendering]: ../how-to/pre-rendering
+
 [url-search-params]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+
 [loader]: ../start/framework/route-module#loader
+
 [action]: ../start/framework/route-module#action
+
 [form-component]: https://api.reactrouter.com/v7/functions/react_router.Form
+
 [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/fetch
+
 [form-data]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
+
 [object-from-entries]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
+
 [request-form-data]: https://developer.mozilla.org/en-US/docs/Web/API/Request/formData
+
 [request]: https://developer.mozilla.org/en-US/docs/Web/API/Request
+
 [redirect]: https://api.reactrouter.com/v7/functions/react_router.redirect
+
 [response]: https://developer.mozilla.org/en-US/docs/Web/API/Response
+
 [nav-link]: https://api.reactrouter.com/v7/functions/react_router.NavLink
+
 [use-navigation]: https://api.reactrouter.com/v7/functions/react_router.useNavigation
+
 [use-navigate]: https://api.reactrouter.com/v7/functions/react_router.useNavigate
+
 [use-submit]: https://api.reactrouter.com/v7/functions/react_router.useSubmit
+
 [use-fetcher]: https://api.reactrouter.com/v7/functions/react_router.useFetcher
+
 [react-router-apis]: https://api.reactrouter.com/v7/modules/react_router

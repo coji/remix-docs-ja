@@ -1,4 +1,4 @@
 ---
-title: RSC (不安定版)
+title: RSC (不安定)
 order: 7
 ---

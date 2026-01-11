@@ -32,16 +32,16 @@ import { Link } from "react-router";
 
 [modes: framework]
 
-リンクの検出動作を定義します。
+リンクの[遅延ルートディスカバリ](../../explanation/lazy-route-discovery)動作を定義します。
+
+- **render** - デフォルト。リンクのレンダリング時にルートを検出します。
+- **none** - 積極的に検出せず、リンクがクリックされた場合にのみ検出します。
 
 ```tsx
 <Link /> // default ("render")
 <Link discover="render" />
 <Link discover="none" />
 ```
-
-- **render** - デフォルト。リンクのレンダリング時にルートを検出します。
-- **none** - 積極的に検出せず、リンクがクリックされた場合にのみ検出します。
 
 ### prefetch
 
@@ -96,10 +96,10 @@ import { Link } from "react-router";
 
 親ルートパターンが "blog" で、子ルートパターンが "blog/:slug/edit" であるルート階層を考えてみましょう。
 
-- **route** - デフォルト。ルートパターンを基準にしてリンクを解決します。上記の例では、`"..."` の相対リンクは、`:slug/edit` セグメントの両方を削除して "/blog" に戻ります。
-- **path** - パスを基準にするため、`"..."` は1つのURLセグメントのみを削除して "/blog/:slug" に戻ります。
+- **route** - デフォルト。ルートパターンを基準にしてリンクを解決します。上記の例では、`"..."` の相対リンクは、`:slug/edit` セグメントの両方を削除して `"/blog"` に戻ります。
+- **path** - パスを基準にするため、`"..."` は1つのURLセグメントのみを削除して `"/blog/:slug"` に戻ります。
 
-インデックスルートとレイアウト ルートにはパスがないため、相対パスの計算には含まれないことに注意してください。
+なお、インデックスルートとレイアウトルートにはパスがないため、相対パスの計算には含まれません。
 
 ### reloadDocument
 
@@ -115,7 +115,7 @@ import { Link } from "react-router";
 
 [modes: framework, data, declarative]
 
-履歴スタックに新しいエントリをプッシュする代わりに、[`History`](https://developer.mozilla.org/en-US/docs/Web/API/History) スタックの現在のエントリを置き換えます。
+[`History`](https://developer.mozilla.org/en-US/docs/Web/API/History) スタックに新しいエントリをプッシュする代わりに、現在のエントリを置き換えます。
 
 ```tsx
 <Link replace />
@@ -168,7 +168,7 @@ function SomeComp() {
     search: "?query=string",
     hash: "#hash",
   }}
-/>
+/>;
 ```
 
 ### viewTransition
@@ -184,3 +184,17 @@ function SomeComp() {
 ```
 
 トランジションに特定のスタイルを適用するには、[`useViewTransitionState`](../hooks/useViewTransitionState) を参照してください。
+
+### unstable_defaultShouldRevalidate
+
+[modes: framework, data, declarative]
+
+ナビゲーションのデフォルトの再検証動作を指定します。
+
+```tsx
+<Link to="/some/path" unstable_defaultShouldRevalidate={false} />
+```
+
+アクティブルートに `shouldRevalidate` 関数がない場合、この値が直接使用されます。それ以外の場合は、`shouldRevalidate` に渡され、ルートが再検証の最終的な決定を下すことができます。これは、検索パラメーターを更新する際に、再検証をトリガーしたくない場合に役立ちます。
+
+デフォルトでは（指定しない場合）、loader はルーターの標準的な再検証動作に従って再検証されます。

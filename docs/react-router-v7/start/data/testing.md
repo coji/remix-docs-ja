@@ -5,4 +5,4 @@ order: 9
 
 # テスト
 
-データモードおよびフレームワークモードで `createRoutesStub` を使用できます。[テストガイド](../framework/testing.md) を参照してください。
+`createRoutesStub` はデータモードおよびフレームワークモードで使用できます。詳細については、[テストガイド](../framework/testing)を参照してください。

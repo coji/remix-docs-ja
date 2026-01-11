@@ -4,18 +4,6 @@ title: generatePath
 
 # generatePath
 
-<!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️
-
-Thank you for helping improve our documentation!
-
-This file is auto-generated from the JSDoc comments in the source
-code, so please edit the JSDoc comments in the file below and this
-file will be re-generated once those changes are merged.
-
-https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/router/utils.ts
--->
-
 [MODES: framework, data, declarative]
 
 ## 概要
@@ -45,12 +33,12 @@ function generatePath<Path extends string>(
 
 ### originalPath
 
-生成する元のパスです。
+生成する元のパス。
 
 ### params
 
-パスに補間するパラメータです。
+パスに補間するパラメータ。
 
 ## 戻り値
 
-パラメータが補間された生成済みのパスです。
+パラメータが補間された生成済みパス。

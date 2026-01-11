@@ -9,18 +9,18 @@ title: プリセット
 <br/>
 <br/>
 
-[React Router config][react-router-config]は、他のツールやホスティングプロバイダーとの統合を容易にするために、`presets`オプションをサポートしています。
+[React Router config][react-router-config]は、他のツールやホスティングプロバイダーとの統合を容易にするため、`presets`オプションをサポートしています。
 
-[プリセット][preset-type]は、以下の2つのことしかできません。
+[Presets][preset-type]は以下の2つのことだけを行うことができます。
 
-- あなたに代わってReact Routerの設定オプションを構成する
-- 解決された設定を検証する
+- React Router config オプションを代理で設定する
+- 解決された config を検証する
 
-各プリセットによって返される設定は、プリセットが定義された順序でマージされます。React Routerの設定で直接指定された設定は、最後にマージされます。これは、あなたの設定が常にプリセットよりも優先されることを意味します。
+各`preset`によって返される`config`は、`preset`が定義された順序でマージされます。React Router config で直接指定された`config`は、最後にマージされます。これは、あなたの`config`が常に`preset`よりも優先されることを意味します。
 
-## プリセット設定の定義
+## preset config を定義する
 
-基本的な例として、[サーバーバンドル関数][server-bundles]を構成するプリセットを作成してみましょう。
+基本的な例として、[server bundles function][server-bundles]を設定する`preset`を作成してみましょう。
 
 ```ts filename=my-cool-preset.ts
 import type { Preset } from "@react-router/dev/config";
@@ -43,11 +43,11 @@ export function myCoolPreset(): Preset {
 }
 ```
 
-## 設定の検証
+## config を検証する
 
-他のプリセットやユーザー設定が、あなたのプリセットから返された値を上書きする可能性があることに注意してください。
+他の`preset`やユーザー`config`は、あなたの`preset`から返された値をまだオーバーライドできるということに留意してください。
 
-私たちの例のプリセットでは、`serverBundles`関数は、異なる競合する実装で上書きされる可能性があります。最終的に解決された設定に私たちのプリセットからの`serverBundles`関数が含まれていることを検証したい場合は、`reactRouterConfigResolved`フックを使用できます。
+私たちの`preset`の例では、`serverBundles`関数は、異なる、競合する実装でオーバーライドされる可能性があります。最終的に解決された`config`に、私たちの`preset`からの`serverBundles`関数が含まれていることを検証したい場合は、`reactRouterConfigResolved` hookを使用できます。
 
 ```ts filename=my-cool-preset.ts lines=[22-27]
 import type {
@@ -82,11 +82,11 @@ export function myCoolPreset(): Preset {
 }
 ```
 
-`reactRouterConfigResolved`フックは、プリセットの設定をマージまたは上書きすることがエラーとなる場合にのみ使用すべきです。
+`reactRouterConfigResolved` hookは、あなたの`preset`の`config`をマージしたりオーバーライドしたりすることがエラーとなる場合にのみ使用されるべきです。
 
-## プリセットの使用
+## preset を使用する
 
-プリセットは、npmに公開され、React Routerの設定内で使用されるように設計されています。
+Presetは、npmに公開され、React Router config 内で使用されるように設計されています。
 
 ```ts filename=react-router.config.ts lines=[6]
 import type { Config } from "@react-router/dev/config";

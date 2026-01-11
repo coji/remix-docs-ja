@@ -4,8 +4,6 @@ title: ファイルアップロード
 
 # ファイルアップロード
 
-[MODES: framework]
-
 <br/>
 <br/>
 
@@ -79,7 +77,7 @@ export default function Component() {
   return (
     <form method="post" encType="multipart/form-data">
       <input type="file" name="avatar" />
-      <button>送信</button>
+      <button>Submit</button>
     </form>
   );
 }
@@ -159,19 +157,19 @@ export default function UserPage({
 }: Route.ComponentProps) {
   return (
     <div>
-      <h1>ユーザー {params.id}</h1>
+      <h1>User {params.id}</h1>
       <form
         method="post"
-        // ファイルアップロードの場合、フォームの enctype は "multipart/form-data" に設定する必要があります
+        // The form's enctype must be set to "multipart/form-data" for file uploads
         encType="multipart/form-data"
       >
         <input type="file" name="avatar" accept="image/*" />
-        <button>送信</button>
+        <button>Submit</button>
       </form>
 
       <img
         src={`/user/${params.id}/avatar`}
-        alt="ユーザーアバター"
+        alt="user avatar"
       />
     </div>
   );
@@ -194,7 +192,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const file = await fileStorage.get(storageKey);
 
   if (!file) {
-    throw new Response("ユーザーアバターが見つかりません", {
+    throw new Response("User avatar not found", {
       status: 404,
     });
   }

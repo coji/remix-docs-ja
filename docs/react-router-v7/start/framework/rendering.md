@@ -5,8 +5,6 @@ order: 4
 
 # レンダリング戦略
 
-[MODES: framework]
-
 ## イントロダクション
 
 React Routerには3つのレンダリング戦略があります。

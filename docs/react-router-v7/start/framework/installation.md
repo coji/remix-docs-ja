@@ -5,8 +5,6 @@ order: 1
 
 # インストール
 
-[MODES: framework]
-
 ## はじめに
 
 ほとんどのプロジェクトはテンプレートから始まります。React Router が管理している基本的なテンプレートを使用してみましょう。
@@ -37,5 +35,6 @@ npx create-react-router@latest --template remix-run/react-router-templates/<temp
 
 次: [ルーティング](./routing)
 
+[manual_usage]: ../how-to/manual-usage
 [default-template]: https://github.com/remix-run/react-router-templates/tree/main/default
 [react-router-templates]: https://github.com/remix-run/react-router-templates

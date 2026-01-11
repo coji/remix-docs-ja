@@ -56,7 +56,7 @@ function MyRouteComponent() {
 
 ## `middleware`
 
-ルート[ミドルウェア][middleware]は、ナビゲーションの前後に順次実行されます。これにより、ロギングや認証などの処理を一箇所で行うことができます。`next` 関数はチェーンを続行し、リーフルートでは `next` 関数がナビゲーションのローダー/アクションを実行します。
+ルートの [middleware][middleware] は、ナビゲーションの前後に順次実行されます。これにより、ロギングや認証などの処理を一元的に行うことができます。`next` 関数はチェーンを続行し、リーフルートでは `next` 関数がナビゲーションのローダー/アクションを実行します。
 
 ```tsx
 createBrowserRouter([
@@ -99,7 +99,7 @@ async function authMiddleware ({ context }) {
 
 参照：
 
-- [ミドルウェア][middleware]
+- [Middleware][middleware]
 
 ## `loader`
 
@@ -186,17 +186,17 @@ export default function Items() {
 
 ## `shouldRevalidate`
 
-ローダーデータは、ナビゲーションやフォーム送信などの特定のイベントの後に自動的に再検証されます。
+ローダーデータは、ナビゲーションやフォーム送信などの特定のイベントの後で自動的に再検証されます。
 
-このフックを使用すると、デフォルトの再検証動作をオプトインまたはオプトアウトできます。デフォルトの動作は、ローダーを不必要に呼び出すことを避けるために微妙に調整されています。
+この hook を使用すると、デフォルトの再検証動作をオプトインまたはオプトアウトできます。デフォルトの動作は、不要なローダー呼び出しを避けるために微妙に調整されています。
 
-ルートローダーは、次の場合に再検証されます。
+ルートローダーは以下の場合に再検証されます：
 
-- 独自のルートパラメータが変更された場合
-- URL検索パラメータが変更された場合
-- アクションが呼び出され、エラーではないステータスコードを返した後
+- 自身のルート params が変更された場合
+- URL の検索 params に変更があった場合
+- action が呼び出され、エラー以外のステータスコードを返した後
 
-この関数を定義することにより、デフォルトの動作を完全にオプトアウトし、ナビゲーションやフォーム送信に対するローダーデータの再検証をいつ行うかをを手動で制御できます。
+この関数を定義することで、デフォルトの動作を完全にオプトアウトし、ナビゲーションやフォーム送信時にローダーデータがいつ再検証されるかを手動で制御できます。
 
 ```tsx
 import type { ShouldRevalidateFunctionArgs } from "react-router";
@@ -218,7 +218,7 @@ createBrowserRouter([
 
 [`ShouldRevalidateFunctionArgs` リファレンスドキュメント ↗](https://api.reactrouter.com/v7/interfaces/react_router.ShouldRevalidateFunctionArgs.html)
 
-デフォルトの動作は [フレームワークモード](../modes) では異なることに注意してください。
+[Framework Mode](../modes) では、デフォルトの動作が異なることに注意してください。
 
 ## `lazy`
 
@@ -242,7 +242,7 @@ createBrowserRouter([
 
 ---
 
-次へ: [データローディング](./data-loading)
+次へ: [データ読み込み](./data-loading)
 
 [loader-params]: https://api.reactrouter.com/v7/interfaces/react_router.LoaderFunctionArgs
 [middleware]: ../../how-to/middleware

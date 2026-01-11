@@ -4,25 +4,13 @@ title: createStaticRouter
 
 # createStaticRouter
 
-<!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
-
-Thank you for helping improve our documentation!
-
-This file is auto-generated from the JSDoc comments in the source
-code, so please edit the JSDoc comments in the file below and this
-file will be re-generated once those changes are merged.
-
-https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/dom/server.tsx
--->
-
 [MODES: data]
 
 ## 概要
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.createStaticRouter.html)
 
-サーバーサイドレンダリング用の静的な [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html) を作成します。
+サーバーサイドレンダリングのために静的な [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html) を作成します。
 
 ```tsx
 export async function handleRequest(request: Request) {
@@ -57,16 +45,16 @@ function createStaticRouter(
 
 ### routes
 
-静的な [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html) を作成するためのルートオブジェクト。
+静的な [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html) を作成するための route オブジェクト。
 
 ### context
 
-[`StaticHandler`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandler.html) の `query` から返される [`StaticHandlerContext`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandler.html)。
+[`StaticHandler`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandler.html) の `query` から返される [`StaticHandlerContext`](https://api.reactrouter.com/v7/interfaces/react_router.StaticHandlerContext.html)。
 
 ### opts.future
 
-静的な [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html) のための Future フラグ。
+静的な [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html) の Future flags。
 
 ## 戻り値
 
-提供されたルートをレンダリングするために使用できる静的な [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html)。
+指定された routes をレンダリングするために使用できる静的な [`DataRouter`](https://api.reactrouter.com/v7/interfaces/react_router.DataRouter.html)。

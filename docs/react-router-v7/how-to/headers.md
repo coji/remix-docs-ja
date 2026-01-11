@@ -126,7 +126,7 @@ export default async function handleRequest(
   routerContext,
   loadContext,
 ) {
-  // set, append global headers
+  // グローバルヘッダーを設定、追加
   responseHeaders.set(
     "X-App-Version",
     routerContext.manifest.version,

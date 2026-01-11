@@ -22,13 +22,13 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/rs
 <br />
 <br />
 
-<docs-warning>このAPIは実験的であり、マイナー/パッチリリースで破壊的変更が行われる可能性があります。使用には注意し、関連する変更についてはリリースノートに**細心の**注意を払ってください。</docs-warning>
+<docs-warning>この API は実験的であり、マイナー/パッチリリースで破壊的変更が加えられる可能性があります。使用には注意を払い、関連する変更についてはリリースノートに**非常**に注意を払ってください。</docs-warning>
 
-## Summary
+## 概要
 
-[Reference Documentation ↗](https://api.reactrouter.com/v7/functions/react_router.unstable_routeRSCServerRequest.html)
+[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.unstable_routeRSCServerRequest.html)
 
-受信した[`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request)を[RSC](https://react.dev/reference/rsc/server-components)サーバーにルーティングし、データ/リソースリクエストの場合はサーバー応答を適切にプロキシし、ドキュメントリクエストの場合はHTMLにレンダリングします。
+受信した [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) を [RSC](https://react.dev/reference/rsc/server-components) サーバーにルーティングし、データ/リソースリクエストに対してはサーバー Response を適切にプロキシするか、ドキュメントリクエストに対しては HTML をレンダーします。
 
 ```tsx
 import { createFromReadableStream } from "@vitejs/plugin-rsc/ssr";
@@ -40,7 +40,7 @@ import {
 
 routeRSCServerRequest({
   request,
-  fetchServer,
+  serverResponse,
   createFromReadableStream,
   async renderHTML(getPayload) {
     const payload = getPayload();
@@ -56,48 +56,52 @@ routeRSCServerRequest({
 });
 ```
 
-## Signature
+## シグネチャ
 
 ```tsx
 async function routeRSCServerRequest({
   request,
-  fetchServer,
+  serverResponse,
   createFromReadableStream,
   renderHTML,
   hydrate = true,
 }: {
   request: Request;
-  fetchServer: (request: Request) => Promise<Response>;
+  serverResponse: Response;
   createFromReadableStream: SSRCreateFromReadableStreamFunction;
   renderHTML: (
     getPayload: () => DecodedPayload,
+    options: {
+      onError(error: unknown): string | undefined;
+      onHeaders(headers: Headers): void;
+    },
   ) => ReadableStream<Uint8Array> | Promise<ReadableStream<Uint8Array>>;
   hydrate?: boolean;
 }): Promise<Response>
 ```
 
-## Params
+## パラメータ
 
 ### opts.createFromReadableStream
 
-`react-server-dom-xyz/client`の`createFromReadableStream`関数。サーバーからのペイロードをデコードするために使用されます。
+サーバーからのペイロードをデコードするために使用される、`react-server-dom-xyz/client` の `createFromReadableStream` 関数です。
 
-### opts.fetchServer
+### opts.serverResponse
 
-[`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request)を[RSC](https://react.dev/reference/rsc/server-components)ハンドラーに転送し、シリアライズされた[`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html)を含む`Promise<Response>`を返す関数。
+シリアライズされた [`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html) を含む、[RSC](https://react.dev/reference/rsc/server-components) ハンドラーによって生成された Response または部分的な Response です。
 
 ### opts.hydrate
 
-RSCペイロードでサーバー応答をハイドレートするかどうか。デフォルトは`true`です。
+サーバー Response を RSC ペイロードでハイドレートするかどうか。デフォルトは `true` です。
 
 ### opts.renderHTML
 
-[`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html)をHTMLにレンダリングする関数。通常は[`<RSCStaticRouter>`](../rsc/RSCStaticRouter)を使用します。
+[`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html) を HTML にレンダーする関数で、通常は [`<RSCStaticRouter>`](../rsc/RSCStaticRouter) を使用します。
 
 ### opts.request
 
-ルーティングするリクエスト。
+ルーティングする Request です。
 
-## Returns
+## 戻り値
 
-データリクエストの場合は[RSC](https://react.dev/reference/rsc/server-components)ペイロードを含むか、ドキュメントリクエストの場合はHTMLをレンダリングする[`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response)。
+データリクエストのための [RSC](https://react.dev/reference/rsc/server-components) ペイロードを含んでいるか、またはドキュメントリクエストのための HTML をレンダーする [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) です。

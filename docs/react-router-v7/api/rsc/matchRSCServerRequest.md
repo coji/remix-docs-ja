@@ -5,30 +5,18 @@ unstable: true
 
 # unstable_matchRSCServerRequest
 
-<!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
-
-Thank you for helping improve our documentation!
-
-This file is auto-generated from the JSDoc comments in the source
-code, so please edit the JSDoc comments in the file below and this
-file will be re-generated once those changes are merged.
-
-https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/rsc/server.rsc.ts
--->
-
 [MODES: data]
 
 <br />
 <br />
 
-<docs-warning>このAPIは実験的であり、マイナー/パッチリリースで破壊的変更が行われる可能性があります。注意して使用し、関連する変更についてはリリースノートに**非常に**注意を払ってください。</docs-warning>
+<docs-warning>この API は実験的であり、マイナー/パッチリリースで破壊的な変更が行われる可能性があります。注意して使用し、関連する変更についてはリリースノートに**非常**に注意してください。</docs-warning>
 
 ## 概要
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/variables/react_router.unstable_matchRSCServerRequest.html)
+[参照ドキュメント ↗](https://api.reactrouter.com/v7/variables/react_router.unstable_matchRSCServerRequest.html)
 
-指定されたルートを[`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request)にマッチさせ、[RSC](https://react.dev/reference/rsc/server-components)対応クライアントルーターが利用するための[`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html)をエンコードした[RSC](https://react.dev/reference/rsc/server-components) [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response)を返します。
+与えられた `routes` を [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) にマッチさせ、[RSC](https://react.dev/reference/rsc/server-components) 対応のクライアント `router` が利用するための [`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html) をエンコードした [RSC](https://react.dev/reference/rsc/server-components) [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) を返します。
 
 ```tsx
 import {
@@ -89,8 +77,10 @@ async function matchRSCServerRequest({
   generateResponse: (
     match: RSCMatch,
     {
+      onError,
       temporaryReferences,
     }: {
+      onError(error: unknown): string | undefined;
       temporaryReferences: unknown;
     },
   ) => Response;
@@ -101,48 +91,48 @@ async function matchRSCServerRequest({
 
 ### opts.basename
 
-リクエストをマッチさせる際に使用するベースネームです。
+リクエストのマッチング時に使用する basename です。
 
 ### opts.createTemporaryReferenceSet
 
-リクエストの一時的な参照セットを返す関数で、[RSC](https://react.dev/reference/rsc/server-components)ストリーム内の一時的な参照を追跡するために使用されます。
+リクエストのための一時参照セットを返す関数で、[RSC](https://react.dev/reference/rsc/server-components) ストリーム内の一時参照を追跡するために使用されます。
 
 ### opts.decodeAction
 
-サーバーアクションのロードを担当する、`react-server-dom-xyz/server`の`decodeAction`関数です。
+`react-server-dom-xyz/server` の `decodeAction` 関数で、サーバー `action` のロードを担当します。
 
 ### opts.decodeFormState
 
-Reactの[`useActionState`](https://react.dev/reference/react/useActionState)を使用し、`react-server-dom-xyz/server`の`decodeFormState`を用いてプログレッシブエンハンス可能なフォームのフォーム状態をデコードする関数です。
+React の [`useActionState`](https://react.dev/reference/react/useActionState) を使用して、プログレッシブに強化可能なフォームのフォーム `state` をデコードする関数です。`react-server-dom-xyz/server` の `decodeFormState` を使用します。
 
 ### opts.decodeReply
 
-サーバー関数の引数をデコードし、ルーターによる呼び出しのために実装にバインドするために使用される、`react-server-dom-xyz/server`の`decodeReply`関数です。
+`react-server-dom-xyz/server` の `decodeReply` 関数で、サーバー関数の引数をデコードし、`router` による呼び出しのために実装にバインドするために使用されます。
 
 ### opts.generateResponse
 
-`renderToReadableStream`を使用して、[`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html)をエンコードした[`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response)を生成する関数です。
+あなたの `renderToReadableStream` を使用して、[`unstable_RSCPayload`](https://api.reactrouter.com/v7/types/react_router.unstable_RSCPayload.html) をエンコードする [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) を生成する関数です。
 
 ### opts.loadServerAction
 
-IDによってサーバーアクションをロードするために使用される、`react-server-dom-xyz/server`の`loadServerAction`関数です。
+`react-server-dom-xyz/server` の `loadServerAction` 関数で、ID によってサーバー `action` をロードするために使用されます。
 
 ### opts.onError
 
-リクエスト処理中に発生したエラーで呼び出される、オプションのエラーハンドラです。
+リクエスト処理中に発生したエラーで呼び出されるオプションのエラーハンドラです。
 
 ### opts.request
 
-マッチさせる[`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request)です。
+マッチング対象となる [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) です。
 
 ### opts.requestContext
 
-リクエストごとに作成され、[`action`](../../start/data/route-object#action)s、[`loader`](../../start/data/route-object#loader)s、および[middleware](../../how-to/middleware)に渡される[`RouterContextProvider`](../utils/RouterContextProvider)のインスタンスです。
+リクエストごとに作成されるべき [`RouterContextProvider`](../utils/RouterContextProvider) のインスタンスで、`action`、`loader`、および [middleware](../../how-to/middleware) に渡されます。
 
 ### opts.routes
 
-あなたの[ルート定義](https://api.reactrouter.com/v7/types/react_router.unstable_RSCRouteConfigEntry.html)です。
+あなたの [route 定義](https://api.reactrouter.com/v7/types/react_router.unstable_RSCRouteConfigEntry.html)です。
 
 ## 戻り値
 
-ハイドレーション用の[RSC](https://react.dev/reference/rsc/server-components)データを含む[`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response)です。
+ハイドレーションのための [RSC](https://react.dev/reference/rsc/server-components) データを含む [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) です。

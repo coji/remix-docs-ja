@@ -4,18 +4,6 @@ title: useBeforeUnload
 
 # useBeforeUnload
 
-<!--
-⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
-
-Thank you for helping improve our documentation!
-
-This file is auto-generated from the JSDoc comments in the source
-code, so please edit the JSDoc comments in the file below and this
-file will be re-generated once those changes are merged.
-
-https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/dom/lib.tsx
--->
-
 [MODES: framework, data, declarative]
 
 ## 概要
@@ -39,7 +27,7 @@ function useBeforeUnload(
 
 ### callback
 
-[`beforeunload` イベント](https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event)が発火したときに呼び出されるコールバックです。
+[`beforeunload` イベント](https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event)が発火したときに呼び出される callback です。
 
 ### options.capture
 

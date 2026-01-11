@@ -80,9 +80,9 @@ export default function MyRouteComponent({
 
 ## `middleware`
 
-ルート[ミドルウェア][middleware]は、ドキュメントおよびデータリクエストの前後でサーバー上で順次実行されます。これにより、ロギング、認証、レスポンスの後処理などを一箇所で行うことができます。`next` 関数はチェーンを続行し、リーフルートでは `next` 関数がナビゲーションのローダー/アクションを実行します。
+ルートの [middleware][middleware] は、ドキュメントおよびデータリクエストの前後でサーバー上で順次実行されます。これにより、ロギング、認証、レスポンスの後処理などを行うための単一の場所が提供されます。`next` 関数はチェーンを下に続け、リーフルートでは `next` 関数がナビゲーションのローダー/アクションを実行します。
 
-以下は、サーバー上でリクエストをログに記録するミドルウェアの例です。
+以下は、サーバー上のリクエストをログに記録するミドルウェアの例です。
 
 ```tsx filename=root.tsx
 async function loggingMiddleware(
@@ -104,13 +104,10 @@ async function loggingMiddleware(
 export const middleware = [loggingMiddleware];
 ```
 
-以下は、ログインしているユーザーをチェックし、ローダーからアクセスできる `context` にユーザーを設定するミドルウェアの例です。
+以下は、ログインしているユーザーをチェックし、`context` にユーザーを設定して、ローダーからアクセスできるようにするミドルウェアの例です。
 
 ```tsx filename=routes/_auth.tsx
-async function authMiddleware ({
-  request,
-  context,
-}) => {
+async function authMiddleware({ request, context }) {
   const session = await getSession(request);
   const userId = session.get("userId");
 
@@ -120,23 +117,25 @@ async function authMiddleware ({
 
   const user = await getUserById(userId);
   context.set(userContext, user);
-};
+}
 
 export const middleware = [authMiddleware];
 ```
 
-<docs-warning>ルートにミドルウェアを追加する際に、アプリケーションが意図したとおりに動作するように、[ミドルウェアがいつ実行されるか][when-middleware-runs]を理解していることを確認してください。</docs-warning>
+<docs-warning>
+ミドルウェアをルートに追加する際に、アプリケーションが意図したとおりに動作することを確認するために、[ミドルウェアがいつ実行されるか][when-middleware-runs]を理解していることを確認してください。
+</docs-warning>
 
 参照：
 
 - [`middleware` params][middleware-params]
-- [ミドルウェア][middleware]
+- [Middleware][middleware]
 
 ## `clientMiddleware`
 
-これは `middleware` のクライアントサイド版であり、クライアントナビゲーション中にブラウザで実行されます。サーバーミドルウェアとの唯一の違いは、クライアントミドルウェアはサーバー上のHTTPリクエストをラップしないため、レスポンスを返さないことです。
+これは `middleware` のクライアントサイド版であり、クライアントナビゲーション中にブラウザで実行されます。サーバーミドルウェアとの唯一の違いは、クライアントミドルウェアがサーバー上で HTTP リクエストをラップしないため、Response を返さないことです。
 
-以下は、クライアント上でリクエストをログに記録するミドルウェアの例です。
+以下は、クライアント上のリクエストをログに記録するミドルウェアの例です。
 
 ```tsx filename=root.tsx
 async function loggingMiddleware(
@@ -147,22 +146,21 @@ async function loggingMiddleware(
     `${new Date().toISOString()} ${request.method} ${request.url}`,
   );
   const start = performance.now();
-  await next(); // 👈 No Response returned
+  await next(); // 👈 Response は返されない
   const duration = performance.now() - start;
   console.log(
-    `${new Date().toISOString()} Response ${response.status} (${duration}ms)`,
+    `${new Date().toISOString()} (${duration}ms)`,
   );
-  // ✅ No need to return anything
+  // ✅ 何も返す必要はありません
 }
 
-export const clientMiddleware = [
-  loggingMiddleware,
-];
+export const clientMiddleware = [loggingMiddleware];
 ```
 
 参照：
 
-- [ミドルウェア][middleware]
+- [Middleware][middleware]
+- [クライアントデータ][client-data]
 
 ## `loader`
 
@@ -216,6 +214,7 @@ clientLoader.hydrate = true as const;
 参照：
 
 - [`clientLoader` params][client-loader-params]
+- [クライアントデータ][client-data]
 
 ## `action`
 
@@ -274,6 +273,7 @@ export async function clientAction({ serverAction }) {
 参照：
 
 - [`clientAction` params][client-action-params]
+- [クライアントデータ][client-data]
 
 ## `ErrorBoundary`
 
@@ -338,7 +338,7 @@ export default function Component({ loaderData }) {
 
 ## `headers`
 
-ルート `headers` 関数は、サーバーレンダリング時にレスポンスとともに送信される HTTP ヘッダーを定義します。
+ルートヘッダーは、サーバーレンダリング時にレスポンスとともに送信される HTTP ヘッダーを定義します。
 
 ```tsx
 export function headers() {
@@ -412,23 +412,23 @@ export default function Root() {
 
 ## `meta`
 
-ルートメタは、通常 `<head>` 内に配置される `<Meta />` コンポーネントにレンダリングされるメタタグを定義します。
+ルートの `meta` は、`<Meta />` コンポーネントでレンダリングされる [メタタグ][meta-element] を定義します。これは通常、`<head>` 内に配置されます。
 
 <docs-warning>
 
-React 19以降、ルートモジュールの`meta`エクスポートを使用するよりも、[組み込みの`<meta>`要素](https://react.dev/reference/react-dom/components/meta)を使用することが推奨されます。
+React 19 以降では、ルートモジュールの `meta` export を使用するよりも、[組み込みの `<meta>` 要素を使用すること](https://react.dev/reference/react-dom/components/meta)が推奨されています。
 
-以下に、その使用方法と`<title>`要素の例を示します。
+以下は、`<meta>` および `<title>` 要素の使用方法の例です。
 
 ```tsx
 export default function MyRoute() {
   return (
     <div>
-      <title>Very cool app</title>
-      <meta property="og:title" content="Very cool app" />
+      <title>非常にクールなアプリ</title>
+      <meta property="og:title" content="非常にクールなアプリ" />
       <meta
         name="description"
-        content="This app is the best"
+        content="このアプリは最高です"
       />
       {/* ルートの残りのコンテンツ... */}
     </div>
@@ -470,18 +470,20 @@ export default function Root() {
 }
 ```
 
-最後のマッチングルートのメタが使用され、親ルートのメタを上書きできます。メタ記述子配列全体がマージされるのではなく、置き換えられることに注意することが重要です。これにより、異なるレベルのページ間で独自のメタ構成ロジックを構築する柔軟性が得られます。
+最後のマッチしたルートの meta が使用され、親ルートの meta を上書きできます。meta 記述子の配列全体がマージされるのではなく、置き換えられることに注意することが重要です。これにより、異なるレベルのページ間で独自の meta コンポジションロジックを柔軟に構築できます。
 
-**参照**
+参照
 
 - [`meta` params][meta-params]
-- [`meta` function return types][meta-function]
+- [`meta` function の戻り値の型][meta-function]
 
 ## `shouldRevalidate`
 
-SSR を使用するフレームワークモードでは、ルートローダーはすべてのナビゲーションとフォーム送信後に自動的に再検証されます（これは[データモード][data-mode-should-revalidate]とは異なります）。これにより、ミドルウェアとローダーはリクエストコンテキストを共有し、データモードの場合とは異なる方法で最適化できます。
+SSR を使用するフレームワークモードでは、すべてのナビゲーションとフォーム送信後にルートローダーが自動的に再検証されます（これは [データモード][data-mode-should-revalidate] とは異なります）。これにより、ミドルウェアとローダーはリクエストコンテキストを共有し、データモードとは異なる方法で最適化できます。
 
-この関数を定義すると、ナビゲーションとフォーム送信に対するルートローダーの再検証をオプトアウトできます。
+この関数を定義すると、ナビゲーションおよびフォーム送信に関するルートローダーの再検証をオプトアウトできます。
+
+[SPA モード][spa-mode]を使用する場合、ナビゲーション時に呼び出すサーバーローダーがないため、`shouldRevalidate` は [データモード][data-mode-should-revalidate] と同じように動作します。
 
 ```tsx
 import type { ShouldRevalidateFunctionArgs } from "react-router";
@@ -493,9 +495,7 @@ export function shouldRevalidate(
 }
 ```
 
-[SPA モード][spa-mode]を使用する場合、ナビゲーション時に呼び出すサーバーローダーがないため、`shouldRevalidate` は[データモード][data-mode-should-revalidate]と同じように動作します。
-
-[`ShouldRevalidateFunctionArgs` Reference Documentation ↗](https://api.reactrouter.com/v7/interfaces/react_router.ShouldRevalidateFunctionArgs.html)
+[`ShouldRevalidateFunctionArgs` リファレンスドキュメント ↗](https://api.reactrouter.com/v7/interfaces/react_router.ShouldRevalidateFunctionArgs.html)
 
 ---
 
@@ -518,3 +518,4 @@ export function shouldRevalidate(
 [meta-function]: https://api.reactrouter.com/v7/types/react_router.MetaDescriptor.html
 [data-mode-should-revalidate]: ../data/route-object#shouldrevalidate
 [spa-mode]: ../../how-to/spa
+[client-data]: ../../how-to/client-data

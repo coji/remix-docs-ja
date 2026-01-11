@@ -5,11 +5,13 @@ title: data
 # data
 
 <!--
-⚠️ ⚠️ 重要 ⚠️ ⚠️ 
+⚠️ ⚠️ IMPORTANT ⚠️ ⚠️ 
 
-ドキュメントの改善にご協力いただきありがとうございます！
+Thank you for helping improve our documentation!
 
-このファイルはソースコード内のJSDocコメントから自動生成されています。そのため、以下のファイルのJSDocコメントを編集してください。変更がマージされると、このファイルは再生成されます。
+This file is auto-generated from the JSDoc comments in the source
+code, so please edit the JSDoc comments in the file below and this
+file will be re-generated once those changes are merged.
 
 https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/router/utils.ts
 -->
@@ -20,7 +22,7 @@ https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/ro
 
 [リファレンスドキュメント ↗](https://api.reactrouter.com/v7/functions/react_router.data.html)
 
-実際の [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) へのシリアライズを強制することなく、`headers`/`status` を含む「レスポンス」を作成します。
+`headers`/`status` を含む "レスポンス" を、実際の [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) へシリアライズすることを強制せずに作成します。
 
 ```tsx
 import { data } from "react-router";
@@ -53,4 +55,4 @@ function data<D>(data: D, init?: number | ResponseInit)
 
 ## 戻り値
 
-データとレスポンスの初期設定を含む `DataWithResponseInit` インスタンス。
+データとレスポンスの `init` を含む `DataWithResponseInit` インスタンス。

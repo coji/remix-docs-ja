@@ -230,18 +230,18 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-これはルートツリーに新しいルートを導入するものではないことに注意してください。代わりに、子ルートのパスを単に修正するだけです。
+これはルートツリーに新しいルートを導入するものではなく、単に子のパスを変更するだけであることに注意してください。
 
-例えば、以下の2つのルートのセットは同等です。
+例えば、次の2つのルートのセットは同等です。
 
 ```ts filename=app/routes.ts
-// この `prefix` の使用法は...
+// This usage of `prefix`...
 prefix("parent", [
   route("child1", "./child1.tsx"),
   route("child2", "./child2.tsx"),
 ])
 
-// ...以下と同等です:
+// ...is equivalent to this:
 [
   route("parent/child1", "./child1.tsx"),
   route("parent/child2", "./child2.tsx"),
@@ -319,10 +319,10 @@ export async function loader({ params }: Route.LoaderArgs) {
 const { "*": splat } = params;
 ```
 
-スプラットを使用して、どのルートにも一致しないリクエストをキャッチすることもできます。
+また、スプラットを使用して、どのルートにも一致しないリクエストをキャッチすることもできます。
 
 ```ts filename=app/routes.ts
-route("*", "./catchall.tsx"); // キャッチオールルート
+route("*", "./catchall.tsx"); // catchall route,
 ```
 
 ```tsx filename=app/catchall.tsx

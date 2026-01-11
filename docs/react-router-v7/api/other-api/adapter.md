@@ -6,25 +6,25 @@ title: "@react-router/{adapter}"
 
 ## 公式アダプター
 
-イディオマティックなReact Routerアプリは、React Routerがサーバーのリクエスト/レスポンスを[Web Fetch API][web-fetch-api]に適応させるため、一般的にどこにでもデプロイできます。これはアダプターを介して行われます。私たちはいくつかのアダプターをメンテナンスしています。
+React Router アプリは、React Router がサーバーのリクエスト/レスポンスを [Web Fetch API][web-fetch-api] に適合させるため、一般的にどこにでもデプロイできます。これはアダプターを通じて行われます。私たちはいくつかのアダプターをメンテナンスしています。
 
 - `@react-router/architect`
 - `@react-router/cloudflare`
 - `@react-router/express`
 
-これらのアダプターはサーバーのエントリーにインポートされ、React Routerアプリ自体の中では使用されません。
+これらのアダプターはサーバーのエントリーにインポートされ、React Router アプリ自体の中では使用されません。
 
-組み込みの[React Router App Server][rr-serve] (`@react-router/serve`) 以外の方法で `npx create-react-router@latest` を使用してアプリを初期化した場合は、これらのアダプターのいずれかをインポートして使用する `server/index.js` ファイルがあることに気づくでしょう。
+ビルトインの [React Router App Server][rr-serve] (`@react-router/serve`) 以外の方法で `npx create-react-router@latest` を使ってアプリを初期化した場合、これらのアダプターのいずれかをインポートして使用する `server/index.js` ファイルがあることに気付くでしょう。
 
-<docs-info>組み込みのReact Router App Serverを使用している場合、このAPIを操作することはありません。</docs-info>
+<docs-info>ビルトインの React Router App Server を使用している場合、この API を直接操作することはありません。</docs-info>
 
-各アダプターは同じAPIを持っています。将来的には、デプロイ先のプラットフォームに特化したヘルパーを提供する可能性があります。
+各アダプターは同じ API を持ちます。将来的に、デプロイ先のプラットフォームに特化した helper が提供される可能性があります。
 
 ## `@react-router/express`
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/modules/_react_router_express.html)
+[参照ドキュメント ↗](https://api.reactrouter.com/v7/modules/_react_router_express.html)
 
-[Express][express]の例を以下に示します。
+[Express][express] を使用した例です。
 
 ```ts lines=[1-3,11-22]
 const {
@@ -34,16 +34,16 @@ const express = require("express");
 
 const app = express();
 
-// すべてのHTTP動詞 (GET, POSTなど) を処理する必要があります
+// すべての verb (GET, POST など) を処理する必要があります
 app.all(
   "*",
   createRequestHandler({
-    // `react-router build` および `react-router dev` はファイルをビルドディレクトリに出力します。
+    // `react-router build` と `react-router dev` はビルドディレクトリにファイルを出力します。
     // そのビルドをリクエストハンドラーに渡す必要があります。
     build: require("./build"),
 
-    // ここで返されたものは何でも、loaderとactionで `context` として利用できます。
-    // ここは、サーバーとReact Routerの間のギャップを埋める場所です。
+    // ここで返されたものは何でも、loader と action の `context` として利用できます。
+    // これは、サーバーと React Router の間のギャップを埋める場所です。
     getLoadContext(req, res) {
       return {};
     },
@@ -51,11 +51,11 @@ app.all(
 );
 ```
 
-### React Router App Serverからの移行
+### React Router App Server からの移行
 
-[React Router App Server][rr-serve]でアプリを開始したが、Expressサーバーを制御してカスタマイズしたい場合は、`@react-router/serve`からの移行はかなり簡単です。
+[React Router App Server][rr-serve] でアプリを開始したものの、Express サーバーを制御してカスタマイズしたい場合は、`@react-router/serve` からの移行はかなり簡単に行えるはずです。
 
-[Expressテンプレート][express-template]を参照として利用できますが、以下に主要な変更点を示します。
+[Express テンプレート][express-template] を参考にできますが、主な変更点は以下のとおりです。
 
 **1. 依存関係の更新**
 
@@ -67,7 +67,7 @@ npm install --save-dev @types/express @types/express-serve-static-core @types/mo
 
 **2. サーバーの追加**
 
-`server/app.ts`にReact Router Expressサーバーを作成します。
+`server/app.ts` に React Router Express サーバーを作成します。
 
 ```ts filename=server/app.ts
 import "react-router";
@@ -84,9 +84,9 @@ app.use(
 );
 ```
 
-[`server.js`][express-template-server-js]をアプリにコピーします。これは、開発ビルドとプロダクションビルドの両方で同じサーバーコードを実行できるように推奨されるボイラープレートのセットアップです。ここでは2つの別々のファイルが使用されており、メインのExpressサーバーコードをTypeScript (`server/app.ts`) で記述し、React Routerによってサーバービルドにコンパイルされ、`node server.js`を介して実行できるようにしています。
+[`server.js`][express-template-server-js] をアプリにコピーします。これは、開発ビルドとプロダクションビルドの両方で同じサーバーコードを実行できるように、私たちが推奨するボイラープレート設定です。ここでは2つの別々のファイルが使用されており、これによりメインの Express サーバーコードを TypeScript (`server/app.ts`) で記述し、React Router によってサーバービルドにコンパイルされ、`node server.js` 経由で実行できるようになります。
 
-**3. サーバーをコンパイルするための `vite.config.ts` の更新**
+**3. サーバーをコンパイルするように `vite.config.ts` を更新**
 
 ```tsx filename=vite.config.ts lines=[6-10]
 import { reactRouter } from "@react-router/dev/vite";
@@ -103,9 +103,9 @@ export default defineConfig(({ isSsrBuild }) => ({
 }));
 ```
 
-**4. `package.json` スクリプトの更新**
+**4. `package.json` のスクリプトを更新**
 
-`dev` および `start` スクリプトを新しいExpressサーバーを使用するように更新します。
+`dev` と `start` スクリプトを新しい Express サーバーを使用するように更新します。
 
 ```json filename=package.json
 {
@@ -121,9 +121,9 @@ export default defineConfig(({ isSsrBuild }) => ({
 
 ## `@react-router/cloudflare`
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/modules/_react_router_cloudflare.html)
+[参照ドキュメント ↗](https://api.reactrouter.com/v7/modules/_react_router_cloudflare.html)
 
-Cloudflareの例を以下に示します。
+Cloudflare を使用した例です。
 
 ```ts
 import { createRequestHandler } from "react-router";
@@ -153,13 +153,13 @@ export default {
 
 ## `@react-router/node`
 
-上記のような直接的な「アダプター」ではありませんが、このパッケージにはNodeベースのアダプターを扱うためのユーティリティが含まれています。
+上記のような直接的な「アダプター」ではありませんが、このパッケージには Node ベースのアダプターを扱うためのユーティリティが含まれています。
 
-[リファレンスドキュメント ↗](https://api.reactrouter.com/v7/modules/_react_router_node.html)
+[参照ドキュメント ↗](https://api.reactrouter.com/v7/modules/_react_router_node.html)
 
-### Nodeバージョンのサポート
+### Node のバージョンサポート
 
-React Routerは、常に**Active**および**Maintenance**の[Node LTSバージョン][node-releases]を公式にサポートしています。End of LifeとなったNodeバージョンのサポート終了は、React Routerのマイナーリリースで行われます。
+React Router は、常に**アクティブ**および**メンテナンス中**の [Node LTS バージョン][node-releases]を公式にサポートしています。EOL (End of Life) の Node バージョンのサポート終了は、React Router のマイナーリリースで行われます。
 
 [express]: https://expressjs.com
 [node-releases]: https://nodejs.org/en/about/previous-releases
