@@ -12,6 +12,7 @@ import {
   CardTitle,
   HStack,
   Label,
+  Progress,
   RadioGroup,
   RadioGroupItem,
   Table,
@@ -22,13 +23,9 @@ import {
   TableRow,
 } from '~/components/ui'
 import dayjs from '~/libs/dayjs'
+import { durablyClient } from '~/services/durably.client'
 import type { Route } from './+types/route'
-import {
-  exportFiles,
-  getProjectDetails,
-  rescanFiles,
-  startTranslationJob,
-} from './functions.server'
+import { exportFiles, getProjectDetails, rescanFiles } from './functions.server'
 
 export const meta = ({ loaderData }: Route.MetaArgs) => [
   { title: `${loaderData?.project.id}` },
@@ -70,13 +67,6 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
     }
   }
 
-  if (intent === 'start-translation-job') {
-    return {
-      intent: 'start-translation-job',
-      translation_result: await startTranslationJob(projectId),
-    }
-  }
-
   if (intent === 'export-files') {
     return {
       intent: 'export-files',
@@ -100,12 +90,18 @@ export default function ProjectDetail({
   const isRescanInProgress =
     navigation.state === 'submitting' &&
     navigation.formData?.get('intent') === 'rescan-project'
-  const isTranslationInProgress =
-    navigation.state === 'submitting' &&
-    navigation.formData?.get('intent') === 'start-translation-job'
   const isExportInProgress =
     navigation.state === 'submitting' &&
     navigation.formData?.get('intent') === 'export-files'
+
+  // Use durably for translation job
+  const translationJob = durablyClient['translate-project'].useJob()
+
+  const handleStartTranslation = () => {
+    translationJob.trigger({ projectId: project.id })
+  }
+
+  const isTranslationRunning = translationJob.isRunning
 
   return (
     <Card>
@@ -140,11 +136,11 @@ export default function ProjectDetail({
             </Button>
 
             <Button
-              name="intent"
-              value="start-translation-job"
-              disabled={isSubmitting}
+              type="button"
+              onClick={handleStartTranslation}
+              disabled={isSubmitting || isTranslationRunning}
             >
-              {isTranslationInProgress && (
+              {isTranslationRunning && (
                 <LoaderCircleIcon size="16" className="mr-2 animate-spin" />
               )}
               Start Translation
@@ -173,6 +169,45 @@ export default function ProjectDetail({
             </HStack>
           </HStack>
         </Form>
+
+        {/* Translation Progress */}
+        {translationJob.status && (
+          <div className="mt-4 space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span>
+                Translation: {translationJob.status}
+                {translationJob.progress && (
+                  <span className="ml-2 text-muted-foreground">
+                    ({translationJob.progress.current}/
+                    {translationJob.progress.total})
+                  </span>
+                )}
+              </span>
+              {translationJob.progress?.message && (
+                <span className="text-muted-foreground">
+                  {translationJob.progress.message}
+                </span>
+              )}
+            </div>
+            {translationJob.progress?.total && (
+              <Progress
+                value={
+                  (translationJob.progress.current /
+                    translationJob.progress.total) *
+                  100
+                }
+              />
+            )}
+            {translationJob.output && (
+              <div className="text-sm text-muted-foreground">
+                Completed:{' '}
+                {(translationJob.output as { translatedCount: number }).translatedCount}{' '}
+                translated,{' '}
+                {(translationJob.output as { errorCount: number }).errorCount} errors
+              </div>
+            )}
+          </div>
+        )}
 
         <div>
           {actionData?.intent === 'rescan-project' &&
@@ -217,14 +252,6 @@ export default function ProjectDetail({
                     </ul>
                   </div>
                 </div>
-              </div>
-            )}
-
-          {actionData?.intent === 'start-translation-job' &&
-            actionData.translation_result && (
-              <div>
-                <div>Translation job started</div>
-                <div>Job ID: {actionData.translation_result.id}</div>
               </div>
             )}
 

@@ -286,6 +286,12 @@ importers:
       '@ai-sdk/google':
         specifier: 'catalog:'
         version: 3.0.6(zod@4.3.5)
+      '@coji/durably':
+        specifier: 0.7.0
+        version: 0.7.0(kysely@0.28.9)(zod@4.3.5)
+      '@coji/durably-react':
+        specifier: 0.7.0
+        version: 0.7.0(@coji/durably@0.7.0(kysely@0.28.9)(zod@4.3.5))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@coji/zodix':
         specifier: 'catalog:'
         version: 0.7.0(zod@4.3.5)
@@ -1064,6 +1070,22 @@ packages:
     engines: {node: '>=16'}
     cpu: [x64]
     os: [win32]
+
+  '@coji/durably-react@0.7.0':
+    resolution: {integrity: sha512-RiKyg4QrsGiz3vSl9xRsejuyxFlWSdN2bqQSKqum49VdwXZ0z8vzDK9AzKyNu/72frSP5MVQxTUcHFnn+clxsw==}
+    peerDependencies:
+      '@coji/durably': '*'
+      react: '>=19.0.0'
+      react-dom: '>=19.0.0'
+    peerDependenciesMeta:
+      '@coji/durably':
+        optional: true
+
+  '@coji/durably@0.7.0':
+    resolution: {integrity: sha512-g5qhVVvk9w4vTJZ6h1GHzHHwQ9O/AaPkSIUkRO9Ff+SY/S+u39Lme/YR5gSAyMuNmCs32azyUfAlOE4Br1EEPQ==}
+    peerDependencies:
+      kysely: ^0.27.0
+      zod: ^4.0.0
 
   '@coji/zodix@0.7.0':
     resolution: {integrity: sha512-ROIGrROdJZJnRMuVXioXAmDqj2h+upPhmztimZeSZbClluyz5zFxQoKBeALXG4/9vrn07kqu7SmZlbyz9hiJwA==}
@@ -3911,6 +3933,9 @@ packages:
     resolution: {integrity: sha512-3BeXMoiOhpOwu62CiVpO6lxfq4eS6KMYfQdMsN/2kUCRNuF2YiEr7u0HLHaQU+O4Xu8YXE3bHVkwaQ85i72EuA==}
     engines: {node: '>=20.0.0'}
 
+  layerr@3.0.0:
+    resolution: {integrity: sha512-tv754Ki2dXpPVApOrjTyRo4/QegVb9eVFq4mjqp4+NM5NaX7syQvN5BBNfV/ZpAHCEHV24XdUVrBAoka4jt3pA==}
+
   lightningcss-android-arm64@1.30.2:
     resolution: {integrity: sha512-BH9sEdOCahSgmkVhBLeU7Hc9DWeZ1Eb6wNS6Da8igvUwAe0sqROHddIlvU06q3WyXVEOYDZ6ykBZQnjTbmo4+A==}
     engines: {node: '>= 12.0.0'}
@@ -5187,6 +5212,10 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  ulidx@2.4.1:
+    resolution: {integrity: sha512-xY7c8LPyzvhvew0Fn+Ek3wBC9STZAuDI/Y5andCKi9AX6/jvfaX45PhsDX8oxgPL0YFp0Jhr8qWMbS/p9375Xg==}
+    engines: {node: '>=16'}
+
   unbox-primitive@1.1.0:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
@@ -5756,6 +5785,19 @@ snapshots:
 
   '@cloudflare/workerd-windows-64@1.20260107.1':
     optional: true
+
+  '@coji/durably-react@0.7.0(@coji/durably@0.7.0(kysely@0.28.9)(zod@4.3.5))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+    optionalDependencies:
+      '@coji/durably': 0.7.0(kysely@0.28.9)(zod@4.3.5)
+
+  '@coji/durably@0.7.0(kysely@0.28.9)(zod@4.3.5)':
+    dependencies:
+      kysely: 0.28.9
+      ulidx: 2.4.1
+      zod: 4.3.5
 
   '@coji/zodix@0.7.0(zod@4.3.5)':
     optionalDependencies:
@@ -8653,6 +8695,8 @@ snapshots:
 
   kysely@0.28.9: {}
 
+  layerr@3.0.0: {}
+
   lightningcss-android-arm64@1.30.2:
     optional: true
 
@@ -10400,6 +10444,10 @@ snapshots:
       reflect.getprototypeof: 1.0.10
 
   typescript@5.9.3: {}
+
+  ulidx@2.4.1:
+    dependencies:
+      layerr: 3.0.0
 
   unbox-primitive@1.1.0:
     dependencies:
