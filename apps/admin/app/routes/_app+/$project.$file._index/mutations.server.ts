@@ -1,18 +1,19 @@
-import { prisma } from '~/services/db.server'
+import { db, now } from '~/services/db.server'
 
 export const updateFileOutput = async (
   projectId: string,
   fileId: number,
   output: string,
 ) => {
-  return await prisma.file.update({
-    data: {
+  return await db
+    .updateTable('files')
+    .set({
       output,
-      isUpdated: false,
-    },
-    where: {
-      id: fileId,
-      projectId,
-    },
-  })
+      is_updated: 0,
+      updated_at: now(),
+    })
+    .where('id', '=', fileId)
+    .where('project_id', '=', projectId)
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }

@@ -1,5 +1,5 @@
 import { okAsync } from 'neverthrow'
-import { prisma } from '~/services/db.server'
+import { db, now } from '~/services/db.server'
 import { listRepositoryFiles } from '~/services/repository/list-repository-files'
 import { getProjectPath } from '~/services/repository/utils'
 import { getProject, listProjectFiles } from './queries.server'
@@ -29,7 +29,7 @@ export const rescanFiles = async (projectId: string) => {
       return projectFile.path === repositoryFile.filename
     })
 
-    if (matchFile && matchFile.contentMD5 !== repositoryFile.md5) {
+    if (matchFile && matchFile.content_md5 !== repositoryFile.md5) {
       updatedFiles.push({
         filePath: repositoryFile.filename,
         content: repositoryFile.content,
@@ -57,7 +57,7 @@ export const rescanFiles = async (projectId: string) => {
       updatedFiles.push({
         filePath: projectFile.path,
         content: projectFile.content,
-        contentMD5: projectFile.contentMD5,
+        contentMD5: projectFile.content_md5,
         status: 'removed',
       })
     }
@@ -66,30 +66,38 @@ export const rescanFiles = async (projectId: string) => {
   // write back to database
   for (const updatedFile of updatedFiles) {
     if (updatedFile.status === 'updated') {
-      await prisma.file.updateMany({
-        data: {
+      await db
+        .updateTable('files')
+        .set({
           content: updatedFile.content,
-          contentMD5: updatedFile.contentMD5,
-          isUpdated: true,
-        },
-        where: { path: updatedFile.filePath },
-      })
+          content_md5: updatedFile.contentMD5,
+          is_updated: 1,
+          updated_at: now(),
+        })
+        .where('path', '=', updatedFile.filePath)
+        .where('project_id', '=', project.id)
+        .execute()
     }
     if (updatedFile.status === 'added') {
-      await prisma.file.create({
-        data: {
+      await db
+        .insertInto('files')
+        .values({
           path: updatedFile.filePath,
           content: updatedFile.content,
-          contentMD5: updatedFile.contentMD5,
-          isUpdated: true,
-          projectId: project.id,
-        },
-      })
+          content_md5: updatedFile.contentMD5,
+          is_updated: 1,
+          project_id: project.id,
+          updated_at: now(),
+          created_at: now(),
+        })
+        .execute()
     }
     if (updatedFile.status === 'removed') {
-      await prisma.file.deleteMany({
-        where: { path: updatedFile.filePath },
-      })
+      await db
+        .deleteFrom('files')
+        .where('path', '=', updatedFile.filePath)
+        .where('project_id', '=', project.id)
+        .execute()
     }
   }
 

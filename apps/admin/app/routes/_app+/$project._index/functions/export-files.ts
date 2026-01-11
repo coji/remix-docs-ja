@@ -1,14 +1,16 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { prisma } from '~/services/db.server'
+import { db } from '~/services/db.server'
 
 export const exportFiles = async (projectId: string) => {
   const exportedFiles: string[] = []
 
-  const files = await prisma.file.findMany({
-    where: { projectId },
-    orderBy: { createdAt: 'asc' },
-  })
+  const files = await db
+    .selectFrom('files')
+    .selectAll()
+    .where('project_id', '=', projectId)
+    .orderBy('created_at', 'asc')
+    .execute()
 
   // 既存のファイルを削除
   await fs.rm(path.join(process.cwd(), '..', '..', 'docs', projectId), {

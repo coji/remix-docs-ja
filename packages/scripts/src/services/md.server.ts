@@ -37,7 +37,7 @@ export function getProcessor(options?: ProcessorOptions) {
     .use(remarkGfm)
     .use(createCompatList)
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypePrettyCode, {
+    .use(rehypePrettyCode as never, {
       transformers: [
         transformerNotationDiff(),
         transformerCopyButton({

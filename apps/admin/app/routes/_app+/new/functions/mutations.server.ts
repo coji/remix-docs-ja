@@ -1,14 +1,23 @@
-import type { Prisma, Project } from '~/generated/prisma'
-import { prisma } from '~/services/db.server'
+import { db, now } from '~/services/db.server'
+import type { NewProject, Project } from '~/services/db.types'
 import type { RepositoryFile } from '~/services/repository/types'
 
-export const createProject = async (data: Prisma.ProjectCreateInput) => {
-  const project = await prisma.project.create({
-    data: {
+export const createProject = async (
+  data: Omit<NewProject, 'updated_at' | 'created_at' | 'excludes'> & {
+    excludes?: string
+  },
+) => {
+  const project = await db
+    .insertInto('projects')
+    .values({
       ...data,
       excludes: data.excludes ? `[${JSON.stringify(data.excludes)}]` : '[]',
-    },
-  })
+      updated_at: now(),
+      created_at: now(),
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
+
   return {
     ...project,
     excludes: JSON.parse(project.excludes) as string[],
@@ -20,13 +29,16 @@ export const createFiles = async (
   files: RepositoryFile[],
 ) => {
   for (const file of files) {
-    await prisma.file.create({
-      data: {
+    await db
+      .insertInto('files')
+      .values({
+        project_id: projectId,
         path: file.filename,
         content: file.content,
-        contentMD5: file.md5,
-        Project: { connect: { id: projectId } },
-      },
-    })
+        content_md5: file.md5,
+        updated_at: now(),
+        created_at: now(),
+      })
+      .execute()
   }
 }

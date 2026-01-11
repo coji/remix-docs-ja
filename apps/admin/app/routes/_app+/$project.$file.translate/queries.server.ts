@@ -1,18 +1,18 @@
-import { prisma } from '~/services/db.server'
+import { db } from '~/services/db.server'
 
 export const getProject = async (projectId: string) => {
-  return await prisma.project.findUniqueOrThrow({
-    where: {
-      id: projectId,
-    },
-  })
+  return await db
+    .selectFrom('projects')
+    .selectAll()
+    .where('id', '=', projectId)
+    .executeTakeFirstOrThrow()
 }
 
 export const getFile = async (projectId: string, fileId: number) => {
-  return await prisma.file.findUniqueOrThrow({
-    where: {
-      id: fileId,
-      projectId,
-    },
-  })
+  return await db
+    .selectFrom('files')
+    .selectAll()
+    .where('id', '=', fileId)
+    .where('project_id', '=', projectId)
+    .executeTakeFirstOrThrow()
 }
