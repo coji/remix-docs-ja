@@ -1,5 +1,7 @@
+import { useJob, useRuns } from '@coji/durably-react/client'
 import { zx } from '@coji/zodix/v4'
-import { ArrowLeftIcon, LoaderCircleIcon } from 'lucide-react'
+import { ArrowLeftIcon, HistoryIcon, LoaderCircleIcon } from 'lucide-react'
+import { useState } from 'react'
 import { Form, href, Link, useNavigate, useNavigation } from 'react-router'
 import { z } from 'zod'
 import {
@@ -15,14 +17,23 @@ import {
   Progress,
   RadioGroup,
   RadioGroupItem,
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from '~/components/ui'
-import { useJob } from '@coji/durably-react/client'
 import dayjs from '~/libs/dayjs'
 import type { Route } from './+types/route'
 import { exportFiles, getProjectDetails, rescanFiles } from './functions.server'
@@ -94,10 +105,24 @@ export default function ProjectDetail({
     navigation.state === 'submitting' &&
     navigation.formData?.get('intent') === 'export-files'
 
+  // Job history
+  const [historyOpen, setHistoryOpen] = useState(false)
+  const { runs } = useRuns({
+    api: '/api/durably',
+    jobName: 'translate-project',
+    pageSize: 20,
+  })
+
+  // Find the latest running job to follow
+  const latestRunningJob = runs?.find(
+    (run) => run.status === 'running' || run.status === 'pending',
+  )
+
   // Use durably for translation job
   const translationJob = useJob({
     api: '/api/durably',
     jobName: 'translate-project',
+    initialRunId: latestRunningJob?.id,
   })
 
   const handleStartTranslation = () => {
@@ -154,6 +179,149 @@ export default function ProjectDetail({
               )}
               Export files
             </Button>
+
+            <Sheet open={historyOpen} onOpenChange={setHistoryOpen}>
+              <SheetTrigger asChild>
+                <Button type="button" variant="outline">
+                  <HistoryIcon size="16" />
+                  History
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="w-125 sm:max-w-125">
+                <SheetHeader>
+                  <SheetTitle>Translation History</SheetTitle>
+                  <SheetDescription>
+                    Past translation job runs
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="mt-4 space-y-2">
+                  {runs?.map((run) => (
+                    <div
+                      key={run.id}
+                      className="flex items-center justify-between rounded-lg border p-3"
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Badge
+                            variant={
+                              run.status === 'completed'
+                                ? 'default'
+                                : run.status === 'failed'
+                                  ? 'destructive'
+                                  : 'secondary'
+                            }
+                          >
+                            {run.status === 'running' && (
+                              <LoaderCircleIcon
+                                size="12"
+                                className="mr-1 animate-spin"
+                              />
+                            )}
+                            {run.status}
+                          </Badge>
+                          <span className="text-muted-foreground text-xs">
+                            {run.id.slice(0, 8)}
+                          </span>
+                        </div>
+                        <div className="text-muted-foreground text-xs">
+                          {dayjs(run.createdAt)
+                            .utc()
+                            .tz()
+                            .format('YYYY-MM-DD HH:mm:ss')}
+                        </div>
+                        {/* Progress for running jobs */}
+                        {(run.status === 'running' || run.status === 'pending') &&
+                          run.progress && (
+                            <div className="w-full space-y-1">
+                              <div className="text-xs">
+                                {(run.progress as { current?: number }).current ??
+                                  0}
+                                /{(run.progress as { total?: number }).total ?? 0}
+                              </div>
+                              <Progress
+                                value={
+                                  (((run.progress as { current?: number })
+                                    .current ?? 0) /
+                                    ((run.progress as { total?: number }).total ??
+                                      1)) *
+                                  100
+                                }
+                                className="h-1.5"
+                              />
+                            </div>
+                          )}
+                        {/* Output for completed jobs */}
+                        {run.output && (
+                          <div className="text-xs">
+                            {(run.output as { translatedCount?: number })
+                              .translatedCount ?? 0}{' '}
+                            translated,{' '}
+                            {((run.output as { errorCount?: number }).errorCount ??
+                              0) > 0 ? (
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <span className="text-destructive cursor-help underline">
+                                      {(run.output as { errorCount?: number })
+                                        .errorCount ?? 0}{' '}
+                                      errors
+                                    </span>
+                                  </TooltipTrigger>
+                                  <TooltipContent
+                                    side="bottom"
+                                    className="max-w-100"
+                                  >
+                                    <ul className="space-y-1">
+                                      {(
+                                        (
+                                          run.output as {
+                                            errors?: { path: string; error: string }[]
+                                          }
+                                        ).errors ?? []
+                                      ).map((e, i) => (
+                                        <li key={i} className="text-xs">
+                                          <span className="font-medium">{e.path}</span>
+                                          : {e.error}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            ) : (
+                              <span>0 errors</span>
+                            )}
+                          </div>
+                        )}
+                        {/* Error for failed jobs */}
+                        {run.status === 'failed' && run.error && (
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className="text-destructive max-w-80 cursor-help truncate text-xs">
+                                  {String(run.error)}
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent
+                                side="bottom"
+                                className="max-w-100 whitespace-pre-wrap"
+                              >
+                                {String(run.error)}
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  {(!runs || runs.length === 0) && (
+                    <div className="text-muted-foreground py-8 text-center text-sm">
+                      No translation history yet
+                    </div>
+                  )}
+                </div>
+              </SheetContent>
+            </Sheet>
 
             <div className="flex-1" />
 

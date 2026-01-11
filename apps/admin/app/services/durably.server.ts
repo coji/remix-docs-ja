@@ -1,21 +1,7 @@
 import { createDurably, createDurablyHandler, defineJob } from '@coji/durably'
-import Database from 'better-sqlite3'
-import { SqliteDialect } from 'kysely'
 import { z } from 'zod'
-import { db, now } from './db.server'
+import { db, dialect, now } from './db.server'
 import { translateByGemini } from './translate-gemini'
-
-const DEFAULT_DB_PATH = 'data/dev.db'
-
-const parseDbPath = (url: string): string => {
-  return url.replace(/^sqlite:\/\//, '').replace(/^file:/, '')
-}
-
-const dialect = new SqliteDialect({
-  database: new Database(
-    parseDbPath(process.env.DATABASE_URL ?? DEFAULT_DB_PATH),
-  ),
-})
 
 // Define translation job
 const translationJob = defineJob({
@@ -25,6 +11,7 @@ const translationJob = defineJob({
     translatedCount: z.number(),
     errorCount: z.number(),
     totalCount: z.number(),
+    errors: z.array(z.object({ path: z.string(), error: z.string() })),
   }),
   run: async (step, { projectId }) => {
     // Fetch project and files
@@ -50,7 +37,7 @@ const translationJob = defineJob({
     step.log.info(`Files to translate: ${files.length}`)
 
     let translatedCount = 0
-    let errorCount = 0
+    const errors: { path: string; error: string }[] = []
 
     // Translate each file
     for (let i = 0; i < files.length; i++) {
@@ -87,7 +74,7 @@ const translationJob = defineJob({
       if (result.success) {
         translatedCount++
       } else {
-        errorCount++
+        errors.push({ path: result.path, error: result.error })
       }
 
       // Report progress after each file
@@ -95,13 +82,14 @@ const translationJob = defineJob({
     }
 
     step.log.info(
-      `Translation complete: ${translatedCount} translated, ${errorCount} errors`,
+      `Translation complete: ${translatedCount} translated, ${errors.length} errors`,
     )
 
     return {
       translatedCount,
-      errorCount,
+      errorCount: errors.length,
       totalCount: files.length,
+      errors,
     }
   },
 })
@@ -115,6 +103,9 @@ export const durably = createDurably({
 }).register({
   'translate-project': translationJob,
 })
+
+// Initialize durably tables
+await durably.init()
 
 // Export jobs for type inference on client
 export const jobs = durably.jobs
