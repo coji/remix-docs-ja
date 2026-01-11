@@ -11,7 +11,7 @@ export const createProject = async (
     .insertInto('projects')
     .values({
       ...data,
-      excludes: data.excludes ? `[${JSON.stringify(data.excludes)}]` : '[]',
+      excludes: JSON.stringify(data.excludes ? [data.excludes] : []),
       updated_at: now(),
       created_at: now(),
     })
