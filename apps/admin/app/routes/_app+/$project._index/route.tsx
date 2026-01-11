@@ -204,9 +204,7 @@ export default function ProjectDetail({
               <SheetContent className="w-125 sm:max-w-125">
                 <SheetHeader>
                   <SheetTitle>Translation History</SheetTitle>
-                  <SheetDescription>
-                    Past translation job runs
-                  </SheetDescription>
+                  <SheetDescription>Past translation job runs</SheetDescription>
                 </SheetHeader>
                 <div className="mt-4 space-y-2">
                   {runs?.map((run) => (
@@ -244,7 +242,8 @@ export default function ProjectDetail({
                             .format('YYYY-MM-DD HH:mm:ss')}
                         </div>
                         {/* Progress for running jobs */}
-                        {(run.status === 'running' || run.status === 'pending') &&
+                        {(run.status === 'running' ||
+                          run.status === 'pending') &&
                           run.progress &&
                           (() => {
                             const progress = run.progress as JobProgress
