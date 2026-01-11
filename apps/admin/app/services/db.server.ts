@@ -12,7 +12,7 @@ const parseDbPath = (url: string): string => {
   return url.replace(/^sqlite:\/\//, '').replace(/^file:/, '')
 }
 
-const dialect = new SqliteDialect({
+export const dialect = new SqliteDialect({
   database: new Database(
     parseDbPath(process.env.DATABASE_URL ?? DEFAULT_DB_PATH),
   ),
