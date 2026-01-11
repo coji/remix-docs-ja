@@ -12,12 +12,6 @@ catalogs:
     '@biomejs/biome':
       specifier: 2.3.11
       version: 2.3.11
-    '@coji/durably':
-      specifier: 0.7.0
-      version: 0.7.0
-    '@coji/durably-react':
-      specifier: 0.7.0
-      version: 0.7.0
     '@coji/zodix':
       specifier: 0.7.0
       version: 0.7.0
@@ -308,11 +302,11 @@ importers:
         specifier: 'catalog:'
         version: 3.0.6(zod@4.3.5)
       '@coji/durably':
-        specifier: 'catalog:'
-        version: 0.7.0(kysely@0.28.9)(zod@4.3.5)
+        specifier: 0.8.0
+        version: 0.8.0(kysely@0.28.9)(zod@4.3.5)
       '@coji/durably-react':
-        specifier: 'catalog:'
-        version: 0.7.0(@coji/durably@0.7.0(kysely@0.28.9)(zod@4.3.5))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 0.8.0
+        version: 0.8.0(@coji/durably@0.8.0(kysely@0.28.9)(zod@4.3.5))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@coji/zodix':
         specifier: 'catalog:'
         version: 0.7.0(zod@4.3.5)
@@ -1095,8 +1089,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@coji/durably-react@0.7.0':
-    resolution: {integrity: sha512-RiKyg4QrsGiz3vSl9xRsejuyxFlWSdN2bqQSKqum49VdwXZ0z8vzDK9AzKyNu/72frSP5MVQxTUcHFnn+clxsw==}
+  '@coji/durably-react@0.8.0':
+    resolution: {integrity: sha512-Yb698miCurCjxXS/Qj+xtD01JMQbRAIYp01DOtyfpoDXyb9Y2xUJl2S0IglGF8uBzm2FLwaZ97mz3xa715YLbw==}
     peerDependencies:
       '@coji/durably': '*'
       react: '>=19.0.0'
@@ -1105,8 +1099,8 @@ packages:
       '@coji/durably':
         optional: true
 
-  '@coji/durably@0.7.0':
-    resolution: {integrity: sha512-g5qhVVvk9w4vTJZ6h1GHzHHwQ9O/AaPkSIUkRO9Ff+SY/S+u39Lme/YR5gSAyMuNmCs32azyUfAlOE4Br1EEPQ==}
+  '@coji/durably@0.8.0':
+    resolution: {integrity: sha512-/4kUWNWFrZe4wxMZp7oMDJBmAzVZoC0UxzhSCNaBzSo9A/TIbU0WrY1O6WKbiUEGVeQ0PLLKy5Byj41BSgsLZA==}
     peerDependencies:
       kysely: ^0.27.0
       zod: ^4.0.0
@@ -5819,14 +5813,14 @@ snapshots:
   '@cloudflare/workerd-windows-64@1.20260107.1':
     optional: true
 
-  '@coji/durably-react@0.7.0(@coji/durably@0.7.0(kysely@0.28.9)(zod@4.3.5))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@coji/durably-react@0.8.0(@coji/durably@0.8.0(kysely@0.28.9)(zod@4.3.5))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
     optionalDependencies:
-      '@coji/durably': 0.7.0(kysely@0.28.9)(zod@4.3.5)
+      '@coji/durably': 0.8.0(kysely@0.28.9)(zod@4.3.5)
 
-  '@coji/durably@0.7.0(kysely@0.28.9)(zod@4.3.5)':
+  '@coji/durably@0.8.0(kysely@0.28.9)(zod@4.3.5)':
     dependencies:
       kysely: 0.28.9
       ulidx: 2.4.1

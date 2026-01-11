@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@ai-sdk/google": "catalog:",
-    "@coji/durably": "catalog:",
-    "@coji/durably-react": "catalog:",
+    "@coji/durably": "0.8.0",
+    "@coji/durably-react": "0.8.0",
     "@coji/zodix": "catalog:",
     "@conform-to/react": "catalog:",
     "@conform-to/zod": "catalog:",

@@ -127,16 +127,10 @@ export default function ProjectDetail({
     pageSize: 20,
   })
 
-  // Find the latest running job to follow
-  const latestRunningJob = runs?.find(
-    (run) => run.status === 'running' || run.status === 'pending',
-  )
-
-  // Use durably for translation job
+  // Use durably for translation job (autoResume and followLatest are enabled by default in v0.8.0)
   const translationJob = useJob({
     api: '/api/durably',
     jobName: 'translate-project',
-    initialRunId: latestRunningJob?.id,
   })
 
   const handleStartTranslation = () => {
