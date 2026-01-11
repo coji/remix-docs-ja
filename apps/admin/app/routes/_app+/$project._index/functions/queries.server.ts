@@ -1,9 +1,11 @@
-import { prisma } from '~/services/db.server'
+import { db } from '~/services/db.server'
 
 export const getProject = async (projectId: string) => {
-  const project = await prisma.project.findFirstOrThrow({
-    where: { id: projectId },
-  })
+  const project = await db
+    .selectFrom('projects')
+    .selectAll()
+    .where('id', '=', projectId)
+    .executeTakeFirstOrThrow()
   return {
     ...project,
     excludes: JSON.parse(project.excludes) as string[],
@@ -11,30 +13,44 @@ export const getProject = async (projectId: string) => {
 }
 
 export const getProjectDetails = async (projectId: string) => {
-  return await prisma.project.findFirstOrThrow({
-    include: {
-      files: {
-        select: {
-          id: true,
-          path: true,
-          content: true,
-          contentMD5: true,
-          output: true,
-          isUpdated: true,
-          translatedAt: true,
-          updatedAt: true,
-          createdAt: true,
-        },
-        orderBy: [{ isUpdated: 'desc' }, { updatedAt: 'desc' }],
-      },
-    },
-    where: { id: projectId },
-  })
+  const project = await db
+    .selectFrom('projects')
+    .selectAll()
+    .where('id', '=', projectId)
+    .executeTakeFirstOrThrow()
+
+  const files = await db
+    .selectFrom('files')
+    .select([
+      'id',
+      'path',
+      'content',
+      'content_md5 as contentMD5',
+      'output',
+      'is_updated as isUpdated',
+      'translated_at as translatedAt',
+      'updated_at as updatedAt',
+      'created_at as createdAt',
+    ])
+    .where('project_id', '=', projectId)
+    .orderBy('is_updated', 'desc')
+    .orderBy('updated_at', 'desc')
+    .execute()
+
+  return {
+    ...project,
+    files: files.map((f) => ({
+      ...f,
+      isUpdated: Boolean(f.isUpdated),
+    })),
+  }
 }
 
 export const listProjectFiles = async (projectId: string) => {
-  return await prisma.file.findMany({
-    where: { projectId },
-    orderBy: { path: 'asc' },
-  })
+  return await db
+    .selectFrom('files')
+    .selectAll()
+    .where('project_id', '=', projectId)
+    .orderBy('path', 'asc')
+    .execute()
 }

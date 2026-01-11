@@ -1,7 +1,9 @@
-import { prisma } from '~/services/db.server'
+import { db } from '~/services/db.server'
 
 export const listProjects = async () => {
-  return await prisma.project.findMany({
-    orderBy: { createdAt: 'desc' },
-  })
+  return await db
+    .selectFrom('projects')
+    .selectAll()
+    .orderBy('created_at', 'desc')
+    .execute()
 }

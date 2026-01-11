@@ -1,7 +1,7 @@
 import { useOutletContext } from 'react-router'
 import { Label, Textarea } from '~/components/ui'
-import type { File, Project } from '~/generated/prisma'
 import { splitMarkdownByHeaders } from '~/libs/split-markdown'
+import type { File, Project } from '~/services/db.types'
 
 export default function TestPage() {
   const { file } = useOutletContext<{ file: File; project: Project }>()
@@ -27,7 +27,7 @@ export default function TestPage() {
                 {chunk.length.toLocaleString()} characters
               </span>
             </div>
-            <div className="rounded border bg-slate-50 px-3 py-2 text-sm break-words whitespace-pre-wrap">
+            <div className="rounded border bg-slate-50 px-3 py-2 text-sm wrap-break-word whitespace-pre-wrap">
               {chunk}
             </div>
           </div>

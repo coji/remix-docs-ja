@@ -4,7 +4,7 @@ import { parseWithZod } from '@conform-to/zod/v4'
 import { Form, useNavigation, useOutletContext } from 'react-router'
 import { z } from 'zod'
 import { Button, Label, Stack, Textarea } from '~/components/ui'
-import type { File, Project } from '~/generated/prisma'
+import type { File, Project } from '~/services/db.types'
 import type { Route } from './+types/route'
 import { updateFileOutput } from './mutations.server'
 

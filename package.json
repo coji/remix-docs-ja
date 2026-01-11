@@ -29,14 +29,12 @@
     },
     "onlyBuiltDependencies": [
       "@biomejs/biome",
-      "@prisma/client",
-      "@prisma/engines",
       "@tailwindcss/oxide",
+      "better-sqlite3",
       "esbuild",
-      "prisma",
       "sharp",
       "workerd"
     ]
   },
-  "packageManager": "pnpm@10.17.0"
+  "packageManager": "pnpm@10.26.2"
 }

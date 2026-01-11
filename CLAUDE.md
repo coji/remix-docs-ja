@@ -10,7 +10,7 @@ This is a monorepo containing Japanese translations of React Router v7 and Remix
 
 ### Applications (`apps/`)
 
-- **admin**: Translation management tool with Prisma/SQLite database and Gemini API integration
+- **admin**: Translation management tool with Kysely/SQLite database and Gemini API integration
 - **react-router**: React Router v7 Japanese documentation site (SSG, deployed to Cloudflare)
 - **remix**: Remix Japanese documentation site (SSG, deployed to Cloudflare)
 
@@ -19,7 +19,7 @@ This is a monorepo containing Japanese translations of React Router v7 and Remix
 - React Router v7 (the new version that merged with Remix)
 - Vite for bundling
 - Tailwind CSS v4
-- Prisma ORM with SQLite (admin app)
+- Kysely ORM with SQLite (admin app)
 - Cloudflare Workers/Pages deployment
 - Pagefind for search functionality
 
@@ -29,7 +29,7 @@ This is a monorepo containing Japanese translations of React Router v7 and Remix
 
 ```bash
 pnpm install
-pnpm --filter admin prisma migrate dev  # Setup admin database
+# Database is auto-created on first run via better-sqlite3
 ```
 
 ### Development
@@ -63,9 +63,9 @@ pnpm validate               # Run all checks (lint, format, typecheck, test)
 ### Admin App Database
 
 ```bash
-pnpm --filter admin prisma migrate dev    # Run migrations
-pnpm --filter admin prisma studio         # Open Prisma Studio
-pnpm --filter admin prisma generate       # Regenerate Prisma client
+# Database schema is defined in apps/admin/db/schema.sql
+# Schema changes can be managed with Atlas (atlas.hcl)
+npx atlas schema apply --env local        # Apply schema changes
 ```
 
 ## Environment Variables
@@ -73,7 +73,6 @@ pnpm --filter admin prisma generate       # Regenerate Prisma client
 ### Admin App (`apps/admin/.env`)
 
 ```env
-DATABASE_URL="file:./prisma/dev.db"
 GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
 ```
 
