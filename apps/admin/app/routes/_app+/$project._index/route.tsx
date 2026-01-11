@@ -22,8 +22,8 @@ import {
   TableHeader,
   TableRow,
 } from '~/components/ui'
+import { useJob } from '@coji/durably-react/client'
 import dayjs from '~/libs/dayjs'
-import { durablyClient } from '~/services/durably.client'
 import type { Route } from './+types/route'
 import { exportFiles, getProjectDetails, rescanFiles } from './functions.server'
 
@@ -95,7 +95,10 @@ export default function ProjectDetail({
     navigation.formData?.get('intent') === 'export-files'
 
   // Use durably for translation job
-  const translationJob = durablyClient['translate-project'].useJob()
+  const translationJob = useJob({
+    api: '/api/durably',
+    jobName: 'translate-project',
+  })
 
   const handleStartTranslation = () => {
     translationJob.trigger({ projectId: project.id })
