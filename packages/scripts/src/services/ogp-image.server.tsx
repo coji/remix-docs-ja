@@ -38,54 +38,52 @@ export const getOgpImageResponse = async (
 
   const fontData = await getFontData()
   const response = new ImageResponse(
-    (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: '#212121',
+        padding: '4rem',
+        boxShadow: 'none',
+        color: 'white',
+        border: '10px',
+        borderRadius: '30px',
+      }}
+    >
       <div
         style={{
-          width: '100%',
-          height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          backgroundColor: '#212121',
-          padding: '4rem',
-          boxShadow: 'none',
-          color: 'white',
-          border: '10px',
-          borderRadius: '30px',
+          alignItems: 'baseline',
+          flexGrow: '1',
         }}
       >
         <div
           style={{
-            display: 'flex',
+            fontSize: '76px',
             flexDirection: 'column',
-            alignItems: 'baseline',
+            justifyContent: 'center',
+            wordBreak: 'break-word',
             flexGrow: '1',
           }}
         >
-          <div
-            style={{
-              fontSize: '76px',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              wordBreak: 'break-word',
-              flexGrow: '1',
-            }}
-          >
-            {doc.attributes.title}
-          </div>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            fontSize: '32px',
-          }}
-        >
-          {filename !== 'index' && <div>{product.title}</div>}
-          <div style={{ flexGrow: '1' }} />
-          <RemixLogo />
+          {doc.attributes.title}
         </div>
       </div>
-    ),
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          fontSize: '32px',
+        }}
+      >
+        {filename !== 'index' && <div>{product.title}</div>}
+        <div style={{ flexGrow: '1' }} />
+        <RemixLogo />
+      </div>
+    </div>,
     {
       fonts: [
         {
