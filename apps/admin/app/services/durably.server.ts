@@ -53,13 +53,14 @@ const translationJob = defineJob({
         })
 
         if (ret.type === 'success') {
+          const timestamp = now()
           await db
             .updateTable('files')
             .set({
               is_updated: 0,
               output: ret.translatedText,
-              translated_at: now(),
-              updated_at: now(),
+              translated_at: timestamp,
+              updated_at: timestamp,
             })
             .where('id', '=', file.id)
             .execute()
@@ -83,7 +84,11 @@ const translationJob = defineJob({
       }
 
       // Report progress after each file
-      step.progress(i + 1, files.length, `Translated ${i + 1}/${files.length}`)
+      step.progress(
+        i + 1,
+        files.length,
+        `Processed ${i + 1}/${files.length} (${translatedCount} translated, ${errorCount} errors)`,
+      )
     }
 
     step.log.info(
