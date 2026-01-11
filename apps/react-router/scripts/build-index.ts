@@ -1,16 +1,26 @@
-import { buildBM25Index } from '@remix-docs-ja/scripts/build-bm25-index'
-import { buildIndex } from '@remix-docs-ja/scripts/build-index'
+import { buildBM25IndexFromDocs } from '@remix-docs-ja/scripts/build-bm25-index'
+import { buildDocs } from '@remix-docs-ja/scripts/build-docs'
 import { buildMenus } from '@remix-docs-ja/scripts/build-menu'
 import { join } from 'node:path'
 
-// Build Pagefind index (legacy)
-await buildIndex('react-router-v7')
+const docsPath = join(process.cwd(), 'docs')
+const productId = 'react-router-v7'
 
-// Build BM25 index (new)
-await buildBM25Index({
-  docsPath: join(process.cwd(), '../../docs/react-router-v7'),
-  outputPath: join(process.cwd(), 'public/search-index'),
-  product: 'react-router-v7',
+// Build docs JSON and OGP images in parallel
+const docs = await buildDocs({
+  docsPath,
+  outputPath: join(process.cwd(), 'prebuild/docs'),
+  ogpOutputPath: join(process.cwd(), 'public/ogp'),
+  productId,
+  concurrency: 10,
 })
 
+// Build BM25 index from the already-processed docs (no MD re-processing)
+await buildBM25IndexFromDocs({
+  docs,
+  outputPath: join(process.cwd(), 'public/search-index'),
+  product: productId,
+})
+
+// Build menus
 await buildMenus()
