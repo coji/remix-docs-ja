@@ -38,7 +38,7 @@ CREATE TABLE translation_jobs (
   output_tokens INTEGER NOT NULL,
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  FOREIGN KEY (project_id) REFERENCES projects(id)
+  FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE translation_tasks (
@@ -53,7 +53,7 @@ CREATE TABLE translation_tasks (
   generated TEXT NOT NULL,
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  FOREIGN KEY (job_id) REFERENCES translation_jobs(id)
+  FOREIGN KEY (job_id) REFERENCES translation_jobs(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Create indexes for better query performance

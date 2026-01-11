@@ -5,9 +5,16 @@ import type { Database as DatabaseSchema } from './db.types'
 
 const debug = createDebug('app:db')
 
+const DEFAULT_DB_PATH = 'data/dev.db'
+
+const parseDbPath = (url: string): string => {
+  // Supports: sqlite:// (Atlas), file: (Prisma), or plain paths
+  return url.replace(/^sqlite:\/\//, '').replace(/^file:/, '')
+}
+
 const dialect = new SqliteDialect({
   database: new Database(
-    process.env.DATABASE_URL?.replace('file:', '') ?? 'db/dev.db',
+    parseDbPath(process.env.DATABASE_URL ?? DEFAULT_DB_PATH),
   ),
 })
 
