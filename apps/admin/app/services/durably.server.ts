@@ -14,29 +14,30 @@ const translationJob = defineJob({
     errors: z.array(z.object({ path: z.string(), error: z.string() })),
   }),
   run: async (step, { projectId }) => {
-    // Fetch project and files
-    const { files } = await step.run('fetch-data', async () => {
-      const project = await db
+    // Fetch files to translate (also validates project exists)
+    const files = await step.run('fetch-data', async () => {
+      // Validate project exists
+      await db
         .selectFrom('projects')
-        .selectAll()
+        .select('id')
         .where('id', '=', projectId)
         .executeTakeFirstOrThrow()
 
-      const files = await db
+      return await db
         .selectFrom('files')
         .selectAll()
         .where('project_id', '=', projectId)
         .where('is_updated', '=', 1)
         .orderBy('created_at', 'asc')
         .execute()
-
-      return { project, files }
     })
 
     step.log.info(`Starting translation for project: ${projectId}`)
     step.log.info(`Files to translate: ${files.length}`)
 
+    const MAX_STORED_ERRORS = 50
     let translatedCount = 0
+    let errorCount = 0
     const errors: { path: string; error: string }[] = []
 
     // Translate each file
@@ -74,7 +75,11 @@ const translationJob = defineJob({
       if (result.success) {
         translatedCount++
       } else {
-        errors.push({ path: result.path, error: result.error })
+        errorCount++
+        // Only store first MAX_STORED_ERRORS to prevent huge output
+        if (errors.length < MAX_STORED_ERRORS) {
+          errors.push({ path: result.path, error: result.error })
+        }
       }
 
       // Report progress after each file
@@ -82,12 +87,12 @@ const translationJob = defineJob({
     }
 
     step.log.info(
-      `Translation complete: ${translatedCount} translated, ${errors.length} errors`,
+      `Translation complete: ${translatedCount} translated, ${errorCount} errors`,
     )
 
     return {
       translatedCount,
-      errorCount: errors.length,
+      errorCount,
       totalCount: files.length,
       errors,
     }

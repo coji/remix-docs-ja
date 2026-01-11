@@ -38,6 +38,20 @@ import dayjs from '~/libs/dayjs'
 import type { Route } from './+types/route'
 import { exportFiles, getProjectDetails, rescanFiles } from './functions.server'
 
+// Type definitions for durably job data
+type TranslationJobOutput = {
+  translatedCount: number
+  errorCount: number
+  totalCount: number
+  errors: { path: string; error: string }[]
+}
+
+type JobProgress = {
+  current: number
+  total: number
+  message?: string
+}
+
 export const meta = ({ loaderData }: Route.MetaArgs) => [
   { title: `${loaderData?.project.id}` },
 ]
@@ -231,68 +245,63 @@ export default function ProjectDetail({
                         </div>
                         {/* Progress for running jobs */}
                         {(run.status === 'running' || run.status === 'pending') &&
-                          run.progress && (
-                            <div className="w-full space-y-1">
-                              <div className="text-xs">
-                                {(run.progress as { current?: number }).current ??
-                                  0}
-                                /{(run.progress as { total?: number }).total ?? 0}
+                          run.progress &&
+                          (() => {
+                            const progress = run.progress as JobProgress
+                            return (
+                              <div className="w-full space-y-1">
+                                <div className="text-xs">
+                                  {progress.current ?? 0}/{progress.total ?? 0}
+                                </div>
+                                <Progress
+                                  value={
+                                    ((progress.current ?? 0) /
+                                      (progress.total ?? 1)) *
+                                    100
+                                  }
+                                  className="h-1.5"
+                                />
                               </div>
-                              <Progress
-                                value={
-                                  (((run.progress as { current?: number })
-                                    .current ?? 0) /
-                                    ((run.progress as { total?: number }).total ??
-                                      1)) *
-                                  100
-                                }
-                                className="h-1.5"
-                              />
-                            </div>
-                          )}
+                            )
+                          })()}
                         {/* Output for completed jobs */}
-                        {run.output && (
-                          <div className="text-xs">
-                            {(run.output as { translatedCount?: number })
-                              .translatedCount ?? 0}{' '}
-                            translated,{' '}
-                            {((run.output as { errorCount?: number }).errorCount ??
-                              0) > 0 ? (
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <span className="text-destructive cursor-help underline">
-                                      {(run.output as { errorCount?: number })
-                                        .errorCount ?? 0}{' '}
-                                      errors
-                                    </span>
-                                  </TooltipTrigger>
-                                  <TooltipContent
-                                    side="bottom"
-                                    className="max-w-100"
-                                  >
-                                    <ul className="space-y-1">
-                                      {(
-                                        (
-                                          run.output as {
-                                            errors?: { path: string; error: string }[]
-                                          }
-                                        ).errors ?? []
-                                      ).map((e, i) => (
-                                        <li key={i} className="text-xs">
-                                          <span className="font-medium">{e.path}</span>
-                                          : {e.error}
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            ) : (
-                              <span>0 errors</span>
-                            )}
-                          </div>
-                        )}
+                        {run.output &&
+                          (() => {
+                            const output = run.output as TranslationJobOutput
+                            return (
+                              <div className="text-xs">
+                                {output.translatedCount ?? 0} translated,{' '}
+                                {(output.errorCount ?? 0) > 0 ? (
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <span className="text-destructive cursor-help underline">
+                                          {output.errorCount ?? 0} errors
+                                        </span>
+                                      </TooltipTrigger>
+                                      <TooltipContent
+                                        side="bottom"
+                                        className="max-w-100"
+                                      >
+                                        <ul className="space-y-1">
+                                          {(output.errors ?? []).map((e, i) => (
+                                            <li key={i} className="text-xs">
+                                              <span className="font-medium">
+                                                {e.path}
+                                              </span>
+                                              : {e.error}
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                ) : (
+                                  <span>0 errors</span>
+                                )}
+                              </div>
+                            )
+                          })()}
                         {/* Error for failed jobs */}
                         {run.status === 'failed' && run.error && (
                           <TooltipProvider>
@@ -369,18 +378,16 @@ export default function ProjectDetail({
                 }
               />
             )}
-            {translationJob.output && (
-              <div className="text-muted-foreground text-sm">
-                Completed:{' '}
-                {
-                  (translationJob.output as { translatedCount: number })
-                    .translatedCount
-                }{' '}
-                translated,{' '}
-                {(translationJob.output as { errorCount: number }).errorCount}{' '}
-                errors
-              </div>
-            )}
+            {translationJob.output &&
+              (() => {
+                const output = translationJob.output as TranslationJobOutput
+                return (
+                  <div className="text-muted-foreground text-sm">
+                    Completed: {output.translatedCount} translated,{' '}
+                    {output.errorCount} errors
+                  </div>
+                )
+              })()}
           </div>
         )}
 
